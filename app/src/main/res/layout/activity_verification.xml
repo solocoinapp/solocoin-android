@@ -7,7 +7,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/mobile_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -32,11 +32,12 @@
             android:textSize="32sp"
             android:gravity="center_horizontal|top"
             android:padding="8dp"
+            android:hint="@string/_2348034638680"
             android:background="@drawable/edit_text_background"
             android:inputType="phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/mobile_number" />
 
         <ImageButton
             android:id="@+id/btn_proceed"
