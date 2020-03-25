@@ -4,18 +4,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import android.nfc.Tag;
 import android.os.Bundle;
-<<<<<<< HEAD
-import android.widget.Button;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.shimadove.coronago.databinding.ActivityMainBinding;
+
+import java.util.concurrent.TimeUnit;
+import android.widget.Button;
+import android.widget.ImageView;
+
 import com.shimadove.coronago.databinding.ActivityVerificationBinding;
 
 public class VerificationActivity extends AppCompatActivity {
@@ -48,36 +53,14 @@ public class VerificationActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     ActivityVerificationBinding binding;
-=======
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
-
-import java.util.concurrent.TimeUnit;
->>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
-
-public class VerificationActivity extends AppCompatActivity {
-    public static final String TAG = "TAG";
-    FirebaseAuth mAuth;
     EditText phno,otpEnter;
     TextView enterNum, sendmsg;
-    ProgressBar progressBar;
     ImageButton btn_proceed;
     String verificationID;
     PhoneAuthProvider.ForceResendingToken token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
         binding = DataBindingUtil.setContentView(this,R.layout.activity_verification);
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
@@ -99,15 +82,14 @@ public class VerificationActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mVerificationInProgress = savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS);
-=======
         setContentView(R.layout.activity_verification);
 
         mAuth = FirebaseAuth.getInstance();
         phno =  findViewById(R.id.phno);
-        otpEnter= findViewById(R.id.otpEnter);
+//        otpEnter= findViewById(R.id.otpEnter);
         progressBar = findViewById(R.id.progressBar);
         btn_proceed = findViewById(R.id.btn_proceed);
-        sendmsg = findViewById(R.id.sendmsg);
+//        sendmsg = findViewById(R.id.sendmsg);
 
         btn_proceed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +137,5 @@ public class VerificationActivity extends AppCompatActivity {
                 Log.e("LoginActivity", "Failed Registration", e);
             }
         });
->>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
     }
 }

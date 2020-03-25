@@ -6,29 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/otpEnter"
-            android:layout_width="243dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="68dp"
-            android:background="@drawable/edit_text_background"
-            android:ems="10"
-            android:gravity="center_horizontal|top"
-            android:inputType="phone"
-            android:padding="8dp"
-            android:textSize="32sp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.446"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/enterNum" />
-
         <TextView
-<<<<<<< HEAD
-            android:id="@+id/mobile_number"
-=======
             android:id="@+id/enterNum"
->>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -49,26 +28,17 @@
             android:id="@+id/phno"
             android:layout_width="310dp"
             android:layout_height="55dp"
-            android:background="@drawable/edit_text_background"
             android:ems="10"
             android:gravity="center_horizontal|top"
-<<<<<<< HEAD
             android:padding="8dp"
             android:hint="@string/_2348034638680"
             android:background="@drawable/edit_text_background"
-=======
->>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
             android:inputType="phone"
-            android:padding="8dp"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
-            app:layout_constraintTop_toBottomOf="@+id/mobile_number" />
-=======
             app:layout_constraintTop_toBottomOf="@+id/enterNum" />
->>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
 
         <ImageButton
             android:id="@+id/btn_proceed"
@@ -116,8 +86,7 @@
         </LinearLayout>
 
         <ProgressBar
-<<<<<<< HEAD
-            android:id="@+id/progress_bar"
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -125,32 +94,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-=======
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="36dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="120dp"
-            android:layout_marginEnd="11dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toStartOf="@+id/otpEnter"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/enterNum" />
 
-        <TextView
-            android:id="@+id/sendmsg"
-            android:layout_width="224dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="20dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.438"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phno" />
->>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
