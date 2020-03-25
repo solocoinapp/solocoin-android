@@ -51,6 +51,7 @@
             app:srcCompat="@drawable/ic_chevron_right" />
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="330dp"
             android:layout_height="210dp"
             android:layout_marginTop="32dp"
@@ -58,32 +59,39 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_proceed">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textStart"
-                android:textColor="@color/black"
                 android:fontFamily="@font/padauk"
-                android:textSize="24sp"
                 android:text="CONVID-19 Fact"
-                android:textStyle="bold"/>
-
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/padauk"
+                android:text="@string/covid_19_fa"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:fontFamily="@font/padauk"
-                android:layout_marginTop="32dp"
                 android:textSize="24dp"
-                android:text="@string/covid_19_fa"
-                android:textStyle="bold"/>
-
-
-
+                android:textStyle="bold" />
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
