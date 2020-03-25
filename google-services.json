@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "559061131437",
+    "firebase_url": "https://coronago-4b607.firebaseio.com",
+    "project_id": "coronago-4b607",
+    "storage_bucket": "coronago-4b607.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559061131437:android:b85282afbf0b350e28e624",
+        "android_client_info": {
+          "package_name": "com.shimadove.coronago"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559061131437-f23smd1ip1r7ov31duhaq7mr1l8r555i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shimadove.coronago",
+            "certificate_hash": "7109f3bfba924b8e7989ffcb9931eec2c4b21221"
+          }
+        },
+        {
+          "client_id": "559061131437-pecesm2mb2evvk0kmbiaoqm2mb06dtvr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2G4o5lch2lXGR7RZCwGS9zyQzx7ZSUs0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "559061131437-pecesm2mb2evvk0kmbiaoqm2mb06dtvr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
