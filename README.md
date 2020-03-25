@@ -18,3 +18,5 @@ https://www.reddit.com/r/Coronavirus/comments/fksnbf/im_bill_gates_cochair_of_th
 
 
 Documentation can be found here: https://chl.li/coronagodocs
+
+Discord Join link: https://discord.gg/PFuwBRX
