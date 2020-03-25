@@ -1,20 +1,32 @@
 {
   "project_info": {
+<<<<<<< HEAD
     "project_number": "559061131437",
     "firebase_url": "https://coronago-4b607.firebaseio.com",
     "project_id": "coronago-4b607",
     "storage_bucket": "coronago-4b607.appspot.com"
+=======
+    "project_number": "781974577510",
+    "firebase_url": "https://coronago-34623.firebaseio.com",
+    "project_id": "coronago-34623",
+    "storage_bucket": "coronago-34623.appspot.com"
+>>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
   },
   "client": [
     {
       "client_info": {
+<<<<<<< HEAD
         "mobilesdk_app_id": "1:559061131437:android:b85282afbf0b350e28e624",
+=======
+        "mobilesdk_app_id": "1:781974577510:android:ef2372bf3c59413fa368a7",
+>>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
         "android_client_info": {
           "package_name": "com.shimadove.coronago"
         }
       },
       "oauth_client": [
         {
+<<<<<<< HEAD
           "client_id": "559061131437-f23smd1ip1r7ov31duhaq7mr1l8r555i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -24,19 +36,30 @@
         },
         {
           "client_id": "559061131437-pecesm2mb2evvk0kmbiaoqm2mb06dtvr.apps.googleusercontent.com",
+=======
+          "client_id": "781974577510-3v6kfu7so3gias9slh8m8lcpv74oh739.apps.googleusercontent.com",
+>>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
           "client_type": 3
         }
       ],
       "api_key": [
         {
+<<<<<<< HEAD
           "current_key": "AIzaSyC2G4o5lch2lXGR7RZCwGS9zyQzx7ZSUs0"
+=======
+          "current_key": "AIzaSyC57qM8hcVgsFPDEXJa7bFLWI1KzRJb-aE"
+>>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
+<<<<<<< HEAD
               "client_id": "559061131437-pecesm2mb2evvk0kmbiaoqm2mb06dtvr.apps.googleusercontent.com",
+=======
+              "client_id": "781974577510-3v6kfu7so3gias9slh8m8lcpv74oh739.apps.googleusercontent.com",
+>>>>>>> f89c4a4eb33858a399ae8561fffb601720abde36
               "client_type": 3
             }
           ]
