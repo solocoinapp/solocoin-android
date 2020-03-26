@@ -10,22 +10,22 @@
         tools:context=".MainActivity">
 
         <!--        <ImageView-->
-<!--            android:id="@+id/imageView"-->
-<!--            android:layout_width="300dp"-->
-<!--            android:layout_height="300dp"-->
-<!--            android:layout_marginTop="68dp"-->
-<!--            android:padding="0dp"-->
-<!--            android:paddingStart="0dp"-->
-<!--            android:paddingLeft="0dp"-->
-<!--            android:paddingTop="0dp"-->
-<!--            android:paddingEnd="0dp"-->
-<!--            android:paddingRight="0dp"-->
-<!--            android:paddingBottom="0dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.542"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/textView"-->
-<!--            android:src="@raw/intro1" />-->
+        <!--            android:id="@+id/imageView"-->
+        <!--            android:layout_width="300dp"-->
+        <!--            android:layout_height="300dp"-->
+        <!--            android:layout_marginTop="68dp"-->
+        <!--            android:padding="0dp"-->
+        <!--            android:paddingStart="0dp"-->
+        <!--            android:paddingLeft="0dp"-->
+        <!--            android:paddingTop="0dp"-->
+        <!--            android:paddingEnd="0dp"-->
+        <!--            android:paddingRight="0dp"-->
+        <!--            android:paddingBottom="0dp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.542"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/textView"-->
+        <!--            android:src="@raw/intro1" />-->
 
         <Button
             android:id="@+id/button2"
@@ -50,7 +50,7 @@
             android:scaleType="centerCrop"
             android:scaleX="1.5"
             android:scaleY="1.5"
-            android:src="@mipmap/intro1"
+            android:src="@mipmap/intro2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.401"
@@ -60,10 +60,11 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="341dp"
-            android:layout_height="41dp"
+            android:layout_width="373dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="PRACTICE SOCIAL DISTANCING"
+            android:text="EARN REAL WORLD REWARDS"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp"
