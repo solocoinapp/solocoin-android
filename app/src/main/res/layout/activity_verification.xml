@@ -11,30 +11,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="112dp"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/padauk"
+            android:fontFamily="@font/poppins"
             android:padding="2dp"
             android:text="@string/enter_mobile_number"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/phno"
             android:layout_width="310dp"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:ems="10"
-            android:gravity="center_horizontal|top"
+            android:gravity="center_horizontal|center"
             android:padding="8dp"
             android:hint="@string/_2348034638680"
             android:background="@drawable/edit_text_background"
             android:inputType="phone"
-            android:textSize="32sp"
+            android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,8 +55,8 @@
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="330dp"
-            android:layout_height="210dp"
+            android:layout_width="350dp"
+            android:layout_height="230dp"
             android:layout_marginTop="32dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,9 +66,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/padauk"
-                android:text="CONVID-19 Fact"
-                android:textAlignment="textStart"
+                android:fontFamily="@font/poppins"
+                android:text="COVID-19 Fact"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -75,13 +76,13 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="165dp"
                 android:layout_marginTop="32dp"
-                android:fontFamily="@font/padauk"
+                android:fontFamily="@font/poppins"
                 android:text="@string/covid_19_fa"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="24dp"
+                android:textSize="22dp"
                 android:textStyle="bold" />
         </LinearLayout>
 

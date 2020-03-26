@@ -17,7 +17,7 @@
             android:layout_marginTop="24dp"
 
             android:layout_marginEnd="32dp"
-            android:fontFamily="@font/patua_one"
+            android:fontFamily="@font/poppins"
             android:text="@string/corona_go"
             android:textAlignment="center"
             android:textColor="@color/black"
@@ -39,8 +39,8 @@
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="265dp"
-            android:layout_height="150dp"
+            android:layout_width="276dp"
+            android:layout_height="237dp"
             android:layout_marginTop="16dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,22 +52,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/patua_one"
-                android:textSize="24sp"
+                android:fontFamily="@font/poppins"
                 android:text="@string/get_reward_to_stay"
                 android:textAlignment="center"
                 android:textColor="@color/black"
+                android:textSize="24sp"
                 android:textStyle="normal" />
 
             <TextView
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:fontFamily="@font/patua_one"
+                android:fontFamily="@font/poppins"
                 android:text="@string/away_from_people"
                 android:textAlignment="center"
                 android:textColor="@color/black"
+                android:textSize="24sp"
                 android:textStyle="normal" />
 
             <TextView
@@ -75,11 +75,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
-                android:textSize="24sp"
-                android:fontFamily="@font/patua_one"
+                android:fontFamily="@font/poppins"
                 android:text="@string/help_defeat_coronavirus"
                 android:textAlignment="center"
                 android:textColor="@color/black"
+                android:textSize="24sp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -88,15 +88,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
-            android:fontFamily="@font/patua_one"
-            android:text="@string/start"
-            android:textStyle="normal"
-            android:textSize="36sp"
-            android:textColor="@color/white"
             android:background="@drawable/round_button"
+            android:fontFamily="@font/poppins"
+            android:text="@string/start"
+            android:textColor="@color/white"
+            android:textSize="36sp"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
