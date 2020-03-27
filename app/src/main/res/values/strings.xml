@@ -14,4 +14,13 @@
     <string name="token">Token</string>
     <string name="_2348034638680">+2348034638680</string>
 
+    <!-- Login page string -->
+    <string name="login_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="content_description_end_icon">icon</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="logo_description">Coronago Logo</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="login_with_google">Login with Google</string>
 </resources>
