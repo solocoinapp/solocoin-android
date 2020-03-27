@@ -6,94 +6,154 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/enterNum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="130dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/padauk"
-            android:padding="2dp"
-            android:text="@string/enter_mobile_number"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="normal"
+        <Button
+            android:id="@+id/nextButton2"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="336dp"
+            android:layout_height="52dp"
+            android:background="@drawable/pink_button_border_radius"
+            android:text="@string/create_account"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_code"
+            app:layout_constraintVertical_bias="0.219" />
 
         <EditText
             android:id="@+id/phno"
-            android:layout_width="310dp"
-            android:layout_height="55dp"
-            android:ems="10"
-            android:gravity="center_horizontal|top"
-            android:padding="8dp"
-            android:hint="@string/_2348034638680"
-            android:background="@drawable/edit_text_background"
-            android:inputType="phone"
-            android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/enterNum" />
-
-        <ImageButton
-            android:id="@+id/btn_proceed"
-            android:layout_width="62dp"
-            android:layout_height="62dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/round_btn2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.954"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phno"
-            app:srcCompat="@drawable/ic_chevron_right" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="330dp"
-            android:layout_height="210dp"
-            android:layout_marginTop="32dp"
-            android:orientation="vertical"
+            android:layout_height="51dp"
+            android:background="@color/colorAccent"
+            android:backgroundTint="#40B9B9B9"
+            android:drawableStart="@drawable/ic_phone_icon"
+            android:drawableLeft="@drawable/ic_phone_icon"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/colorAccent"
+            android:ems="10"
+            android:inputType="phone"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.456"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            app:layout_constraintVertical_bias="0.082" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="130dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="SIGNUP"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_proceed">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.064" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/padauk"
-                android:text="CONVID-19 Fact"
-                android:textAlignment="textStart"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:fontFamily="@font/padauk"
-                android:text="@string/covid_19_fa"
-                android:textAlignment="textStart"
-                android:textColor="@color/black"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-        </LinearLayout>
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_proceed"-->
+<!--            android:layout_width="62dp"-->
+<!--            android:layout_height="62dp"-->
+<!--            android:background="@drawable/round_btn2"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.954"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:srcCompat="@drawable/ic_chevron_right" />-->
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="OTP sent successfully!"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:layout_constraintVertical_bias="0.083" />
+
+        <com.bigbangbutton.editcodeview.EditCodeView
+            android:id="@+id/edit_code"
+            android:layout_width="200dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:background="#40B9B9B9"
+            app:codeHiddenMask="."
+            app:codeHiddenMode="true"
+            app:codeLength="6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.454"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phno"
+            app:layout_constraintVertical_bias="0.058"
+            app:underlineReductionScale="0.3"
+            app:underlineStroke="5dp" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins"
+            android:text="Resend OTP?"
+            android:textColor="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_code" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="267dp"
+            android:layout_height="69dp"
+            android:text="By creating an account you agree to our Terms of Service and Privacy Policy."
+            app:layout_constraintBottom_toTopOf="@+id/progressBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nextButton2"
+            app:layout_constraintVertical_bias="0.141" />
+
+        <!--        <EditText-->
+<!--            android:id="@+id/editText"-->
+<!--            android:layout_width="239dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:background="@drawable/myline"-->
+<!--            android:ems="10"-->
+<!--            android:inputType="numberPassword"-->
+<!--            android:lines="1"-->
+<!--            android:maxLength="6"-->
+<!--            android:textAlignment="textStart"-->
+<!--            android:textSize="24sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/progressBar"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/phno"-->
+<!--            app:layout_constraintVertical_bias="0.094" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--<?xml version="1.0" encoding="utf-8"?>-->

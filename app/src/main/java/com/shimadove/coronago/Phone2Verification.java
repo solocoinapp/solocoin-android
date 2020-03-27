@@ -3,6 +3,8 @@ package com.shimadove.coronago;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.bigbangbutton.editcodeview.EditCodeListener;
+import com.bigbangbutton.editcodeview.EditCodeView;
+import com.bigbangbutton.editcodeview.EditCodeWatcher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -58,7 +64,8 @@ public class Phone2Verification extends AppCompatActivity {
     ActivityPhone2VerificationBinding binding;
     EditText phno, otpEnter;
     TextView enterNum, sendmsg;
-    ImageButton btn_proceed;
+    //ImageButton btn_proceed;
+
     String verificationID;
     PhoneAuthProvider.ForceResendingToken token;
 
@@ -69,12 +76,32 @@ public class Phone2Verification extends AppCompatActivity {
         if (savedInstanceState != null) {
             onRestoreInstanceState( savedInstanceState );
         }
+        //progressBar.setVisibility(View.GONE);
+        progressBar=binding.progressBar;
+        progressBar.setVisibility(View.GONE);
+        phno = binding.phno;
         initView( );
         initMode( );
+        EditCodeView editCodeView = (EditCodeView) findViewById(R.id.edit_code);
+        String s;
+        editCodeView.setEditCodeListener(new EditCodeListener() {
+            @Override
+            public void onCodeReady(String code) {
+                //This function gives the complete number inputted
+            }
+        });
+        editCodeView.setEditCodeWatcher(new EditCodeWatcher() {
+            @Override
+            public void onCodeChanged(String code) {
+
+            }
+        });
     }
 
     private void initMode() {
-
+        Intent intent = getIntent();
+        String phnum=intent.getStringExtra(Phone1Verification.PHONE_NO);
+        phno.setText(phnum);
     }
 
     private void initView() {
@@ -92,24 +119,8 @@ public class Phone2Verification extends AppCompatActivity {
         phno = findViewById( R.id.phno );
 //        otpEnter= findViewById(R.id.otpEnter);
         //progressBar = findViewById( R.id.progressBar );
-        btn_proceed = findViewById( R.id.btn_proceed );
+        //btn_proceed = findViewById( R.id.btn_proceed );
 //        sendmsg = findViewById(R.id.sendmsg);
-
-        btn_proceed.setOnClickListener( new View.OnClickListener( ) {
-            @Override
-            public void onClick(View v) {
-                String phNum = "+91" + phno.getText( ).toString( );
-                System.out.println( "onClick: Phone NO-> " + phNum );
-                if (!phNum.isEmpty( ) && phNum.length( ) == 13) {
-                    progressBar.setVisibility( View.VISIBLE );
-//                    sendmsg.setText("Sending OTP...");
-//                    sendmsg.setVisibility(View.VISIBLE);
-                    requestOTP( phNum );
-                } else {
-                    phno.setError( "Phone number is not Valid." );
-                }
-            }
-        } );
     }
 
     private void requestOTP(String phNum) {
@@ -117,7 +128,7 @@ public class Phone2Verification extends AppCompatActivity {
             @Override
             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent( s, forceResendingToken );
-                progressBar.setVisibility( View.GONE );
+                //progressBar.setVisibility( View.GONE );
 //                sendmsg.setVisibility(View.GONE);
 //                otpEnter.setVisibility(View.VISIBLE);
                 verificationID = s;
@@ -138,7 +149,7 @@ public class Phone2Verification extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                progressBar.setVisibility( View.GONE );
+//                progressBar.setVisibility( View.GONE );
 //                sendmsg.setVisibility(View.GONE);
 //                Toast.makeText(VerificationActivity.this, "Cannot Create Account " + e.getMessage(), Toast.LENGTH_SHORT ).show();
                 System.out.println( "LoginActivity Failed Registration: " + e );
