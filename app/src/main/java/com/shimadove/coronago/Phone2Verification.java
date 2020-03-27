@@ -15,7 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
-import com.shimadove.coronago.databinding.ActivityVerificationBinding;
+import com.shimadove.coronago.databinding.ActivityPhone2VerificationBinding;
+//import com.shimadove.coronago.databinding.ActivityVerificationBinding;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -25,7 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class VerificationActivity extends AppCompatActivity {
+public class Phone2Verification extends AppCompatActivity {
     private static final String TAG = "PhoneAuthActivity";
 
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
@@ -54,7 +55,7 @@ public class VerificationActivity extends AppCompatActivity {
     private ImageView imageBanner;
 
     private FirebaseAuth mAuth;
-    ActivityVerificationBinding binding;
+    ActivityPhone2VerificationBinding binding;
     EditText phno, otpEnter;
     TextView enterNum, sendmsg;
     ImageButton btn_proceed;
@@ -64,7 +65,7 @@ public class VerificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        binding = DataBindingUtil.setContentView( this, R.layout.activity_verification );
+        binding = DataBindingUtil.setContentView( this, R.layout.activity_phone2_verification);
         if (savedInstanceState != null) {
             onRestoreInstanceState( savedInstanceState );
         }
@@ -85,7 +86,7 @@ public class VerificationActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState( savedInstanceState );
         mVerificationInProgress = savedInstanceState.getBoolean( KEY_VERIFY_IN_PROGRESS );
-        setContentView( R.layout.activity_verification );
+        setContentView( R.layout.activity_phone2_verification);
 
         mAuth = FirebaseAuth.getInstance( );
         phno = findViewById( R.id.phno );
@@ -126,12 +127,12 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
                 super.onCodeAutoRetrievalTimeOut( s );
-                Toast.makeText( VerificationActivity.this, "TimeOut", Toast.LENGTH_SHORT ).show( );
+                Toast.makeText( Phone2Verification.this, "TimeOut", Toast.LENGTH_SHORT ).show( );
             }
 
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                Toast.makeText( VerificationActivity.this, "Create Account", Toast.LENGTH_SHORT ).show( );
+                Toast.makeText( Phone2Verification.this, "Create Account", Toast.LENGTH_SHORT ).show( );
                 signInWithPhoneAuthCredential(phoneAuthCredential);
             }
 
