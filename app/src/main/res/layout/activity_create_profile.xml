@@ -5,32 +5,32 @@
 
     <data>
         <variable
-            name="loginViewModel"
-            type="com.shimadove.coronago.viewmodel.LoginViewModel" />
+            name="createProfileViewModel"
+            type="com.shimadove.coronago.viewmodel.CreateProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LoginActivity">
+        tools:context=".CreateProfileActivity">
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="77dp"
             android:layout_height="85dp"
-            android:layout_marginTop="88dp"
+            android:layout_marginTop="40dp"
+            android:contentDescription="@string/logo_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/logo"
-            android:contentDescription="@string/logo_description" />
+            app:srcCompat="@mipmap/logo" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="50dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,6 +38,28 @@
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView3">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:startIconContentDescription="@string/content_description_end_icon"
+                app:startIconDrawable="@drawable/ic_profile"
+                app:startIconTint="@color/colorAccent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/usernameField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:backgroundTint="@android:color/black"
+                    android:ems="10"
+                    android:hint="@string/username_hint"
+                    android:inputType="text|textEmailSubject"
+                    android:text="@={createProfileViewModel.username}"
+                    tools:targetApi="o" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField1"
@@ -56,7 +78,7 @@
                     android:ems="10"
                     android:hint="@string/login_hint"
                     android:inputType="text|textEmailSubject"
-                    android:text="@={loginViewModel.email}"
+                    android:text="@={createProfileViewModel.email}"
                     tools:targetApi="o" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -66,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:startIconContentDescription="@string/content_description_end_icon"
-                app:startIconDrawable="@drawable/ic_password"
+                app:startIconDrawable="@drawable/ic_calender"
                 app:startIconTint="@color/colorAccent">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -75,33 +97,53 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/black"
                     android:ems="10"
-                    android:hint="@string/password_hint"
+                    android:hint="@string/date_of_birth_hint"
                     android:importantForAutofill="no"
                     android:inputType="textPassword"
-                    android:text="@={loginViewModel.password}" />
+                    android:text="@={createProfileViewModel.dob}" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/maleButton"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/grey_button_border_radius"
+                    android:onClick="@{createProfileViewModel::onMaleClicked}"
+                    android:text="@string/male"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/femaleButton"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/stroke_button_bg"
+                    android:onClick="@{createProfileViewModel::onFemaleClicked}"
+                    android:text="@string/female" />
+            </LinearLayout>
+
             <Button
-                android:id="@+id/loginButton"
+                android:id="@+id/continueButton"
                 style="@style/Widget.AppCompat.Button.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/pink_button_border_radius"
-                android:onClick="@{loginViewModel::onLoginButtonClick}"
-                android:text="@string/login"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/signUpButton"
-                style="@style/Widget.AppCompat.Button.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/grey_button_border_radius"
-                android:onClick="@{loginViewModel::onSignUpButtonClick}"
-                android:text="@string/sign_up"
-                android:textColor="@color/white" />
+                android:onClick="@{createProfileViewModel::onContinueButtonClick}"
+                android:text="@string/continue_button"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,7 +158,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:contentDescription="@string/login_with_facebook"
-                    android:onClick="@{loginViewModel::onFacebookClicked}"
+                    android:onClick="@{createProfileViewModel::onFacebookClicked}"
                     app:srcCompat="@drawable/facebook" />
 
                 <ImageButton
@@ -126,9 +168,21 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:contentDescription="@string/login_with_google"
-                    android:onClick="@{loginViewModel::onGoogleClicked}"
+                    android:onClick="@{createProfileViewModel::onGoogleClicked}"
                     app:srcCompat="@drawable/google" />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/skip"
+                style="@android:style/Widget.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:onClick="@{createProfileViewModel::onSkip}"
+                android:text="@string/skip_for_now"
+                android:textAlignment="center"
+                android:textColor="@color/gray" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -18,9 +18,13 @@
     <string name="login_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="content_description_end_icon">icon</string>
-    <string name="login">Login</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="continue_button">Continue</string>
+    <string name="date_of_birth_hint">DD/MM/YYYY</string>
+    <string name="username_hint">Username</string>
     <string name="logo_description">Coronago Logo</string>
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="login_with_google">Login with Google</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="skip_for_now">Skip for now</string>
 </resources>
