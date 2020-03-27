@@ -91,7 +91,7 @@ public class Phone2Verification extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance( );
         phno = findViewById( R.id.phno );
 //        otpEnter= findViewById(R.id.otpEnter);
-        progressBar = findViewById( R.id.progressBar );
+        //progressBar = findViewById( R.id.progressBar );
         btn_proceed = findViewById( R.id.btn_proceed );
 //        sendmsg = findViewById(R.id.sendmsg);
 
