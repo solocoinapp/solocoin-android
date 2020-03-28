@@ -58,11 +58,12 @@ public class Phone2Verification extends AppCompatActivity {
     TextView mCountyList;
     private ProgressBar progressBar;
     String phoneNo;
+    String OtpEnteredByUser;
     private String countryCode, enteredCode;
     private Button mStartButton;
     private boolean codeSent = false;
     private ImageView imageBanner;
-
+    private Button verifyBtn;
     private FirebaseAuth mAuth;
     ActivityPhone2VerificationBinding binding;
     EditText phno, otpEnter;
@@ -81,12 +82,13 @@ public class Phone2Verification extends AppCompatActivity {
             onRestoreInstanceState( savedInstanceState );
         }
         resend=binding.textView7;
+        verifyBtn=binding.verifyBtn;
         progressBar=binding.progressBar;
         progressBar.setVisibility(View.GONE);
         phno = binding.phno;
         phoneNo = getIntent().getStringExtra(Phone1Verification.PHONE_NO);
         phno.setText(phoneNo);
-        EditCodeView editCodeView = (EditCodeView) findViewById(R.id.edit_code);
+        final EditCodeView editCodeView = (EditCodeView) findViewById(R.id.edit_code);
         String s;
         editCodeView.setEditCodeListener(new EditCodeListener() {
             @Override
@@ -94,6 +96,7 @@ public class Phone2Verification extends AppCompatActivity {
                 //This function gives the complete number inputted
             }
         });
+        OtpEnteredByUser=editCodeView.getCode().toString();
         resend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +109,21 @@ public class Phone2Verification extends AppCompatActivity {
             }
         });
         sendVerificationCodeToUser(phoneNo);
+        verifyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String code=OtpEnteredByUser;
+                if(code.isEmpty()||code.length()<6){
+                    Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
+                    editCodeView.requestFocus();
+                    return;
+                }
+                else{
+                    progressBar.setVisibility(View.VISIBLE);
+                    verifyCode(code);
+                }
+            }
+        });
     }
 
     private void sendVerificationCodeToUser(String phoneNo) {
