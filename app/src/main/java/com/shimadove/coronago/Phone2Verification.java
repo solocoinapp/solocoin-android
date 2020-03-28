@@ -130,7 +130,7 @@ public class Phone2Verification extends AppCompatActivity {
 
     private void sendVerificationCodeToUser(String phoneNo) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+91" + phoneNo,        // Phone number to verify
+                 ""+phoneNo,        // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 TaskExecutors.MAIN_THREAD,               // Activity (for callback binding)
