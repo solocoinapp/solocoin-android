@@ -67,8 +67,9 @@ public class Phone2Verification extends AppCompatActivity {
     ActivityPhone2VerificationBinding binding;
     EditText phno, otpEnter;
     TextView enterNum, sendmsg;
-    //ImageButton btn_proceed;
-
+    TextView resend;
+    boolean timeout=false;
+    boolean incorrect=false;
     String verificationID;
     PhoneAuthProvider.ForceResendingToken token;
 
@@ -79,12 +80,10 @@ public class Phone2Verification extends AppCompatActivity {
         if (savedInstanceState != null) {
             onRestoreInstanceState( savedInstanceState );
         }
-        //progressBar.setVisibility(View.GONE);
+        resend=binding.textView7;
         progressBar=binding.progressBar;
         progressBar.setVisibility(View.GONE);
         phno = binding.phno;
-        //initView( );
-        //initMode( );
         phoneNo = getIntent().getStringExtra(Phone1Verification.PHONE_NO);
         phno.setText(phoneNo);
         EditCodeView editCodeView = (EditCodeView) findViewById(R.id.edit_code);
@@ -93,6 +92,17 @@ public class Phone2Verification extends AppCompatActivity {
             @Override
             public void onCodeReady(String code) {
                 //This function gives the complete number inputted
+            }
+        });
+        resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(timeout||incorrect){
+                    Toast.makeText(Phone2Verification.this,"Resending OTP..",Toast.LENGTH_SHORT).show();
+                    timeout=false;
+                    incorrect=false;
+                    sendVerificationCodeToUser(phoneNo);
+                }
             }
         });
         sendVerificationCodeToUser(phoneNo);
@@ -127,6 +137,14 @@ public class Phone2Verification extends AppCompatActivity {
         public void onVerificationFailed(@NonNull FirebaseException e) {
             Toast.makeText(Phone2Verification.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        @Override
+        public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
+            super.onCodeAutoRetrievalTimeOut(s);
+            Log.d(TAG,"signInWithCredential:timeout");
+            Toast.makeText(Phone2Verification.this, "OTP Timeout. Please ask to resend OTP.",Toast.LENGTH_SHORT).show();
+            timeout=true;
+        }
     };
 
     private void verifyCode(String otpByUser) {
@@ -142,8 +160,7 @@ public class Phone2Verification extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful( )) {
                             // Sign in success, update UI with the signed-in user's information
-                            //Log.d( TAG, "signInWithCredential:success" );
-                            Timber.d("signInWithCredential:success");
+                            Log.d(TAG,"signInWithCredential:success");
                             Intent intent=new Intent(getApplicationContext(),CreateProfileActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -153,8 +170,11 @@ public class Phone2Verification extends AppCompatActivity {
                             // Sign in failed, display a message and update the UI
                             Toast.makeText(Phone2Verification.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                             //Log.w( TAG, "signInWithCredential:failure", task.getException( ) );
+
                             if (task.getException( ) instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
+                                Toast.makeText(Phone2Verification.this, "Invalid OTP. Please enter OTP again.",Toast.LENGTH_SHORT).show();
+                                incorrect=true;
                             }
                         }
                     }
