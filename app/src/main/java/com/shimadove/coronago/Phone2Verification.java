@@ -18,6 +18,7 @@ import com.bigbangbutton.editcodeview.EditCodeView;
 import com.bigbangbutton.editcodeview.EditCodeWatcher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +32,8 @@ import java.util.concurrent.TimeUnit;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import timber.log.Timber;
 
 public class Phone2Verification extends AppCompatActivity {
     private static final String TAG = "PhoneAuthActivity";
@@ -48,13 +51,13 @@ public class Phone2Verification extends AppCompatActivity {
     private String mVerificationId;
 
     private PhoneAuthProvider.ForceResendingToken mResendToken;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-
+    //private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    String otpBySystem;
     private EditText mPhoneNumberField;
     private EditText mVerificationField;
     TextView mCountyList;
     private ProgressBar progressBar;
-
+    String phoneNo;
     private String countryCode, enteredCode;
     private Button mStartButton;
     private boolean codeSent = false;
@@ -80,8 +83,10 @@ public class Phone2Verification extends AppCompatActivity {
         progressBar=binding.progressBar;
         progressBar.setVisibility(View.GONE);
         phno = binding.phno;
-        initView( );
-        initMode( );
+        //initView( );
+        //initMode( );
+        phoneNo = getIntent().getStringExtra(Phone1Verification.PHONE_NO);
+        phno.setText(phoneNo);
         EditCodeView editCodeView = (EditCodeView) findViewById(R.id.edit_code);
         String s;
         editCodeView.setEditCodeListener(new EditCodeListener() {
@@ -90,88 +95,64 @@ public class Phone2Verification extends AppCompatActivity {
                 //This function gives the complete number inputted
             }
         });
-        editCodeView.setEditCodeWatcher(new EditCodeWatcher() {
-            @Override
-            public void onCodeChanged(String code) {
-
-            }
-        });
+        sendVerificationCodeToUser(phoneNo);
     }
 
-    private void initMode() {
-        Intent intent = getIntent();
-        String phnum=intent.getStringExtra(Phone1Verification.PHONE_NO);
-        phno.setText(phnum);
+    private void sendVerificationCodeToUser(String phoneNo) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                "+91" + phoneNo,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                TaskExecutors.MAIN_THREAD,               // Activity (for callback binding)
+                mCallbacks);        // OnVerificationStateChangedCallbacks
     }
 
-    private void initView() {
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        @Override
+        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            super.onCodeSent(s, forceResendingToken);
+            otpBySystem = s;
+        }
 
+        @Override
+        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+            String code = phoneAuthCredential.getSmsCode();
+            if(code!=null){
+                progressBar.setVisibility(View.VISIBLE);
+                verifyCode(code);
+            }
+        }
+
+        @Override
+        public void onVerificationFailed(@NonNull FirebaseException e) {
+            Toast.makeText(Phone2Verification.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private void verifyCode(String otpByUser) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpBySystem, otpByUser);
+        signInWithPhoneAuthCredential(credential);
     }
-
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState( savedInstanceState );
-        mVerificationInProgress = savedInstanceState.getBoolean( KEY_VERIFY_IN_PROGRESS );
-        setContentView( R.layout.activity_phone2_verification);
-
-        mAuth = FirebaseAuth.getInstance( );
-        phno = findViewById( R.id.phno );
-//        otpEnter= findViewById(R.id.otpEnter);
-        //progressBar = findViewById( R.id.progressBar );
-        //btn_proceed = findViewById( R.id.btn_proceed );
-//        sendmsg = findViewById(R.id.sendmsg);
-    }
-
-    private void requestOTP(String phNum) {
-        PhoneAuthProvider.getInstance( ).verifyPhoneNumber( phNum, 60L, TimeUnit.SECONDS, this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks( ) {
-            @Override
-            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                super.onCodeSent( s, forceResendingToken );
-                //progressBar.setVisibility( View.GONE );
-//                sendmsg.setVisibility(View.GONE);
-//                otpEnter.setVisibility(View.VISIBLE);
-                verificationID = s;
-                token = forceResendingToken;
-            }
-
-            @Override
-            public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
-                super.onCodeAutoRetrievalTimeOut( s );
-                Toast.makeText( Phone2Verification.this, "TimeOut", Toast.LENGTH_SHORT ).show( );
-            }
-
-            @Override
-            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                Toast.makeText( Phone2Verification.this, "Create Account", Toast.LENGTH_SHORT ).show( );
-                signInWithPhoneAuthCredential(phoneAuthCredential);
-            }
-
-            @Override
-            public void onVerificationFailed(@NonNull FirebaseException e) {
-//                progressBar.setVisibility( View.GONE );
-//                sendmsg.setVisibility(View.GONE);
-//                Toast.makeText(VerificationActivity.this, "Cannot Create Account " + e.getMessage(), Toast.LENGTH_SHORT ).show();
-                System.out.println( "LoginActivity Failed Registration: " + e );
-            }
-        } );
-    }
-
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth= FirebaseAuth.getInstance();
         mAuth.signInWithCredential( credential )
-                .addOnCompleteListener( this, new OnCompleteListener<AuthResult>( ) {
+                .addOnCompleteListener( Phone2Verification.this, new OnCompleteListener<AuthResult>( ) {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful( )) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d( TAG, "signInWithCredential:success" );
-
-                            FirebaseUser user = task.getResult( ).getUser( );
+                            //Log.d( TAG, "signInWithCredential:success" );
+                            Timber.d("signInWithCredential:success");
+                            Intent intent=new Intent(getApplicationContext(),CreateProfileActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            //FirebaseUser user = task.getResult( ).getUser( );
                             // ...
                         } else {
                             // Sign in failed, display a message and update the UI
-                            Log.w( TAG, "signInWithCredential:failure", task.getException( ) );
+                            Toast.makeText(Phone2Verification.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            //Log.w( TAG, "signInWithCredential:failure", task.getException( ) );
                             if (task.getException( ) instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
                             }
@@ -179,4 +160,27 @@ public class Phone2Verification extends AppCompatActivity {
                     }
                 } );
     }
+
+
+//    private void requestOTP(String phNum) {
+//        PhoneAuthProvider.getInstance( ).verifyPhoneNumber( phNum, 60L, TimeUnit.SECONDS, this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks( ) {
+//            @Override
+//            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+//                super.onCodeSent( s, forceResendingToken );
+//                //progressBar.setVisibility( View.GONE );
+////                sendmsg.setVisibility(View.GONE);
+////                otpEnter.setVisibility(View.VISIBLE);
+//                verificationID = s;
+//                token = forceResendingToken;
+//            }
+//
+//            @Override
+//            public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
+//                super.onCodeAutoRetrievalTimeOut( s );
+//                Toast.makeText( Phone2Verification.this, "TimeOut", Toast.LENGTH_SHORT ).show( );
+//            }
+//
+
+
+
 }

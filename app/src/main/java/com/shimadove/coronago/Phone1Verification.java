@@ -22,8 +22,8 @@ public class Phone1Verification extends AppCompatActivity {
         nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phNum = "+91" + binding.phno.getText( ).toString( );
-                if(!phNum.isEmpty() && phNum.length()==13){
+                String phNum = binding.phno.getText( ).toString( );
+                if(!phNum.isEmpty() && phNum.length()==10){
                     openActivity2(phNum);
                     //startActivity(new Intent(Phone1Verification.this, Phone2Verification.class));
                 }
