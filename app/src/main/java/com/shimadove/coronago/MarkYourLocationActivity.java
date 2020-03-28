@@ -42,15 +42,13 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
 
         try {
             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
             String city = addresses.get(0).getLocality();
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
-
-            etLocation.setHint(getString(R.string.hint_current_loc));
-            etLocation.setText(city+", "+state+", "+country);
+            etLocation.setText(getString(R.string.current_address, city, state, country));
         } catch (IOException e) {
             Timber.d("%s %s", TAG, e.getMessage());
+            etLocation.setText(getString(R.string.error_occurred));
         }
 
 //        mMap.addMarker(new MarkerOptions().position(currentLoc));

@@ -34,4 +34,6 @@
     <string name="confirm_loc">Confirm location</string>
     <string name="hint_fetching_loc">Fetching location</string>
     <string name="hint_current_loc">Current location</string>
+    <string name="current_address">%s, %s, %s</string>
+    <string name="error_occurred">Some occurred, please try again!</string>
 </resources>

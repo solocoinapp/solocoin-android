@@ -52,7 +52,7 @@
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_location"
-            android:hint="@string/hint_fetching_loc"
+            android:hint="@string/hint_current_loc"
             android:drawablePadding="16dp"
             android:fontFamily="@font/poppins"
             android:focusable="false"
