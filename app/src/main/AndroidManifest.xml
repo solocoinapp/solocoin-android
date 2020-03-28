@@ -18,10 +18,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PermissionsActivity"></activity>
+
+        
         <activity android:name=".Main3Activity" />
         <activity android:name=".Main2Activity" />
+        <activity android:name=".Phone1Verification"></activity>
+        <activity android:name=".Phone2Verification" />
+        <activity android:name=".PermissionsActivity"></activity>
         <activity android:name=".VerificationActivity" />
+      
         <activity
             android:name=".CreateProfileActivity"
             android:exported="true" />
