@@ -94,9 +94,10 @@ public class Phone2Verification extends AppCompatActivity {
             @Override
             public void onCodeReady(String code) {
                 //This function gives the complete number inputted
+                OtpEnteredByUser=code;
             }
         });
-        OtpEnteredByUser=editCodeView.getCode().toString();
+        //OtpEnteredByUser=editCodeView.getCode();
         resend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +114,7 @@ public class Phone2Verification extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String code=OtpEnteredByUser;
+                Log.d(TAG,"the otp typed by user: " + code);
                 if(code.isEmpty()||code.length()<6){
                     Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
                     editCodeView.requestFocus();
