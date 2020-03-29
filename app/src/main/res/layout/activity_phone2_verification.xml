@@ -7,7 +7,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/nextButton2"
+            android:id="@+id/verifyBtn"
             style="@style/Widget.AppCompat.Button.Small"
             android:layout_width="336dp"
             android:layout_height="52dp"
@@ -76,9 +76,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="72dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -131,12 +133,14 @@
             android:id="@+id/textView8"
             android:layout_width="267dp"
             android:layout_height="69dp"
+            android:layout_marginBottom="128dp"
             android:text="By creating an account you agree to our Terms of Service and Privacy Policy."
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/progressBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nextButton2"
-            app:layout_constraintVertical_bias="0.141" />
+            app:layout_constraintTop_toBottomOf="@+id/verifyBtn"
+            app:layout_constraintVertical_bias="0.576" />
 
         <!--        <EditText-->
 <!--            android:id="@+id/editText"-->
