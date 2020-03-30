@@ -1,4 +1,4 @@
-package com.shimadove.coronago
+package com.shimadove.coronago.app
 
 import android.app.Activity
 import android.app.Application
@@ -7,9 +7,9 @@ import com.shimadove.coronago.logging.AppExceptionHandler
 import com.shimadove.coronago.logging.FileLoggingTree
 import timber.log.Timber
 
-class ApplicationClass : Application(),Application.ActivityLifecycleCallbacks {
+class MyApplication : Application(),Application.ActivityLifecycleCallbacks {
 
-    var currentActivity: Activity? = null
+    private var currentActivity: Activity? = null
 
     override fun onCreate() {
         super.onCreate()

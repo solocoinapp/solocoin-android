@@ -21,7 +21,7 @@ public class Main3Activity extends AppCompatActivity {
         binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Main3Activity.this,VerificationActivity.class));
+                startActivity(new Intent(Main3Activity.this,Phone1Verification.class));
             }
         });
         binding.button3.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +34,12 @@ public class Main3Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Main3Activity.this,Main2Activity.class));
+            }
+        });
+        binding.skipbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Main3Activity.this, Phone1Verification.class));
             }
         });
     }

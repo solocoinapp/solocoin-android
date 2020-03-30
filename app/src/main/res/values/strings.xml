@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CoronaGo</string>
+    <string name="BASE_URL">http://52.78.25.78/api/v1/callbacks</string>
     <string name="get_reward_to_stay_away_from_people">Get reward to stay away from people</string>
     <string name="get_reward_to_stay">Get reward to stay</string>
     <string name="away_from_people">away from people</string>
@@ -30,10 +31,14 @@
     <string name="female">female</string>
     <string name="skip_for_now">Skip for now</string>
 
+
     <string name="title_location">Location</string>
     <string name="confirm_loc">Confirm location</string>
     <string name="hint_fetching_loc">Fetching location</string>
     <string name="hint_current_loc">Current location</string>
     <string name="current_address">%s, %s, %s</string>
     <string name="error_occurred">Some occurred, please try again!</string>
+
+    <string name="create_account">CREATE ACCOUNT</string>
+
 </resources>
