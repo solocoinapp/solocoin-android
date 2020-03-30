@@ -6,6 +6,11 @@ import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -69,6 +74,7 @@ public class Phone2Verification extends AppCompatActivity {
     EditText phno, otpEnter;
     TextView enterNum, sendmsg;
     TextView resend;
+    TextView tandc;
     boolean timeout=false;
     boolean incorrect=false;
     String verificationID;
@@ -81,6 +87,7 @@ public class Phone2Verification extends AppCompatActivity {
         if (savedInstanceState != null) {
             onRestoreInstanceState( savedInstanceState );
         }
+
         resend=binding.textView7;
         verifyBtn=binding.verifyBtn;
         progressBar=binding.progressBar;
@@ -126,6 +133,29 @@ public class Phone2Verification extends AppCompatActivity {
                 }
             }
         });
+        tandc=binding.textView8;
+        String terms=tandc.getText().toString();
+        SpannableString ss= new SpannableString(terms);
+        int termstart=terms.indexOf("Terms of Service");
+        int pristart=terms.indexOf("Privacy Policy");
+        ClickableSpan ToS = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                Intent intent=new Intent(getApplicationContext(),ToS.class);
+                startActivity(intent);
+            }
+        };
+        ClickableSpan Policy = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                Intent intent=new Intent(getApplicationContext(),Policy.class);
+                startActivity(intent);
+            }
+        };
+        ss.setSpan(ToS,termstart,termstart+16, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(Policy,pristart,pristart+14,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tandc.setText(ss);
+        tandc.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void sendVerificationCodeToUser(String phoneNo) {
@@ -200,27 +230,5 @@ public class Phone2Verification extends AppCompatActivity {
                     }
                 } );
     }
-
-
-//    private void requestOTP(String phNum) {
-//        PhoneAuthProvider.getInstance( ).verifyPhoneNumber( phNum, 60L, TimeUnit.SECONDS, this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks( ) {
-//            @Override
-//            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-//                super.onCodeSent( s, forceResendingToken );
-//                //progressBar.setVisibility( View.GONE );
-////                sendmsg.setVisibility(View.GONE);
-////                otpEnter.setVisibility(View.VISIBLE);
-//                verificationID = s;
-//                token = forceResendingToken;
-//            }
-//
-//            @Override
-//            public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
-//                super.onCodeAutoRetrievalTimeOut( s );
-//                Toast.makeText( Phone2Verification.this, "TimeOut", Toast.LENGTH_SHORT ).show( );
-//            }
-//
-
-
 
 }
