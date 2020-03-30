@@ -15,6 +15,8 @@
     <string name="token">Token</string>
     <string name="_2348034638680">+2348034638680</string>
 
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAe6bsxqPyYRq7dx81L77sYvXzmRVqc_7Y</string>
+
     <!-- Login page string -->
     <string name="login_hint">Email</string>
     <string name="password_hint">Password</string>
@@ -28,5 +30,15 @@
     <string name="male">male</string>
     <string name="female">female</string>
     <string name="skip_for_now">Skip for now</string>
+
+
+    <string name="title_location">Location</string>
+    <string name="confirm_loc">Confirm location</string>
+    <string name="hint_fetching_loc">Fetching location</string>
+    <string name="hint_current_loc">Current location</string>
+    <string name="current_address">%s, %s, %s</string>
+    <string name="error_occurred">Some occurred, please try again!</string>
+
     <string name="create_account">CREATE ACCOUNT</string>
+
 </resources>
