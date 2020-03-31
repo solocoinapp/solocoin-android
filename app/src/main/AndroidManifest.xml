@@ -41,7 +41,8 @@
 
         <activity android:name=".Policy"/>
         <activity android:name=".ToS" />
-
+        <activity android:name=".Welcome"
+            android:exported="true"/>
         <activity android:name=".Main3Activity" />
         <activity android:name=".Main2Activity" />
         <activity android:name=".Phone1Verification" />
