@@ -49,7 +49,9 @@
         <activity
             android:name=".Phone2Verification"
             android:exported="true" />
-        <activity android:name=".PermissionsActivity" />
+        <activity
+            android:name=".PermissionsActivity"
+            android:exported="true" />
         <activity
             android:name=".CreateProfileActivity"
             android:exported="true" />

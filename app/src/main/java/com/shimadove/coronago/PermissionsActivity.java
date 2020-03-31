@@ -1,5 +1,6 @@
 package com.shimadove.coronago;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +27,8 @@ public class PermissionsActivity extends AppCompatActivity {
     Button notificationsButton;
     Button continueButton;
     ImageView profilePhoto;
-
+    private int ACCESS_FINE_LOCATION=1;
+    private int first=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +47,39 @@ public class PermissionsActivity extends AppCompatActivity {
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //boolean locationPermissionCoarse = ContextCompat.checkSelfPermission(PermissionsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                init();
                 //checkAndRequestPermissions(true);
                 //checkAndRequestPermissions(false);
             }
         });
+    }
+
+    private void init() {
+        boolean locationPermissionFine = ContextCompat.checkSelfPermission(PermissionsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        //locationPermissionFine=false;
+        if (locationPermissionFine) {
+            startActivity(new Intent(PermissionsActivity.this,MarkYourLocationActivity.class));
+            changeColor();
+        }
+        else{
+            if (first==1) {
+                ActivityCompat.requestPermissions(PermissionsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION);
+                Toast.makeText(PermissionsActivity.this, "Permission not given", Toast.LENGTH_SHORT).show();
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(PermissionsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    Toast.makeText(PermissionsActivity.this, "Permission not given", Toast.LENGTH_SHORT).show();
+                    first = 0;
+                }
+                ActivityCompat.requestPermissions(PermissionsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION);
+            }
+        }
+    }
+
+    private void changeColor() {
+        locationButton.setBackgroundResource(R.drawable.grey_button_border_radius);
+        locationButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_white, 0);
+        locationButton.setTextColor(getResources().getColor(R.color.white));
     }
 
     public void pickProfileImage(View view){
@@ -73,7 +103,19 @@ public class PermissionsActivity extends AppCompatActivity {
         }
     }
 
-//    private void checkAndRequestPermissions(boolean request){
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        first=0;
+        if (requestCode == ACCESS_FINE_LOCATION){
+            if (grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                this.init();
+            } else {
+                Toast.makeText(this,"Permission DENIED",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    //    private void checkAndRequestPermissions(boolean request){
 //        boolean locationPermissionCoarse = ContextCompat.checkSelfPermission(PermissionsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 //        boolean locationPermissionFine = ContextCompat.checkSelfPermission(PermissionsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 //        boolean changeButtonStyle = locationPermissionCoarse && locationPermissionFine;
