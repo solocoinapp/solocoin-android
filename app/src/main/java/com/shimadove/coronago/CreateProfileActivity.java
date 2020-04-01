@@ -5,7 +5,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import timber.log.Timber;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.shimadove.coronago.databinding.ActivityCreateProfileBinding;
@@ -65,6 +64,6 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     @Override
     public void onSkip() {
-        startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
+
     }
 }

@@ -40,6 +40,5 @@
     <string name="error_occurred">Some occurred, please try again!</string>
 
     <string name="create_account">CREATE ACCOUNT</string>
-    <string name="set_permissions">SET PERMISSIONS</string>
 
 </resources>
