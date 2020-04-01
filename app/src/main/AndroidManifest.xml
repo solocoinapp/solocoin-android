@@ -24,6 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".HomeActivity"
+            android:exported="true"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -34,8 +36,8 @@
 
         <activity
             android:name=".MarkYourLocationActivity"
-            android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity" />
+            android:screenOrientation="fullSensor" />
+
         <activity android:name=".Policy" />
         <activity android:name=".ToS" />
         <activity android:name=".Main3Activity" />
@@ -56,10 +58,10 @@
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
