@@ -41,14 +41,17 @@
 
         <activity android:name=".Policy"/>
         <activity android:name=".ToS" />
-
+        <activity android:name=".Welcome"
+            android:exported="true"/>
         <activity android:name=".Main3Activity" />
         <activity android:name=".Main2Activity" />
         <activity android:name=".Phone1Verification" />
         <activity
             android:name=".Phone2Verification"
             android:exported="true" />
-        <activity android:name=".PermissionsActivity" />
+        <activity
+            android:name=".PermissionsActivity"
+            android:exported="true" />
         <activity
             android:name=".CreateProfileActivity"
             android:exported="true" />

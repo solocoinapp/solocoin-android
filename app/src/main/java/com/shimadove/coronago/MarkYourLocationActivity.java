@@ -1,5 +1,6 @@
 package com.shimadove.coronago;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -34,8 +35,12 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
 
     @Override
     public void onSuccess(Location location) {
-        LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
+        if (location == null) {
+            Toast.makeText(this, "Unable to access location, please try again!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(this, Locale.getDefault());
@@ -110,6 +115,7 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(this, "need to work on this!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "need to work on this!", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MarkYourLocationActivity.this, PermissionsActivity.class));
     }
 }
