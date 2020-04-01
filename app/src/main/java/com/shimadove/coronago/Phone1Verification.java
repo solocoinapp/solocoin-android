@@ -3,7 +3,9 @@ package com.shimadove.coronago;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,8 +30,15 @@ public class Phone1Verification extends AppCompatActivity {
         nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String phNum = ccp.getSelectedCountryCodeWithPlus()+binding.phno.getText( ).toString( );
+
+                SharedPreferences preferences = getApplication().getSharedPreferences("information", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+
                 countrycode=ccp.getSelectedCountryCodeWithPlus();
-                String phNum = countrycode+binding.phno.getText( ).toString( );
+
+                editor.putString("country_code", ccp.getSelectedCountryCode());
+                editor.putString("phone_number", binding.phno.getText().toString());
                 Log.d(TAG,"phone number is: " + phNum);
                 if(!phNum.isEmpty() && phNum.length()==13){
                     openActivity2(phNum);
