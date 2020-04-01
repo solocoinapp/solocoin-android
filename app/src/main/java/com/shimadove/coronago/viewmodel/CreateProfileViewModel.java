@@ -26,8 +26,6 @@ public class CreateProfileViewModel extends AndroidViewModel {
         void onCreateProfileSuccess();
         void onCreateProfileFailed();
         void onContinueClicked();
-        void onFacebookClicked();
-        void onGoogleClicked();
         void onMaleClicked();
         void onFemaleClicked();
         void onSkip();
@@ -50,15 +48,6 @@ public class CreateProfileViewModel extends AndroidViewModel {
         createProfileInterface.onContinueClicked();
     }
 
-    public void onFacebookClicked(View view){
-        Timber.d("Facebook clicked");
-        createProfileInterface.onFacebookClicked();
-    }
-
-    public void onGoogleClicked(View view){
-        Timber.d("Google clicked");
-        createProfileInterface.onGoogleClicked();
-    }
 
     public void onSkip(View view){
         createProfileInterface.onSkip();

@@ -42,15 +42,6 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     }
 
-    @Override
-    public void onFacebookClicked() {
-        Timber.d("Facebook");
-    }
-
-    @Override
-    public void onGoogleClicked() {
-        Timber.d("Google");
-    }
 
     @Override
     public void onMaleClicked() {
