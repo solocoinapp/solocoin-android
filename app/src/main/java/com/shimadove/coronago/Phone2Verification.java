@@ -94,7 +94,9 @@ public class Phone2Verification extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         phno = binding.phno;
         phoneNo = getIntent().getStringExtra(Phone1Verification.PHONE_NO);
-        phno.setText(phoneNo);
+        //phno.setText(phoneNo);
+        phno.getText().clear();
+        phno.append(phoneNo);
         final EditCodeView editCodeView = (EditCodeView) findViewById(R.id.edit_code);
         String s;
         editCodeView.setEditCodeListener(new EditCodeListener() {

@@ -17,6 +17,7 @@ public class Phone1Verification extends AppCompatActivity {
     public static final String PHONE_NO = "com.shimadove.coronago.PHONE_NO";
     CountryCodePicker ccp;
     private static final String TAG = "PhoneAuthActivity";
+    private String countrycode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +28,8 @@ public class Phone1Verification extends AppCompatActivity {
         nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phNum = ccp.getSelectedCountryCodeWithPlus()+binding.phno.getText( ).toString( );
+                countrycode=ccp.getSelectedCountryCodeWithPlus();
+                String phNum = countrycode+binding.phno.getText( ).toString( );
                 Log.d(TAG,"phone number is: " + phNum);
                 if(!phNum.isEmpty() && phNum.length()==13){
                     openActivity2(phNum);
