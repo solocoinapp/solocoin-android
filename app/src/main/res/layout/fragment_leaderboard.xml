@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/board_1"
         android:layout_width="380dp"
-        android:layout_height="219dp"
+        android:layout_height="195dp"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
@@ -22,9 +22,9 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="325dp"
-            android:layout_height="175dp"
-            android:layout_margin="24dp"
+            android:layout_width="347dp"
+            android:layout_height="140dp"
+            android:layout_margin="12dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -46,12 +46,12 @@
                 android:id="@+id/tv_leaderboard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="23dp"
-                android:layout_marginBottom="28dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="center_horizontal"
                 android:text="Compete globally with players, achieve milestones, collect badges and brag about it on social media."
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,16 +63,17 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/board_2"
         android:layout_width="387dp"
-        android:layout_height="206dp"
+        android:layout_height="195dp"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.961">
+        app:layout_constraintVertical_bias="0.99">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -117,7 +118,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/board_3"
         android:layout_width="387dp"
-        android:layout_height="206dp"
+        android:layout_height="195dp"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
