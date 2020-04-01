@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.wallet:
                         //todo:: inflate wallet fragment
+                        selectedFragment = WalletFragment.newInstance("","");
                         break;
                     case R.id.leader_board:
                         //todo :: inflate leaderboard fragment
