@@ -26,7 +26,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         view.findViewById(R.id.permissionButton).setOnClickListener(this);
