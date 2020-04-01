@@ -34,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.leader_board:
                         //todo :: inflate leaderboard fragment
+                        selectedFragment = LeaderboardFragment.newInstance("","");
                         break;
                     case R.id.profile:
                         selectedFragment = ProfileFragment.newInstance();

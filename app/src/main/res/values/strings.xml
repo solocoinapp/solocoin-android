@@ -54,6 +54,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="coming_soon">COMING SOON</string>
+    <string name="rewards">Rewards</string>
+    <string name="wallet_description">Engage in social distancing and get SoloCoins which you can redeem for exciting coupons from Flipkart, Netflix etc.</string>
 
     <string name="coins_in_wallet">Coins in Wallet</string>
 </resources>
