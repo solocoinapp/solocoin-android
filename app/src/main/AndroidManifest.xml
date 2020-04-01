@@ -37,6 +37,7 @@
         <activity
             android:name=".MarkYourLocationActivity"
             android:screenOrientation="fullSensor" />
+
         <activity android:name=".Policy" />
         <activity android:name=".ToS" />
         <activity android:name=".Main3Activity" />
@@ -49,7 +50,12 @@
         <activity
             android:name=".CreateProfileActivity"
             android:exported="true" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" />
+
+        <activity
+            android:name=".home.HomeActivity"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

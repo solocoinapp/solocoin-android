@@ -41,6 +41,7 @@
 
     <string name="create_account">CREATE ACCOUNT</string>
 
+
     <string name="permission">Permission</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="term_condition">Term &amp; condition </string>
@@ -52,5 +53,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="coins_in_wallet">Coins in Wallet</string>
 
 </resources>
