@@ -30,7 +30,7 @@ public class ProfileFragment extends Fragment {
         toolbar = view.findViewById(R.id.profile_toolbar);
         spinner = view.findViewById(R.id.language_select_spinner);
 
-        toolbar.setLogo(R.mipmap.logo);
+        toolbar.setLogo(R.drawable.logo);
 
         preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         preferencesEditor = preferences.edit();
