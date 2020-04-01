@@ -215,6 +215,7 @@ public class Phone2Verification extends AppCompatActivity {
                             Log.d(TAG,"signInWithCredential:success");
                             Intent intent=new Intent(getApplicationContext(),CreateProfileActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            // TODO: Put the phone number information and the country code info.
                             startActivity(intent);
                             //FirebaseUser user = task.getResult( ).getUser( );
                             // ...
