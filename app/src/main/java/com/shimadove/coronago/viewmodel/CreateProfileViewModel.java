@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.ViewModel;
+
 import timber.log.Timber;
 
 public class CreateProfileViewModel extends AndroidViewModel {
