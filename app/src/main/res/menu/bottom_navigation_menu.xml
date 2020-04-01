@@ -8,12 +8,12 @@
 
     <item
         android:id="@+id/wallet"
-        android:icon="@drawable/ic_wallet"
+        android:icon="@drawable/ic_action_icon_wallet"
         android:title="@string/wallet" />
 
     <item
         android:id="@+id/leader_board"
-        android:icon="@drawable/ic_rewards"
+        android:icon="@drawable/ic_action_icon_rewards"
         android:title="@string/leaderboard" />
 
     <item
