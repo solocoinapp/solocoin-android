@@ -50,10 +50,9 @@
         <activity
             android:name=".CreateProfileActivity"
             android:exported="true" />
-        <activity android:name=".MainActivity" />
 
         <activity
-            android:name=".home.HomeActivity"
+            android:name=".MainActivity"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
