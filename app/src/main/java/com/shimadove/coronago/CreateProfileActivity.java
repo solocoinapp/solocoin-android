@@ -3,12 +3,17 @@ package com.shimadove.coronago;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import timber.log.Timber;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +32,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     public SharedPreferences.Editor preferencesEditor;
     public final String PREFERENCES_FILE = "information";
 
-    private String phoneNumber, firebaseUid;
+    private String phoneNumber, firebaseUid, countryCode;
 
     ActivityCreateProfileBinding binding;
     CreateProfileViewModel viewModel;
@@ -51,8 +56,30 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         sharedPreferences = getApplication().getSharedPreferences("information", Context.MODE_PRIVATE);
         preferencesEditor = sharedPreferences.edit();
 
-        Intent intent = getIntent();
-        phoneNumber = intent.getStringExtra("phoneNumber");
+//        Intent intent = getIntent();
+//        phoneNumber = intent.getStringExtra("phoneNumber");
+
+        phoneNumber = sharedPreferences.getString("phone_number", null);
+        countryCode = sharedPreferences.getString("country_code", null);
+        // TODO: do something special if phoneNumber or country code is null.
+
+         // Check for User already created
+        JsonObject mobileLoginBody = new JsonObject();
+        mobileLoginBody.addProperty("mobile", phoneNumber);
+        apiService.doMobileLogin(mobileLoginBody).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.code() == 200){
+                    Intent intent1 = new Intent(CreateProfileActivity.this, HomeActivity.class);
+                    startActivity(intent1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                // Would a 404 land here?
+            }
+        });
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUid = currentUser.getUid();
@@ -62,9 +89,22 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         JsonObject body = new JsonObject();
         body.addProperty("mobile", phoneNumber);
         body.addProperty("uid", uid);
+        body.addProperty("country_code", countryCode);
         body.addProperty("name", username);
 
-        apiService.doMobileSignup(body);
+        apiService.doMobileSignup(body).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Toast.makeText(CreateProfileActivity.this, "Successful profile creation", Toast.LENGTH_SHORT).show();
+                onCreateProfileSuccess();
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(CreateProfileActivity.this, "Failure in profile creation", Toast.LENGTH_SHORT).show();
+                onCreateProfileFailed();
+            }
+        });
     }
 
     @Override
