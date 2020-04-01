@@ -35,8 +35,12 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
 
     @Override
     public void onSuccess(Location location) {
-        LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
+        if (location == null) {
+            Toast.makeText(this, "Unable to access location, please try again!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(this, Locale.getDefault());
