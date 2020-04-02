@@ -10,13 +10,14 @@
         android:id="@+id/location_permission_button"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/border_dashed"
         android:fontFamily="@font/poppins_semibold"
-        android:textColor="@color/gray"
         android:text="Access Location"
+        android:textColor="@color/gray"
         app:layout_constraintBottom_toTopOf="@+id/notification_permission_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -76,12 +77,30 @@
         android:id="@+id/continue_button"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="152dp"
         android:background="@drawable/accent_button_border_radius"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/continue_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:text="@string/data_encrypted"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/continue_button"
+        app:layout_constraintVertical_bias="0.546" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
