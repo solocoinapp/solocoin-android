@@ -62,4 +62,9 @@
     <string name="challenges">Daily Challenges</string>
     <string name="challenge_description">Engage in social distancing, give correct answers and get exciting rewards everyday</string>
 
+    //onboarding
+    <string name="ob_header1">PRACTICE SOCIAL DISTANCING</string>
+    <string name="ob_header2">EARN REAL WORLD REWARDS</string>
+    <string name="ob_header3">STAY SAFE</string>
+
 </resources>
