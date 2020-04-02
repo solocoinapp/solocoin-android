@@ -14,16 +14,22 @@ import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingEvent;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonObject;
+import com.shimadove.coronago.Wallet;
 import com.shimadove.coronago.api.APIClient;
 import com.shimadove.coronago.api.APIService;
+import com.shimadove.coronago.app.SharedPref;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
+
+import java.io.Serializable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GeofenceBroadcastReceiver extends BroadcastReceiver {
+public class GeofenceBroadcastReceiver extends BroadcastReceiver{
+    private float wallet_balance;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -43,13 +49,13 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             reportSession("away", context);
         }
     }
-
+    private SharedPref sharedPref;
+    private Wallet wallet;
     private void reportSession(String type, Context context){
         APIService service = APIClient.getRetrofitInstance(context).create(APIService.class);
-
         JsonObject object = new JsonObject();
-        object.addProperty("type", type);
-
+        wallet = new Wallet();
+        wallet.Updatebalance(context);
         Call<JsonObject> call = service.startSession(object);
 
         call.enqueue(new Callback<JsonObject>() {
