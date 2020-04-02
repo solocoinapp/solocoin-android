@@ -8,7 +8,7 @@ Discord link : https://discord.gg/9Cegpv
 Participate : Ask @arbob to add you in as a collaborators
 
 FAQ: HOW DO I START??
-Answer: Read every single step below,1 by 1..
+Answer:
 
 1. Make sure to discuss your ideas with the community in an Project board or on the Discord channel.
 2. Take a look on the Project board, create the issue for the task you think is need to be done and label it according to "UI" or "Features", "Bug" etc, then assign to yourself.
