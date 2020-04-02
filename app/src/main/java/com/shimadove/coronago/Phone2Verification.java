@@ -93,7 +93,7 @@ public class Phone2Verification extends AppCompatActivity {
         progressBar=binding.progressBar;
         progressBar.setVisibility(View.GONE);
         phno = binding.phno;
-        phoneNo = getIntent().getStringExtra(Phone1Verification.PHONE_NO);
+        phoneNo = getIntent().getStringExtra("PHONE_NO");
         //phno.setText(phoneNo);
         phno.getText().clear();
         phno.append(phoneNo);
@@ -127,9 +127,7 @@ public class Phone2Verification extends AppCompatActivity {
                 if(code.isEmpty()||code.length()<6){
                     Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
                     editCodeView.requestFocus();
-                    return;
-                }
-                else{
+                } else {
                     progressBar.setVisibility(View.VISIBLE);
                     verifyCode(code);
                 }
