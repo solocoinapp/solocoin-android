@@ -16,14 +16,19 @@ import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonObject;
 import com.shimadove.coronago.api.APIClient;
 import com.shimadove.coronago.api.APIService;
+import com.shimadove.coronago.app.SharedPref;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
+
+import java.io.Serializable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GeofenceBroadcastReceiver extends BroadcastReceiver {
+public class GeofenceBroadcastReceiver extends BroadcastReceiver{
+    private float wallet_balance;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -43,12 +48,26 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             reportSession("away", context);
         }
     }
-
+    private SharedPref sharedPref;
     private void reportSession(String type, Context context){
         APIService service = APIClient.getRetrofitInstance(context).create(APIService.class);
-
         JsonObject object = new JsonObject();
         object.addProperty("type", type);
+        sharedPref = SharedPref.getInstance(context);
+        JSONObject userbody =new JSONObject();
+        service.showUserData(userbody).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject userdata = response.body();
+                assert userdata != null;
+                wallet_balance= userdata.get("wallet_balance").getAsFloat();
+                sharedPref.setWallet_balance(wallet_balance);
+            }
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                //To decide what to do here
+            }
+        });
 
         Call<JsonObject> call = service.startSession(object);
 

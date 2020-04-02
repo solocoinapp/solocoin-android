@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.location.GeofencingClient;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.shimadove.coronago.api.APIClient;
 import com.shimadove.coronago.api.APIService;
+import com.shimadove.coronago.app.SharedPref;
 
 import org.json.JSONObject;
 
@@ -31,6 +33,7 @@ public class WalletFragment extends Fragment{
 
     private static String ARG_PARAM1 = WalletFragment.class.getSimpleName();
     private String wallet_balance;
+    private SharedPref sharedPref;
     public static WalletFragment newInstance(String param1, String param2) {
         WalletFragment fragment = new WalletFragment();
         Bundle args = new Bundle();
@@ -55,24 +58,9 @@ public class WalletFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        APIService apiService;
+        sharedPref = SharedPref.getInstance(getContext());
         TextView balance;
         balance=getView().findViewById(R.id.tv_coins_count);
-        apiService = APIClient.getRetrofitInstance(getContext()).create(APIService.class);
-        JSONObject userbody =new JSONObject();
-        apiService.showUserData(userbody).enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                JsonObject userdata = response.body();
-                assert userdata != null;
-                wallet_balance= userdata.get("wallet_balance").getAsString();
-                balance.setText(""+wallet_balance);
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-
-            }
-        });
+        balance.setText((int) sharedPref.getWallet_balance());
     }
 }

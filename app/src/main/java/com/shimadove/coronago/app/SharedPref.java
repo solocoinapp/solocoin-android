@@ -45,6 +45,18 @@ public class SharedPref {
         return pref.getString(PHONE_NUMBER, "");
     }
 
+    private static final String wallet_balance = "wallet_balance";
+
+    public float getWallet_balance(){
+        return pref.getFloat(wallet_balance,0);
+    }
+
+    public void setWallet_balance(float balance){
+        editor.putFloat(wallet_balance,balance);
+        editor.commit();
+    }
+
+    public static String time= "time";
     /**
      * Method call when user log-out of application
      */
