@@ -36,13 +36,13 @@ public class Phone1Verification extends AppCompatActivity {
         nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phNum = ccp.getSelectedCountryCodeWithPlus()+binding.phno.getText( ).toString( );
-
+                String phNum = ccp.getSelectedCountryCodeWithPlus() + binding.phno.getText().toString();
                 sharedPref.setCountryCode(ccp.getSelectedCountryCode());
                 sharedPref.setPhoneNumber(binding.phno.getText().toString());
 
                 Log.d(TAG,"phone number is: " + phNum);
-                if(phNum.length() == 13){
+                ccp.registerPhoneNumberTextView(binding.phno);
+                if(ccp.isValid()){
                     openActivity2(phNum);
                     //startActivity(new Intent(Phone1Verification.this, Phone2Verification.class));
                 } else {
