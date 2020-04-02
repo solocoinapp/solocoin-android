@@ -14,6 +14,7 @@ import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingEvent;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonObject;
+import com.shimadove.coronago.Wallet;
 import com.shimadove.coronago.api.APIClient;
 import com.shimadove.coronago.api.APIService;
 import com.shimadove.coronago.app.SharedPref;
@@ -49,26 +50,12 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver{
         }
     }
     private SharedPref sharedPref;
+    private Wallet wallet;
     private void reportSession(String type, Context context){
         APIService service = APIClient.getRetrofitInstance(context).create(APIService.class);
         JsonObject object = new JsonObject();
-        object.addProperty("type", type);
-        sharedPref = SharedPref.getInstance(context);
-        JSONObject userbody =new JSONObject();
-        service.showUserData(userbody).enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                JsonObject userdata = response.body();
-                assert userdata != null;
-                wallet_balance= userdata.get("wallet_balance").getAsFloat();
-                sharedPref.setWallet_balance(wallet_balance);
-            }
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                //To decide what to do here
-            }
-        });
-
+        wallet = new Wallet();
+        wallet.Updatebalance(context);
         Call<JsonObject> call = service.startSession(object);
 
         call.enqueue(new Callback<JsonObject>() {
