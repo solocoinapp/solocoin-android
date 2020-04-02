@@ -1,5 +1,6 @@
 package com.shimadove.coronago;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.shimadove.coronago.app.SharedPref;
 
 public class PermissionsActivity extends AppCompatActivity {
 
@@ -26,7 +28,9 @@ public class PermissionsActivity extends AppCompatActivity {
     Button notificationsButton;
     Button continueButton;
     ImageView profilePhoto;
-
+    private int ACCESS_FINE_LOCATION=1;
+    private int first=1;
+    private SharedPref sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +42,62 @@ public class PermissionsActivity extends AppCompatActivity {
         profilePhoto = findViewById(R.id.profile_image);
 
         // Get profile photo from internet.
+        sharedPref = SharedPref.getInstance(this);
+        //checkAndRequestPermissions(true);
+        //checkAndRequestPermissions(false);
 
-        checkAndRequestPermissions(true);
-        checkAndRequestPermissions(false);
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAndRequestPermissions(true);
-                checkAndRequestPermissions(false);
+                init();
+                //checkAndRequestPermissions(true);
+                //checkAndRequestPermissions(false);
             }
         });
+
+        Intent intent = getIntent();
+        boolean LOC_ADDED = intent.getBooleanExtra(MarkYourLocationActivity.LOC_ADDED,false);
+
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sharedPref.getHttpResponse()==404 && !LOC_ADDED){
+                    Toast.makeText(PermissionsActivity.this,"We can't help you in social distancing without your location. Don't worry, it's safe with us!",Toast.LENGTH_SHORT).show();
+                }
+                startActivity(new Intent(PermissionsActivity.this,HomeActivity.class));
+            }
+        });
+    }
+
+    private void init() {
+        if(sharedPref.getHttpResponse()==200){
+            Toast.makeText(PermissionsActivity.this,"Cannot update your location.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        boolean locationPermissionFine = ContextCompat.checkSelfPermission(PermissionsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (locationPermissionFine) {
+            changeColor();
+            startActivity(new Intent(PermissionsActivity.this,MarkYourLocationActivity.class));
+            return;
+        }
+        else{
+            if (first==1) {
+                ActivityCompat.requestPermissions(PermissionsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION);
+                Toast.makeText(PermissionsActivity.this, "Permission not given", Toast.LENGTH_SHORT).show();
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(PermissionsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    Toast.makeText(PermissionsActivity.this, "Permission not given", Toast.LENGTH_SHORT).show();
+                    first = 0;
+                }
+                ActivityCompat.requestPermissions(PermissionsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION);
+            }
+        }
+    }
+
+    private void changeColor() {
+        locationButton.setBackgroundResource(R.drawable.grey_button_border_radius);
+        locationButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_white, 0);
+        locationButton.setTextColor(getResources().getColor(R.color.white));
     }
 
     public void pickProfileImage(View view){
@@ -71,60 +121,73 @@ public class PermissionsActivity extends AppCompatActivity {
         }
     }
 
-    private void checkAndRequestPermissions(boolean request){
-        boolean locationPermissionCoarse = ContextCompat.checkSelfPermission(PermissionsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        boolean locationPermissionFine = ContextCompat.checkSelfPermission(PermissionsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        boolean changeButtonStyle = locationPermissionCoarse && locationPermissionFine;
-
-        if(changeButtonStyle){
-            locationButton.setBackgroundResource(R.drawable.grey_button_border_radius);
-            locationButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_white, 0);
-            locationButton.setTextColor(getResources().getColor(R.color.white));
-        }
-
-        if(request){
-            requestPermissions(locationPermissionCoarse, locationPermissionFine);
-        }
-    }
-
-    private void requestPermissions(boolean coarse, boolean fine){
-        if(coarse){
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                new AlertDialog.Builder(PermissionsActivity.this)
-                        .setTitle("Location Permission Needed")
-                        .setMessage("We need these permissions so that we can make sure you are staying in your house.")
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Whatever...
-                            }
-                        }).show();
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        first=0;
+        if (requestCode == ACCESS_FINE_LOCATION){
+            if (grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                this.init();
             } else {
-                ActivityCompat.requestPermissions(
-                        this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                        0);
-            }
-        }
-        if(fine){
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                new AlertDialog.Builder(PermissionsActivity.this)
-                        .setTitle("Location Permission Needed")
-                        .setMessage("We need these permissions so that we can make sure you are staying in your house.")
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Whatever...
-                            }
-                        }).show();
-            } else {
-                ActivityCompat.requestPermissions(
-                        this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        1);
+                Toast.makeText(this,"Permission DENIED",Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+    //    private void checkAndRequestPermissions(boolean request){
+//        boolean locationPermissionCoarse = ContextCompat.checkSelfPermission(PermissionsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+//        boolean locationPermissionFine = ContextCompat.checkSelfPermission(PermissionsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+//        boolean changeButtonStyle = locationPermissionCoarse && locationPermissionFine;
+//
+//        if(changeButtonStyle){
+//            startActivity(new Intent(PermissionsActivity.this, MarkYourLocationActivity.class));
+//            locationButton.setBackgroundResource(R.drawable.grey_button_border_radius);
+//            locationButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_white, 0);
+//            locationButton.setTextColor(getResources().getColor(R.color.white));
+//        }
+//
+//        if(request){
+//            requestPermissions(locationPermissionCoarse, locationPermissionFine);
+//        }
+//    }
+//
+//    private void requestPermissions(boolean coarse, boolean fine){
+//        if(coarse){
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//                new AlertDialog.Builder(PermissionsActivity.this)
+//                        .setTitle("Location Permission Needed")
+//                        .setMessage("We need these permissions so that we can make sure you are staying in your house.")
+//                        .setCancelable(false)
+//                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                // Whatever...
+//                            }
+//                        }).show();
+//            } else {
+//                ActivityCompat.requestPermissions(
+//                        this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+//                        0);
+//            }
+//        }
+//        if(fine){
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                new AlertDialog.Builder(PermissionsActivity.this)
+//                        .setTitle("Location Permission Needed")
+//                        .setMessage("We need these permissions so that we can make sure you are staying in your house.")
+//                        .setCancelable(false)
+//                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                // Whatever...
+//                            }
+//                        }).show();
+//            } else {
+//                ActivityCompat.requestPermissions(
+//                        this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                        1);
+//            }
+//        }
+//    }
 }
