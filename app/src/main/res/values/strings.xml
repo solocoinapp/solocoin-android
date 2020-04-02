@@ -62,4 +62,6 @@
     <string name="challenges">Daily Challenges</string>
     <string name="challenge_description">Engage in social distancing, give correct answers and get exciting rewards everyday</string>
 
+    <string name="data_encrypted">Your data is encrypted and secure and is not shared with anyone.</string>
+
 </resources>
