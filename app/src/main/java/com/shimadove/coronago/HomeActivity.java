@@ -61,7 +61,6 @@ public class HomeActivity extends AppCompatActivity {
                 if (sharedPref.getTimeout() > System.currentTimeMillis() + 1000*60*60*24*2) {
                     geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
                     sharedPref.setTimeout(timeout);
-
                 }
             } catch (SecurityException e){
                 Toast.makeText(HomeActivity.this, "Please close and reopen the app while enabling the Location permission", Toast.LENGTH_SHORT).show();

@@ -3,7 +3,7 @@ package com.shimadove.coronago.api;
 import android.content.Context;
 import com.shimadove.coronago.R;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
+//import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -27,14 +27,14 @@ public class APIClient {
     private static Retrofit retrofit;
     public static Retrofit getRetrofitInstance(Context context) {
         if (retrofit == null) {
-            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+            //HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            //OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(context.getString(R.string.BASE_URL))
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
+                 //   .client(client)
                     .build();
         }
         return retrofit;

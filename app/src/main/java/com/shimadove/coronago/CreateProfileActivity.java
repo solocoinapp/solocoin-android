@@ -29,10 +29,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 public class CreateProfileActivity extends AppCompatActivity implements CreateProfileViewModel.CreateProfileInterface {
 
-    public SharedPreferences sharedPreferences;
-    public SharedPreferences.Editor preferencesEditor;
-    public final String PREFERENCES_FILE = "information";
+    //public SharedPreferences sharedPreferences;
+    //public SharedPreferences.Editor preferencesEditor;
     private SharedPref sharedPref;
+    public final String PREFERENCES_FILE = "information";
     private String phoneNumber, firebaseUid, countryCode;
 
     ActivityCreateProfileBinding binding;
@@ -54,15 +54,13 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
          viewModel.setCreateProfileInterface(this);
 
-        sharedPreferences = getApplication().getSharedPreferences("information", Context.MODE_PRIVATE);
-        preferencesEditor = sharedPreferences.edit();
         sharedPref = SharedPref.getInstance(this);
 
 //        Intent intent = getIntent();
 //        phoneNumber = intent.getStringExtra("phoneNumber");
 
-        phoneNumber = sharedPreferences.getString("phone_number", null);
-        countryCode = sharedPreferences.getString("country_code", null);
+        phoneNumber = sharedPref.getPhoneNumber();
+        countryCode = sharedPref.getCountryCode();
         // TODO: do something special if phoneNumber or country code is null.
 
          // Check for User already created
@@ -121,8 +119,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     @Override
     public void onContinueClicked() {
-        preferencesEditor.putString("email", viewModel.email);
-        preferencesEditor.apply();
+        sharedPref.setEmail("email");
 
         // create profile for server.
         createProfile(viewModel.username, phoneNumber, firebaseUid);
@@ -131,14 +128,12 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     @Override
     public void onMaleClicked() {
-        preferencesEditor.putString("gender", "M");
-        preferencesEditor.apply();
+        sharedPref.setGender("M");
     }
 
     @Override
     public void onFemaleClicked() {
-        preferencesEditor.putString("gender", "F");
-        preferencesEditor.apply();
+        sharedPref.setGender("F");
     }
 
     @Override

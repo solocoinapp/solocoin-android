@@ -37,8 +37,10 @@ public class Phone1Verification extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String phNum = ccp.getSelectedCountryCodeWithPlus() + binding.phno.getText().toString();
-                sharedPref.setCountryCode(ccp.getSelectedCountryCode());
+                //sharedPref.setCountryCode(ccp.getSelectedCountryCode());
+                sharedPref.setCountryCode(ccp.getSelectedCountryCodeWithPlus());
                 sharedPref.setPhoneNumber(binding.phno.getText().toString());
+
 
                 Log.d(TAG,"phone number is: " + phNum);
                 ccp.registerPhoneNumberTextView(binding.phno);

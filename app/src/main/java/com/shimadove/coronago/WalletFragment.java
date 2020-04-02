@@ -21,6 +21,7 @@ import com.shimadove.coronago.app.SharedPref;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,7 +61,8 @@ public class WalletFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         sharedPref = SharedPref.getInstance(getContext());
         TextView balance;
-        balance=getView().findViewById(R.id.tv_coins_count);
-        balance.setText((int) sharedPref.getWallet_balance());
+        balance= Objects.requireNonNull(getView()).findViewById(R.id.tv_coins_count);
+        int val = sharedPref.getWallet_balance();
+        balance.setText("hello\n");
     }
 }

@@ -48,12 +48,12 @@ public class SharedPref {
 
     private static final String wallet_balance = "wallet_balance";
 
-    public float getWallet_balance(){
-        return pref.getFloat(wallet_balance,0);
+    public int getWallet_balance(){
+        return pref.getInt(wallet_balance,0);
     }
 
-    public void setWallet_balance(float balance){
-        editor.putFloat(wallet_balance,balance);
+    public void setWallet_balance(int balance){
+        editor.putInt(wallet_balance,balance);
         editor.commit();
     }
 
@@ -66,7 +66,24 @@ public class SharedPref {
         return pref.getInt(HTTP_RESPONSE, 404);
     }
 
-    /**
+    private static final String EMAIL="email";
+    public void setEmail(String id){
+        editor.putString(EMAIL,id);
+        editor.commit();
+    }
+
+    public String getEmail(){ return pref.getString(EMAIL,"");}
+
+    private static final String GENDER="email";
+    public void setGender(String id){
+        editor.putString(GENDER,id);
+        editor.commit();
+    }
+
+    public String getGender(){ return pref.getString(GENDER,"");}
+
+
+     /**
      * Method call when user log-out of application
      */
     public void clearSession() {

@@ -17,7 +17,7 @@ import retrofit2.Response;
 public class Wallet {
     public Wallet() { }
 
-    private float wallet_balance;
+    private int wallet_balance;
     private SharedPref sharedPref;
 
     public void Updatebalance(Context context) {
@@ -32,7 +32,7 @@ public class Wallet {
                     Toast.makeText(context,"Some error occured. Unable to get balance.",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    wallet_balance = userdata.get("wallet_balance").getAsFloat();
+                    wallet_balance = userdata.get("wallet_balance").getAsInt();
                     sharedPref.setWallet_balance(wallet_balance);
                 }
             }
