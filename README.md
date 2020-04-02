@@ -1,22 +1,19 @@
-# Corona Go
-Corona GO is a mobile app that rewards users to engage in social-distancing. 
-(Social distancing is a term applied to certain actions [mostly staying away from other people] that are taken by Public Health officials to stop or slow down the spread of a highly contagious disease.)
-The rewards earned can later be redeemed for Amazon, Swiggy, medicine, etc. coupons (mostly to help them stay at home).
+# CoronaGo
+Welcome to The CoronaGo, it's great to have you here! We thank you in advance for your contributions.
+CoronaGo gamifies the act of social-distancing by rewarding users in points and badges for staying at home and away from people.
 
-## Why this idea?
+# Contributing (Remember Read this 1st before you ask anything)
 
-COVID-19 has severely affected the livelihoods of the people around the globe. 
-It's proven that the single most effective way to prevent the spread of COVID-19 is social-distancing. BUT, not many people are practicing social-distancing. Most of them are simply ignoring the government's guidance. I’m a co-founder at Blockchain gaming company. I have a lot of experience in implementing game mechanics in consumer apps. So, I thought why not apply the same gamification techniques I implement in blockchain, into a consumer app to incentivize people to engage in social distancing.
+Discord link : https://discord.gg/9Cegpv
+Participate : Ask @arbob to add you in as a collaborators
 
-## Why am I focusing so much on "Social-distancing" and not other means of preventive measures like washing hands, not touching anything, etc.?
+1. Make sure to discuss your ideas with the community in an Project board or on the Discord channel.
+2. Take a look on the Project board, create the issue for the task you think is need to be done and label it according to "UI" or "Features", "Bug" etc, then assign to yourself.
+3. If you have too much to work on an issue you can label it as "help-wanted", so people can work on that item with you.
+4. Before starting to write code, make sure to pull from DEV branch. So you can have a latest build of application.
+   Then create a new branch according to your task that you are working on, for example mark_your_location branch.
+5. If you are at this point, you really want to do or you did some great work. After task completion create a pull request from your to DEV. So other developers can review your code and then merge to DEV.
 
-1. In theory, never leaving home during the coronavirus pandemic is the most effective means of prevention. It reduces your chance of infection and quickly contains the disease’s spread. A recent study in Science found, for example, that this kind of distancing is even better than widespread travel bans or restrictions. 
-https://www.technologyreview.com/s/615355/coronavirus-social-distancing-during-pandemic/
-2. Bill Gates suggested social-distancing the most effective method to contain COVID-19 in his recent Reddit AMA. 
-https://www.reddit.com/r/Coronavirus/comments/fksnbf/im_bill_gates_cochair_of_the_bill_melinda_gates/
-3. Govts. around the world making social distancing compulsory using force lockdowns and quarantines.
+# Note (Look at this video,if you absolutely no idea about github project!!)
 
-
-Documentation can be found here: https://chl.li/coronagodocs
-
-Discord Join link: https://discord.gg/PFuwBRX
+If you are new Github project boards, just check out this video (https://www.youtube.com/watch?v=ff5cBkPg-bQ),a short tutorial about GitHub project boards
