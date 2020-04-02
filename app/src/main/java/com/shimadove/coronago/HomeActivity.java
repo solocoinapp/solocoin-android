@@ -75,6 +75,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         sharedPref = SharedPref.getInstance(this);
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -87,11 +88,14 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_content, HomeFragment.newInstance()).commit();
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
+                Fragment selectedFragment = HomeFragment.newInstance();
                 switch (item.getItemId()){
                     case R.id.home:
                         selectedFragment = HomeFragment.newInstance();
