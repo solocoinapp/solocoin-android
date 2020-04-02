@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.shimadove.coronago.api.APIClient;
 import com.shimadove.coronago.api.APIService;
+import com.shimadove.coronago.app.SharedPref;
 import com.shimadove.coronago.databinding.ActivityCreateProfileBinding;
 import com.shimadove.coronago.viewmodel.CreateProfileViewModel;
 
@@ -31,7 +32,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     public SharedPreferences sharedPreferences;
     public SharedPreferences.Editor preferencesEditor;
     public final String PREFERENCES_FILE = "information";
-
+    private SharedPref sharedPref;
     private String phoneNumber, firebaseUid, countryCode;
 
     ActivityCreateProfileBinding binding;
@@ -55,6 +56,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
         sharedPreferences = getApplication().getSharedPreferences("information", Context.MODE_PRIVATE);
         preferencesEditor = sharedPreferences.edit();
+        sharedPref = SharedPref.getInstance(this);
 
 //        Intent intent = getIntent();
 //        phoneNumber = intent.getStringExtra("phoneNumber");
@@ -69,6 +71,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         apiService.doMobileLogin(mobileLoginBody).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                sharedPref.setHttpResponse(response.code());
                 if(response.code() == 200){
                     Intent intent1 = new Intent(CreateProfileActivity.this, HomeActivity.class);
                     startActivity(intent1);
@@ -77,7 +80,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                // Would a 404 land here?
+                // Would a 404 land here? - No since 404 is still a value returned.
             }
         });
 
@@ -109,7 +112,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     @Override
     public void onCreateProfileSuccess() {
-
+         startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 
     @Override
@@ -124,6 +127,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
         // create profile for server.
         createProfile(viewModel.username, phoneNumber, firebaseUid);
+        startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 
     @Override
@@ -142,5 +146,6 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     public void onSkip() {
         String username = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
         createProfile(username, phoneNumber, firebaseUid);
+        startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 }
