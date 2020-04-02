@@ -17,7 +17,7 @@ public class Policy extends AppCompatActivity {
         webView=(WebView) findViewById(R.id.policy);
         webView.setWebViewClient(new MyWebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("https://drive.google.com/file/d/1NXhAlkOV0A5PDMC-wujRIR9NzW2ljgyc/view");
+        webView.loadUrl("https://www.solocoin.app/privacy-policy/");
     }
     public final class MyWebViewClient extends WebViewClient {
         @Override
