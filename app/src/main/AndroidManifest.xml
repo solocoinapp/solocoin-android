@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.shimadove.coronago">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -25,6 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".WelcomePage"></activity>
 
         <receiver
             android:name=".receiver.GeofenceBroadcastReceiver"
@@ -45,7 +45,8 @@
         <activity android:name=".Main2Activity" />
         <activity android:name=".Phone1Verification" />
         <activity android:name=".Phone2Verification" />
-        <activity android:name=".PermissionsActivity"
+        <activity
+            android:name=".PermissionsActivity"
             android:exported="true" />
         <activity android:name=".CreateProfileActivity" />
         <activity android:name=".HomeActivity" />
@@ -55,6 +56,7 @@
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

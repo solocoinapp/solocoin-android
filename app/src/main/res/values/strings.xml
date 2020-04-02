@@ -69,6 +69,7 @@
     <string name="ob_header1">PRACTICE SOCIAL DISTANCING</string>
     <string name="ob_header2">EARN REAL WORLD REWARDS</string>
     <string name="ob_header3">STAY SAFE</string>
+    <string name="set_permissions" />
 
 
 </resources>

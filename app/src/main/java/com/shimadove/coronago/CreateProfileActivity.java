@@ -112,7 +112,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     @Override
     public void onCreateProfileSuccess() {
-         startActivity(new Intent(CreateProfileActivity.this,Welcome));
+         startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 
     @Override
@@ -127,6 +127,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
         // create profile for server.
         createProfile(viewModel.username, phoneNumber, firebaseUid);
+        startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 
     @Override
@@ -145,5 +146,6 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     public void onSkip() {
         String username = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
         createProfile(username, phoneNumber, firebaseUid);
+        startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 }
