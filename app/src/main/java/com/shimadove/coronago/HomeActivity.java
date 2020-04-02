@@ -3,7 +3,6 @@ package com.shimadove.coronago;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -20,8 +19,9 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.shimadove.coronago.app.SharedPref;
+import com.shimadove.coronago.receiver.GeofenceBroadcastReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,24 +32,15 @@ public class HomeActivity extends AppCompatActivity {
     private List<Geofence> geofencesList;
     PendingIntent geofencePendingIntent;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-
     private final LocationListener locationListener = new LocationListener() {
         @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-            // TODO: Implement this as I don't really know what to do.
-        }
+        public void onStatusChanged(String s, int i, Bundle bundle) {}
 
         @Override
-        public void onProviderEnabled(String s) {
-            // TODO: Implement this as I don't really know what to do.
-        }
+        public void onProviderEnabled(String s) {}
 
         @Override
-        public void onProviderDisabled(String s) {
-            // TODO: Implement this as I don't really know what to do.
-        }
+        public void onProviderDisabled(String s) {}
 
         @Override
         public void onLocationChanged(Location location) {
@@ -67,31 +58,33 @@ public class HomeActivity extends AppCompatActivity {
                     .build());
 
             try{
-                if(sharedPreferences.getInt("timeout", 0) > System.currentTimeMillis() + 1000*60*60*24*2){
-                    geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent()); // Add OnSuccessListener
-                    editor.putLong("timeout", timeout);
-                    editor.apply();
+                if (sharedPref.getTimeout() > System.currentTimeMillis() + 1000*60*60*24*2) {
+                    geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
+                    sharedPref.setTimeout(timeout);
                 }
             } catch (SecurityException e){
-                Toast.makeText(HomeActivity.this, "Please close and reopen the app while enabling the Location permission", Toast.LENGTH_SHORT);
+                Toast.makeText(HomeActivity.this, "Please close and reopen the app while enabling the Location permission", Toast.LENGTH_SHORT).show();
             }
         }
     };
+
+    private SharedPref sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        sharedPreferences = getApplication().getSharedPreferences("information", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        sharedPref = SharedPref.getInstance(this);
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        try{
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
-        } catch (SecurityException e){
-            Toast.makeText(this, "Error - please allow Location permission in Settings", Toast.LENGTH_LONG);
-            finish();
+        if (lm != null) {
+            try {
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+            } catch (SecurityException ex) {
+                Toast.makeText(this, "Error - please allow Location permission in Settings", Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

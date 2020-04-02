@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,8 +25,6 @@ import retrofit2.Response;
 
 public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
-
-
     @Override
     public void onReceive(Context context, Intent intent) {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
@@ -48,20 +46,23 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
     private void reportSession(String type, Context context){
         APIService service = APIClient.getRetrofitInstance(context).create(APIService.class);
-    JsonObject object = new JsonObject();
-    object.addProperty("type", type);
-    Call<JsonObject> call = service.startSession(object);
-    call.enqueue(new Callback<JsonObject>() {
-      @Override
-      public void onResponse(@NotNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-         Log.e("SoloCoin", "Start session success");
-      }
 
-      @Override
-      public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
-          //on-failure-api-call
-          Toast.makeText(context, "Error in SoloCoin", Toast.LENGTH_LONG).show();
-      }
-    });
+        JsonObject object = new JsonObject();
+        object.addProperty("type", type);
+
+        Call<JsonObject> call = service.startSession(object);
+
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NotNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                Log.e("SoloCoin", "Start session success");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
+                //on-failure-api-call
+                Toast.makeText(context, "Error in SoloCoin", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
