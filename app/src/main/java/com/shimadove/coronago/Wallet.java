@@ -1,6 +1,7 @@
 package com.shimadove.coronago;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.shimadove.coronago.api.APIClient;
@@ -27,14 +28,18 @@ public class Wallet {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 JsonObject userdata = response.body();
-                assert userdata != null;
-                wallet_balance = userdata.get("wallet_balance").getAsFloat();
-                sharedPref.setWallet_balance(wallet_balance);
+                if (userdata==null){
+                    Toast.makeText(context,"Some error occured. Unable to get balance.",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    wallet_balance = userdata.get("wallet_balance").getAsFloat();
+                    sharedPref.setWallet_balance(wallet_balance);
+                }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                //To decide what to do here
+                Toast.makeText(context,"Some error occured. Unable to get balance.",Toast.LENGTH_SHORT).show();
             }
         });
 
