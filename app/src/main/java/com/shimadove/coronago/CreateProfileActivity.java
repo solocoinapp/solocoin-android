@@ -98,13 +98,11 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         apiService.doMobileSignup(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                Toast.makeText(CreateProfileActivity.this, "Successful profile creation", Toast.LENGTH_SHORT).show();
                 onCreateProfileSuccess();
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(CreateProfileActivity.this, "Failure in profile creation", Toast.LENGTH_SHORT).show();
                 onCreateProfileFailed();
             }
         });
@@ -112,12 +110,13 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     @Override
     public void onCreateProfileSuccess() {
-         startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
+        Toast.makeText(CreateProfileActivity.this, "Successful profile creation", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 
     @Override
     public void onCreateProfileFailed() {
-
+        Toast.makeText(CreateProfileActivity.this, "Failure in profile creation", Toast.LENGTH_SHORT).show();
     }
 
     @Override
