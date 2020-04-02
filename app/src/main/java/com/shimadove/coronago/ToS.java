@@ -17,7 +17,7 @@ public class ToS extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.tos);
         webView.setWebViewClient(new MyWebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("https://drive.google.com/file/d/1gMnUuo_lbfiSs6hJbCvamU8eyVrB4Ib-/view");
+        webView.loadUrl("https://www.solocoin.app/terms-and-conditions/");
         //webView.loadUrl("https://www.google.com");
     }
     public final class MyWebViewClient extends WebViewClient {
