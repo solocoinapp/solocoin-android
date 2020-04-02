@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.shimadove.coronago">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -24,8 +25,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeActivity"
-            android:exported="true"/>
+        <receiver
+            android:name=".GeofenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -37,7 +44,6 @@
         <activity
             android:name=".MarkYourLocationActivity"
             android:screenOrientation="fullSensor" />
-
         <activity android:name=".Policy" />
         <activity android:name=".ToS" />
         <activity android:name=".Main3Activity" />
@@ -50,7 +56,6 @@
         <activity
             android:name=".CreateProfileActivity"
             android:exported="true" />
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="sensorPortrait"
