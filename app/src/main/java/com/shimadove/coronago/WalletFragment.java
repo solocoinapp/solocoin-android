@@ -63,6 +63,7 @@ public class WalletFragment extends Fragment{
         TextView balance;
         balance= Objects.requireNonNull(getView()).findViewById(R.id.tv_coins_count);
         int val = sharedPref.getWallet_balance();
-        balance.setText("hello\n");
+        String bal=Integer.toString(val);
+        balance.setText(bal);
     }
 }

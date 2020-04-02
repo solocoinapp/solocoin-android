@@ -188,13 +188,6 @@ public class Phone2Verification extends AppCompatActivity {
             Toast.makeText(Phone2Verification.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-        @Override
-        public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
-            super.onCodeAutoRetrievalTimeOut(s);
-            Log.d(TAG,"signInWithCredential:timeout");
-            Toast.makeText(Phone2Verification.this, "OTP Timeout. Please ask to resend OTP.",Toast.LENGTH_SHORT).show();
-            timeout=true;
-        }
     };
 
     private void verifyCode(String otpByUser) {
