@@ -25,138 +25,49 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="50dp"
-            android:gravity="center"
-            android:orientation="vertical"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField3"
+            android:layout_width="359dp"
+            android:layout_height="63dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.286"
+            app:startIconContentDescription="@string/content_description_end_icon"
+            app:startIconDrawable="@drawable/ic_profile"
+            app:startIconTint="@color/colorAccent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField3"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phonenumField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:startIconContentDescription="@string/content_description_end_icon"
-                app:startIconDrawable="@drawable/ic_profile"
-                app:startIconTint="@color/colorAccent">
+                android:autofillHints=""
+                android:backgroundTint="@color/colorAccent"
+                android:ems="10"
+                android:hint="@string/username_hint"
+                android:inputType="text|textEmailSubject"
+                android:text="@={createProfileViewModel.username}"
+                tools:targetApi="o" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/phonenumField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints=""
-                    android:backgroundTint="@android:color/black"
-                    android:ems="10"
-                    android:hint="@string/username_hint"
-                    android:inputType="text|textEmailSubject"
-                    android:text="@={createProfileViewModel.username}"
-                    tools:targetApi="o" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:startIconContentDescription="@string/content_description_end_icon"
-                app:startIconDrawable="@drawable/ic_email"
-                app:startIconTint="@color/colorAccent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/identityField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints=""
-                    android:backgroundTint="@android:color/black"
-                    android:ems="10"
-                    android:hint="@string/login_hint"
-                    android:inputType="text|textEmailSubject"
-                    android:text="@={createProfileViewModel.email}"
-                    tools:targetApi="o" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:startIconContentDescription="@string/content_description_end_icon"
-                app:startIconDrawable="@drawable/ic_calender"
-                app:startIconTint="@color/colorAccent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/black"
-                    android:ems="10"
-                    android:hint="@string/date_of_birth_hint"
-                    android:importantForAutofill="no"
-                    android:inputType="textPassword"
-                    android:text="@={createProfileViewModel.dob}" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/maleButton"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/grey_button_border_radius"
-                    android:onClick="@{createProfileViewModel::onMaleClicked}"
-                    android:text="@string/male"
-                    android:textColor="@color/white" />
-
-                <Button
-                    android:id="@+id/femaleButton"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/stroke_button_bg"
-                    android:onClick="@{createProfileViewModel::onFemaleClicked}"
-                    android:text="@string/female" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/continueButton"
-                style="@style/Widget.AppCompat.Button.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/pink_button_border_radius"
-                android:onClick="@{createProfileViewModel::onContinueButtonClick}"
-                android:text="@string/continue_button"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/skip"
-                style="@android:style/Widget.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@null"
-                android:onClick="@{createProfileViewModel::onSkip}"
-                android:text="@string/skip_for_now"
-                android:textAlignment="center"
-                android:textColor="@color/gray" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/continueButton"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="352dp"
+            android:layout_height="50dp"
+            android:background="@drawable/pink_button_border_radius"
+            android:onClick="@{createProfileViewModel::onContinueButtonClick}"
+            android:text="@string/continue_button"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.559"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.399" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
