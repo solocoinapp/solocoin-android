@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.app;
 
 import android.content.Context;
 import android.widget.Toast;
