@@ -124,13 +124,18 @@ public class Phone2Verification extends AppCompatActivity {
             public void onClick(View v) {
                 String code=OtpEnteredByUser;
                 Log.d(TAG,"the otp typed by user: " + code);
-                if(code.isEmpty()||code.length()<6){
-                    Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
-                    editCodeView.requestFocus();
+                if(code != null){
+                    if(code.isEmpty()||code.length()<6){
+                        Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
+                        editCodeView.requestFocus();
+                    } else {
+                        progressBar.setVisibility(View.VISIBLE);
+                        verifyCode(code);
+                    }
                 } else {
-                    progressBar.setVisibility(View.VISIBLE);
-                    verifyCode(code);
+                    Toast.makeText(Phone2Verification.this, "Please check your code.", Toast.LENGTH_LONG);
                 }
+
             }
         });
         tandc=binding.textView8;
