@@ -21,6 +21,7 @@ import org.w3c.dom.Text;
 public class HomeFragment extends Fragment {
     private SharedPref sharedPref;
     TextView time;
+
     public HomeFragment() {
         // Required empty public constructor
     }
