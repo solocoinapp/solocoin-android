@@ -115,6 +115,13 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         apiService.doMobileSignup(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()){
+                    //Toast.makeText(CreateProfileActivity.this,"No issue at backend.",Toast.LENGTH_SHORT).show();
+                    Timber.d("No issue at backend.");
+                }
+                else{
+                    Toast.makeText(CreateProfileActivity.this,"Issue at backend." , Toast.LENGTH_SHORT).show();
+                }
                 onCreateProfileSuccess();
             }
 
@@ -141,7 +148,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     @Override
     public void onContinueClicked() {
         //sharedPref.setEmail("email");
-        Toast.makeText(CreateProfileActivity.this, "Please enter a username.", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(CreateProfileActivity.this, "Please enter a username.", Toast.LENGTH_SHORT).show();
         // create profile for server.
         TextView name = findViewById(R.id.usernameField);
         sharedPref.setUsername(name.getText().toString());
@@ -150,21 +157,21 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         //startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 
-    @Override
-    public void onMaleClicked() {
-        //sharedPref.setGender("M");
-    }
+//    @Override
+//    public void onMaleClicked() {
+//        //sharedPref.setGender("M");
+//    }
 
-    @Override
-    public void onFemaleClicked() {
-        //sharedPref.setGender("F");
-    }
+//    @Override
+//    public void onFemaleClicked() {
+//        //sharedPref.setGender("F");
+//    }
 
     //As no skip button for now
-    @Override
-    public void onSkip() {
-        //String username = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
-        //createProfile(username, phoneNumber, firebaseUid);
-        //startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
-    }
+//    @Override
+//    public void onSkip() {
+//        //String username = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
+//        //createProfile(username, phoneNumber, firebaseUid);
+//        //startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
+//    }
 }
