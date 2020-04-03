@@ -90,6 +90,10 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         if (task.isSuccessful()){
                             id_token= task.getResult().getToken();
+                            Timber.d("the firebase id token is: "+id_token);
+                        }
+                        else{
+                            Timber.d("there is an issue with the firebase id token.");
                         }
                     }
                 });
