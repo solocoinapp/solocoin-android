@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonObject;
 import com.shimadove.coronago.api.APIClient;
@@ -53,8 +54,8 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sharedPref = SharedPref.getInstance(getContext());
         time = getView().findViewById(R.id.time);
-        FirebaseUser user = FirebaseApp.getInstance().getCurrentUser();
-        String uid = user.getUid();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = currentUser.getUid();
         JsonObject body = new JsonObject();
         body.addProperty("auth_token", uid);
         APIService apiService = APIClient.getRetrofitInstance(getContext()).create(APIService.class);
