@@ -46,6 +46,7 @@ public class CreateProfileViewModel extends AndroidViewModel {
 
     public void onContinueButtonClick(View view){
         Timber.d("Sign Up clicked");
+
         createProfileInterface.onContinueClicked();
     }
 

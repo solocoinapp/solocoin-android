@@ -15,7 +15,6 @@ import com.shimadove.coronago.app.SharedPref;
 
 import org.w3c.dom.Text;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */

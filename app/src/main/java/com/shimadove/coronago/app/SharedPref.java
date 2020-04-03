@@ -66,21 +66,27 @@ public class SharedPref {
         return pref.getInt(HTTP_RESPONSE, 404);
     }
 
-    private static final String EMAIL="email";
-    public void setEmail(String id){
-        editor.putString(EMAIL,id);
-        editor.commit();
+    private static final String USERNAME= "username";
+    public void setUsername(String username){
+        editor.putString(USERNAME,username);
     }
-
-    public String getEmail(){ return pref.getString(EMAIL,"");}
-
-    private static final String GENDER="email";
-    public void setGender(String id){
-        editor.putString(GENDER,id);
-        editor.commit();
-    }
-
-    public String getGender(){ return pref.getString(GENDER,"");}
+    public String getUsername(){return pref.getString(USERNAME,"johndoe");}
+    //Since email and gender not required for profile right now.
+//    private static final String EMAIL="email";
+//    public void setEmail(String id){
+//        editor.putString(EMAIL,id);
+//        editor.commit();
+//    }
+//
+//    public String getEmail(){ return pref.getString(EMAIL,"");}
+//
+//    private static final String GENDER="email";
+//    public void setGender(String id){
+//        editor.putString(GENDER,id);
+//        editor.commit();
+//    }
+//
+//    public String getGender(){ return pref.getString(GENDER,"");}
 
     private static final String TIME= "time";
     public void setTime(String time){

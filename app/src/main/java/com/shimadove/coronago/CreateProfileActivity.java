@@ -1,5 +1,6 @@
 package com.shimadove.coronago;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,9 +14,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
@@ -29,14 +34,17 @@ import com.shimadove.coronago.viewmodel.CreateProfileViewModel;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+
 public class CreateProfileActivity extends AppCompatActivity implements CreateProfileViewModel.CreateProfileInterface {
 
     //public SharedPreferences sharedPreferences;
     //public SharedPreferences.Editor preferencesEditor;
     private SharedPref sharedPref;
     public final String PREFERENCES_FILE = "information";
-    private String phoneNumber, firebaseUid, countryCode;
-
+    private String phoneNumber, firebaseUid, countryCode, username;
+    private String id_token;
     ActivityCreateProfileBinding binding;
     CreateProfileViewModel viewModel;
 
@@ -59,7 +67,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
 //        Intent intent = getIntent();
 //        phoneNumber = intent.getStringExtra("phoneNumber");
-
+        username = sharedPref.getUsername();
         phoneNumber = sharedPref.getPhoneNumber();
         countryCode = sharedPref.getCountryCode();
         // TODO: do something special if phoneNumber or country code is null.
@@ -85,13 +93,22 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUid = currentUser.getUid();
-        //Task<GetTokenResult> firebasetoken = currentUser.getIdToken(true);
+        currentUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        if (task.isSuccessful()){
+                            id_token= task.getResult().getToken();
+                        }
+                    }
+                });
     }
 
     private void createProfile(String username, String phoneNumber, String uid){
         JsonObject body = new JsonObject();
         body.addProperty("mobile", phoneNumber);
         body.addProperty("uid", uid);
+        body.addProperty("id_token", id_token);
         body.addProperty("country_code", countryCode);
         body.addProperty("name", username);
 
@@ -103,6 +120,8 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                //Log.d(TAG,"Some error occured.");
+                Timber.d(t, "Error.");
                 onCreateProfileFailed();
             }
         });
@@ -121,27 +140,31 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     @Override
     public void onContinueClicked() {
-        sharedPref.setEmail("email");
-
+        //sharedPref.setEmail("email");
+        Toast.makeText(CreateProfileActivity.this, "Please enter a username.", Toast.LENGTH_SHORT).show();
         // create profile for server.
+        TextView name = findViewById(R.id.usernameField);
+        sharedPref.setUsername(name.getText().toString());
+        viewModel.username= name.getText().toString();
         createProfile(viewModel.username, phoneNumber, firebaseUid);
-        startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
+        //startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 
     @Override
     public void onMaleClicked() {
-        sharedPref.setGender("M");
+        //sharedPref.setGender("M");
     }
 
     @Override
     public void onFemaleClicked() {
-        sharedPref.setGender("F");
+        //sharedPref.setGender("F");
     }
 
+    //As no skip button for now
     @Override
     public void onSkip() {
-        String username = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
-        createProfile(username, phoneNumber, firebaseUid);
-        startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
+        //String username = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
+        //createProfile(username, phoneNumber, firebaseUid);
+        //startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 }
