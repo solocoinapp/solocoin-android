@@ -63,14 +63,14 @@ public class SharedPref {
         editor.commit();
     }
     public int getHttpResponse(){
-        return pref.getInt(HTTP_RESPONSE, 404);
+        return pref.getInt(HTTP_RESPONSE, 0);
     }
 
     private static final String USERNAME= "username";
     public void setUsername(String username){
         editor.putString(USERNAME,username);
     }
-    public String getUsername(){return pref.getString(USERNAME,"johndoe");}
+    public String getUsername(){return pref.getString(USERNAME,"");}
     //Since email and gender not required for profile right now.
 //    private static final String EMAIL="email";
 //    public void setEmail(String id){
