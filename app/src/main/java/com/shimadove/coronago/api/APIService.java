@@ -21,7 +21,7 @@ public interface APIService {
 
     @Headers("Content-Type: application/json")
     @GET("user/profile")
-    Call<JsonObject> showUserData(@Body JSONObject body);
+    Call<JsonObject> showUserData(@Body JsonObject body);
 
     @Headers("Content-Type: application/json")
     @POST("user")
