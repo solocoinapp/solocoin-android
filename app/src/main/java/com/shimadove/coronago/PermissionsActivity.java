@@ -83,7 +83,7 @@ public class PermissionsActivity extends AppCompatActivity {
         else{
             if (first==1) {
                 ActivityCompat.requestPermissions(PermissionsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION);
-                Toast.makeText(PermissionsActivity.this, "Permission not given", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PermissionsActivity.this, "Permission not given", Toast.LENGTH_SHORT).show();
             } else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(PermissionsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                     Toast.makeText(PermissionsActivity.this, "Permission not given", Toast.LENGTH_SHORT).show();

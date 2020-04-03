@@ -45,9 +45,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()){
             case R.id.permissionButton:
                 Timber.d("Permission stuff");
+                startActivity(new Intent(getActivity(),PermissionsActivity.class));
                 break;
             case R.id.profileButton:
                 Timber.d("Edit profile stuff");
+                startActivity(new Intent(getActivity(),CreateProfileActivity.class));
                 break;
             case R.id.privacyPolicy:
                 Intent intent = new Intent(getActivity(),Policy.class);
