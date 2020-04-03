@@ -47,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.688">
+            app:layout_constraintVertical_bias="0.773">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -106,17 +106,18 @@
 
         <TextView
             android:id="@+id/time"
-            android:layout_width="100dp"
-            android:layout_height="105dp"
+            android:layout_width="219dp"
+            android:layout_height="97dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Time"
+            android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/card_coming_soon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.585" />
+            app:layout_constraintVertical_bias="0.671" />
 
         <TextView
             android:id="@+id/textView16"

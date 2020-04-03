@@ -15,8 +15,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.shimadove.coronago.api.APIClient;
@@ -51,7 +53,6 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
          viewModel = new ViewModelProvider(this).get(CreateProfileViewModel.class);
          binding.getRoot();
          binding.setCreateProfileViewModel(viewModel);
-
          viewModel.setCreateProfileInterface(this);
 
         sharedPref = SharedPref.getInstance(this);
@@ -84,6 +85,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseUid = currentUser.getUid();
+        //Task<GetTokenResult> firebasetoken = currentUser.getIdToken(true);
     }
 
     private void createProfile(String username, String phoneNumber, String uid){

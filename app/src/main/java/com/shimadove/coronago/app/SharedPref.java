@@ -82,6 +82,13 @@ public class SharedPref {
 
     public String getGender(){ return pref.getString(GENDER,"");}
 
+    private static final String TIME= "time";
+    public void setTime(String time){
+        editor.putString(TIME,time);
+        editor.commit();
+    }
+
+    public String getTime(){return pref.getString(TIME,"00:00:00");}
 
      /**
      * Method call when user log-out of application

@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sharedPref = SharedPref.getInstance(getContext());
-        //time = getView().findViewById(R.id.time);
-        //time.setText();
+        time = getView().findViewById(R.id.time);
+        time.setText(sharedPref.getTime());
     }
 }
