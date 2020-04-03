@@ -109,11 +109,11 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                 if (response.isSuccessful()){
                     //Toast.makeText(CreateProfileActivity.this,"No issue at backend.",Toast.LENGTH_SHORT).show();
                     //Timber.d("No issue at backend.");
-                    retrofitListener.onSuccess();
+                    retrofitListener.onSuccess(response.code());
                 }
                 else{
                     //Timber.d("Issue at backend");
-                    retrofitListener.onFailure();
+                    retrofitListener.onFailure(response.code());
                 }
                 onCreateProfileSuccess();
             }

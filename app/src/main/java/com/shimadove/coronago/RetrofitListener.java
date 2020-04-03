@@ -7,11 +7,11 @@ import timber.log.Timber;
 public class RetrofitListener implements RetrofitResponseListener {
 
     @Override
-    public void onSuccess() {
-        Timber.d("No issues.");
+    public void onSuccess(int code) {
+        Timber.d("No issues. The code sent is: " + code);
     }
     @Override
-    public void onFailure() {
-        Timber.d("Issue at backend");
+    public void onFailure(int code) {
+        Timber.d("Issue at backend. The code sent is: " + code);
     }
 }
