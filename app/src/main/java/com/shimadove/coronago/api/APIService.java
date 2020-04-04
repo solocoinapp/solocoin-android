@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface APIService {
     @Headers("Content-Type: application/json")
@@ -33,8 +34,8 @@ public interface APIService {
     Call<JsonObject> doRegisterNotificationToken(@Body JsonObject body);
 
     @Headers("Content-Type: application/json")
-    @POST("sessions/start")
-    Call<JsonObject> startSession(@Body JsonObject body);
+    @PUT("sessions/ping")
+    Call<JsonObject> startSession(@Header("Authorization") String authtoken,@Body JsonObject body);
 
     @Headers("Content-Type: application/json")
     @POST("sessions/end")

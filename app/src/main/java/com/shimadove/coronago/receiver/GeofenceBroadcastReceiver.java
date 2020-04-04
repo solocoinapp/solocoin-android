@@ -10,7 +10,11 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.shimadove.coronago.Session;
+import com.shimadove.coronago.SessionBody;
 import com.shimadove.coronago.app.Wallet;
 import com.shimadove.coronago.api.APIClient;
 import com.shimadove.coronago.api.APIService;
@@ -47,11 +51,19 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver{
     private Wallet wallet;
     private void reportSession(String type, Context context){
         APIService service = APIClient.getRetrofitInstance(context).create(APIService.class);
-        JsonObject object = new JsonObject();
-        object.addProperty("type", type);
+        //JsonObject object = new JsonObject();
+        //object.addProperty("type", type);
         wallet = new Wallet();
         wallet.Updatebalance(context);
-        Call<JsonObject> call = service.startSession(object);
+        sharedPref=SharedPref.getInstance(context);
+        sharedPref.setSessiontype(type);
+        JsonObject body = new JsonObject();
+        SessionBody sessionBody = new SessionBody(sharedPref.getSessiontype());
+        Session session= new Session(sessionBody);
+        Gson gson = new Gson();
+        JsonElement jsonElement= gson.toJsonTree(session);
+        body=jsonElement.getAsJsonObject();
+        Call<JsonObject> call = service.startSession(sharedPref.getAuthtoken(), body);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override

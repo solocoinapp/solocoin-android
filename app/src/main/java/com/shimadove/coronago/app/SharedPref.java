@@ -81,6 +81,22 @@ public class SharedPref {
     public String getAuthtoken(){
         return pref.getString(AUTHTOKEN,"");
     }
+
+    private static final String TIME= "time";
+    public void setTime(String time){
+        editor.putString(TIME,time);
+        editor.commit();
+    }
+
+    public String getTime(){return pref.getString(TIME,"00:00:00");}
+
+    private static final String SESSIONTYPE= "sessiontype";
+    public void setSessiontype(String type){
+        editor.putString(SESSIONTYPE,type);
+        editor.commit();
+    }
+
+    public String getSessiontype(){return pref.getString(SESSIONTYPE,"");}
     //Since email and gender not required for profile right now.
 //    private static final String EMAIL="email";
 //    public void setEmail(String id){
@@ -97,14 +113,6 @@ public class SharedPref {
 //    }
 //
 //    public String getGender(){ return pref.getString(GENDER,"");}
-
-    private static final String TIME= "time";
-    public void setTime(String time){
-        editor.putString(TIME,time);
-        editor.commit();
-    }
-
-    public String getTime(){return pref.getString(TIME,"00:00:00");}
 
      /**
      * Method call when user log-out of application

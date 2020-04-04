@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +38,7 @@ import com.shimadove.coronago.databinding.ActivityCreateProfileBinding;
 import com.shimadove.coronago.viewmodel.CreateProfileViewModel;
 
 import java.io.StringReader;
+import java.util.concurrent.TimeUnit;
 
 public class CreateProfileActivity extends AppCompatActivity implements CreateProfileViewModel.CreateProfileInterface {
 
@@ -71,7 +76,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         phoneNumber = sharedPref.getPhoneNumber();
         countryCode = sharedPref.getCountryCode();
         // TODO: do something special if phoneNumber or country code is null.
-
+        binding.usernameField.setText(sharedPref.getUsername());
          // Check for User already created
         JsonObject mobileLoginBody = new JsonObject();
         mobileLoginBody.addProperty("mobile", phoneNumber);
@@ -82,6 +87,9 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                 if(response.code() == 200){
                     Intent intent1 = new Intent(CreateProfileActivity.this, HomeActivity.class);
                     startActivity(intent1);
+                }
+                else{
+                    Toast.makeText(CreateProfileActivity.this,"Existing user check fail.",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -135,7 +143,9 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                     retrofitListener.onSuccess(response.code());
                 }
                 else if (response.code()==400){
-
+                    String errormsg=response.errorBody().toString();
+                    Timber.d("Unable to create profile: " + errormsg);
+                    retrofitListener.onFailure(response.code());
                 }
                 else{
                     //Timber.d("Issue at backend");
@@ -159,6 +169,14 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     @Override
     public void onCreateProfileSuccess() {
         Toast.makeText(CreateProfileActivity.this, "Successful profile creation", Toast.LENGTH_SHORT).show();
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+        final PeriodicWorkRequest sendSession = new PeriodicWorkRequest
+                .Builder(SessionWorker.class,15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+        WorkManager.getInstance().enqueue(sendSession);
         startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 
