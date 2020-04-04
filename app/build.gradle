@@ -65,6 +65,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha01'
 
     implementation 'org.apache.commons:commons-lang3:3.9'
+
 }
 
 repositories {

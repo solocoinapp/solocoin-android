@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.api;
 
 public interface RetrofitResponseListener {
     void onSuccess(int code);

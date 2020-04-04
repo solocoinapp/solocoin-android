@@ -1,6 +1,6 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.api;
 
-import android.content.Context;
+import com.shimadove.coronago.api.RetrofitResponseListener;
 
 import timber.log.Timber;
 
