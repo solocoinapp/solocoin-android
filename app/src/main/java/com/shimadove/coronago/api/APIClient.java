@@ -22,7 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 //          //on-failure-api-call
 //      }
 //  });
-
 public class APIClient {
     private static Retrofit retrofit;
     public static Retrofit getRetrofitInstance(Context context) {

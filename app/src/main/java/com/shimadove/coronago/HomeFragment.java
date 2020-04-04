@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,13 +57,22 @@ public class HomeFragment extends Fragment {
         time = getView().findViewById(R.id.time);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = currentUser.getUid();
-        JsonObject body = new JsonObject();
-        body.addProperty("auth_token", uid);
+        //JsonObject body = new JsonObject();
+        //body.addProperty("auth_token", uid);
         APIService apiService = APIClient.getRetrofitInstance(getContext()).create(APIService.class);
-        apiService.showUserData(body).enqueue(new Callback<JsonObject>() {
+        apiService.showUserData(sharedPref.getAuthtoken()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                long uptime = System.currentTimeMillis();
+                //long uptime = System.currentTimeMillis();
+                JsonObject userdata = response.body();
+                if(userdata==null){
+                    Timber.d("Response body is null, error code is: " + response.code());
+                }
+                else{
+                    Timber.d("Response body is not null: " + response.body().toString());
+                }
+                long uptime = userdata.get("home_duration_in_seconds").getAsLong();
+                //long uptime = System.currentTimeMillis();
                 long days = TimeUnit.MILLISECONDS
                         .toDays(uptime);
                 uptime -= TimeUnit.DAYS.toMillis(days);

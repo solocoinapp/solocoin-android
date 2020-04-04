@@ -48,12 +48,12 @@ public class SharedPref {
 
     private static final String wallet_balance = "wallet_balance";
 
-    public int getWallet_balance(){
-        return pref.getInt(wallet_balance,0);
+    public float getWallet_balance(){
+        return pref.getFloat(wallet_balance,0);
     }
 
-    public void setWallet_balance(int balance){
-        editor.putInt(wallet_balance,balance);
+    public void setWallet_balance(float balance){
+        editor.putFloat(wallet_balance,balance);
         editor.commit();
     }
 
@@ -69,8 +69,18 @@ public class SharedPref {
     private static final String USERNAME= "username";
     public void setUsername(String username){
         editor.putString(USERNAME,username);
+        editor.commit();
     }
     public String getUsername(){return pref.getString(USERNAME,"");}
+
+    private static final String AUTHTOKEN= "authtoken";
+    public void setAuthtoken(String authtoken){
+        editor.putString(AUTHTOKEN,authtoken);
+        editor.commit();
+    }
+    public String getAuthtoken(){
+        return pref.getString(AUTHTOKEN,"");
+    }
     //Since email and gender not required for profile right now.
 //    private static final String EMAIL="email";
 //    public void setEmail(String id){

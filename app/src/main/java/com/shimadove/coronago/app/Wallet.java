@@ -17,14 +17,14 @@ import retrofit2.Response;
 public class Wallet {
     public Wallet() { }
 
-    private int wallet_balance;
+    private float wallet_balance;
     private SharedPref sharedPref;
 
     public void Updatebalance(Context context) {
         APIService service = APIClient.getRetrofitInstance(context).create(APIService.class);
         sharedPref = SharedPref.getInstance(context);
-        JSONObject userbody = new JSONObject();
-        service.showUserData(userbody).enqueue(new Callback<JsonObject>() {
+        //JsonObject userbody = new JsonObject();
+        service.showUserData(sharedPref.getAuthtoken()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 JsonObject userdata = response.body();
@@ -32,7 +32,7 @@ public class Wallet {
                     Toast.makeText(context,"Some error occured. Unable to get balance.",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    wallet_balance = userdata.get("wallet_balance").getAsInt();
+                    wallet_balance = userdata.get("wallet_balance").getAsFloat();
                     sharedPref.setWallet_balance(wallet_balance);
                 }
             }

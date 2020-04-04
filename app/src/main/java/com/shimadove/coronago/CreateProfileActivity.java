@@ -99,7 +99,9 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         if (task.isSuccessful()){
                             id_token= task.getResult().getToken();
-                            Timber.d("the firebase id token is: "+id_token);
+                            String authtoken = "Bearer " + id_token;
+                            //sharedPref.setAuthtoken(authtoken);
+                            Timber.d("the firebase id token is: "+id_token + "\n" + "the auth_token passed is: " + authtoken + "\n");
                         }
                         else{
                             Timber.d("there is an issue with the firebase id token.");
@@ -111,20 +113,29 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     private void createProfile(String username, String phoneNumber, String uid){
         JsonObject body = new JsonObject();
         UserSignUp user = new UserSignUp(id_token,uid,username,phoneNumber,countryCode);
-        //body.add("user", userSignUp);
+
         PostUser postUser = new PostUser(user);
         Gson gson =new Gson();
         String json= gson.toJson(postUser);
-        //Timber.d(json);
+        Timber.d(json);
+
         JsonElement element = gson.toJsonTree(postUser);
         body=element.getAsJsonObject();
         apiService.doMobileSignup(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()){
+                if (response.code()==200){
                     //Toast.makeText(CreateProfileActivity.this,"No issue at backend.",Toast.LENGTH_SHORT).show();
                     //Timber.d("No issue at backend.");
+                    JsonObject userresponse = response.body();
+                    String authtoken = userresponse.get("auth_token").getAsString();
+                    authtoken = "Bearer " + authtoken;
+                    sharedPref.setAuthtoken(authtoken);
+                    Timber.d("auth_token is: " + authtoken);
                     retrofitListener.onSuccess(response.code());
+                }
+                else if (response.code()==400){
+
                 }
                 else{
                     //Timber.d("Issue at backend");
