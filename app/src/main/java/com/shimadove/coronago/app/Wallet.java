@@ -25,12 +25,12 @@ public class Wallet {
 
     public void Updatebalance(Context context) {
         APIService service = APIClient.getRetrofitInstance(context).create(APIService.class);
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String firebaseUid = currentUser.getUid();
+        //FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        //String firebaseUid = currentUser.getUid();
         sharedPref = SharedPref.getInstance(context);
-        JsonObject userbody = new JsonObject();
-        userbody.addProperty("auth_token", firebaseUid);
-        service.showUserData(firebaseUid).enqueue(new Callback<JsonObject>() {
+        //JsonObject userbody = new JsonObject();
+        //userbody.addProperty("auth_token", firebaseUid);
+        service.showUserData(sharedPref.getAuthtoken()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 JsonObject userdata = response.body();
