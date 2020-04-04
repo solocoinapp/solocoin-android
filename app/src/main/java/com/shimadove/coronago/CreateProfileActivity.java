@@ -10,32 +10,30 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.JsonReader;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.shimadove.coronago.api.APIClient;
 import com.shimadove.coronago.api.APIService;
+import com.shimadove.coronago.api.PostUser;
+import com.shimadove.coronago.api.RetrofitListener;
+import com.shimadove.coronago.api.UserSignUp;
 import com.shimadove.coronago.app.SharedPref;
 import com.shimadove.coronago.databinding.ActivityCreateProfileBinding;
 import com.shimadove.coronago.viewmodel.CreateProfileViewModel;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
+import java.io.StringReader;
 
 public class CreateProfileActivity extends AppCompatActivity implements CreateProfileViewModel.CreateProfileInterface {
 
@@ -47,6 +45,8 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     private String id_token;
     ActivityCreateProfileBinding binding;
     CreateProfileViewModel viewModel;
+    private RetrofitListener retrofitListener;
+    //private UserSignUp userSignUp;
 
     APIService apiService;
 
@@ -62,7 +62,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
          binding.getRoot();
          binding.setCreateProfileViewModel(viewModel);
          viewModel.setCreateProfileInterface(this);
-
+        retrofitListener=new RetrofitListener();
         sharedPref = SharedPref.getInstance(this);
 
 //        Intent intent = getIntent();
@@ -99,6 +99,10 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         if (task.isSuccessful()){
                             id_token= task.getResult().getToken();
+                            Timber.d("the firebase id token is: "+id_token);
+                        }
+                        else{
+                            Timber.d("there is an issue with the firebase id token.");
                         }
                     }
                 });
@@ -106,21 +110,27 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     private void createProfile(String username, String phoneNumber, String uid){
         JsonObject body = new JsonObject();
-        body.addProperty("mobile", phoneNumber);
-        body.addProperty("uid", uid);
-        body.addProperty("id_token", id_token);
-        body.addProperty("country_code", countryCode);
-        body.addProperty("name", username);
-
+        UserSignUp user = new UserSignUp(id_token,uid,username,phoneNumber,countryCode);
+        //body.add("user", userSignUp);
+        PostUser postUser = new PostUser(user);
+        Gson gson =new Gson();
+        String json= gson.toJson(postUser);
+        //Timber.d(json);
+        JsonElement element = gson.toJsonTree(postUser);
+        body=element.getAsJsonObject();
         apiService.doMobileSignup(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()){
                     //Toast.makeText(CreateProfileActivity.this,"No issue at backend.",Toast.LENGTH_SHORT).show();
-                    Timber.d("No issue at backend.");
+                    //Timber.d("No issue at backend.");
+                    retrofitListener.onSuccess(response.code());
                 }
                 else{
-                    Toast.makeText(CreateProfileActivity.this,"Issue at backend." , Toast.LENGTH_SHORT).show();
+                    //Timber.d("Issue at backend");
+                    String errormsg = response.errorBody().toString();
+                    Timber.d("username is incorrect: " + errormsg);
+                    retrofitListener.onFailure(response.code());
                 }
                 onCreateProfileSuccess();
             }
@@ -129,6 +139,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 //Log.d(TAG,"Some error occured.");
                 Timber.d(t, "Error.");
+                //retrofitListener.onFailure();
                 onCreateProfileFailed();
             }
         });
@@ -156,6 +167,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         createProfile(viewModel.username, phoneNumber, firebaseUid);
         //startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
+
 
 //    @Override
 //    public void onMaleClicked() {

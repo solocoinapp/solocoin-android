@@ -9,20 +9,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofenceStatusCodes;
-import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingEvent;
-import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonObject;
-import com.shimadove.coronago.Wallet;
+import com.shimadove.coronago.app.Wallet;
 import com.shimadove.coronago.api.APIClient;
 import com.shimadove.coronago.api.APIService;
 import com.shimadove.coronago.app.SharedPref;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
-
-import java.io.Serializable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
