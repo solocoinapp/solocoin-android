@@ -133,7 +133,7 @@ public class Phone2Verification extends AppCompatActivity {
                         verifyCode(code);
                     }
                 } else {
-                    Toast.makeText(Phone2Verification.this, "Please check your code.", Toast.LENGTH_LONG);
+                    Toast.makeText(Phone2Verification.this, "Please check your code.", Toast.LENGTH_LONG).show();
                 }
 
             }
