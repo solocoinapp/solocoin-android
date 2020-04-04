@@ -48,6 +48,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver{
     private void reportSession(String type, Context context){
         APIService service = APIClient.getRetrofitInstance(context).create(APIService.class);
         JsonObject object = new JsonObject();
+        object.addProperty("type", type);
         wallet = new Wallet();
         wallet.Updatebalance(context);
         Call<JsonObject> call = service.startSession(object);
