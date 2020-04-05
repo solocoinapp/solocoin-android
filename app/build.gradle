@@ -7,7 +7,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.shimadove.coronago"
+        applicationId "app.solocoin.solocoin"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
@@ -30,7 +30,7 @@ android {
     sourceSets {
         main {
             java {
-                srcDirs 'src/main/java', 'src/main/java/com.shimadove.coronago', 'src/main/java/com.shimadove.coronago/jobscheduler'
+                srcDirs 'src/main/java', 'src/main/java/app.solocoin.solocoin', 'src/main/java/app.solocoin.solocoin/jobscheduler'
             }
         }
     }

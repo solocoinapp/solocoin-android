@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CoronaGo</string>
+    <string name="app_name">SoloCoin</string>
     <string name="BASE_URL">https://qa01.solocoin.app/api/v1/</string>
     <string name="get_reward_to_stay_away_from_people">Get reward to stay away from people</string>
     <string name="get_reward_to_stay">Get reward to stay</string>
@@ -24,7 +24,7 @@
     <string name="continue_button">Continue</string>
     <string name="date_of_birth_hint">DD/MM/YYYY (Optional)</string>
     <string name="username_hint">Username</string>
-    <string name="logo_description">Coronago Logo</string>
+    <string name="logo_description">SoloCoin Logo</string>
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="login_with_google">Login with Google</string>
     <string name="male">male</string>
