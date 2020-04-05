@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="40dp">
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="85dp"
@@ -51,9 +51,9 @@
             android:background="@drawable/start_button"
             android:text="GET STARTED"
             android:textColor="@color/white"
-            android:textSize="25dp" />
-
-        <Button
+            android:textSize="18sp"
+            android:layout_marginBottom="60dp"/>
+        <!---Button
             android:id="@+id/skipbuttonO"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
@@ -62,12 +62,8 @@
             android:background="#FFFFFF"
             android:fontFamily="@font/poppins"
             android:text="Skip"
-            android:textColor="#707070"/>
-
-
+            android:textColor="#707070"/-->
 
     </LinearLayout>
-
-
 </RelativeLayout>
 

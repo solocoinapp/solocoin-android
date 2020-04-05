@@ -54,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Button  bbutton= findViewById(R.id.skipbuttonO);
+        /*final Button  bbutton= findViewById(R.id.skipbuttonO);
         bbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, Phone1Verification.class));
             }
-        });
+        });*/
 
         //Onboarding
         onboard_pager = (ViewPager) findViewById(R.id.pager_introduction);
