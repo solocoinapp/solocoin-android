@@ -1,6 +1,6 @@
-# CoronaGo
-Welcome to The CoronaGo, it's great to have you here! We thank you in advance for your contributions.
-CoronaGo gamifies the act of social-distancing by rewarding users in points and badges for staying at home and away from people.
+# SoloCoin
+Welcome to The SoloCoin, it's great to have you here! We thank you in advance for your contributions.
+SoloCoin gamifies the act of social-distancing by rewarding users in points and badges for staying at home and away from people.
 
 # Contributing (Remember Read this 1st before you ask anything)
 
