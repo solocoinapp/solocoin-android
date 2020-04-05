@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.ui.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
@@ -20,8 +19,12 @@ import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.shimadove.coronago.R;
+import com.shimadove.coronago.WalletFragment;
 import com.shimadove.coronago.app.SharedPref;
 import com.shimadove.coronago.receiver.GeofenceBroadcastReceiver;
+import com.shimadove.coronago.ui.auth.OnboardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private GeofencingClient geofencingClient;
     private List<Geofence> geofencesList;
-    PendingIntent geofencePendingIntent;
+    private PendingIntent geofencePendingIntent;
 
     private final LocationListener locationListener = new LocationListener() {
         @Override
@@ -75,6 +78,12 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(HomeActivity.this, OnboardActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         sharedPref = SharedPref.getInstance(this);
 

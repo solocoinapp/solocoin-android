@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.ui.home;
 
 import android.os.Bundle;
 
@@ -11,15 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonObject;
+import com.shimadove.coronago.R;
 import com.shimadove.coronago.api.APIClient;
 import com.shimadove.coronago.api.APIService;
 import com.shimadove.coronago.app.SharedPref;
-
-import org.w3c.dom.Text;
 
 import java.util.concurrent.TimeUnit;
 

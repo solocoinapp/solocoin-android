@@ -2,14 +2,12 @@ package com.shimadove.coronago;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -21,6 +19,8 @@ import android.widget.Toast;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.shimadove.coronago.app.SharedPref;
+import com.shimadove.coronago.ui.home.HomeActivity;
+import com.shimadove.coronago.ui.home.MarkYourLocationActivity;
 
 public class PermissionsActivity extends AppCompatActivity {
 
@@ -64,7 +64,7 @@ public class PermissionsActivity extends AppCompatActivity {
                 if (sharedPref.getHttpResponse()==404 && !LOC_ADDED){
                     Toast.makeText(PermissionsActivity.this,"We can't help you in social distancing without your location. Don't worry, it's safe with us!",Toast.LENGTH_SHORT).show();
                 }
-                startActivity(new Intent(PermissionsActivity.this,HomeActivity.class));
+                startActivity(new Intent(PermissionsActivity.this, HomeActivity.class));
             }
         });
     }

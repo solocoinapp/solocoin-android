@@ -24,7 +24,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcome"></activity>
 
         <receiver
             android:name=".receiver.GeofenceBroadcastReceiver"
@@ -38,25 +37,27 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".MarkYourLocationActivity" />
+        <activity android:name=".ui.home.MarkYourLocationActivity" />
         <activity android:name=".Policy" />
         <activity android:name=".ToS" />
-        <activity android:name=".Main3Activity" />
-        <activity android:name=".Main2Activity" />
-        <activity android:name=".Phone1Verification" />
-        <activity android:name=".Phone2Verification" />
         <activity
-            android:name=".PermissionsActivity"
-            android:exported="true" />
+        android:name=".PermissionsActivity"
+        android:exported="true" />
         <activity android:name=".CreateProfileActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".Welcome" />
+
+        <activity android:name=".ui.auth.GetPhoneNumberActivity" />
+        <activity android:name=".ui.auth.VerifyOtpActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.auth.OnboardActivity"
             android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity">
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity"
+            android:name=".ui.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

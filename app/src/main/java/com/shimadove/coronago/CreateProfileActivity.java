@@ -16,7 +16,6 @@ import timber.log.Timber;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,9 +34,9 @@ import com.shimadove.coronago.api.RetrofitListener;
 import com.shimadove.coronago.api.UserSignUp;
 import com.shimadove.coronago.app.SharedPref;
 import com.shimadove.coronago.databinding.ActivityCreateProfileBinding;
+import com.shimadove.coronago.ui.home.HomeActivity;
 import com.shimadove.coronago.viewmodel.CreateProfileViewModel;
 
-import java.io.StringReader;
 import java.util.concurrent.TimeUnit;
 
 public class CreateProfileActivity extends AppCompatActivity implements CreateProfileViewModel.CreateProfileInterface {

@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.ui.auth;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.shimadove.coronago.R;
+
 import java.util.ArrayList;
 
 
-class OnBoard_Adapter extends PagerAdapter {
+public class OnBoard_Adapter extends PagerAdapter {
 
     private Context mContext;
     ArrayList<OnBoardItem> onBoardItems=new ArrayList<>();

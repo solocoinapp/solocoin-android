@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.ui.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,40 +7,36 @@ import androidx.databinding.DataBindingUtil;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bigbangbutton.editcodeview.EditCodeListener;
 import com.bigbangbutton.editcodeview.EditCodeView;
-import com.bigbangbutton.editcodeview.EditCodeWatcher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
-import com.shimadove.coronago.databinding.ActivityPhone2VerificationBinding;
-//import com.shimadove.coronago.databinding.ActivityVerificationBinding;
+import com.shimadove.coronago.CreateProfileActivity;
+import com.shimadove.coronago.R;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.shimadove.coronago.databinding.ActivityVerifyOtpBinding;
+
 import java.util.concurrent.TimeUnit;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import timber.log.Timber;
-
-public class Phone2Verification extends AppCompatActivity {
+public class VerifyOtpActivity extends AppCompatActivity {
     private static final String TAG = "PhoneAuthActivity";
 
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
@@ -70,7 +66,7 @@ public class Phone2Verification extends AppCompatActivity {
     private ImageView imageBanner;
     private Button verifyBtn;
     private FirebaseAuth mAuth;
-    ActivityPhone2VerificationBinding binding;
+    ActivityVerifyOtpBinding binding;
     EditText phno, otpEnter;
     TextView enterNum, sendmsg;
     TextView resend;
@@ -83,7 +79,7 @@ public class Phone2Verification extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        binding = DataBindingUtil.setContentView( this, R.layout.activity_phone2_verification);
+        binding = DataBindingUtil.setContentView( this, R.layout.activity_verify_otp);
         if (savedInstanceState != null) {
             onRestoreInstanceState( savedInstanceState );
         }
@@ -111,7 +107,7 @@ public class Phone2Verification extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(timeout||incorrect){
-                    Toast.makeText(Phone2Verification.this,"Resending OTP..",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerifyOtpActivity.this,"Resending OTP..",Toast.LENGTH_SHORT).show();
                     timeout=false;
                     incorrect=false;
                     sendVerificationCodeToUser(phoneNo);
@@ -123,17 +119,16 @@ public class Phone2Verification extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String code=OtpEnteredByUser;
-                Log.d(TAG,"the otp typed by user: " + code);
                 if(code != null){
                     if(code.isEmpty()||code.length()<6){
-                        Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VerifyOtpActivity.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
                         editCodeView.requestFocus();
                     } else {
                         progressBar.setVisibility(View.VISIBLE);
                         verifyCode(code);
                     }
                 } else {
-                    Toast.makeText(Phone2Verification.this, "Please check your code.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(VerifyOtpActivity.this, "Please check your code.", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -146,14 +141,14 @@ public class Phone2Verification extends AppCompatActivity {
         ClickableSpan ToS = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                Intent intent=new Intent(getApplicationContext(),ToS.class);
+                Intent intent=new Intent(getApplicationContext(), com.shimadove.coronago.ToS.class);
                 startActivity(intent);
             }
         };
         ClickableSpan Policy = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                Intent intent=new Intent(getApplicationContext(),Policy.class);
+                Intent intent=new Intent(getApplicationContext(), com.shimadove.coronago.Policy.class);
                 startActivity(intent);
             }
         };
@@ -190,7 +185,7 @@ public class Phone2Verification extends AppCompatActivity {
 
         @Override
         public void onVerificationFailed(@NonNull FirebaseException e) {
-            Toast.makeText(Phone2Verification.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(VerifyOtpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     };
@@ -203,13 +198,13 @@ public class Phone2Verification extends AppCompatActivity {
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth= FirebaseAuth.getInstance();
         mAuth.signInWithCredential( credential )
-                .addOnCompleteListener( Phone2Verification.this, new OnCompleteListener<AuthResult>( ) {
+                .addOnCompleteListener( VerifyOtpActivity.this, new OnCompleteListener<AuthResult>( ) {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful( )) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG,"signInWithCredential:success");
-                            Intent intent=new Intent(getApplicationContext(),CreateProfileActivity.class);
+                            Intent intent=new Intent(getApplicationContext(), CreateProfileActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             // TODO: Put the phone number information and the country code info.
                             startActivity(intent);
@@ -217,12 +212,12 @@ public class Phone2Verification extends AppCompatActivity {
                             // ...
                         } else {
                             // Sign in failed, display a message and update the UI
-                            Toast.makeText(Phone2Verification.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VerifyOtpActivity.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                             //Log.w( TAG, "signInWithCredential:failure", task.getException( ) );
 
                             if (task.getException( ) instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
-                                Toast.makeText(Phone2Verification.this, "Invalid OTP. Please enter OTP again.",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VerifyOtpActivity.this, "Invalid OTP. Please enter OTP again.",Toast.LENGTH_SHORT).show();
                                 incorrect=true;
                             }
                         }

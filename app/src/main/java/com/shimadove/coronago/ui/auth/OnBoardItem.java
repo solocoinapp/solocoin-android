@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.ui.auth;
 
 public class OnBoardItem
 {

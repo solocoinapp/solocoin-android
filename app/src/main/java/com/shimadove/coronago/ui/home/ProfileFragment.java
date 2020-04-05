@@ -1,19 +1,22 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.ui.home;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import timber.log.Timber;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import com.shimadove.coronago.CreateProfileActivity;
+import com.shimadove.coronago.PermissionsActivity;
+import com.shimadove.coronago.Policy;
+import com.shimadove.coronago.R;
+import com.shimadove.coronago.ToS;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -45,18 +48,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()){
             case R.id.permissionButton:
                 Timber.d("Permission stuff");
-                startActivity(new Intent(getActivity(),PermissionsActivity.class));
+                startActivity(new Intent(getActivity(), PermissionsActivity.class));
                 break;
             case R.id.profileButton:
                 Timber.d("Edit profile stuff");
-                startActivity(new Intent(getActivity(),CreateProfileActivity.class));
+                startActivity(new Intent(getActivity(), CreateProfileActivity.class));
                 break;
             case R.id.privacyPolicy:
-                Intent intent = new Intent(getActivity(),Policy.class);
+                Intent intent = new Intent(getActivity(), Policy.class);
                 startActivity(intent);
                 break;
             case R.id.termConditionButton:
-                Intent intent1 = new Intent(getActivity(),ToS.class);
+                Intent intent1 = new Intent(getActivity(), ToS.class);
                 startActivity(intent1);
                 break;
         }

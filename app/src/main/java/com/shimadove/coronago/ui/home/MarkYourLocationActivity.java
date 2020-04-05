@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.ui.home;
 
 import android.content.Intent;
 import android.location.Address;
@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
@@ -24,6 +23,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.shimadove.coronago.PermissionsActivity;
+import com.shimadove.coronago.R;
 
 import java.io.IOException;
 import java.util.List;
@@ -114,11 +115,11 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
     
-    public static final String LOC_ADDED = "com.shimadove.coronago.MarkYourLocationActivity.LOC_ADDED";
+    public static final String LOC_ADDED = "com.shimadove.coronago.ui.home.MarkYourLocationActivity.LOC_ADDED";
     @Override
     public void onClick(View view) {
         Toast.makeText(this, "Location added.!", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this,PermissionsActivity.class);
+        Intent intent = new Intent(this, PermissionsActivity.class);
         intent.putExtra("LOC_ADDED", true);
         startActivity(intent);
     }

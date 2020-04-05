@@ -1,4 +1,4 @@
-package com.shimadove.coronago;
+package com.shimadove.coronago.ui.auth;
 
 import android.Manifest;
 import android.content.Intent;
@@ -16,12 +16,12 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.ViewPager;
 
+import com.shimadove.coronago.R;
 import com.shimadove.coronago.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-
+public class OnboardActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     public static final int MULTIPLE_PERMISSION_REQUEST = 102;
@@ -34,14 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private OnBoard_Adapter mAdapter;
     ArrayList<OnBoardItem> onBoardItems=new ArrayList<>();
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_on_boarding);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding);
         //check if the user is logging for the first time.
         /*initView();*/
         ask_permissions();
@@ -50,14 +46,14 @@ public class MainActivity extends AppCompatActivity {
         final Button abutton = findViewById(R.id.button0);
         abutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Phone1Verification.class));
+                startActivity(new Intent(OnboardActivity.this, GetPhoneNumberActivity.class));
             }
         });
 
         final Button  bbutton= findViewById(R.id.skipbuttonO);
         bbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Phone1Verification.class));
+                startActivity(new Intent(OnboardActivity.this, GetPhoneNumberActivity.class));
             }
         });
 
@@ -82,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
                 // Change the current position intimation
 
                 for (int i = 0; i < dotsCount; i++) {
-                    dots[i].setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.non_selected_item_dot));
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(OnboardActivity.this, R.drawable.non_selected_item_dot));
                 }
 
-                dots[position].setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.selected_item_dot));
+                dots[position].setImageDrawable(ContextCompat.getDrawable(OnboardActivity.this, R.drawable.selected_item_dot));
             }
 
             @Override
@@ -126,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < dotsCount; i++) {
             dots[i] = new ImageView(this);
-            dots[i].setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.non_selected_item_dot));
+            dots[i].setImageDrawable(ContextCompat.getDrawable(OnboardActivity.this, R.drawable.non_selected_item_dot));
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -138,39 +134,8 @@ public class MainActivity extends AppCompatActivity {
             pager_indicator.addView(dots[i], params);
         }
 
-        dots[0].setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.selected_item_dot));
+        dots[0].setImageDrawable(ContextCompat.getDrawable(OnboardActivity.this, R.drawable.selected_item_dot));
     }
-
-
-    /*private void initView() {
-
-
-        binding.button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Phone1Verification.class));
-            }
-        });
-        /*binding.button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Main2Activity.class));
-            }
-        });
-        binding.button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Main3Activity.class));
-            }
-        });
-        binding.skipbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Phone1Verification.class));
-            }
-        });
-    }*/
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
