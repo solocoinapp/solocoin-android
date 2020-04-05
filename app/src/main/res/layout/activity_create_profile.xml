@@ -14,6 +14,23 @@
         android:layout_height="match_parent"
         tools:context=".CreateProfileActivity">
 
+        <Button
+            android:id="@+id/continueButton"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="352dp"
+            android:layout_height="50dp"
+            android:background="@drawable/pink_button_border_radius"
+            android:onClick="@{createProfileViewModel::onContinueButtonClick}"
+            android:text="@string/create_account"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.433" />
+
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="77dp"
@@ -24,6 +41,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="267dp"
+            android:layout_height="69dp"
+            android:text="By creating an account you agree to our Terms of Service and Privacy Policy."
+            android:textAlignment="center"
+            tools:layout_editor_absoluteX="72dp"
+            tools:layout_editor_absoluteY="332dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField3"
@@ -51,23 +77,6 @@
                 tools:targetApi="o" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/continueButton"
-            style="@style/Widget.AppCompat.Button.Small"
-            android:layout_width="352dp"
-            android:layout_height="50dp"
-            android:background="@drawable/pink_button_border_radius"
-            android:onClick="@{createProfileViewModel::onContinueButtonClick}"
-            android:text="@string/continue_button"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.559"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.399" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

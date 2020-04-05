@@ -12,7 +12,7 @@
             android:layout_width="336dp"
             android:layout_height="52dp"
             android:background="@drawable/pink_button_border_radius"
-            android:text="@string/create_account"
+            android:text="@string/continue_button"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -128,19 +128,6 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_code" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="267dp"
-            android:layout_height="69dp"
-            android:layout_marginBottom="128dp"
-            android:text="By creating an account you agree to our Terms of Service and Privacy Policy."
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/progressBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/verifyBtn"
-            app:layout_constraintVertical_bias="0.576" />
 
         <!--        <EditText-->
 <!--            android:id="@+id/editText"-->
