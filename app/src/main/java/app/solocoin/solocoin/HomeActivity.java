@@ -73,9 +73,15 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-
         sharedPref = SharedPref.getInstance(this);
+
+        if (sharedPref.getAuthtoken() != null) {
+            Intent intent = new Intent(HomeActivity.this, OnboardingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (lm != null) {

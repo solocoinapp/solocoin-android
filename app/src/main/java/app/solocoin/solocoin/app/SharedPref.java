@@ -79,7 +79,7 @@ public class SharedPref {
         editor.commit();
     }
     public String getAuthtoken(){
-        return pref.getString(AUTHTOKEN,"");
+        return pref.getString(AUTHTOKEN,null);
     }
 
     private static final String TIME= "time";

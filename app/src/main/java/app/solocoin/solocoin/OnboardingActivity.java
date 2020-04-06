@@ -20,7 +20,7 @@ import app.solocoin.solocoin.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class OnboardingActivity extends AppCompatActivity {
 
 
     ActivityMainBinding binding;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         final Button abutton = findViewById(R.id.button0);
         abutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Phone1Verification.class));
+                startActivity(new Intent(OnboardingActivity.this, Phone1Verification.class));
             }
         });
 
@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 // Change the current position intimation
 
                 for (int i = 0; i < dotsCount; i++) {
-                    dots[i].setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.non_selected_item_dot));
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(OnboardingActivity.this, R.drawable.non_selected_item_dot));
                 }
 
-                dots[position].setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.selected_item_dot));
+                dots[position].setImageDrawable(ContextCompat.getDrawable(OnboardingActivity.this, R.drawable.selected_item_dot));
             }
 
             @Override
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < dotsCount; i++) {
             dots[i] = new ImageView(this);
-            dots[i].setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.non_selected_item_dot));
+            dots[i].setImageDrawable(ContextCompat.getDrawable(OnboardingActivity.this, R.drawable.non_selected_item_dot));
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             pager_indicator.addView(dots[i], params);
         }
 
-        dots[0].setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.selected_item_dot));
+        dots[0].setImageDrawable(ContextCompat.getDrawable(OnboardingActivity.this, R.drawable.selected_item_dot));
     }
 
 
