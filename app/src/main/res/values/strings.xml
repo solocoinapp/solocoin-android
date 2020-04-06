@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">SoloCoin</string>
     <string name="BASE_URL">https://qa01.solocoin.app/api/v1/</string>
-    <string name="get_reward_to_stay_away_from_people">Get reward to stay away from people</string>
-    <string name="get_reward_to_stay">Get reward to stay</string>
+    <string name="get_reward_to_stay_away_from_people">Get rewards to stay away from people</string>
+    <string name="get_reward_to_stay">Get rewards to stay</string>
     <string name="away_from_people">away from people</string>
     <string name="help_defeat_coronavirus">Help defeat Coronavirus</string>
     <string name="corona_go">CORONA GO</string>
@@ -37,14 +37,14 @@
     <string name="hint_fetching_loc">Fetching location</string>
     <string name="hint_current_loc">Current location</string>
     <string name="current_address">%s, %s, %s</string>
-    <string name="error_occurred">Some occurred, please try again!</string>
+    <string name="error_occurred">Something went wrong, please try again!</string>
 
     <string name="create_account">CREATE ACCOUNT</string>
 
 
-    <string name="permission">Permission</string>
+    <string name="permission">Permissions</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="term_condition">Term &amp; condition </string>
+    <string name="term_condition">Terms &amp; Conditions </string>
     <string name="profile">Profile</string>
 
     <string name="leaderboard">Leaderboard</string>
