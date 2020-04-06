@@ -47,6 +47,7 @@
     <string name="term_condition">Terms &amp; Conditions </string>
     <string name="profile">Profile</string>
     <string name="invite">Invite</string>
+    <string name="logout">Logout</string>
 
     <string name="leaderboard">Leaderboard</string>
     <string name="wallet">Wallet</string>

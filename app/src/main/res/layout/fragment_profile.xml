@@ -108,6 +108,26 @@
             android:layout_height="2dp"
             android:background="@color/colorAccent" />
 
+        <Button
+            android:id="@+id/logoutButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="@string/logout"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:drawableStart="@drawable/ic_logout"
+            android:drawablePadding="20dp"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent" />
+
     </LinearLayout>
 
 
