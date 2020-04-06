@@ -37,6 +37,12 @@
         android:layout_margin="10dp"
         android:orientation="vertical">
 
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent" />
 
         <Button
             android:id="@+id/permissionButton"
@@ -44,10 +50,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:text="@string/permission"
+            android:text="@string/profile"
             android:textAlignment="viewStart"
             android:textColor="@color/black"
-            android:drawableStart="@drawable/ic_permissions"
+            android:drawableStart="@drawable/ic_profile"
+            android:drawablePadding="20dp"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/invite"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="@string/invite"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:drawableStart="@drawable/ic_invite"
             android:drawablePadding="20dp"
             android:textSize="18sp" />
 
@@ -64,10 +90,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:text="@string/profile"
+            android:text="@string/permission"
             android:textAlignment="viewStart"
             android:textColor="@color/black"
-            android:drawableStart="@drawable/ic_profile"
+            android:drawableStart="@drawable/ic_permissions"
             android:drawablePadding="20dp"
             android:textSize="18sp" />
 
