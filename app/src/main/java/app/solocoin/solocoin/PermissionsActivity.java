@@ -44,17 +44,26 @@ public class PermissionsActivity extends AppCompatActivity {
         //checkAndRequestPermissions(true);
         //checkAndRequestPermissions(false);
 
+        Intent intent = getIntent();
+        boolean LOC_ADDED = intent.getBooleanExtra(MarkYourLocationActivity.LOC_ADDED,false);
+
+        if(LOC_ADDED){
+            locationButton.setEnabled(false);
+            changeColor();
+        }
+
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                init();
+                if(sharedPref.getHttpResponse()!=404 && LOC_ADDED){
+                    Toast.makeText(PermissionsActivity.this,"We got your location before,you can just continue",Toast.LENGTH_SHORT).show();
+                }else{
+                    init();
+                }
                 //checkAndRequestPermissions(true);
                 //checkAndRequestPermissions(false);
             }
         });
-
-        Intent intent = getIntent();
-        boolean LOC_ADDED = intent.getBooleanExtra(MarkYourLocationActivity.LOC_ADDED,false);
 
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
