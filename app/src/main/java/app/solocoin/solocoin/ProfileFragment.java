@@ -2,6 +2,8 @@ package app.solocoin.solocoin;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import app.solocoin.solocoin.app.SharedPref;
+import developers.mobile.abt.FirebaseAbt;
 import timber.log.Timber;
 
 import android.content.Intent;
@@ -11,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -51,6 +55,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Intent intent1 = new Intent(getActivity(),ToS.class);
                 startActivity(intent1);
                 break;
+            case R.id.logout:
+                logout();
+                break;
         }
+    }
+
+    private void logout(){
+        SharedPref.getInstance(getActivity()).clearSession();
+        FirebaseAuth.getInstance().signOut();
+        Intent intent2 = new Intent(getActivity(),OnboardingActivity.class);
+        startActivity(intent2);
     }
 }
