@@ -104,7 +104,7 @@ public class PermissionsActivity extends AppCompatActivity {
     }
 
     private void changeColor() {
-        locationButton.setBackgroundResource(R.drawable.grey_button_border_radius);
+        locationButton.setBackgroundResource(R.drawable.dark_blue_border_radius);
         locationButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_white, 0);
         locationButton.setTextColor(ContextCompat.getColor(PermissionsActivity.this, R.color.white));
     }
