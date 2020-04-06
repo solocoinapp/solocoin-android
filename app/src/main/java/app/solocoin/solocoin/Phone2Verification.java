@@ -27,6 +27,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.api.PostUser;
+import app.solocoin.solocoin.api.PostUserLogin;
+import app.solocoin.solocoin.api.UserLogin;
 import app.solocoin.solocoin.api.UserSignUp;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.databinding.ActivityPhone2VerificationBinding;
@@ -91,6 +93,7 @@ public class Phone2Verification extends AppCompatActivity {
     PhoneAuthProvider.ForceResendingToken token;
     private SharedPref sharedPref;
     APIService apiService;
+    String firebaseUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,17 +220,22 @@ public class Phone2Verification extends AppCompatActivity {
         mAuth= FirebaseAuth.getInstance();
         mAuth.signInWithCredential( credential )
                 .addOnCompleteListener( Phone2Verification.this, new OnCompleteListener<AuthResult>( ) {
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful( )) {
                             // Sign in success, update UI with the signed-in user's information
                             Timber.d("signInWithCredential:success");
+                            //TODO - make isNewUser == false in if statement
+
                             if(isNewUser()==false){
                                 Toast.makeText(getApplicationContext(), "the current user is an exisiting one. \n" , Toast.LENGTH_SHORT).show();
                                 Intent intent =new Intent(getApplicationContext(),HomeActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }else{
+                                Toast.makeText(getApplicationContext(),"This is a new user. \n", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(getApplicationContext(),CreateProfileActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
@@ -253,9 +261,8 @@ public class Phone2Verification extends AppCompatActivity {
     String id_token;
     boolean isnewuser;
     private boolean isNewUser() {
-
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String firebaseUid = currentUser.getUid();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        firebaseUid = currentUser.getUid();
         currentUser.getIdToken(true)
                 .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                     @Override
@@ -274,20 +281,26 @@ public class Phone2Verification extends AppCompatActivity {
         String mobile = sharedPref.getPhoneNumber();
         String cc = sharedPref.getCountryCode();
         String id_token = sharedPref.getIdToken();
-        UserSignUp  userSignUp = new UserSignUp(id_token,firebaseUid,mobile,cc);
-        PostUser postUser=new PostUser(userSignUp);
+        UserLogin userLogin = new UserLogin(id_token,firebaseUid,mobile,cc);
+        PostUserLogin postUserLogin=new PostUserLogin(userLogin);
         Gson gson =new Gson();
-        String json= gson.toJson(postUser);
+        String json= gson.toJson(postUserLogin);
         Timber.d(json);
         JsonObject body =new JsonObject();
-        JsonElement element = gson.toJsonTree(postUser);
+        JsonElement element = gson.toJsonTree(postUserLogin);
         body=element.getAsJsonObject();
         apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.code() == 200) {
+                    JsonObject userresponse = response.body();
+                    String authtoken = userresponse.get("auth_token").getAsString();
+                    authtoken = "Bearer " + authtoken;
+                    sharedPref.setAuthtoken(authtoken);
+                    Timber.d("auth_token is: " + authtoken);
                     isnewuser = false; //not a new user
                 } else {
+                    Timber.d("This is a new user. Response code is: " + response.code()+"\n");
                     isnewuser = true;
                 }
             }

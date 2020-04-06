@@ -21,6 +21,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.receiver.GeofenceBroadcastReceiver;
+import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         sharedPref = SharedPref.getInstance(this);
 
-        if (sharedPref.getAuthtoken() != null) {
+        if (sharedPref.getAuthtoken() == null) {
+            Timber.d("The user has an issue.");
             Intent intent = new Intent(HomeActivity.this, OnboardingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

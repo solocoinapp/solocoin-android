@@ -118,6 +118,7 @@ public class SharedPref {
     public String getIdToken(){
         return pref.getString(ID_TOKEN,null);
     }
+
     //Since email and gender not required for profile right now.
 //    private static final String EMAIL="email";
 //    public void setEmail(String id){
