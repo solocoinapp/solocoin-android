@@ -97,7 +97,8 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 //                // Would a 404 land here? - No since 404 is still a value returned.
 //            }
 //        });
-    
+
+
     }
 
     private void createProfile(String username, String phoneNumber, String uid){
