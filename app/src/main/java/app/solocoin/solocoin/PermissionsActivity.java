@@ -106,7 +106,7 @@ public class PermissionsActivity extends AppCompatActivity {
     private void changeColor() {
         locationButton.setBackgroundResource(R.drawable.grey_button_border_radius);
         locationButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_white, 0);
-        locationButton.setTextColor(getResources().getColor(R.color.white));
+        locationButton.setTextColor(ContextCompat.getColor(PermissionsActivity.this, R.color.white));
     }
 
     public void pickProfileImage(View view){
