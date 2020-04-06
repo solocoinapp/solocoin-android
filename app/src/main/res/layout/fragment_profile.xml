@@ -38,6 +38,15 @@
         android:orientation="vertical">
 
 
+
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent" />
+
         <Button
             android:id="@+id/permissionButton"
             style="@style/Widget.MaterialComponents.Button.TextButton"
@@ -48,26 +57,6 @@
             android:textAlignment="viewStart"
             android:textColor="@color/black"
             android:drawableStart="@drawable/ic_permissions"
-            android:drawablePadding="20dp"
-            android:textSize="18sp" />
-
-        <View
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorAccent" />
-
-        <Button
-            android:id="@+id/profileButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:text="@string/profile"
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:drawableStart="@drawable/ic_profile"
             android:drawablePadding="20dp"
             android:textSize="18sp" />
 

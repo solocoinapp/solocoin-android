@@ -26,7 +26,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         view.findViewById(R.id.permissionButton).setOnClickListener(this);
-        view.findViewById(R.id.profileButton).setOnClickListener(this);
         view.findViewById(R.id.privacyPolicy).setOnClickListener(this);
         view.findViewById(R.id.termConditionButton).setOnClickListener(this);
         return view;
@@ -43,10 +42,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             case R.id.permissionButton:
                 Timber.d("Permission stuff");
                 startActivity(new Intent(getActivity(),PermissionsActivity.class));
-                break;
-            case R.id.profileButton:
-                Timber.d("Edit profile stuff");
-                startActivity(new Intent(getActivity(),CreateProfileActivity.class));
                 break;
             case R.id.privacyPolicy:
                 Intent intent = new Intent(getActivity(),Policy.class);
