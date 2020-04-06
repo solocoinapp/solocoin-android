@@ -60,12 +60,12 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
         apiService = APIClient.getRetrofitInstance(this).create(APIService.class);
 
-         binding = DataBindingUtil.setContentView(this,R.layout.activity_create_profile);
-         viewModel = new ViewModelProvider(this).get(CreateProfileViewModel.class);
-         binding.getRoot();
-         binding.setCreateProfileViewModel(viewModel);
-         viewModel.setCreateProfileInterface(this);
-        retrofitListener=new RetrofitListener();
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_create_profile);
+        viewModel = new ViewModelProvider(this).get(CreateProfileViewModel.class);
+        binding.getRoot();
+        binding.setCreateProfileViewModel(viewModel);
+        viewModel.setCreateProfileInterface(this);
+        retrofitListener = new RetrofitListener();
         sharedPref = SharedPref.getInstance(this);
 
 //        Intent intent = getIntent();
@@ -75,19 +75,18 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         countryCode = sharedPref.getCountryCode();
         // TODO: do something special if phoneNumber or country code is null.
         binding.usernameField.setText(sharedPref.getUsername());
-         // Check for User already created
+        // Check for User already created
         JsonObject mobileLoginBody = new JsonObject();
         mobileLoginBody.addProperty("mobile", phoneNumber);
         apiService.doMobileLogin(mobileLoginBody).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 sharedPref.setHttpResponse(response.code());
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     Intent intent1 = new Intent(CreateProfileActivity.this, HomeActivity.class);
                     startActivity(intent1);
-                }
-                else{
-                    Toast.makeText(CreateProfileActivity.this,"Existing user check fail.",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(CreateProfileActivity.this, "Existing user check fail.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -96,7 +95,9 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                 // Would a 404 land here? - No since 404 is still a value returned.
             }
         });
-        
+    
+    }
+
     private void createProfile(String username, String phoneNumber, String uid){
         JsonObject body = new JsonObject();
         UserSignUp user = new UserSignUp(id_token,uid,username,phoneNumber,countryCode);
