@@ -81,7 +81,6 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         apiService.doMobileLogin(mobileLoginBody).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                sharedPref.setHttpResponse(response.code());
                 if (response.code() == 200) {
                     Intent intent1 = new Intent(CreateProfileActivity.this, HomeActivity.class);
                     startActivity(intent1);

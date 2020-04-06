@@ -70,7 +70,7 @@ public class PermissionsActivity extends AppCompatActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sharedPref.getHttpResponse()==404 && !LOC_ADDED){
+                if (!sharedPref.getIsHomeLocationSet() && !LOC_ADDED){
                     Toast.makeText(PermissionsActivity.this,"We can't help you in social distancing without your location. Don't worry, it's safe with us!",Toast.LENGTH_SHORT).show();
                 }
                 startActivity(new Intent(PermissionsActivity.this,HomeActivity.class));
@@ -79,7 +79,7 @@ public class PermissionsActivity extends AppCompatActivity {
     }
 
     private void init() {
-        if(sharedPref.getHttpResponse()==200){
+        if(sharedPref.getIsHomeLocationSet()){
             Toast.makeText(PermissionsActivity.this,"Cannot update your location.", Toast.LENGTH_SHORT).show();
             return;
         }

@@ -57,15 +57,6 @@ public class SharedPref {
         editor.commit();
     }
 
-    private static final String HTTP_RESPONSE = "http_response"; //To check if a new or existing user
-    public void setHttpResponse(int number){
-        editor.putInt(HTTP_RESPONSE,number);
-        editor.commit();
-    }
-    public int getHttpResponse(){
-        return pref.getInt(HTTP_RESPONSE, 0);
-    }
-
     private static final String isHomeLocationSet = "isHomeLocationSet";
 
     public void setIsHomeLocationSet(boolean isHomeLocationSetOrNot){
