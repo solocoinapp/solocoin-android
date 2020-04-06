@@ -25,7 +25,7 @@
 
         <EditText
             android:id="@+id/phno"
-            android:layout_width="330dp"
+            android:layout_width="wrap_content"
             android:layout_height="51dp"
             android:background="@color/colorAccent"
             android:backgroundTint="#40B9B9B9"
@@ -105,7 +105,7 @@
             android:layout_gravity="center"
             android:background="#40B9B9B9"
             app:codeHiddenMask="."
-            app:codeHiddenMode="true"
+            app:codeHiddenMode="false"
             app:codeLength="6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -129,6 +129,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_code" />
 
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="267dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="136dp"
+            android:text="By creating an account you agree to our \n Terms of Service and Privacy Policy."
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/verifyBtn
         <!--        <EditText-->
 <!--            android:id="@+id/editText"-->
 <!--            android:layout_width="239dp"-->
