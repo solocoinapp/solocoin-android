@@ -66,6 +66,17 @@ public class SharedPref {
         return pref.getInt(HTTP_RESPONSE, 0);
     }
 
+    private static final String isHomeLocationSet = "isHomeLocationSet";
+
+    public void setIsHomeLocationSet(boolean isHomeLocationSetOrNot){
+        editor.putBoolean(isHomeLocationSet,isHomeLocationSetOrNot);
+        editor.commit();
+    }
+
+    public boolean getIsHomeLocationSet(){
+        return pref.getBoolean(isHomeLocationSet,false);
+    }
+
     private static final String USERNAME= "username";
     public void setUsername(String username){
         editor.putString(USERNAME,username);
