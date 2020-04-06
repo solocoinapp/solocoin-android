@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:781974577510:android:ef2372bf3c59413fa368a7",
         "android_client_info": {
-          "package_name": "com.shimadove.coronago"
+          "package_name": "app.solocoin.solocoin"
         }
       },
       "oauth_client": [

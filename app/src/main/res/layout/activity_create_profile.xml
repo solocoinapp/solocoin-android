@@ -6,7 +6,7 @@
     <data>
         <variable
             name="createProfileViewModel"
-            type="com.shimadove.coronago.viewmodel.CreateProfileViewModel" />
+            type="app.solocoin.solocoin.viewmodel.CreateProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

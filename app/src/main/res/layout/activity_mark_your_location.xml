@@ -4,7 +4,7 @@
 <!--    <data>-->
 <!--        <variable-->
 <!--            name="markYourLocationViewModel"-->
-<!--            type="com.shimadove.coronago.viewmodel.MarkYourLocationViewModel" />-->
+<!--            type="app.solocoin.solocoin.viewmodel.MarkYourLocationViewModel" />-->
 <!--    </data>-->
 
 <androidx.constraintlayout.widget.ConstraintLayout
