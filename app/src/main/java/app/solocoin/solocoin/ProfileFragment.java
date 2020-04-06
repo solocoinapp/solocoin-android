@@ -32,6 +32,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.permissionButton).setOnClickListener(this);
         view.findViewById(R.id.privacyPolicy).setOnClickListener(this);
         view.findViewById(R.id.termConditionButton).setOnClickListener(this);
+        view.findViewById(R.id.logoutButton).setOnClickListener(this);
         return view;
     }
 
@@ -55,7 +56,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Intent intent1 = new Intent(getActivity(),ToS.class);
                 startActivity(intent1);
                 break;
-            case R.id.logout:
+            case R.id.logoutButton:
                 logout();
                 break;
         }

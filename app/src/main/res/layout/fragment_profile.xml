@@ -109,7 +109,7 @@
             android:background="@color/colorAccent" />
 
         <Button
-            android:id="@+id/logout"
+            android:id="@+id/logoutButton"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
