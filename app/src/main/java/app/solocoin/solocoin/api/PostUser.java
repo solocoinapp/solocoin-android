@@ -6,4 +6,5 @@ public class PostUser {
     public PostUser(UserSignUp user) {
         this.user = user;
     }
+
 }

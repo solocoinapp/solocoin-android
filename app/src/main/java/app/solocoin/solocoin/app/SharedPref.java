@@ -97,6 +97,16 @@ public class SharedPref {
     }
 
     public String getSessiontype(){return pref.getString(SESSIONTYPE,"");}
+
+    //For Firebase Token generated
+    private static final String ID_TOKEN="id_token";
+    public void setIdToken(String idtoken){
+        editor.putString(ID_TOKEN,idtoken);
+        editor.commit();
+    }
+    public String getIdToken(){
+        return pref.getString(ID_TOKEN,null);
+    }
     //Since email and gender not required for profile right now.
 //    private static final String EMAIL="email";
 //    public void setEmail(String id){

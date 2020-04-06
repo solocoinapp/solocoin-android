@@ -97,23 +97,23 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
             }
         });
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        firebaseUid = currentUser.getUid();
-        currentUser.getIdToken(true)
-                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-                        if (task.isSuccessful()){
-                            id_token= task.getResult().getToken();
-                            String authtoken = "Bearer " + id_token;
-                            //sharedPref.setAuthtoken(authtoken);
-                            Timber.d("the firebase id token is: "+id_token + "\n" + "the auth_token passed is: " + authtoken + "\n");
-                        }
-                        else{
-                            Timber.d("there is an issue with the firebase id token.");
-                        }
-                    }
-                });
+//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//        firebaseUid = currentUser.getUid();
+//        currentUser.getIdToken(true)
+//                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+//                        if (task.isSuccessful()){
+//                            id_token= task.getResult().getToken();
+//                            String authtoken = "Bearer " + id_token;
+//                            //sharedPref.setAuthtoken(authtoken);
+//                            Timber.d("the firebase id token is: "+id_token + "\n" + "the auth_token passed is: " + authtoken + "\n");
+//                        }
+//                        else{
+//                            Timber.d("there is an issue with the firebase id token.");
+//                        }
+//                    }
+//                });
     }
 
     private void createProfile(String username, String phoneNumber, String uid){

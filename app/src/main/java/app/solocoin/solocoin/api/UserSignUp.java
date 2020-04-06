@@ -23,6 +23,13 @@ public class UserSignUp {
         this.cc = cc;
     }
 
+    public UserSignUp(String id_token, String uid,String mobile,String cc){
+        this.id_token=id_token;
+        this.uid=uid;
+        this.mobile=mobile;
+        this.cc=cc;
+    }
+
     public String getId_token() {
         return id_token;
     }
