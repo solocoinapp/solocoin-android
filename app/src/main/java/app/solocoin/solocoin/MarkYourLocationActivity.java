@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import app.solocoin.solocoin.app.SharedPref;
 import timber.log.Timber;
 
 public class MarkYourLocationActivity extends FragmentActivity implements OnMapReadyCallback, OnSuccessListener<Location>, View.OnClickListener {
@@ -119,6 +120,9 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
         Toast.makeText(this, "Location added.!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this,PermissionsActivity.class);
         intent.putExtra("LOC_ADDED", true);
+
+        SharedPref.getInstance(MarkYourLocationActivity.this).setIsHomeLocationSet(true);
+
         startActivity(intent);
     }
 }
