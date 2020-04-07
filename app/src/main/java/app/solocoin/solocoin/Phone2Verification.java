@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.bigbangbutton.editcodeview.EditCodeListener;
 import com.bigbangbutton.editcodeview.EditCodeView;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.auth.AuthResult;
@@ -53,48 +55,54 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+@SuppressLint("LogNotTimber")
 public class Phone2Verification extends AppCompatActivity {
+
+//    private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
+//    private static final int STATE_INITIALIZED = 1;
+//    private static final int STATE_CODE_SENT = 2;
+//    private static final int STATE_VERIFY_FAILED = 3;
+//    private static final int STATE_VERIFY_SUCCESS = 4;
+//    private static final int STATE_SIGNIN_FAILED = 5;
+//    private static final int STATE_SIGNIN_SUCCESS = 6;
+//    private boolean mVerificationInProgress = false;
+//    private String mVerificationId;
+//    private PhoneAuthProvider.ForceResendingToken mResendToken;
+//private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+
     private static final String TAG = "PhoneAuthActivity";
 
-    private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
+    ActivityPhone2VerificationBinding binding;
 
-    private static final int STATE_INITIALIZED = 1;
-    private static final int STATE_CODE_SENT = 2;
-    private static final int STATE_VERIFY_FAILED = 3;
-    private static final int STATE_VERIFY_SUCCESS = 4;
-    private static final int STATE_SIGNIN_FAILED = 5;
-    private static final int STATE_SIGNIN_SUCCESS = 6;
+    private String otpBySystem;
+    private String phoneNo;
+    private String OtpEnteredByUser;
+    private String countryCode, enteredCode;
+    private boolean codeSent = false;
+    private boolean timeout=false;
+    private boolean incorrect=false;
+    private String verificationID;
+    private String firebaseUid;
 
-    private boolean mVerificationInProgress = false;
-    private String mVerificationId;
+    private FirebaseAuth mAuth;
+    private PhoneAuthProvider.ForceResendingToken token;
 
-    private PhoneAuthProvider.ForceResendingToken mResendToken;
-    //private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    String otpBySystem;
+    private SharedPref sharedPref;
+    private APIService apiService;
+
     private EditText mPhoneNumberField;
     private EditText mVerificationField;
-    TextView mCountyList;
+    private TextView mCountyList;
     private ProgressBar progressBar;
-    String phoneNo;
-    String OtpEnteredByUser;
-    private String countryCode, enteredCode;
     private Button mStartButton;
-    private boolean codeSent = false;
     private ImageView imageBanner;
     private Button verifyBtn;
-    private FirebaseAuth mAuth;
-    ActivityPhone2VerificationBinding binding;
-    EditText phno, otpEnter;
-    TextView enterNum, sendmsg;
-    TextView resend;
-    TextView tandc;
-    boolean timeout=false;
-    boolean incorrect=false;
-    String verificationID;
-    PhoneAuthProvider.ForceResendingToken token;
-    private SharedPref sharedPref;
-    APIService apiService;
-    String firebaseUid;
+    private EditText phno, otpEnter;
+    private TextView enterNum, sendmsg;
+    private TextView resend;
+    private TextView tandc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,14 +122,11 @@ public class Phone2Verification extends AppCompatActivity {
         //phno.setText(phoneNo);
         phno.getText().clear();
         phno.append(phoneNo);
-        final EditCodeView editCodeView = (EditCodeView) findViewById(R.id.edit_code);
+        final EditCodeView editCodeView = findViewById(R.id.edit_code);
         String s;
-        editCodeView.setEditCodeListener(new EditCodeListener() {
-            @Override
-            public void onCodeReady(String code) {
-                //This function gives the complete number inputted
-                OtpEnteredByUser=code;
-            }
+        editCodeView.setEditCodeListener(code -> {
+            //This function gives the complete number inputted
+            OtpEnteredByUser=code;
         });
         //OtpEnteredByUser=editCodeView.getCode();
         resend.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +145,6 @@ public class Phone2Verification extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String code=OtpEnteredByUser;
-                Log.d(TAG,"the otp typed by user: " + code);
                 if(code != null){
                     if(code.isEmpty()||code.length()<6){
                         Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
@@ -182,7 +186,7 @@ public class Phone2Verification extends AppCompatActivity {
 
     private void sendVerificationCodeToUser(String phoneNo) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                 ""+phoneNo,        // Phone number to verify
+                 phoneNo,        // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 TaskExecutors.MAIN_THREAD,               // Activity (for callback binding)
@@ -209,7 +213,6 @@ public class Phone2Verification extends AppCompatActivity {
         public void onVerificationFailed(@NonNull FirebaseException e) {
             Toast.makeText(Phone2Verification.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
     };
 
     private void verifyCode(String otpByUser) {
@@ -219,100 +222,73 @@ public class Phone2Verification extends AppCompatActivity {
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth= FirebaseAuth.getInstance();
-        mAuth.signInWithCredential( credential )
-                .addOnCompleteListener( Phone2Verification.this, new OnCompleteListener<AuthResult>( ) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener( Phone2Verification.this, task -> {
+                    if (task.isComplete()) {
+                        //TODO - make isNewUser == false in if statement
 
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        String uid = task.getResult().getUser().getUid();
+                        task.getResult().getUser().getIdToken(true).addOnCompleteListener(task1 -> {
+                            String idToken = task1.getResult().getToken();
 
-                        if (task.isSuccessful( )) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Timber.d("signInWithCredential:success");
-                            //TODO - make isNewUser == false in if statement
+                            JsonObject body = new JsonObject();
+                            JsonObject user = new JsonObject();
+                            user.addProperty("country_code", sharedPref.getCountryCode());
+                            user.addProperty("mobile", sharedPref.getPhoneNumber());
+                            user.addProperty("uid", uid);
+                            user.addProperty("id_token", idToken);
+                            body.add("user", user);
 
-                            if(isNewUser()==false){
-                                Toast.makeText(getApplicationContext(), "the current user is an exisiting one. \n" , Toast.LENGTH_SHORT).show();
-                                Intent intent =new Intent(getApplicationContext(),HomeActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }else{
-                                Toast.makeText(getApplicationContext(),"This is a new user. \n", Toast.LENGTH_SHORT).show();
-                                Intent intent=new Intent(getApplicationContext(),CreateProfileActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                            // TODO: Put the phone number information and the country code info.
-                            //FirebaseUser user = task.getResult( ).getUser( );
-                            // ...
-                        } else {
-                            // Sign in failed, display a message and update the UI
-                            Toast.makeText(Phone2Verification.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                            //Log.w( TAG, "signInWithCredential:failure", task.getException( ) );
+//                            Log.d("xoxo, body", body.toString());
 
-                            if (task.getException( ) instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
-                                Toast.makeText(Phone2Verification.this, "Invalid OTP. Please enter OTP again.",Toast.LENGTH_SHORT).show();
-                                incorrect=true;
-                            }
+                            apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
+                                @Override
+                                public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
+//                                    Log.d("xoxo", response.code()+"");
+//                                    Log.d("xoxo", response.body()+"");
+                                    if (response.code() == 200) {
+                                        //existing user case
+
+                                        JsonObject responseBody = response.body();
+                                        Log.d("xoxo, responseBody", responseBody.toString());
+                                        String authToken = responseBody.get("auth_token").getAsString();
+                                        sharedPref.setAuthtoken(authToken);
+
+                                        Toast.makeText(getApplicationContext(), "Proud to be SOLO!" , Toast.LENGTH_SHORT).show();
+                                        Intent intent =new Intent(Phone2Verification.this, HomeActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();;
+
+                                    } else if (response.code() == 401) {
+                                        //new user case
+                                        Toast.makeText(getApplicationContext(),"Welcome to SOLOCOIN!!", Toast.LENGTH_SHORT).show();
+                                        Intent intent=new Intent(Phone2Verification.this, CreateProfileActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
+                                    Toast.makeText(Phone2Verification.this, "Please try again!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        });
+                        // TODO: Put the phone number information and the country code info.
+                        //FirebaseUser user = task.getResult( ).getUser( );
+                        // ...
+                    } else {
+                        Toast.makeText(Phone2Verification.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                        if (task.getException( ) instanceof FirebaseAuthInvalidCredentialsException) {
+                            Toast.makeText(Phone2Verification.this, "Invalid OTP. Please enter OTP again.",Toast.LENGTH_SHORT).show();
+                            incorrect=true;
                         }
                     }
-                } );
-    }
-
-    String id_token;
-    boolean isnewuser;
-    private boolean isNewUser() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        firebaseUid = currentUser.getUid();
-        currentUser.getIdToken(true)
-                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-                        if (task.isSuccessful()){
-                            id_token= Objects.requireNonNull(task.getResult()).getToken();
-                            //String authtoken = "Bearer " + id_token;
-                            sharedPref.setIdToken(id_token);
-                            Timber.d("the firebase id token is: "+id_token + "\n");
-                        }
-                        else{
-                            Timber.d("there is an issue with the firebase id token.");
-                        }
-                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(Phone2Verification.this, "Please try again!", Toast.LENGTH_SHORT).show();
                 });
-        String mobile = sharedPref.getPhoneNumber();
-        String cc = sharedPref.getCountryCode();
-        String id2_token = sharedPref.getIdToken();
-        UserLogin userLogin = new UserLogin(id2_token,firebaseUid,mobile,cc);
-        PostUserLogin postUserLogin=new PostUserLogin(userLogin);
-        Gson gson =new Gson();
-        String json= gson.toJson(postUserLogin);
-        Timber.d(json);
-        JsonObject body =new JsonObject();
-        JsonElement element = gson.toJsonTree(postUserLogin);
-        body=element.getAsJsonObject();
-        apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.code() == 200) {
-                    JsonObject userresponse = response.body();
-                    String authtoken = userresponse.get("auth_token").getAsString();
-                    authtoken = "Bearer " + authtoken;
-                    sharedPref.setAuthtoken(authtoken);
-                    Timber.d("auth_token is: " + authtoken);
-                    isnewuser = false; //not a new user
-                } else {
-                    Timber.d("This is a new user. Response code is: " + response.code()+"\n");
-                    isnewuser = true;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                isnewuser=true;
-            }
-        });
-        Timber.d("The user is a new user: " + String.valueOf(isnewuser));
-        return isnewuser;
     }
-
 }
