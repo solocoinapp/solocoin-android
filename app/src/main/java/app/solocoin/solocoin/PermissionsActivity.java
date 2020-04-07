@@ -37,7 +37,7 @@ public class PermissionsActivity extends AppCompatActivity {
         locationButton = findViewById(R.id.location_permission_button);
         notificationsButton = findViewById(R.id.notification_permission_button);
         continueButton = findViewById(R.id.continue_button);
-        profilePhoto = findViewById(R.id.profile_image);
+//        profilePhoto = findViewById(R.id.profile_image);
 
         // Get profile photo from internet.
         sharedPref = SharedPref.getInstance(this);
@@ -118,17 +118,17 @@ public class PermissionsActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
-            Uri fileUri = data.getData();
-            profilePhoto.setImageURI(fileUri);
-            // Upload image to server
-        } else if (resultCode == ImagePicker.RESULT_ERROR){
-            Toast.makeText(this, "Error occured", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+////        super.onActivityResult(requestCode, resultCode, data);
+////        if(resultCode == Activity.RESULT_OK){
+////            Uri fileUri = data.getData();
+////            profilePhoto.setImageURI(fileUri);
+////            // Upload image to server
+////        } else if (resultCode == ImagePicker.RESULT_ERROR){
+////            Toast.makeText(this, "Error occured", Toast.LENGTH_SHORT).show();
+////        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
