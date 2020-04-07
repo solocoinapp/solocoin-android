@@ -224,13 +224,12 @@ public class Phone2Verification extends AppCompatActivity {
         mAuth= FirebaseAuth.getInstance();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener( Phone2Verification.this, task -> {
-                    if (task.isComplete()) {
+                    if (task.isSuccessful()) {
                         //TODO - make isNewUser == false in if statement
 
                         String uid = task.getResult().getUser().getUid();
                         task.getResult().getUser().getIdToken(true).addOnCompleteListener(task1 -> {
                             String idToken = task1.getResult().getToken();
-
                             JsonObject body = new JsonObject();
                             JsonObject user = new JsonObject();
                             user.addProperty("country_code", sharedPref.getCountryCode());
@@ -238,7 +237,7 @@ public class Phone2Verification extends AppCompatActivity {
                             user.addProperty("uid", uid);
                             user.addProperty("id_token", idToken);
                             body.add("user", user);
-
+                            Log.d("xoxo, new user checks", "the raw body being sent is " + body.toString());
 //                            Log.d("xoxo, body", body.toString());
 
                             apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
@@ -252,6 +251,7 @@ public class Phone2Verification extends AppCompatActivity {
                                         JsonObject responseBody = response.body();
                                         Log.d("xoxo, responseBody", responseBody.toString());
                                         String authToken = responseBody.get("auth_token").getAsString();
+                                        authToken="Bearer " + authToken;
                                         sharedPref.setAuthtoken(authToken);
 
                                         Toast.makeText(getApplicationContext(), "Proud to be SOLO!" , Toast.LENGTH_SHORT).show();
