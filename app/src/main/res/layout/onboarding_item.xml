@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="140dp">
+        android:layout_marginTop="100dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
             <ImageView
                 android:id="@+id/iv_onboard"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 android:scaleType="centerCrop"
                 android:scaleX="1.2"
                 android:scaleY="1.2"
@@ -27,7 +27,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:paddingLeft="@dimen/ob_desc_padding"
                 android:paddingRight="@dimen/ob_desc_padding"
