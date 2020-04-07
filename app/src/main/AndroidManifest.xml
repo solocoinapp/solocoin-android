@@ -50,16 +50,16 @@
         <activity
             android:screenOrientation="sensorPortrait"
             android:name=".OnboardingActivity"
-            tools:ignore="LockedOrientationActivity">
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".HomeActivity"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".HomeActivity"
-            android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>
