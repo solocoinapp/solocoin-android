@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -90,40 +91,38 @@ public class HomeActivity extends AppCompatActivity {
             try {
                 lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
             } catch (SecurityException ex) {
+
                 Toast.makeText(this, "Error - please allow Location permission in Settings", Toast.LENGTH_LONG).show();
                 //finish();
                 startActivity(new Intent(HomeActivity.this,PermissionsActivity.class));
+
             }
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, HomeFragment.newInstance()).commit();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = HomeFragment.newInstance();
-                switch (item.getItemId()){
-                    case R.id.home:
-                        selectedFragment = HomeFragment.newInstance();
-                        break;
-                    case R.id.wallet:
-                        //todo:: inflate wallet fragment
-                        selectedFragment = WalletFragment.newInstance("","");
-                        break;
-                    case R.id.leader_board:
-                        //todo :: inflate leaderboard fragment
-                        selectedFragment = LeaderboardFragment.newInstance("","");
-                        break;
-                    case R.id.profile:
-                        selectedFragment = ProfileFragment.newInstance();
-                        break;
-                }
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.main_content, selectedFragment).commit();
-                return true;
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            Fragment selectedFragment = HomeFragment.newInstance();
+            switch (item.getItemId()){
+                case R.id.home:
+                    selectedFragment = HomeFragment.newInstance();
+                    break;
+                case R.id.wallet:
+                    //todo:: inflate wallet fragment
+                    selectedFragment = WalletFragment.newInstance("","");
+                    break;
+                case R.id.leader_board:
+                    //todo :: inflate leaderboard fragment
+                    selectedFragment = LeaderboardFragment.newInstance("","");
+                    break;
+                case R.id.profile:
+                    selectedFragment = ProfileFragment.newInstance();
+                    break;
             }
 
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_content, selectedFragment).commit();
+            return true;
         });
     }
 

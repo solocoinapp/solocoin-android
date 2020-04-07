@@ -75,9 +75,6 @@ public class HomeFragment extends Fragment {
                 if (userdata != null) {
                     uptime = userdata.get("home_duration_in_seconds").getAsLong();
                 }
-                else{
-                    Toast.makeText(getContext(),"This is a null object." , Toast.LENGTH_SHORT).show();
-                }
                 //long uptime = System.currentTimeMillis();
                 long days = TimeUnit.MILLISECONDS
                         .toDays(uptime);

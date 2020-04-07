@@ -281,7 +281,6 @@ public class Phone2Verification extends AppCompatActivity {
                         //FirebaseUser user = task.getResult( ).getUser( );
                         // ...
                     } else {
-                        Toast.makeText(Phone2Verification.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         if (task.getException( ) instanceof FirebaseAuthInvalidCredentialsException) {
                             Toast.makeText(Phone2Verification.this, "Invalid OTP. Please enter OTP again.",Toast.LENGTH_SHORT).show();
                             incorrect=true;
@@ -289,7 +288,7 @@ public class Phone2Verification extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(Phone2Verification.this, "Please try again!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Phone2Verification.this, "Please try again!", Toast.LENGTH_SHORT).show();
                 });
     }
 }
