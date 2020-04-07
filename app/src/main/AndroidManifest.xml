@@ -49,10 +49,10 @@
         <activity android:name=".CreateProfileActivity" />
         <activity
             android:screenOrientation="sensorPortrait"
-            android:name=".OnboardingActivity"
+            android:name=".HomeActivity"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".OnboardingActivity"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" >
             <intent-filter>
