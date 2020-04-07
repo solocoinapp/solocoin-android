@@ -19,6 +19,8 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.receiver.GeofenceBroadcastReceiver;
@@ -35,36 +37,24 @@ public class HomeActivity extends AppCompatActivity {
 
     private final LocationListener locationListener = new LocationListener() {
         @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {}
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
 
         @Override
-        public void onProviderEnabled(String s) {}
+        public void onProviderEnabled(String s) {
+        }
 
         @Override
-        public void onProviderDisabled(String s) {}
+        public void onProviderDisabled(String s) {
+        }
 
         @Override
         public void onLocationChanged(Location location) {
-            long timeout = System.currentTimeMillis() + 1000*60*60*24*7;
-
-            geofencingClient = LocationServices.getGeofencingClient(HomeActivity.this);
-            geofencesList = new ArrayList<Geofence>();
-            geofencesList.add(new Geofence.Builder()
-                    .setRequestId("GEOFENCE")
-                    .setCircularRegion(
-                        location.getLatitude(), location.getLongitude(), 100
-                    )
-                    .setExpirationDuration(timeout)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                    .build());
-
-            try{
-                if (sharedPref.getTimeout() > System.currentTimeMillis() + 1000*60*60*24*2) {
-                    geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
-                    sharedPref.setTimeout(timeout);
-                }
-            } catch (SecurityException e){
-                Toast.makeText(HomeActivity.this, "Please close and reopen the app while enabling the Location permission", Toast.LENGTH_SHORT).show();
+            if (!sharedPref.getIsHomeLocationSet()) {
+                sharedPref.setIsHomeLocationSet(true);
+                sharedPref.setLatitude((float) location.getLatitude());
+                sharedPref.setLongitude((float) location.getLongitude());
+                reinstateGeofence((float) location.getLatitude(), (float) location.getLongitude());
             }
         }
     };
@@ -86,35 +76,40 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (lm != null) {
-            try {
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
-            } catch (SecurityException ex) {
+        if (!(sharedPref.getIsHomeLocationSet())) {
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (lm != null) {
+                try {
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+                } catch (SecurityException ex) {
 
-                Toast.makeText(this, "Error - please allow Location permission in Settings", Toast.LENGTH_LONG).show();
-                //finish();
-                startActivity(new Intent(HomeActivity.this,PermissionsActivity.class));
+                    Toast.makeText(this, "Error - please allow Location permission in Settings", Toast.LENGTH_LONG).show();
+                    //finish();
+                    startActivity(new Intent(HomeActivity.this, PermissionsActivity.class));
 
+                }
             }
+        } else {
+            reinstateGeofence(sharedPref.getLatitude(), sharedPref.getLongitude());
         }
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, HomeFragment.newInstance()).commit();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             Fragment selectedFragment = HomeFragment.newInstance();
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.home:
                     selectedFragment = HomeFragment.newInstance();
                     break;
                 case R.id.wallet:
                     //todo:: inflate wallet fragment
-                    selectedFragment = WalletFragment.newInstance("","");
+                    selectedFragment = WalletFragment.newInstance("", "");
                     break;
                 case R.id.leader_board:
                     //todo :: inflate leaderboard fragment
-                    selectedFragment = LeaderboardFragment.newInstance("","");
+                    selectedFragment = LeaderboardFragment.newInstance("", "");
                     break;
                 case R.id.profile:
                     selectedFragment = ProfileFragment.newInstance();
@@ -124,6 +119,44 @@ public class HomeActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, selectedFragment).commit();
             return true;
         });
+    }
+
+    private void reinstateGeofence(float latitude, float longitude) {
+        geofencingClient.removeGeofences(getGeofencePendingIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        setGeofence(latitude, longitude);
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        setGeofence(latitude, longitude);
+                    }
+                });
+    }
+
+    private void setGeofence(float latitude, float longitude) {
+        long timeout = System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7;
+
+        geofencingClient = LocationServices.getGeofencingClient(HomeActivity.this);
+        geofencesList = new ArrayList<Geofence>();
+        geofencesList.add(new Geofence.Builder()
+                .setRequestId("GEOFENCE")
+                .setCircularRegion(
+                        latitude, longitude, 100
+                )
+                .setExpirationDuration(timeout)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build());
+
+        try {
+            geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
+            sharedPref.setTimeout(timeout);
+        } catch (SecurityException e) {
+            Toast.makeText(HomeActivity.this, "Please close and reopen the app while enabling the Location permission", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private GeofencingRequest getGeofencingRequest() {

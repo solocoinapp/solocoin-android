@@ -68,6 +68,24 @@ public class SharedPref {
         return pref.getBoolean(isHomeLocationSet,false);
     }
 
+    private static final String latitude = "latitude";
+
+    public void setLatitude(float latitude){
+        editor.putFloat("latitude", latitude);
+        editor.commit();
+    }
+
+    public float getLatitude() {return pref.getFloat("latitude", (float) 0);}
+
+    private static final String longitude = "longitude";
+
+    public void setLongitude(float longitude){
+        editor.putFloat("longitude", longitude);
+        editor.commit();
+    }
+
+    public float getLongitude() {return pref.getFloat("longitude", (float) 0);}
+
     private static final String USERNAME= "username";
     public void setUsername(String username){
         editor.putString(USERNAME,username);
@@ -127,7 +145,7 @@ public class SharedPref {
 //
 //    public String getGender(){ return pref.getString(GENDER,"");}
 
-     /**
+    /**
      * Method call when user log-out of application
      */
     public void clearSession() {
