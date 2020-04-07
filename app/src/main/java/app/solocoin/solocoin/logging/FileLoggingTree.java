@@ -19,48 +19,48 @@ public class FileLoggingTree extends Timber.DebugTree {
 
     @Override
     protected void log(int priority, String tag, String message, Throwable t) {
-        try {
-            String path = "Log";
-            String fileNameTimeStamp = new SimpleDateFormat("dd-MM-yyyy",
-                    Locale.getDefault()).format(new Date());
-            String logTimeStamp = new SimpleDateFormat("E MMM dd yyyy 'at' hh:mm:ss:SSS aaa",
-                    Locale.getDefault()).format(new Date());
-            String fileName = fileNameTimeStamp + ".html";
-
-            // Create file
-            File file  = generateFile(path, fileName,fileNameTimeStamp,logTimeStamp);
-
-            // If file created or exists save logs
-            if (file != null) {
-                FileWriter writer = new FileWriter(file, true);
-
-                if (null!=t){
-                    writer.append("<p style=\"background:lightgray;\"><strong "
-                            + "style=\"background:lightblue;\">&nbsp&nbsp")
-                            .append(logTimeStamp)
-                            .append(" :&nbsp&nbsp</strong><strong>&nbsp&nbsp")
-                            .append(tag)
-                            .append("</strong> - ")
-                            .append(message)
-                            .append("</p>")
-                            .append(t.toString())
-                    ;
-                }
-                writer.append("<p style=\"background:lightgray;\"><strong "
-                        + "style=\"background:lightblue;\">&nbsp&nbsp")
-                        .append(logTimeStamp)
-                        .append(" :&nbsp&nbsp</strong><strong>&nbsp&nbsp")
-                        .append(tag)
-                        .append("</strong> - ")
-                        .append(message)
-                        .append("</p>")
-               ;
-                writer.flush();
-                writer.close();
-            }
-        } catch (Exception e) {
-            Timber.e( "Error while logging into file : " + e );
-        }
+//        try {
+//            String path = "Log";
+//            String fileNameTimeStamp = new SimpleDateFormat("dd-MM-yyyy",
+//                    Locale.getDefault()).format(new Date());
+//            String logTimeStamp = new SimpleDateFormat("E MMM dd yyyy 'at' hh:mm:ss:SSS aaa",
+//                    Locale.getDefault()).format(new Date());
+//            String fileName = fileNameTimeStamp + ".html";
+//
+//            // Create file
+//            File file  = generateFile(path, fileName,fileNameTimeStamp,logTimeStamp);
+//
+//            // If file created or exists save logs
+//            if (file != null) {
+//                FileWriter writer = new FileWriter(file, true);
+//
+//                if (null!=t){
+//                    writer.append("<p style=\"background:lightgray;\"><strong "
+//                            + "style=\"background:lightblue;\">&nbsp&nbsp")
+//                            .append(logTimeStamp)
+//                            .append(" :&nbsp&nbsp</strong><strong>&nbsp&nbsp")
+//                            .append(tag)
+//                            .append("</strong> - ")
+//                            .append(message)
+//                            .append("</p>")
+//                            .append(t.toString())
+//                    ;
+//                }
+//                writer.append("<p style=\"background:lightgray;\"><strong "
+//                        + "style=\"background:lightblue;\">&nbsp&nbsp")
+//                        .append(logTimeStamp)
+//                        .append(" :&nbsp&nbsp</strong><strong>&nbsp&nbsp")
+//                        .append(tag)
+//                        .append("</strong> - ")
+//                        .append(message)
+//                        .append("</p>")
+//               ;
+//                writer.flush();
+//                writer.close();
+//            }
+//        } catch (Exception e) {
+//            Timber.e( "Error while logging into file : " + e );
+//        }
     }
 
     @Override
