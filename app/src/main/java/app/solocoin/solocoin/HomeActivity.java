@@ -91,7 +91,11 @@ public class HomeActivity extends AppCompatActivity {
             try {
                 lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
             } catch (SecurityException ex) {
-                Toast.makeText(this, "Please allow Location permission", Toast.LENGTH_LONG).show();
+
+                Toast.makeText(this, "Error - please allow Location permission in Settings", Toast.LENGTH_LONG).show();
+                //finish();
+                startActivity(new Intent(HomeActivity.this,PermissionsActivity.class));
+
             }
         }
 
