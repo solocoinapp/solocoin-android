@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,6 +56,7 @@ public class HomeFragment extends Fragment {
         time = getView().findViewById(R.id.time);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = currentUser.getUid();
+        Log.d("xoxo, homeauthtoken", "the auth_token is: " + sharedPref.getAuthtoken());
         //JsonObject body = new JsonObject();
         //body.addProperty("auth_token", uid);
         APIService apiService = APIClient.getRetrofitInstance(getContext()).create(APIService.class);
@@ -68,7 +71,13 @@ public class HomeFragment extends Fragment {
                 else{
                     Timber.d("Response body is not null: " + response.body().toString());
                 }
-                long uptime = userdata.get("home_duration_in_seconds").getAsLong();
+                long uptime = 0;
+                if (userdata != null) {
+                    uptime = userdata.get("home_duration_in_seconds").getAsLong();
+                }
+                else{
+                    Toast.makeText(getContext(),"This is a null object." , Toast.LENGTH_SHORT).show();
+                }
                 //long uptime = System.currentTimeMillis();
                 long days = TimeUnit.MILLISECONDS
                         .toDays(uptime);

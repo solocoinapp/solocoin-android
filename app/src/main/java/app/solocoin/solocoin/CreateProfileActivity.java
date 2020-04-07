@@ -16,6 +16,7 @@ import timber.log.Timber;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,30 +76,36 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         countryCode = sharedPref.getCountryCode();
         // TODO: do something special if phoneNumber or country code is null.
         binding.usernameField.setText(sharedPref.getUsername());
+        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUid = currentuser.getUid();
         // Check for User already created
-        JsonObject mobileLoginBody = new JsonObject();
-        mobileLoginBody.addProperty("mobile", phoneNumber);
-        apiService.doMobileLogin(mobileLoginBody).enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.code() == 200) {
-                    Intent intent1 = new Intent(CreateProfileActivity.this, HomeActivity.class);
-                    startActivity(intent1);
-                } else {
-                    Toast.makeText(CreateProfileActivity.this, "Existing user check fail.", Toast.LENGTH_SHORT).show();
-                }
-            }
+//        JsonObject mobileLoginBody = new JsonObject();
+//        mobileLoginBody.addProperty("mobile", phoneNumber);
+//        apiService.doMobileLogin(mobileLoginBody).enqueue(new Callback<JsonObject>() {
+//            @Override
+//            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//                sharedPref.setHttpResponse(response.code());
+//                if (response.code() == 200) {
+//                    Intent intent1 = new Intent(CreateProfileActivity.this, HomeActivity.class);
+//                    startActivity(intent1);
+//                } else {
+//                    Toast.makeText(CreateProfileActivity.this, "Existing user check fail.", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                // Would a 404 land here? - No since 404 is still a value returned.
+//            }
+//        });
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                // Would a 404 land here? - No since 404 is still a value returned.
-            }
-        });
-    
+
     }
 
     private void createProfile(String username, String phoneNumber, String uid){
         JsonObject body = new JsonObject();
+        id_token= sharedPref.getIdToken();
+        Log.d("xoxo,idtokenprofile", "id token is: " + id_token);
         UserSignUp user = new UserSignUp(id_token,uid,username,phoneNumber,countryCode);
 
         PostUser postUser = new PostUser(user);

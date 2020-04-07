@@ -34,7 +34,7 @@ public interface APIService {
     Call<JsonObject> doRegisterNotificationToken(@Body JsonObject body);
 
     @Headers("Content-Type: application/json")
-    @PUT("sessions/ping")
+    @POST("sessions/ping")
     Call<JsonObject> startSession(@Header("Authorization") String authtoken,@Body JsonObject body);
 
     @Headers("Content-Type: application/json")
