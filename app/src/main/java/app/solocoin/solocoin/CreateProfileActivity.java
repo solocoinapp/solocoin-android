@@ -16,6 +16,7 @@ import timber.log.Timber;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -104,6 +105,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     private void createProfile(String username, String phoneNumber, String uid){
         JsonObject body = new JsonObject();
         id_token= sharedPref.getIdToken();
+        Log.d("xoxo,idtokenprofile", "id token is: " + id_token);
         UserSignUp user = new UserSignUp(id_token,uid,username,phoneNumber,countryCode);
 
         PostUser postUser = new PostUser(user);

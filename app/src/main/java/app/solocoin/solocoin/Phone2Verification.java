@@ -230,6 +230,7 @@ public class Phone2Verification extends AppCompatActivity {
                         String uid = task.getResult().getUser().getUid();
                         task.getResult().getUser().getIdToken(true).addOnCompleteListener(task1 -> {
                             String idToken = task1.getResult().getToken();
+                            sharedPref.setIdToken(idToken);
                             JsonObject body = new JsonObject();
                             JsonObject user = new JsonObject();
                             user.addProperty("country_code", sharedPref.getCountryCode());
