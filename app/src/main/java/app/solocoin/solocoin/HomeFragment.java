@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
@@ -33,7 +34,7 @@ import timber.log.Timber;
 public class HomeFragment extends Fragment {
     private SharedPref sharedPref;
     TextView time;
-
+    private String lat,lng;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -52,6 +53,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         sharedPref = SharedPref.getInstance(getContext());
         time = getView().findViewById(R.id.time);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -72,10 +74,19 @@ public class HomeFragment extends Fragment {
                     Timber.d("Response body is not null: " + response.body().toString());
                 }
                 long uptime = 0;
+                lat="";
+                lng="";
                 if (userdata != null) {
                     uptime = userdata.get("home_duration_in_seconds").getAsLong();
+
                 }
-                //long uptime = System.currentTimeMillis();
+                //long uptime = System.currentTimeMillis()
+                if (!userdata.has("lat") && !userdata.has("lng")){
+                    sharedPref.setIsHomeLocationSet(false);
+                }
+                else{
+                    sharedPref.setIsHomeLocationSet(true);
+                }
                 long days = TimeUnit.MILLISECONDS
                         .toDays(uptime);
                 uptime -= TimeUnit.DAYS.toMillis(days);
