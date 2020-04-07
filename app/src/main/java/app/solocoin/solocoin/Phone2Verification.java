@@ -47,6 +47,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -268,7 +269,7 @@ public class Phone2Verification extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         if (task.isSuccessful()){
-                            id_token= task.getResult().getToken();
+                            id_token= Objects.requireNonNull(task.getResult()).getToken();
                             //String authtoken = "Bearer " + id_token;
                             sharedPref.setIdToken(id_token);
                             Timber.d("the firebase id token is: "+id_token + "\n");
@@ -280,8 +281,8 @@ public class Phone2Verification extends AppCompatActivity {
                 });
         String mobile = sharedPref.getPhoneNumber();
         String cc = sharedPref.getCountryCode();
-        String id_token = sharedPref.getIdToken();
-        UserLogin userLogin = new UserLogin(id_token,firebaseUid,mobile,cc);
+        String id2_token = sharedPref.getIdToken();
+        UserLogin userLogin = new UserLogin(id2_token,firebaseUid,mobile,cc);
         PostUserLogin postUserLogin=new PostUserLogin(userLogin);
         Gson gson =new Gson();
         String json= gson.toJson(postUserLogin);
