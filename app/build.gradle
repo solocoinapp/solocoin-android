@@ -7,6 +7,14 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
+    signingConfigs {
+        config {
+            storeFile file('C:\\Users\\lenovo\\Desktop\\keystore.jks')
+            storePassword 'Solocoin'
+            keyAlias = 'Solocoin'
+            keyPassword 'solocoin'
+        }
+    }
     compileSdkVersion 29
     defaultConfig {
         applicationId "app.solocoin.solocoin"
@@ -23,6 +31,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+            debuggable = false
         }
     }
     compileOptions {
