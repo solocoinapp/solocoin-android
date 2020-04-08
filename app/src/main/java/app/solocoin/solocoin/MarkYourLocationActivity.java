@@ -114,15 +114,11 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
     
-    public static final String LOC_ADDED = "app.solocoin.solocoin.MarkYourLocationActivity.LOC_ADDED";
     @Override
     public void onClick(View view) {
         Toast.makeText(this, "Location added.!", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this,PermissionsActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("LOC_ADDED", true);
-
-        SharedPref.getInstance(MarkYourLocationActivity.this).setIsHomeLocationSet(true);
-
         startActivity(intent);
     }
 }
