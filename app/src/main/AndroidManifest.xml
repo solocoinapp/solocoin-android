@@ -46,21 +46,16 @@
         <activity android:name=".Main2Activity" />
         <activity android:name=".Phone1Verification" />
         <activity android:name=".Phone2Verification" />
-        <activity android:name=".PermissionsActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".PermissionsActivity" />
         <activity android:name=".CreateProfileActivity" />
         <activity
             android:screenOrientation="sensorPortrait"
             android:name=".HomeActivity"
             tools:ignore="LockedOrientationActivity" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".OnboardingActivity"
