@@ -244,8 +244,6 @@ public class Phone2Verification extends AppCompatActivity {
                             apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
                                 @Override
                                 public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
-//                                    Log.d("xoxo", response.code()+"");
-//                                    Log.d("xoxo", response.body()+"");
                                     if (response.code() == 200) {
                                         //existing user case
 
@@ -259,7 +257,7 @@ public class Phone2Verification extends AppCompatActivity {
                                         Intent intent =new Intent(Phone2Verification.this, HomeActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
-                                        finish();;
+                                        finish();
 
                                     } else if (response.code() == 401) {
                                         //new user case

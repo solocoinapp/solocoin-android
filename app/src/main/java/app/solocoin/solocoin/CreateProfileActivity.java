@@ -9,6 +9,7 @@ import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import app.solocoin.solocoin.util.AppPermissionChecker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -163,7 +164,17 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                 .setConstraints(constraints)
                 .build();
         WorkManager.getInstance().enqueue(sendSession);
-        startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
+        if (AppPermissionChecker.isLocationPermissionGranted(this)) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(this,Welcome.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
