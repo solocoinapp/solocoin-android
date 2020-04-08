@@ -25,7 +25,6 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcome"></activity>
 
         <receiver
             android:name=".receiver.GeofenceBroadcastReceiver"
@@ -39,6 +38,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <activity android:name=".Welcome" />
         <activity android:name=".MarkYourLocationActivity" />
         <activity android:name=".Policy" />
         <activity android:name=".ToS" />
@@ -51,16 +51,16 @@
         <activity
             android:screenOrientation="sensorPortrait"
             android:name=".HomeActivity"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".OnboardingActivity"
-            android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".OnboardingActivity"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>

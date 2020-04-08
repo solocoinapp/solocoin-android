@@ -9,7 +9,7 @@ apply plugin: 'com.google.firebase.firebase-perf'
 android {
     signingConfigs {
         config {
-            storeFile file('C:\\Users\\lenovo\\Desktop\\keystore.jks')
+//            storeFile file('C:\\Users\\lenovo\\Desktop\\keystore.jks')
             storePassword 'Solocoin'
             keyAlias = 'Solocoin'
             keyPassword 'solocoin'
