@@ -113,12 +113,13 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
         super.onPause();
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
-    
+
     @Override
     public void onClick(View view) {
         Toast.makeText(this, "Location added.!", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, PermissionsActivity.class);
         intent.putExtra("LOC_ADDED", true);
+        SharedPref.getInstance(MarkYourLocationActivity.this).setIsHomeLocationSet(true);
         startActivity(intent);
     }
 }

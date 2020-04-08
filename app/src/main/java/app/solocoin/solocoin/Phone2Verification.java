@@ -248,13 +248,12 @@ public class Phone2Verification extends AppCompatActivity {
                                         //existing user case
 
                                         JsonObject responseBody = response.body();
-                                        Log.d("xoxo, responseBody", responseBody.toString());
                                         String authToken = responseBody.get("auth_token").getAsString();
                                         authToken="Bearer " + authToken;
                                         sharedPref.setAuthtoken(authToken);
 
                                         Toast.makeText(getApplicationContext(), "Proud to be SOLO!" , Toast.LENGTH_SHORT).show();
-                                        Intent intent =new Intent(Phone2Verification.this, HomeActivity.class);
+                                        Intent intent =new Intent(Phone2Verification.this, PermissionsActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();

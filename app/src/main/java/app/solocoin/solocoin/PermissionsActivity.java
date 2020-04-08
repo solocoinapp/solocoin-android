@@ -53,7 +53,7 @@ public class PermissionsActivity extends AppCompatActivity {
                 requestPermission();
                 return;
             }
-            Intent intent = new Intent(this, MarkYourLocationActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();

@@ -6,6 +6,8 @@ import app.solocoin.solocoin.app.SharedPref;
 import developers.mobile.abt.FirebaseAbt;
 import timber.log.Timber;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -63,9 +67,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void logout(){
-        SharedPref.getInstance(getActivity()).clearSession();
-        FirebaseAuth.getInstance().signOut();
-        Intent intent2 = new Intent(getActivity(),OnboardingActivity.class);
-        startActivity(intent2);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setPositiveButton("Logout", (dialogInterface, i) -> {
+            SharedPref.getInstance(getActivity()).clearSession();
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getContext(), OnboardingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            Objects.requireNonNull(getActivity()).finish();
+        }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).setTitle("Please confirm!").setMessage("Do you really want to logout!!!").show();
     }
 }
