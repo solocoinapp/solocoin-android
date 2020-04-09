@@ -164,7 +164,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                 .setConstraints(constraints)
                 .build();
         WorkManager.getInstance().enqueue(sendSession);
-        Intent intent = new Intent(this, PermissionsActivity.class);
+        Intent intent = new Intent(this, MarkYourLocationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
