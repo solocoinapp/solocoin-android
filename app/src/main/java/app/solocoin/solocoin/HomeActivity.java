@@ -40,6 +40,7 @@ import java.util.List;
 
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.receiver.GeofenceBroadcastReceiver;
+import app.solocoin.solocoin.util.AppPermissionChecker;
 import timber.log.Timber;
 
 @SuppressLint("LogNotTimber")
@@ -89,22 +90,22 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-        if (!(sharedPref.getIsHomeLocationSet()) ) {
-            if (displayLocationSettingsRequest(this)) {
-                LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                if (lm != null) {
-                    try {
-                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
-                    } catch (SecurityException ex) {
-                        Toast.makeText(this, "Error - please allow Location permission in Settings", Toast.LENGTH_LONG).show();
-                        //finish();
-                        startActivity(new Intent(HomeActivity.this, PermissionsActivity.class));
-                    }
-                }
-            }
-        } else {
-            reinstateGeofence(sharedPref.getLatitude(), sharedPref.getLongitude());
-        }
+//        if (AppPermissionChecker.isLocationPermissionGranted(this)) {
+//            if (displayLocationSettingsRequest(this)) {
+//                LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                if (lm != null) {
+//                    try {
+//                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+//                    } catch (SecurityException ex) {
+//                        Toast.makeText(this, "Please allow Location permission in Settings", Toast.LENGTH_LONG).show();
+//                        //finish();
+//                        startActivity(new Intent(HomeActivity.this, PermissionsActivity.class));
+//                    }
+//                }
+//            }
+//        } else {
+//            reinstateGeofence(sharedPref.getLatitude(), sharedPref.getLongitude());
+//        }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, HomeFragment.newInstance()).commit();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -135,6 +136,28 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (AppPermissionChecker.isLocationPermissionGranted(this)) {
+            if (displayLocationSettingsRequest(this)) {
+                LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (lm != null) {
+                    try {
+                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+                    } catch (SecurityException ex) {
+                        Toast.makeText(this, "Please allow Location permission in Settings", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(HomeActivity.this, PermissionsActivity.class));
+                    }
+                }
+            }
+            reinstateGeofence(sharedPref.getLatitude(), sharedPref.getLongitude());
+        }
+//        if (displayLocationSettingsRequest(this)) {
+//            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//            if (lm != null) {
+//                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+//                }
+//            }
+//        }
     }
 
     private boolean displayLocationSettingsRequest(Context context) {
