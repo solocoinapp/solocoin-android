@@ -164,17 +164,21 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                 .setConstraints(constraints)
                 .build();
         WorkManager.getInstance().enqueue(sendSession);
-        if (AppPermissionChecker.isLocationPermissionGranted(this)) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        } else {
-            Intent intent = new Intent(this,Welcome.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        }
+        Intent intent = new Intent(this, PermissionsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+//        if (AppPermissionChecker.isLocationPermissionGranted(this)) {
+//            Intent intent = new Intent(this, PermissionsActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//            finish();
+//        } else {
+//            Intent intent = new Intent(this, Welcome.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//            finish();
+//        }
     }
 
     @Override
