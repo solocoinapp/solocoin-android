@@ -216,8 +216,17 @@ public class Phone2Verification extends AppCompatActivity {
     };
 
     private void verifyCode(String otpByUser) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpBySystem, otpByUser);
-        signInWithPhoneAuthCredential(credential);
+        try {
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpBySystem, otpByUser);
+            signInWithPhoneAuthCredential(credential);
+        } catch (Exception ex) {
+            Log.d(TAG, "Error: " + ex.getMessage());
+            if (ex.getMessage() != null && ex.getMessage().contains("Cannot create PhoneAuthCredential")) {
+                Toast.makeText(this, "Otp validation error, please contact team!!!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Toast.makeText(this, "Please try again!!!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
