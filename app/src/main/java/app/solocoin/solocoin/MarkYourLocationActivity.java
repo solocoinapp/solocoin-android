@@ -1,14 +1,20 @@
 package app.solocoin.solocoin;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import app.solocoin.solocoin.app.SharedPref;
+import app.solocoin.solocoin.util.AppPermissionChecker;
 import timber.log.Timber;
 
 public class MarkYourLocationActivity extends FragmentActivity implements OnMapReadyCallback, OnSuccessListener<Location>, View.OnClickListener {
@@ -91,6 +98,10 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
         findViewById(R.id.btn_confirm).setOnClickListener(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (!AppPermissionChecker.isLocationPermissionGranted(this)){
+            requestPermission();
+            return;
+        }
         LocationRequest request = new LocationRequest()
                 .setInterval(80000L)
                 .setFastestInterval(50000L)
@@ -102,10 +113,18 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
         mapFragment.getMapAsync(this);
     }
 
+    private void setUpMap(){
+        if (!AppPermissionChecker.isLocationPermissionGranted(this)){
+            requestPermission();
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMyLocationEnabled(true);
+        setUpMap();
     }
 
     @Override
@@ -116,10 +135,55 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnMapR
 
     @Override
     public void onClick(View view) {
+        if (!AppPermissionChecker.isLocationPermissionGranted(this)){
+            Toast.makeText(this,"We can't help you in social distancing without your location. Don't worry, it's safe with us!",Toast.LENGTH_SHORT).show();
+            requestPermission();
+            //return;
+            startActivity(new Intent(this,MarkYourLocationActivity.class));
+        }
         Toast.makeText(this, "Location added.!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, PermissionsActivity.class);
         intent.putExtra("LOC_ADDED", true);
         SharedPref.getInstance(MarkYourLocationActivity.this).setIsHomeLocationSet(true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(AppPermissionChecker.isLocationPermissionGranted(this)){
+            Toast.makeText(this,"Thanks for allowing permission, you can continue...",Toast.LENGTH_SHORT).show();
+            //changeLocationBtnColor();
+        }
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 101) {
+            for (int i = 0, len = permissions.length; i < len; i++) {
+                String permission = permissions[i];
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    boolean showRationale = shouldShowRequestPermissionRationale(permission);
+                    if (!showRationale) {
+                        Toast.makeText(this, "Please allow us to access location, for working efficienlty", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                    }
+                } else {
+                    Toast.makeText(this,"Thanks for allowing permission, you can continue...",Toast.LENGTH_SHORT).show();
+                    //changeLocationBtnColor();
+                }
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }

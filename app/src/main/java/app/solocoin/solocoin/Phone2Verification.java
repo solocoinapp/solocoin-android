@@ -253,7 +253,7 @@ public class Phone2Verification extends AppCompatActivity {
                                         sharedPref.setAuthtoken(authToken);
 
                                         Toast.makeText(getApplicationContext(), "Proud to be SOLO!" , Toast.LENGTH_SHORT).show();
-                                        Intent intent =new Intent(Phone2Verification.this, PermissionsActivity.class);
+                                        Intent intent =new Intent(Phone2Verification.this, HomeActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
