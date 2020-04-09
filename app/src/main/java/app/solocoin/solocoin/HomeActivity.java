@@ -89,7 +89,7 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-        if (!(sharedPref.getIsHomeLocationSet())) {
+        if (!(sharedPref.getIsHomeLocationSet()) ) {
             if (displayLocationSettingsRequest(this)) {
                 LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 if (lm != null) {
@@ -193,6 +193,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void reinstateGeofence(float latitude, float longitude) {
+        geofencingClient=LocationServices.getGeofencingClient(this);
         geofencingClient.removeGeofences(getGeofencePendingIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
