@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance() {
+    static HomeFragment newInstance() {
         return new HomeFragment();
     }
 
@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         sharedPref = SharedPref.getInstance(getContext());
-        time = getView().findViewById(R.id.time);
+        time = view.findViewById(R.id.time);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = currentUser.getUid();
         Log.d("xoxo, homeauthtoken", "the auth_token is: " + sharedPref.getAuthtoken());
