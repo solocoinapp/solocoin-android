@@ -110,13 +110,14 @@ public class SharedPref {
 
     public String getTime(){return pref.getString(TIME,"00:00:00");}
 
-    private static final String SESSIONTYPE= "sessiontype";
-    public void setSessiontype(String type){
-        editor.putString(SESSIONTYPE,type);
+    private static final String SESSION_TYPE = "SESSION_TYPE";
+    public void setSessionType(String type){
+        editor.putString(SESSION_TYPE, type);
         editor.commit();
     }
-
-    public String getSessiontype(){return pref.getString(SESSIONTYPE,"");}
+    public String getSessionType() {
+        return pref.getString(SESSION_TYPE,null);
+    }
 
     //For Firebase Token generated
     private static final String ID_TOKEN="id_token";

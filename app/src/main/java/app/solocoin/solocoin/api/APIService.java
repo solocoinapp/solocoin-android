@@ -23,7 +23,7 @@ public interface APIService {
 
     @Headers("Content-Type: application/json")
     @GET("user/profile")
-    Call<JsonObject> showUserData(@Header("Authorization") String authtoken);
+    Call<JsonObject> showUserData(@Header("Authorization") String authToken);
 
     @Headers("Content-Type: application/json")
     @POST("user")
@@ -35,9 +35,9 @@ public interface APIService {
 
     @Headers("Content-Type: application/json")
     @POST("sessions/ping")
-    Call<JsonObject> startSession(@Header("Authorization") String authtoken,@Body JsonObject body);
+    Call<JsonObject> pingSession(@Header("Authorization") String authToken, @Body JsonObject body);
 
-    @Headers("Content-Type: application/json")
-    @POST("sessions/end")
-    Call<JsonObject> endSession(@Body JsonObject body);
+//    @Headers("Content-Type: application/json")
+//    @POST("sessions/end")
+//    Call<JsonObject> endSession(@Body JsonObject body);
 }

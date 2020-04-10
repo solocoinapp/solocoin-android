@@ -19,6 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -37,11 +43,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.receiver.GeofenceBroadcastReceiver;
+import app.solocoin.solocoin.receiver.SessionPingManager;
 import app.solocoin.solocoin.util.AppPermissionChecker;
-import timber.log.Timber;
 
 @SuppressLint("LogNotTimber")
 public class HomeActivity extends AppCompatActivity {
@@ -90,23 +98,6 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-//        if (AppPermissionChecker.isLocationPermissionGranted(this)) {
-//            if (displayLocationSettingsRequest(this)) {
-//                LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                if (lm != null) {
-//                    try {
-//                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
-//                    } catch (SecurityException ex) {
-//                        Toast.makeText(this, "Please allow Location permission in Settings", Toast.LENGTH_LONG).show();
-//                        //finish();
-//                        startActivity(new Intent(HomeActivity.this, PermissionsActivity.class));
-//                    }
-//                }
-//            }
-//        } else {
-//            reinstateGeofence(sharedPref.getLatitude(), sharedPref.getLongitude());
-//        }
-
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, HomeFragment.newInstance()).commit();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -116,11 +107,9 @@ public class HomeActivity extends AppCompatActivity {
                     selectedFragment = HomeFragment.newInstance();
                     break;
                 case R.id.wallet:
-                    //todo:: inflate wallet fragment
                     selectedFragment = WalletFragment.newInstance("", "");
                     break;
                 case R.id.leader_board:
-                    //todo :: inflate leaderboard fragment
                     selectedFragment = LeaderboardFragment.newInstance("", "");
                     break;
                 case R.id.profile:
@@ -131,6 +120,37 @@ public class HomeActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, selectedFragment).commit();
             return true;
         });
+    }
+
+    private void createWorkRequest() {
+        Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder
+                (SessionPingManager.class, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(SessionPingManager.TAG, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
+    }
+
+    private WorkInfo.State getStateOfWork() {
+        try {
+            if (WorkManager.getInstance(this).getWorkInfosForUniqueWork(SessionPingManager.TAG).get().size() > 0) {
+                return WorkManager.getInstance(this).getWorkInfosForUniqueWork(SessionPingManager.TAG).get().get(0).getState();
+            } else {
+                return WorkInfo.State.CANCELLED;
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return WorkInfo.State.CANCELLED;
+        }
+    }
+
+    private void startSessionPingManager() {
+        if (getStateOfWork() != WorkInfo.State.ENQUEUED && getStateOfWork() != WorkInfo.State.RUNNING) {
+            createWorkRequest();
+            Log.wtf("xolo", ": server started");
+        } else {
+            Log.wtf("xolo", ": server already working");
+        }
     }
 
     @Override
@@ -150,14 +170,10 @@ public class HomeActivity extends AppCompatActivity {
             }
             reinstateGeofence(sharedPref.getLatitude(), sharedPref.getLongitude());
         }
-//        if (displayLocationSettingsRequest(this)) {
-//            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//            if (lm != null) {
-//                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
-//                }
-//            }
-//        }
+
+        if (sharedPref.getAuthtoken() != null) {
+            startSessionPingManager();
+        }
     }
 
     private boolean displayLocationSettingsRequest(Context context) {
@@ -166,7 +182,7 @@ public class HomeActivity extends AppCompatActivity {
         googleApiClient.connect();
 
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(10000 / 2);
 
@@ -240,7 +256,7 @@ public class HomeActivity extends AppCompatActivity {
         geofencesList.add(new Geofence.Builder()
                 .setRequestId("GEOFENCE")
                 .setCircularRegion(
-                        latitude, longitude, 100
+                        latitude, longitude, 20
                 )
                 .setExpirationDuration(timeout)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
