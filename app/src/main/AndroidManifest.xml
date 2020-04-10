@@ -24,10 +24,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <receiver
-            android:name=".receiver.GeofenceBroadcastReceiver"
+        <service
+            android:name=".receiver.GeofenceRegistrationService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -47,7 +47,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import app.solocoin.solocoin.app.SharedPref;
-import app.solocoin.solocoin.receiver.GeofenceBroadcastReceiver;
+import app.solocoin.solocoin.receiver.GeofenceRegistrationService;
 import app.solocoin.solocoin.receiver.SessionPingManager;
 import app.solocoin.solocoin.util.AppPermissionChecker;
 
@@ -55,8 +55,9 @@ import app.solocoin.solocoin.util.AppPermissionChecker;
 public class HomeActivity extends AppCompatActivity {
 
     private GeofencingClient geofencingClient;
-    private List<Geofence> geofencesList;
-    PendingIntent geofencePendingIntent;
+    private List<Geofence> geofenceList;
+    private SharedPref sharedPref;
+    private PendingIntent geofencePendingIntent;
 
     private final LocationListener locationListener = new LocationListener() {
         @Override
@@ -82,15 +83,13 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    private SharedPref sharedPref;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sharedPref = SharedPref.getInstance(this);
 
-        if (sharedPref.getAuthtoken() == null) {
+        if (sharedPref.getAuthToken() == null) {
             Intent intent = new Intent(HomeActivity.this, OnboardingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -171,7 +170,7 @@ public class HomeActivity extends AppCompatActivity {
             reinstateGeofence(sharedPref.getLatitude(), sharedPref.getLongitude());
         }
 
-        if (sharedPref.getAuthtoken() != null) {
+        if (sharedPref.getAuthToken() != null) {
             startSessionPingManager();
         }
     }
@@ -252,8 +251,8 @@ public class HomeActivity extends AppCompatActivity {
         long timeout = System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7;
 
         geofencingClient = LocationServices.getGeofencingClient(HomeActivity.this);
-        geofencesList = new ArrayList<Geofence>();
-        geofencesList.add(new Geofence.Builder()
+        geofenceList = new ArrayList<Geofence>();
+        geofenceList.add(new Geofence.Builder()
                 .setRequestId("GEOFENCE")
                 .setCircularRegion(
                         latitude, longitude, 100
@@ -273,7 +272,7 @@ public class HomeActivity extends AppCompatActivity {
     private GeofencingRequest getGeofencingRequest() {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofences(geofencesList);
+        builder.addGeofences(geofenceList);
         return builder.build();
     }
 
@@ -282,7 +281,7 @@ public class HomeActivity extends AppCompatActivity {
         if (geofencePendingIntent != null) {
             return geofencePendingIntent;
         }
-        Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
+        Intent intent = new Intent(this, GeofenceRegistrationService.class);
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
         // calling addGeofences() and removeGeofences().
         geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.

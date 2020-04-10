@@ -11,11 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
@@ -58,11 +56,11 @@ public class HomeFragment extends Fragment {
         time = view.findViewById(R.id.time);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = currentUser.getUid();
-        Log.d("xoxo, homeauthtoken", "the auth_token is: " + sharedPref.getAuthtoken());
+        Log.d("xoxo, homeauthtoken", "the auth_token is: " + sharedPref.getAuthToken());
         //JsonObject body = new JsonObject();
         //body.addProperty("auth_token", uid);
         APIService apiService = APIClient.getRetrofitInstance(getContext()).create(APIService.class);
-        apiService.showUserData(sharedPref.getAuthtoken()).enqueue(new Callback<JsonObject>() {
+        apiService.showUserData(sharedPref.getAuthToken()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 //long uptime = System.currentTimeMillis();
