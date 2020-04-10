@@ -182,7 +182,7 @@ public class HomeActivity extends AppCompatActivity {
         googleApiClient.connect();
 
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(10000 / 2);
 
@@ -256,7 +256,7 @@ public class HomeActivity extends AppCompatActivity {
         geofencesList.add(new Geofence.Builder()
                 .setRequestId("GEOFENCE")
                 .setCircularRegion(
-                        latitude, longitude, 100
+                        latitude, longitude, 20
                 )
                 .setExpirationDuration(timeout)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
