@@ -54,7 +54,7 @@ public class GeofenceRegistrationService extends IntentService {
             List<Geofence> geofences = geofencingEvent.getTriggeringGeofences();
             Geofence geofence = geofences.get(0);
             if (transaction == Geofence.GEOFENCE_TRANSITION_ENTER && geofence.getRequestId().equals("SOLOCOIN")) {
-                Log.d(TAG, "You are inside Tacme");
+
             } else {
                 Log.d(TAG, "You are outside Tacme");
             }

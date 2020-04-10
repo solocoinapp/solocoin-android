@@ -230,8 +230,6 @@ public class Phone2Verification extends AppCompatActivity {
                             user.addProperty("uid", uid);
                             user.addProperty("id_token", idToken);
                             body.add("user", user);
-                            Log.d("xoxo, new user checks", "the raw body being sent is " + body.toString());
-//                            Log.d("xoxo, body", body.toString());
 
                             apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
                                 @Override

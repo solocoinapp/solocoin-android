@@ -18,33 +18,23 @@ public class SharedPref {
         return instance;
     }
 
-    private static final String TIMEOUT = "timeout";
-    public void setTimeout(long timeout){
-        editor.putLong(TIMEOUT, timeout);
-        editor.commit();
-    }
-    public int getTimeout(){
-        return pref.getInt(TIMEOUT, 0);
-    }
-
     private static final String COUNTRY_CODE = "country_code";
     public void setCountryCode(String code){
         editor.putString(COUNTRY_CODE, code);
         editor.commit();
     }
     public String getCountryCode(){
-        return pref.getString(COUNTRY_CODE, "");
+        return pref.getString(COUNTRY_CODE, null);
     }
 
-    private static final String PHONE_NUMBER = "phone_number";
+    private static final String PHONE_NUMBER = "PHONE_NUMBER";
     public void setPhoneNumber(String number){
         editor.putString(PHONE_NUMBER, number);
         editor.commit();
     }
     public String getPhoneNumber(){
-        return pref.getString(PHONE_NUMBER, "");
+        return pref.getString(PHONE_NUMBER, null);
     }
-
 
     private static final String wallet_balance = "wallet_balance";
 
