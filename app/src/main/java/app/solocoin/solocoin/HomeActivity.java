@@ -1,13 +1,14 @@
 package app.solocoin.solocoin;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,10 +19,12 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -33,11 +36,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import app.solocoin.solocoin.app.SharedPref;
+import app.solocoin.solocoin.receiver.GeofenceRegistrationService;
 import app.solocoin.solocoin.receiver.SessionPingManager;
 import app.solocoin.solocoin.util.AppPermissionChecker;
 
 @SuppressLint("LogNotTimber")
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private static final String TAG = HomeActivity.class.getSimpleName();
+//    private static final String TAG = "xolo";
+    private GoogleApiClient googleApiClient;
+    private PendingIntent pendingIntent;
+    private static final int GEOFENCE_RADIUS = 3000;
 
     private SharedPref sharedPref;
 
@@ -55,6 +65,11 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
         startSessionPingManager();
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).build();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, HomeFragment.newInstance()).commit();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -86,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
                 (SessionPingManager.class, 15, TimeUnit.MINUTES)
                 .setConstraints(constraints)
                 .build();
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(SessionPingManager.TAG, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(SessionPingManager.TAG, ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest);
     }
 
     private WorkInfo.State getStateOfWork() {
@@ -105,28 +120,27 @@ public class HomeActivity extends AppCompatActivity {
     private void startSessionPingManager() {
         if (getStateOfWork() != WorkInfo.State.ENQUEUED && getStateOfWork() != WorkInfo.State.RUNNING) {
             createWorkRequest();
-            Log.wtf("xolo", ": server started");
+            Log.wtf(TAG, ": server started");
         } else {
-            Log.wtf("xolo", ": server already working");
+            Log.wtf(TAG, ": server already working");
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        googleApiClient.connect();
         if (AppPermissionChecker.isLocationPermissionGranted(this)) {
-            displayLocationSettingsRequest(this);
+            displayLocationSettingsRequest();
         } else {
             Toast.makeText(this, "Please allow Location permission in Settings", Toast.LENGTH_LONG).show();
             startActivity(new Intent(HomeActivity.this, PermissionsActivity.class));
         }
     }
 
-    private void displayLocationSettingsRequest(Context context) {
-        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context).addApi(LocationServices.API).build();
-        googleApiClient.connect();
-
+    private void displayLocationSettingsRequest() {
         LocationRequest locationRequest = LocationRequest.create();
+//        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(60000);
         locationRequest.setFastestInterval(30000);
@@ -139,33 +153,96 @@ public class HomeActivity extends AppCompatActivity {
             final Status status = result1.getStatus();
             switch (status.getStatusCode()) {
                 case LocationSettingsStatusCodes.SUCCESS:
+                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                     break;
                 case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                     try {
                         status.startResolutionForResult(HomeActivity.this, 101);
                     } catch (IntentSender.SendIntentException e) {
-                        Log.d("xolo", "PendingIntent unable to execute request.");
+                        Log.d(TAG, "PendingIntent unable to execute request.");
                     }
-                    break;
-                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                     break;
             }
         });
     }
 
+    @NonNull
+    private Geofence getGeofence() {
+        return new Geofence.Builder()
+                .setRequestId(getString(R.string.GEOFENCE_ID))
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setCircularRegion(sharedPref.getLatitude(), sharedPref.getLongitude(), GEOFENCE_RADIUS)
+                .setNotificationResponsiveness(1000)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build();
+    }
+
+    private void startGeofencing() {
+        Log.d(TAG, "Start geofencing monitoring call");
+        pendingIntent = getGeofencePendingIntent();
+        GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
+                .addGeofence(getGeofence())
+                .build();
+
+        if (!googleApiClient.isConnected()) {
+            Log.d(TAG, "Google API client not connected");
+        } else {
+            try {
+                LocationServices.GeofencingApi.addGeofences(googleApiClient, geofencingRequest, pendingIntent).setResultCallback(status -> {
+                    if (status.isSuccess()) {
+                        Log.d(TAG, "Successfully Geofencing Connected");
+                    } else {
+                        Log.d(TAG, "Failed to add Geofencing " + status.getStatus());
+                    }
+                });
+            } catch (SecurityException e) {
+                Log.d(TAG, e.toString());
+            }
+        }
+    }
+
+    private void stopGeoFencing() {
+        pendingIntent = getGeofencePendingIntent();
+        LocationServices.GeofencingApi.removeGeofences(googleApiClient, pendingIntent)
+                .setResultCallback(status -> {
+                    if (status.isSuccess())
+                        Log.d(TAG, "Stop geofencing");
+                    else
+                        Log.d(TAG, "Not stop geofencing");
+                });
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        if (pendingIntent != null) {
+            return pendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceRegistrationService.class);
+        return PendingIntent.getService(this, 0, intent, PendingIntent.
+                FLAG_UPDATE_CURRENT);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.wtf("xolo", requestCode+"/"+resultCode);
         if (requestCode == 101 && resultCode != RESULT_OK) {
             Toast.makeText(this, "We need GPS access to work, please allow!", Toast.LENGTH_LONG).show();
-            displayLocationSettingsRequest(this);
+            displayLocationSettingsRequest();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onConnected(@Nullable Bundle bundle) {
+        startGeofencing();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.wtf(TAG, "onConnectionSuspended");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.wtf(TAG, "connectionResult"+connectionResult.getErrorCode());
     }
 }

@@ -37,7 +37,7 @@ public class SessionPingManager extends Worker {
     public Result doWork() {
         Log.wtf("xolo", "doWork");
         final Result[] result = {Result.retry()};
-//        if (sharedPref.getSessionType() != null) {
+        if (sharedPref.getSessionType() != null) {
             JsonObject body = new JsonObject();
             JsonObject session = new JsonObject();
             body.add("session", session);
@@ -59,7 +59,7 @@ public class SessionPingManager extends Worker {
                     result[0] = Result.failure();
                 }
             });
-//        }
+        }
         return result[0];
     }
 }
