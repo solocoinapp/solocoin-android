@@ -2,7 +2,6 @@ package app.solocoin.solocoin;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -266,7 +265,7 @@ public class OnboardingActivity extends AppCompatActivity {
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             displayLocationSettingsRequest(this);
         } else {
-            initializeCaptureMerchantLocation();
+            initializeCaptureUserLocation();
         }
     }
     private void displayLocationSettingsRequest(Context context) {
@@ -329,7 +328,7 @@ public class OnboardingActivity extends AppCompatActivity {
      * Apart from the onLocationChangeListener in the WebSocketService,
      * this runs on the first time a merchant opens the application or returns after 48hrs
      */
-    private void initializeCaptureMerchantLocation() {
+    private void initializeCaptureUserLocation() {
         long lastSync = sharedPref.getLastSync();
         if (lastSync == 0 || System.currentTimeMillis() - lastSync >= FORTY_EIGHT_HOURS) {
             sharedPref.saveLastSync(System.currentTimeMillis());
