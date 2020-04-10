@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -13,9 +12,6 @@ import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.logging.Logger;
-
-import app.solocoin.solocoin.Session;
 import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.app.SharedPref;
@@ -45,15 +41,15 @@ public class SessionPingManager extends Worker {
             JsonObject body = new JsonObject();
             JsonObject session = new JsonObject();
             body.add("session", session);
-            session.addProperty("type", "home");
-            Call<JsonObject> call = apiService.pingSession(sharedPref.getAuthtoken(), body);
+            session.addProperty("type", sharedPref.getSessionType());
+            Call<JsonObject> call = apiService.pingSession(sharedPref.getAuthToken(), body);
             call.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(@NotNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                    if (response.code() == 201) {
-                        Log.wtf("xolo: 201", response.body().toString());
-                    } else {
-                        Log.wtf("xolo: ???", response.code()+"/"+response.body().toString());
+                    JsonObject resp = response.body();
+                    if (resp != null) {
+                        sharedPref.setSessionStatus(resp.get("status").getAsString());
+                        sharedPref.setSessionRewards(resp.get("rewards").getAsString());
                     }
                     result[0] = Result.success();
                 }

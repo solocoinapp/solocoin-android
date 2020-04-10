@@ -18,33 +18,23 @@ public class SharedPref {
         return instance;
     }
 
-    private static final String TIMEOUT = "timeout";
-    public void setTimeout(long timeout){
-        editor.putLong(TIMEOUT, timeout);
-        editor.commit();
-    }
-    public int getTimeout(){
-        return pref.getInt(TIMEOUT, 0);
-    }
-
     private static final String COUNTRY_CODE = "country_code";
     public void setCountryCode(String code){
         editor.putString(COUNTRY_CODE, code);
         editor.commit();
     }
     public String getCountryCode(){
-        return pref.getString(COUNTRY_CODE, "");
+        return pref.getString(COUNTRY_CODE, null);
     }
 
-    private static final String PHONE_NUMBER = "phone_number";
+    private static final String PHONE_NUMBER = "PHONE_NUMBER";
     public void setPhoneNumber(String number){
         editor.putString(PHONE_NUMBER, number);
         editor.commit();
     }
     public String getPhoneNumber(){
-        return pref.getString(PHONE_NUMBER, "");
+        return pref.getString(PHONE_NUMBER, null);
     }
-
 
     private static final String wallet_balance = "wallet_balance";
 
@@ -68,23 +58,23 @@ public class SharedPref {
         return pref.getBoolean(isHomeLocationSet,false);
     }
 
-    private static final String latitude = "latitude";
-
+    private static final String LATITUDE = "LATITUDE";
     public void setLatitude(float latitude){
-        editor.putFloat("latitude", latitude);
+        editor.putFloat(LATITUDE, latitude);
         editor.commit();
     }
+    public float getLatitude() {
+        return pref.getFloat(LATITUDE, 0);
+    }
 
-    public float getLatitude() {return pref.getFloat("latitude", (float) 0);}
-
-    private static final String longitude = "longitude";
-
+    private static final String LONGITUDE = "LONGITUDE";
     public void setLongitude(float longitude){
-        editor.putFloat("longitude", longitude);
+        editor.putFloat(LONGITUDE, longitude);
         editor.commit();
     }
-
-    public float getLongitude() {return pref.getFloat("longitude", (float) 0);}
+    public float getLongitude() {
+        return pref.getFloat(LONGITUDE, 0);
+    }
 
     private static final String USERNAME= "username";
     public void setUsername(String username){
@@ -93,22 +83,14 @@ public class SharedPref {
     }
     public String getUsername(){return pref.getString(USERNAME,"");}
 
-    private static final String AUTHTOKEN= "authtoken";
-    public void setAuthtoken(String authtoken){
-        editor.putString(AUTHTOKEN,authtoken);
+    private static final String AUTH_TOKEN = "AUTH_TOKEN";
+    public void setAuthToken(String authToken){
+        editor.putString(AUTH_TOKEN,authToken);
         editor.commit();
     }
-    public String getAuthtoken(){
-        return pref.getString(AUTHTOKEN,null);
+    public String getAuthToken(){
+        return pref.getString(AUTH_TOKEN,null);
     }
-
-    private static final String TIME= "time";
-    public void setTime(String time){
-        editor.putString(TIME,time);
-        editor.commit();
-    }
-
-    public String getTime(){return pref.getString(TIME,"00:00:00");}
 
     private static final String SESSION_TYPE = "SESSION_TYPE";
     public void setSessionType(String type){
@@ -117,6 +99,33 @@ public class SharedPref {
     }
     public String getSessionType() {
         return pref.getString(SESSION_TYPE,null);
+    }
+
+    private static final String SESSION_STATUS = "SESSION_STATUS";
+    public void setSessionStatus(String status){
+        editor.putString(SESSION_STATUS, status);
+        editor.commit();
+    }
+    public String getSessionStatus() {
+        return pref.getString(SESSION_STATUS,null);
+    }
+
+    private static final String SESSION_END_TIME = "SESSION_END_TIME";
+    public void setSessionEndTime(String endTime){
+        editor.putString(SESSION_END_TIME, endTime);
+        editor.commit();
+    }
+    public String getSessionEndPoint() {
+        return pref.getString(SESSION_END_TIME,null);
+    }
+
+    private static final String SESSION_REWARDS = "SESSION_REWARDS";
+    public void setSessionRewards(String rewards){
+        editor.putString(SESSION_REWARDS, rewards);
+        editor.commit();
+    }
+    public String getSessionRewards() {
+        return pref.getString(SESSION_REWARDS,null);
     }
 
     //For Firebase Token generated
