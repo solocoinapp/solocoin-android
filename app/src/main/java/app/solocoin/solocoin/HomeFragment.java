@@ -21,6 +21,7 @@ import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.app.SharedPref;
 
+import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -33,7 +34,7 @@ import timber.log.Timber;
  */
 public class HomeFragment extends Fragment {
     private SharedPref sharedPref;
-    TextView time;
+    private TextView time;
     private String lat,lng;
     public HomeFragment() {
         // Required empty public constructor
@@ -72,35 +73,40 @@ public class HomeFragment extends Fragment {
                 }
                 else{
                     Timber.d("Response body is not null: " + response.body().toString());
+                    Timber.d("the coordinates are, lat-long: " +sharedPref.getLatitude() + " - " + sharedPref.getLongitude());
                 }
                 long uptime = 0;
+                float wallet_balance;
                 lat="";
                 lng="";
                 if (userdata != null) {
                     uptime = userdata.get("home_duration_in_seconds").getAsLong();
-
+                    wallet_balance = userdata.get("wallet_balance").getAsFloat();
+                    Log.d("yoyo, wallet", "onResponse: wallet_balance is " + wallet_balance);
+                    sharedPref.setWallet_balance(wallet_balance);
                 }
                 //long uptime = System.currentTimeMillis()
+                Log.d("xoyo, time","The time in seconds is: " + Float.toString(uptime));
                 if (!userdata.has("lat") && !userdata.has("lng")){
                     sharedPref.setIsHomeLocationSet(false);
                 }
                 else{
                     sharedPref.setIsHomeLocationSet(true);
                 }
-                long days = TimeUnit.MILLISECONDS
+                long days = TimeUnit.SECONDS
                         .toDays(uptime);
-                uptime -= TimeUnit.DAYS.toMillis(days);
+                uptime -= TimeUnit.DAYS.toSeconds(days);
 
-                long hours = TimeUnit.MILLISECONDS
+                long hours = TimeUnit.SECONDS
                         .toHours(uptime);
-                uptime -= TimeUnit.HOURS.toMillis(hours);
+                uptime -= TimeUnit.HOURS.toSeconds(hours);
 
-                long minutes = TimeUnit.MILLISECONDS
+                long minutes = TimeUnit.SECONDS
                         .toMinutes(uptime);
-                uptime -= TimeUnit.MINUTES.toMillis(minutes);
+                uptime -= TimeUnit.MINUTES.toSeconds(minutes);
 
-
-                time.setText(days + "d " + hours + "h " + minutes + "m");
+                String displayTime= Long.toString(days) + "d " + Long.toString(hours) + "h " + Long.toString(minutes) + "m ";
+                time.setText(displayTime);
             }
 
             @Override

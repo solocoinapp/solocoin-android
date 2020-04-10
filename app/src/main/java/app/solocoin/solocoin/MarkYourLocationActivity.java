@@ -39,6 +39,7 @@ import app.solocoin.solocoin.util.AppPermissionChecker;
 import timber.log.Timber;
 
 public class MarkYourLocationActivity extends FragmentActivity implements OnSuccessListener<Location>, View.OnClickListener {
+    private SharedPref sharedPref;
 
     @Override
     public void onSuccess(Location location) {
@@ -48,7 +49,8 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
         }
 
         LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
-
+        sharedPref.setLongitude(Double.doubleToLongBits(currentLoc.longitude));
+        sharedPref.setLatitude(Double.doubleToLongBits(currentLoc.latitude));
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(this, Locale.getDefault());
@@ -83,6 +85,8 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
                 LatLng updatedLoc = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(updatedLoc));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(updatedLoc, 12));
+                sharedPref.setLongitude(Double.doubleToLongBits(updatedLoc.longitude));
+                sharedPref.setLatitude(Double.doubleToLongBits(updatedLoc.latitude));
             }
         }
     };
@@ -131,7 +135,6 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
             return;
         }
         Toast.makeText(this, "Location added.!", Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(this, PermissionsActivity.class);
         intent.putExtra("LOC_ADDED", true);
         SharedPref.getInstance(this).setIsHomeLocationSet(true);
