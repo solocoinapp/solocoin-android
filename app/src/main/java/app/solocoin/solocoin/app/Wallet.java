@@ -24,7 +24,7 @@ public class Wallet {
         sharedPref = SharedPref.getInstance(context);
         //JsonObject userbody = new JsonObject();
         //userbody.addProperty("auth_token", firebaseUid);
-        service.showUserData(sharedPref.getAuthToken()).enqueue(new Callback<JsonObject>() {
+        service.showUserData(sharedPref.getAuthtoken()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 JsonObject userdata = response.body();

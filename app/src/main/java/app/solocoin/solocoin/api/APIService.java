@@ -9,7 +9,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
@@ -27,8 +26,8 @@ public interface APIService {
     Call<JsonObject> showUserData(@Header("Authorization") String authToken);
 
     @Headers("Content-Type: application/json")
-    @PATCH("user")
-    Call<JsonObject> doUserUpdate(@Header("Authorization") String authToken, @Body JsonObject body);
+    @POST("user")
+    Call<JsonObject> doUserUpdate(@Body JsonObject body);
 
     @Headers("Content-Type: application/json")
     @POST("notification_tokens")
@@ -37,10 +36,6 @@ public interface APIService {
     @Headers("Content-Type: application/json")
     @POST("sessions/ping")
     Call<JsonObject> pingSession(@Header("Authorization") String authToken, @Body JsonObject body);
-
-    @Headers("Content-Type: application/json")
-    @GET("user/profile")
-    Call<JsonObject> getProfile(@Header("Authorization") String authToken);
 
 //    @Headers("Content-Type: application/json")
 //    @POST("sessions/end")

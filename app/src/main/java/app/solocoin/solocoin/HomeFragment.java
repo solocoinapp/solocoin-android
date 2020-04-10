@@ -1,6 +1,5 @@
 package app.solocoin.solocoin;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
@@ -23,15 +26,27 @@ import java.util.concurrent.TimeUnit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class HomeFragment extends Fragment {
+    private SharedPref sharedPref;
+    TextView time;
+    private String lat,lng;
+    public HomeFragment() {
+        // Required empty public constructor
+    }
 
     static HomeFragment newInstance() {
         return new HomeFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -39,37 +54,58 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SharedPref sharedPref = SharedPref.getInstance(getContext());
-        TextView timerTextView = view.findViewById(R.id.time);
-
+        sharedPref = SharedPref.getInstance(getContext());
+        time = view.findViewById(R.id.time);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = currentUser.getUid();
+        Log.d("xoxo, homeauthtoken", "the auth_token is: " + sharedPref.getAuthtoken());
+        //JsonObject body = new JsonObject();
+        //body.addProperty("auth_token", uid);
         APIService apiService = APIClient.getRetrofitInstance(getContext()).create(APIService.class);
-        apiService.showUserData(sharedPref.getAuthToken()).enqueue(new Callback<JsonObject>() {
-            @SuppressLint({"SetTextI18n", "LogNotTimber"})
+        apiService.showUserData(sharedPref.getAuthtoken()).enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
-                JsonObject resp = response.body();
-                if (resp != null) {
-                    long uptime = resp.get("home_duration_in_seconds").getAsLong();
-
-                    long days = TimeUnit.MILLISECONDS.toDays(uptime);
-                    uptime -= TimeUnit.DAYS.toMillis(days);
-
-                    long hours = TimeUnit.MILLISECONDS.toHours(uptime);
-                    uptime -= TimeUnit.HOURS.toMillis(hours);
-
-                    long minutes = TimeUnit.MILLISECONDS.toMinutes(uptime);
-                    uptime -= TimeUnit.MINUTES.toMillis(minutes);
-
-                    long seconds = TimeUnit.MILLISECONDS.toMillis(uptime);
-
-                    timerTextView.setText(days + "d " + hours + "h " + minutes + "m " + seconds + "s");
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                //long uptime = System.currentTimeMillis();
+                JsonObject userdata = response.body();
+                if(userdata==null){
+                    Timber.d("Response body is null, error code is: " + response.code());
                 }
+                else{
+                    Timber.d("Response body is not null: " + response.body().toString());
+                }
+                long uptime = 0;
+                lat="";
+                lng="";
+                if (userdata != null) {
+                    uptime = userdata.get("home_duration_in_seconds").getAsLong();
+
+                }
+                //long uptime = System.currentTimeMillis()
+                if (!userdata.has("lat") && !userdata.has("lng")){
+                    sharedPref.setIsHomeLocationSet(false);
+                }
+                else{
+                    sharedPref.setIsHomeLocationSet(true);
+                }
+                long days = TimeUnit.MILLISECONDS
+                        .toDays(uptime);
+                uptime -= TimeUnit.DAYS.toMillis(days);
+
+                long hours = TimeUnit.MILLISECONDS
+                        .toHours(uptime);
+                uptime -= TimeUnit.HOURS.toMillis(hours);
+
+                long minutes = TimeUnit.MILLISECONDS
+                        .toMinutes(uptime);
+                uptime -= TimeUnit.MINUTES.toMillis(minutes);
+
+
+                time.setText(days + "d " + hours + "h " + minutes + "m");
             }
 
-            @SuppressLint("SetTextI18n")
             @Override
-            public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
-                timerTextView.setText("0d 0h 0m 0s");
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
             }
         });
     }

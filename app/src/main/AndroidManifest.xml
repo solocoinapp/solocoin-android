@@ -24,10 +24,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service
-            android:name=".receiver.GeofenceRegistrationService"
+        <receiver
+            android:name=".receiver.GeofenceBroadcastReceiver"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -37,12 +37,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".Welcome" />
-        <activity android:name=".MarkYourLocationActivity" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
+        <activity android:name=".MarkYourLocationActivity" />
         <activity android:name=".Policy" />
         <activity android:name=".ToS" />
         <activity android:name=".Main3Activity" />

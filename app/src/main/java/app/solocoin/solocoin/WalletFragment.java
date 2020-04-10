@@ -1,6 +1,5 @@
 package app.solocoin.solocoin;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,22 +11,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
-
-import app.solocoin.solocoin.api.APIClient;
-import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.app.SharedPref;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class WalletFragment extends Fragment{
 
-    static WalletFragment newInstance() {
-        return new WalletFragment();
+    public WalletFragment() {}
+
+    private static String ARG_PARAM1 = WalletFragment.class.getSimpleName();
+    private String wallet_balance;
+    private SharedPref sharedPref;
+    public static WalletFragment newInstance(String param1, String param2) {
+        WalletFragment fragment = new WalletFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+        }
     }
 
     @Override
@@ -38,27 +46,11 @@ public class WalletFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        SharedPref sharedPref = SharedPref.getInstance(getContext());
-        TextView balanceTextView = view.findViewById(R.id.tv_coins_count);
-
-        APIService apiService = APIClient.getRetrofitInstance(getContext()).create(APIService.class);
-        apiService.showUserData(sharedPref.getAuthToken()).enqueue(new Callback<JsonObject>() {
-            @SuppressLint({"SetTextI18n", "LogNotTimber"})
-            @Override
-            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                JsonObject resp = response.body();
-                if (resp != null) {
-                    String balance = resp.get("wallet_balance").getAsString();
-                    balanceTextView.setText(balance);
-                }
-            }
-
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
-                balanceTextView.setText("0.0");
-            }
-        });
+        sharedPref = SharedPref.getInstance(getContext());
+        TextView balance;
+        balance= Objects.requireNonNull(getView()).findViewById(R.id.tv_coins_count);
+        float val = sharedPref.getWallet_balance();
+        String bal=Float.toString(val);
+        balance.setText(bal);
     }
 }

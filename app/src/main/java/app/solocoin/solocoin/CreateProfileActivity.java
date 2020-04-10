@@ -1,9 +1,15 @@
 package app.solocoin.solocoin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
+import app.solocoin.solocoin.util.AppPermissionChecker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,8 +21,11 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -28,6 +37,8 @@ import app.solocoin.solocoin.api.UserSignUp;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.databinding.ActivityCreateProfileBinding;
 import app.solocoin.solocoin.viewmodel.CreateProfileViewModel;
+
+import java.util.concurrent.TimeUnit;
 
 public class CreateProfileActivity extends AppCompatActivity implements CreateProfileViewModel.CreateProfileInterface {
 
@@ -114,7 +125,7 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                     JsonObject userresponse = response.body();
                     String authtoken = userresponse.get("auth_token").getAsString();
                     authtoken = "Bearer " + authtoken;
-                    sharedPref.setAuthToken(authtoken);
+                    sharedPref.setAuthtoken(authtoken);
                     Timber.d("auth_token is: " + authtoken);
                     retrofitListener.onSuccess(response.code());
                 }

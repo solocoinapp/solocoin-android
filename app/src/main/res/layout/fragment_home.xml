@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     tools:context=".HomeFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -27,6 +28,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -92,11 +94,8 @@
 
         <TextView
             android:id="@+id/time"
-            android:text="0d 0h 0m 0s"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
+            android:layout_width="219dp"
+            android:layout_height="97dp"
             android:fontFamily="@font/poppins_semibold"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
