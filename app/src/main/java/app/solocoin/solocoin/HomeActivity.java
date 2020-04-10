@@ -90,23 +90,6 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-//        if (AppPermissionChecker.isLocationPermissionGranted(this)) {
-//            if (displayLocationSettingsRequest(this)) {
-//                LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                if (lm != null) {
-//                    try {
-//                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
-//                    } catch (SecurityException ex) {
-//                        Toast.makeText(this, "Please allow Location permission in Settings", Toast.LENGTH_LONG).show();
-//                        //finish();
-//                        startActivity(new Intent(HomeActivity.this, PermissionsActivity.class));
-//                    }
-//                }
-//            }
-//        } else {
-//            reinstateGeofence(sharedPref.getLatitude(), sharedPref.getLongitude());
-//        }
-
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, HomeFragment.newInstance()).commit();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {

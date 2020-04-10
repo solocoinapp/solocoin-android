@@ -2,8 +2,10 @@ package app.solocoin.solocoin.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class SharedPref {
+    public static final String LASTSYNC = "last_sync";
     private SharedPreferences pref;
     private static SharedPref instance  = null;
     private SharedPreferences.Editor editor;
@@ -151,5 +153,20 @@ public class SharedPref {
     public void clearSession() {
         editor.clear();
         editor.commit();
+    }
+    public long getLastSync() {
+        return pref.getLong(LASTSYNC, 0);
+    }
+
+    /**
+     * here i save the last location
+     * @param time
+     */
+    public void saveLastSync(long time) {
+        if (time > 0) {
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putLong(LASTSYNC, time);
+            editor.apply();
+        }
     }
 }
