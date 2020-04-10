@@ -156,29 +156,18 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
     @Override
     public void onCreateProfileSuccess() {
         Toast.makeText(CreateProfileActivity.this, "Successful profile creation", Toast.LENGTH_SHORT).show();
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-        final PeriodicWorkRequest sendSession = new PeriodicWorkRequest
-                .Builder(SessionWorker.class,15, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .build();
-        WorkManager.getInstance().enqueue(sendSession);
+//        Constraints constraints = new Constraints.Builder()
+//                .setRequiredNetworkType(NetworkType.CONNECTED)
+//                .build();
+//        final PeriodicWorkRequest sendSession = new PeriodicWorkRequest
+//                .Builder(SessionWorker.class,15, TimeUnit.MINUTES)
+//                .setConstraints(constraints)
+//                .build();
+//        WorkManager.getInstance().enqueue(sendSession);
         Intent intent = new Intent(this, MarkYourLocationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
-//        if (AppPermissionChecker.isLocationPermissionGranted(this)) {
-//            Intent intent = new Intent(this, PermissionsActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            Intent intent = new Intent(this, Welcome.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//            finish();
-//        }
     }
 
     @Override

@@ -1,9 +1,11 @@
 package app.solocoin.solocoin;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,35 +17,37 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.ViewPager;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import app.solocoin.solocoin.databinding.ActivityMainBinding;
+import app.solocoin.solocoin.receiver.SessionPingManager;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
+@SuppressLint("LogNotTimber")
 public class OnboardingActivity extends AppCompatActivity {
-
 
     ActivityMainBinding binding;
     public static final int MULTIPLE_PERMISSION_REQUEST = 102;
-
-    //Onboarding
     private LinearLayout pager_indicator;
     private int dotsCount;
     private ImageView[] dots;
     private ViewPager onboard_pager;
     private OnBoard_Adapter mAdapter;
-    ArrayList<OnBoardItem> onBoardItems=new ArrayList<>();
-
-
-
-
+    private ArrayList<OnBoardItem> onBoardItems=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_on_boarding);
-        //check if the user is logging for the first time.
-        /*initView();*/
         ask_permissions();
 
         //Buttons
@@ -54,14 +58,6 @@ public class OnboardingActivity extends AppCompatActivity {
             }
         });
 
-        /*final Button  bbutton= findViewById(R.id.skipbuttonO);
-        bbutton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Phone1Verification.class));
-            }
-        });*/
-
-        //Onboarding
         onboard_pager = (ViewPager) findViewById(R.id.pager_introduction);
         pager_indicator = (LinearLayout) findViewById(R.id.viewPagerCountDots);
 
@@ -93,15 +89,10 @@ public class OnboardingActivity extends AppCompatActivity {
 
             }
         });
-
         setUiPageViewController();
-
     }
 
-// Load data into the viewpager
-
-    public void loadData()
-    {
+    public void loadData() {
 
         int[] header = {R.string.ob_header1, R.string.ob_header2, R.string.ob_header3};
         int[] imageId = {R.mipmap.intro1, R.mipmap.intro2, R.mipmap.intro3};
@@ -115,8 +106,6 @@ public class OnboardingActivity extends AppCompatActivity {
             onBoardItems.add(item);
         }
     }
-
-
 
     // setup the
     private void setUiPageViewController() {
@@ -139,47 +128,6 @@ public class OnboardingActivity extends AppCompatActivity {
         }
 
         dots[0].setImageDrawable(ContextCompat.getDrawable(OnboardingActivity.this, R.drawable.selected_item_dot));
-    }
-
-
-    /*private void initView() {
-
-
-        binding.button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Phone1Verification.class));
-            }
-        });
-        /*binding.button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Main2Activity.class));
-            }
-        });
-        binding.button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Main3Activity.class));
-            }
-        });
-        binding.skipbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Phone1Verification.class));
-            }
-        });
-    }*/
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MULTIPLE_PERMISSION_REQUEST) {
-            if (grantResults.length > 0) {
-               //todo if no location permission is given
-            }
-        }
     }
 
     private void ask_permissions() {
