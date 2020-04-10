@@ -218,6 +218,7 @@ public class Phone2Verification extends AppCompatActivity {
                 .addOnCompleteListener( Phone2Verification.this, task -> {
                     if (task.isSuccessful()) {
                         //TODO - make isNewUser == false in if statement
+                        sharedPref.setSessionType("home");
 
                         String uid = task.getResult().getUser().getUid();
                         task.getResult().getUser().getIdToken(true).addOnCompleteListener(task1 -> {
@@ -239,7 +240,7 @@ public class Phone2Verification extends AppCompatActivity {
 
                                         JsonObject responseBody = response.body();
                                         String authToken = responseBody.get("auth_token").getAsString();
-                                        authToken="Bearer " + authToken;
+                                        authToken = "Bearer " + authToken;
                                         sharedPref.setAuthToken(authToken);
 
                                         Toast.makeText(getApplicationContext(), "Proud to be SOLO!" , Toast.LENGTH_SHORT).show();

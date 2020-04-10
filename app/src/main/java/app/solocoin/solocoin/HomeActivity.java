@@ -31,14 +31,23 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.JsonObject;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
+import app.solocoin.solocoin.api.APIClient;
+import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.receiver.GeofenceRegistrationService;
 import app.solocoin.solocoin.receiver.SessionPingManager;
 import app.solocoin.solocoin.util.AppPermissionChecker;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @SuppressLint("LogNotTimber")
 public class HomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -47,7 +56,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
 //    private static final String TAG = "xolo";
     private GoogleApiClient googleApiClient;
     private PendingIntent pendingIntent;
-    private static final int GEOFENCE_RADIUS = 3000;
+    private static final int GEOFENCE_RADIUS = 120;
 
     private SharedPref sharedPref;
 
@@ -80,10 +89,10 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
                     selectedFragment = HomeFragment.newInstance();
                     break;
                 case R.id.wallet:
-                    selectedFragment = WalletFragment.newInstance("", "");
+                    selectedFragment = WalletFragment.newInstance();
                     break;
                 case R.id.leader_board:
-                    selectedFragment = LeaderboardFragment.newInstance("", "");
+                    selectedFragment = LeaderboardFragment.newInstance();
                     break;
                 case R.id.profile:
                     selectedFragment = ProfileFragment.newInstance();

@@ -147,13 +147,12 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
         Toast.makeText(this, "Location added, please wait updating...", Toast.LENGTH_SHORT).show();
 
         APIService service = APIClient.getRetrofitInstance(this).create(APIService.class);
-        JsonObject body = new JsonObject();
         JsonObject user = new JsonObject();
         user.addProperty("mobile", sharedPref.getPhoneNumber());
         user.addProperty("lat", sharedPref.getLatitude());
         user.addProperty("lng", sharedPref.getLongitude());
 
-        Call<JsonObject> call = service.doUserUpdate(body);
+        Call<JsonObject> call = service.doUserUpdate(sharedPref.getAuthToken(), user);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NotNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
