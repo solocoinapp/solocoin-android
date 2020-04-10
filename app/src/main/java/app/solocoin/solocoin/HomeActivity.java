@@ -149,10 +149,16 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void displayLocationSettingsRequest() {
         LocationRequest locationRequest = LocationRequest.create();
+
 //        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(60000);
         locationRequest.setFastestInterval(30000);
+
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000 / 2);
+
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
@@ -229,6 +235,20 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         return PendingIntent.getService(this, 0, intent, PendingIntent.
                 FLAG_UPDATE_CURRENT);
     }
+    private void setGeofence(float latitude, float longitude) {
+        long timeout = System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7;
+
+        geofencingClient = LocationServices.getGeofencingClient(HomeActivity.this);
+        geofencesList = new ArrayList<Geofence>();
+        geofencesList.add(new Geofence.Builder()
+                .setRequestId("GEOFENCE")
+                .setCircularRegion(
+                        latitude, longitude, 20
+                )
+                .setExpirationDuration(timeout)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build());
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
