@@ -1,6 +1,7 @@
 package app.solocoin.solocoin.app;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -33,6 +34,7 @@ public class Wallet {
                 }
                 else {
                     wallet_balance = userdata.get("wallet_balance").getAsFloat();
+                    Log.d("yoyo, wallet", "onResponse: wallet_balance is " + wallet_balance);
                     sharedPref.setWallet_balance(wallet_balance);
                 }
             }

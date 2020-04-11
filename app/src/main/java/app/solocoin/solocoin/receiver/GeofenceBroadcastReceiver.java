@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.receiver;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@SuppressLint("LogNotTimber")
 public class GeofenceBroadcastReceiver extends BroadcastReceiver{
     private float wallet_balance;
 
@@ -33,7 +35,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
-            Log.e("SoloCoin", "error");
+            Log.d("xolo", "error" + geofencingEvent.getErrorCode());
             return;
         }
 
@@ -56,14 +58,14 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver{
         wallet = new Wallet();
         wallet.Updatebalance(context);
         sharedPref=SharedPref.getInstance(context);
-        sharedPref.setSessiontype(type);
+        sharedPref.setSessionType(type);
         JsonObject body = new JsonObject();
-        SessionBody sessionBody = new SessionBody(sharedPref.getSessiontype());
+        SessionBody sessionBody = new SessionBody(sharedPref.getSessionType());
         Session session= new Session(sessionBody);
         Gson gson = new Gson();
         JsonElement jsonElement= gson.toJsonTree(session);
         body=jsonElement.getAsJsonObject();
-        Call<JsonObject> call = service.startSession(sharedPref.getAuthtoken(), body);
+        Call<JsonObject> call = service.pingSession(sharedPref.getAuthtoken(), body);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override

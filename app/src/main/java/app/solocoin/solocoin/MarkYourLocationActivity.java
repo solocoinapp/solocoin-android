@@ -39,6 +39,7 @@ import app.solocoin.solocoin.util.AppPermissionChecker;
 import timber.log.Timber;
 
 public class MarkYourLocationActivity extends FragmentActivity implements OnSuccessListener<Location>, View.OnClickListener {
+    private SharedPref sharedPref;
 
     @Override
     public void onSuccess(Location location) {
@@ -131,7 +132,6 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
             return;
         }
         Toast.makeText(this, "Location added.!", Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(this, PermissionsActivity.class);
         intent.putExtra("LOC_ADDED", true);
         SharedPref.getInstance(this).setIsHomeLocationSet(true);

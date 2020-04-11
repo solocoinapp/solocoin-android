@@ -49,7 +49,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.permissionButton:
-                Timber.d("Permission stuff");
                 startActivity(new Intent(getActivity(),PermissionsActivity.class));
                 break;
             case R.id.privacyPolicy:
@@ -75,6 +74,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             Objects.requireNonNull(getActivity()).finish();
+
         }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).setTitle("Please confirm!").setMessage("Do you really want to logout!!!").show();
     }
 }
