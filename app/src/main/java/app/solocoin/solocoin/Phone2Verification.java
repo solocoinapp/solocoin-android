@@ -17,45 +17,28 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bigbangbutton.editcodeview.EditCodeListener;
 import com.bigbangbutton.editcodeview.EditCodeView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 
 import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
-import app.solocoin.solocoin.api.PostUser;
-import app.solocoin.solocoin.api.PostUserLogin;
-import app.solocoin.solocoin.api.UserLogin;
-import app.solocoin.solocoin.api.UserSignUp;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.databinding.ActivityPhone2VerificationBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import timber.log.Timber;
 //import app.solocoin.solocoin.databinding.ActivityVerificationBinding;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import org.json.JSONObject;
 
 @SuppressLint("LogNotTimber")
 public class Phone2Verification extends AppCompatActivity {
@@ -235,6 +218,7 @@ public class Phone2Verification extends AppCompatActivity {
                 .addOnCompleteListener( Phone2Verification.this, task -> {
                     if (task.isSuccessful()) {
                         //TODO - make isNewUser == false in if statement
+                        sharedPref.setSessionType("home");
 
                         String uid = task.getResult().getUser().getUid();
                         task.getResult().getUser().getIdToken(true).addOnCompleteListener(task1 -> {
@@ -247,8 +231,6 @@ public class Phone2Verification extends AppCompatActivity {
                             user.addProperty("uid", uid);
                             user.addProperty("id_token", idToken);
                             body.add("user", user);
-                            Log.d("xoxo, new user checks", "the raw body being sent is " + body.toString());
-//                            Log.d("xoxo, body", body.toString());
 
                             apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
                                 @Override
@@ -258,8 +240,8 @@ public class Phone2Verification extends AppCompatActivity {
 
                                         JsonObject responseBody = response.body();
                                         String authToken = responseBody.get("auth_token").getAsString();
-                                        authToken="Bearer " + authToken;
-                                        sharedPref.setAuthtoken(authToken);
+                                        authToken = "Bearer " + authToken;
+                                        sharedPref.setAuthToken(authToken);
 
                                         Toast.makeText(getApplicationContext(), "Proud to be SOLO!" , Toast.LENGTH_SHORT).show();
                                         Intent intent =new Intent(Phone2Verification.this, HomeActivity.class);

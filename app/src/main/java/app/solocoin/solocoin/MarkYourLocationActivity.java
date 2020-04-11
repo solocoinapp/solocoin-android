@@ -29,13 +29,21 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.JsonObject;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import app.solocoin.solocoin.api.APIClient;
+import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.util.AppPermissionChecker;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import timber.log.Timber;
 
 public class MarkYourLocationActivity extends FragmentActivity implements OnSuccessListener<Location>, View.OnClickListener {
@@ -48,6 +56,8 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
         }
 
         LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
+        sharedPref.setLatitude((float) location.getLatitude());
+        sharedPref.setLongitude((float) location.getLongitude());
 
         Geocoder geocoder;
         List<Address> addresses;
@@ -72,6 +82,8 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
     private GoogleMap mMap;
     private TextInputEditText etLocation;
     private FusedLocationProviderClient fusedLocationClient;
+    private SharedPref sharedPref;
+    private Location location;
 
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
@@ -103,6 +115,8 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_your_location);
+        sharedPref = SharedPref.getInstance(this);
+
         etLocation = findViewById(R.id.et_location);
         findViewById(R.id.btn_confirm).setOnClickListener(this);
 
@@ -130,14 +144,29 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
             requestPermission();
             return;
         }
-        Toast.makeText(this, "Location added.!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Location added, please wait updating...", Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, PermissionsActivity.class);
-        intent.putExtra("LOC_ADDED", true);
-        SharedPref.getInstance(this).setIsHomeLocationSet(true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+        APIService service = APIClient.getRetrofitInstance(this).create(APIService.class);
+        JsonObject user = new JsonObject();
+        user.addProperty("mobile", sharedPref.getPhoneNumber());
+        user.addProperty("lat", sharedPref.getLatitude());
+        user.addProperty("lng", sharedPref.getLongitude());
+
+        Call<JsonObject> call = service.doUserUpdate(sharedPref.getAuthToken(), user);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NotNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                Intent intent = new Intent(MarkYourLocationActivity.this, PermissionsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
+                Toast.makeText(MarkYourLocationActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -157,7 +186,6 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 101) {
-            //since only location permission we can directly access first element of array, no array iteration.
             String permission = permissions[0];
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 boolean showRationale = shouldShowRequestPermissionRationale(permission);
