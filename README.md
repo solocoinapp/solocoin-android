@@ -1,3 +1,4 @@
+(Primary work is being done on `dev` branch)
 # SoloCoin
 Welcome to The SoloCoin, it's great to have you here! We thank you in advance for your contributions.
 SoloCoin gamifies the act of social-distancing by rewarding users in points and badges for staying at home and away from people.
