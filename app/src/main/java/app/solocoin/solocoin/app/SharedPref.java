@@ -129,6 +129,14 @@ public class SharedPref {
         return pref.getString(ID_TOKEN,null);
     }
 
+
+    public static final String RECEIVER_ON="receiver_on";
+    public void setReceiverOn(boolean on){
+        editor.putBoolean(RECEIVER_ON, on);
+        editor.commit();
+    }
+    public boolean getReceiverOn(){ return pref.getBoolean(RECEIVER_ON, false); }
+
     //Since email and gender not required for profile right now.
 //    private static final String EMAIL="email";
 //    public void setEmail(String id){
