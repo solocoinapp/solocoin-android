@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -37,6 +39,9 @@ public interface APIService {
     @POST("sessions/ping")
     Call<JsonObject> pingSession(@Header("Authorization") String authToken, @Body JsonObject body);
 
+    @Headers("Content-Type: application/json")
+    @GET("user/profile")
+    Call<JsonObject> showCoordinates(@Header("Authorization") List addresses);
 //    @Headers("Content-Type: application/json")
 //    @POST("sessions/end")
 //    Call<JsonObject> endSession(@Body JsonObject body);

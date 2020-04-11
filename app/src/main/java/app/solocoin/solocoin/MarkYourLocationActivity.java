@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,18 +30,24 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import app.solocoin.solocoin.api.APIClient;
+import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.util.AppPermissionChecker;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import timber.log.Timber;
 
 public class MarkYourLocationActivity extends FragmentActivity implements OnSuccessListener<Location>, View.OnClickListener {
     private SharedPref sharedPref;
-
+    private APIService apiService;
     @Override
     public void onSuccess(Location location) {
         if (location == null) {
@@ -57,6 +64,38 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
 
         try {
             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            apiService.showCoordinates(addresses).enqueue(new Callback<JsonObject>(){
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    if (response.code() == 200) {
+                        //existing user case
+
+                        JsonObject lat = response.body();
+                        String authtoken = lat.get("auth_token").getAsString();
+                        authtoken = "Bearer " + authtoken;
+                        sharedPref.setAuthtoken(authtoken);
+                        Log.d(TAG,"Coordinates are: " + authtoken);
+                        JsonObject lng = response.body();
+                        String authtoken2 = lng.get("auth_token").getAsString();
+                        authtoken2 = "Bearer " + authtoken2;
+                        sharedPref.setAuthtoken(authtoken2);
+                        Log.d(TAG,"Coordinates are: " + authtoken2);
+
+                    } else if (response.code() == 422) {
+                        //new user case
+                        String errormsg=response.errorBody().toString();
+                        Log.d(TAG, "Field Validation Errors" +errormsg);
+                    }else{
+                        String errormsg=response.errorBody().toString();
+                        Log.d(TAG, "Field Validation Errors" +errormsg);
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Timber.d("Coordinates have not been found.");
+                }
+            });
             String city = addresses.get(0).getLocality();
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
