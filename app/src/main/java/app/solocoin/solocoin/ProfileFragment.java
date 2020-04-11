@@ -7,8 +7,11 @@ import developers.mobile.abt.FirebaseAbt;
 import timber.log.Timber;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -73,6 +76,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent(getContext(), OnboardingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            SharedPref.getInstance(getActivity()).setReceiverOn(false);
+            SharedPref.getInstance(getActivity()).setSessionType("away");
             Objects.requireNonNull(getActivity()).finish();
 
         }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).setTitle("Please confirm!").setMessage("Do you really want to logout!!!").show();

@@ -58,26 +58,28 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver{
         wallet = new Wallet();
         wallet.Updatebalance(context);
         sharedPref=SharedPref.getInstance(context);
-        sharedPref.setSessionType(type);
-        JsonObject body = new JsonObject();
-        SessionBody sessionBody = new SessionBody(sharedPref.getSessionType());
-        Session session= new Session(sessionBody);
-        Gson gson = new Gson();
-        JsonElement jsonElement= gson.toJsonTree(session);
-        body=jsonElement.getAsJsonObject();
-        Call<JsonObject> call = service.pingSession(sharedPref.getAuthtoken(), body);
+        if(sharedPref.getReceiverOn()){
+            sharedPref.setSessionType(type);
+            JsonObject body = new JsonObject();
+            SessionBody sessionBody = new SessionBody(sharedPref.getSessionType());
+            Session session= new Session(sessionBody);
+            Gson gson = new Gson();
+            JsonElement jsonElement= gson.toJsonTree(session);
+            body=jsonElement.getAsJsonObject();
+            Call<JsonObject> call = service.pingSession(sharedPref.getAuthtoken(), body);
 
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(@NotNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                Log.e("SoloCoin", "Start session success");
-            }
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(@NotNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                    Log.e("SoloCoin", "Start session success");
+                }
 
-            @Override
-            public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
-                //on-failure-api-call
-                Toast.makeText(context, "Error in SoloCoin", Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
+                    //on-failure-api-call
+                    Toast.makeText(context, "Error in SoloCoin", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 }

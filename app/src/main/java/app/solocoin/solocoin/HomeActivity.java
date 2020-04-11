@@ -90,6 +90,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         sharedPref = SharedPref.getInstance(this);
 
+        sharedPref.setReceiverOn(true);
+
         if (sharedPref.getAuthtoken() == null) {
             Intent intent = new Intent(HomeActivity.this, OnboardingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
