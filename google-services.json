@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "1033706353554-cr60dj0evqd0at981uva7as0ofo9d2ru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.solocoin.solocoin",
+            "certificate_hash": "efaa79c35b3a0b4eb3c3fae0e9009b02a53993c6"
+          }
+        },
+        {
+          "client_id": "1033706353554-vfms1437jpl18en4m78l2qvmvevhftnd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.solocoin.solocoin",
+            "certificate_hash": "b8c277fe572912bc0a4253dd939baf17cf079a31"
+          }
+        },
+        {
+          "client_id": "1033706353554-4689sppfhqjegotsh0bl5ca6ddmv42e9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.solocoin.solocoin",
+            "certificate_hash": "7075b9c490f0a9a6f65587fb93b4bf76e04eb879"
+          }
+        },
+        {
           "client_id": "1033706353554-su6no259j7e095lnptmg13gbtubvlboa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -45,7 +69,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAe6bsxqPyYRq7dx81L77sYvXzmRVqc_7Y"
+          "current_key": "AIzaSyBCb0PSiNojYsDohe_27au70ttcaWraFOk"
         }
       ],
       "services": {
