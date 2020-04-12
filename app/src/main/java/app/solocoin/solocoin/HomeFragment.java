@@ -18,6 +18,7 @@ import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.app.SharedPref;
 
+import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;

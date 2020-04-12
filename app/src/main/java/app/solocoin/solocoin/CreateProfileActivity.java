@@ -2,6 +2,7 @@ package app.solocoin.solocoin;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import retrofit2.Call;
@@ -92,19 +93,28 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
 
     }
 
+    private String TAG = "xoxo,createprofile";
     private void createProfile(String username, String phoneNumber, String uid){
-        JsonObject body = new JsonObject();
         id_token= sharedPref.getIdToken();
         Log.d("xoxo,idtokenprofile", "id token is: " + id_token);
-        UserSignUp user = new UserSignUp(id_token,uid,username,phoneNumber,countryCode);
-
-        PostUser postUser = new PostUser(user);
-        Gson gson =new Gson();
-        String json= gson.toJson(postUser);
-        Timber.d(json);
-
-        JsonElement element = gson.toJsonTree(postUser);
-        body=element.getAsJsonObject();
+//        UserSignUp user = new UserSignUp(id_token,uid,username,phoneNumber,countryCode);
+//
+//        PostUser postUser = new PostUser(user);
+//        Gson gson =new Gson();
+//        String json= gson.toJson(postUser);
+//        Log.d(TAG,json);
+//
+//        JsonElement element = gson.toJsonTree(postUser);
+//        body=element.getAsJsonObject();
+        JsonObject body = new JsonObject();
+        JsonObject user = new JsonObject();
+        user.addProperty("name",username);
+        user.addProperty("country_code", sharedPref.getCountryCode());
+        user.addProperty("mobile", phoneNumber);
+        user.addProperty("uid", uid);
+        user.addProperty("id_token", id_token);
+        body.add("user", user);
+        Log.d(TAG, "the raw body being sent is " + body.toString());
         apiService.doMobileSignup(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -115,18 +125,17 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
                     String authtoken = userresponse.get("auth_token").getAsString();
                     authtoken = "Bearer " + authtoken;
                     sharedPref.setAuthToken(authtoken);
-                    Timber.d("auth_token is: " + authtoken);
                     retrofitListener.onSuccess(response.code());
                 }
                 else if (response.code()==400){
                     String errormsg=response.errorBody().toString();
-                    Timber.d("Unable to create profile: " + errormsg);
+                    Log.d(TAG,"Unable to create profile: " + errormsg);
                     retrofitListener.onFailure(response.code());
                 }
                 else{
                     //Timber.d("Issue at backend");
                     String errormsg = response.errorBody().toString();
-                    Timber.d("username is incorrect: " + errormsg);
+                    Log.d(TAG,"username is incorrect: " + errormsg);
                     retrofitListener.onFailure(response.code());
                 }
                 onCreateProfileSuccess();
@@ -173,6 +182,8 @@ public class CreateProfileActivity extends AppCompatActivity implements CreatePr
         sharedPref.setUsername(name.getText().toString());
         viewModel.username= name.getText().toString();
         createProfile(viewModel.username, phoneNumber, firebaseUid);
+        Log.d(TAG, "onContinueClicked: name is " + viewModel.username);
+        Log.d(TAG, "onContinueClicked: phno is " + phoneNumber);
         //startActivity(new Intent(CreateProfileActivity.this,Welcome.class));
     }
 

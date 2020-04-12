@@ -11,8 +11,9 @@ android {
         config {
 //            storeFile file('C:\\Users\\lenovo\\Desktop\\keystore.jks')
             storePassword 'Solocoin'
-            keyAlias = 'Solocoin'
+            keyAlias = 'solocoin'
             keyPassword 'solocoin'
+//            storeFile file('C:\\Users\\lenovo\\Desktop\\keystore.jks')
         }
     }
     compileSdkVersion 29
