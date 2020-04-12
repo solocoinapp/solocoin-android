@@ -35,6 +35,7 @@ import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -235,20 +236,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         return PendingIntent.getService(this, 0, intent, PendingIntent.
                 FLAG_UPDATE_CURRENT);
     }
-    private void setGeofence(float latitude, float longitude) {
-        long timeout = System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7;
-
-        geofencingClient = LocationServices.getGeofencingClient(HomeActivity.this);
-        geofencesList = new ArrayList<Geofence>();
-        geofencesList.add(new Geofence.Builder()
-                .setRequestId("GEOFENCE")
-                .setCircularRegion(
-                        latitude, longitude, 20
-                )
-                .setExpirationDuration(timeout)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

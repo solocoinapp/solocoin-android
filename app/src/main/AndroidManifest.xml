@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="app.solocoin.solocoin">
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -15,19 +10,13 @@
 
     <application
         android:name=".app.MyApplication"
-        android:allowBackup="true"
-        android:fullBackupContent="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <service
-            android:name=".receiver.GeofenceRegistrationService"
-            android:enabled="true"
-            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -36,13 +25,13 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <service
+            android:name=".receiver.GeofenceRegistrationService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity android:name=".Welcome" />
-        <activity android:name=".MarkYourLocationActivity" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
+        <activity android:name=".MarkYourLocationActivity" />
         <activity android:name=".Policy" />
         <activity android:name=".ToS" />
         <activity android:name=".Main3Activity" />

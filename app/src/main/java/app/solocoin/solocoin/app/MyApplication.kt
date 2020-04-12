@@ -44,9 +44,8 @@ class MyApplication : Application(),Application.ActivityLifecycleCallbacks {
     }
 
     private fun setUpCrashHandler() {
-        val handler = Thread.UncaughtExceptionHandler { thread, ex -> Timber.e(ex) }
+        val handler = Thread.UncaughtExceptionHandler { _, ex -> Timber.e(ex) }
         val fabricExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler(handler, fabricExceptionHandler, this))
+        Thread.setDefaultUncaughtExceptionHandler(AppExceptionHandler(handler, fabricExceptionHandler!!, this))
     }
-
 }

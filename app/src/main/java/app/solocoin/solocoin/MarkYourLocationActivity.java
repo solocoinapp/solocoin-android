@@ -47,7 +47,6 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class MarkYourLocationActivity extends FragmentActivity implements OnSuccessListener<Location>, View.OnClickListener {
-    private SharedPref sharedPref;
 
     @Override
     public void onSuccess(Location location) {
