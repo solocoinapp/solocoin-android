@@ -15,7 +15,7 @@
     <string name="token">Token</string>
     <string name="_2348034638680">+2348034638680</string>
 
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAe6bsxqPyYRq7dx81L77sYvXzmRVqc_7Y</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBCb0PSiNojYsDohe_27au70ttcaWraFOk</string>
 
     <!-- Login page string -->
     <string name="login_hint">Email (Optional)</string>
