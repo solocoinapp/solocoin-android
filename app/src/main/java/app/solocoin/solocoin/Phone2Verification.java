@@ -123,7 +123,7 @@ public class Phone2Verification extends AppCompatActivity {
         verifyBtn.setOnClickListener(v -> {
             String code = editCodeView.getCode();
             if(code != null){
-                if(!editCodeView.getCode().equals("") || editCodeView.getCodeLength() < 6){
+                if(editCodeView.getCode().equals("") || editCodeView.getCodeLength() < 6){
                     Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
                     editCodeView.requestFocus();
                 } else {

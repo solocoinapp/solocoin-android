@@ -25,6 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@SuppressLint("LogNotTimber")
 public class HomeFragment extends Fragment {
 
     static HomeFragment newInstance() {
@@ -45,32 +46,24 @@ public class HomeFragment extends Fragment {
 
         APIService apiService = APIClient.getRetrofitInstance(getContext()).create(APIService.class);
         apiService.showUserData(sharedPref.getAuthToken()).enqueue(new Callback<JsonObject>() {
-            @SuppressLint({"SetTextI18n", "LogNotTimber"})
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
                 JsonObject resp = response.body();
                 if (resp != null) {
                     long uptime = resp.get("home_duration_in_seconds").getAsLong();
+                    float minutes = (float) ((uptime / (1000*60)) % 60);
+                    float hours   = (float) ((uptime / (1000*60*60)) % 24);
+                    float days = (float) (uptime / (1000*60*60*24));
 
-                    long days = TimeUnit.MILLISECONDS.toDays(uptime);
-                    uptime -= TimeUnit.DAYS.toMillis(days);
-
-                    long hours = TimeUnit.MILLISECONDS.toHours(uptime);
-                    uptime -= TimeUnit.HOURS.toMillis(hours);
-
-                    long minutes = TimeUnit.MILLISECONDS.toMinutes(uptime);
-                    uptime -= TimeUnit.MINUTES.toMillis(minutes);
-
-                    long seconds = TimeUnit.MILLISECONDS.toMillis(uptime);
-
-                    timerTextView.setText(days + "d " + hours + "h " + minutes + "m " + seconds + "s");
+                    timerTextView.setText(days + "d " + hours + "h " + minutes + "m ");
                 }
             }
 
             @SuppressLint("SetTextI18n")
             @Override
             public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
-                timerTextView.setText("0d 0h 0m 0s");
+                timerTextView.setText("0d 0h 0m");
             }
         });
     }
