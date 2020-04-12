@@ -42,10 +42,13 @@ import retrofit2.Response;
 public class GeofenceRegistrationService extends IntentService {
 
     private static final String TAG = "GeoIntentService";
-//    private static final String TAG = "xolo";
 
     private APIService apiService;
     private SharedPref sharedPref;
+
+    public GeofenceRegistrationService() {
+        super(TAG);
+    }
 
     public GeofenceRegistrationService(Context context) {
         super(TAG);

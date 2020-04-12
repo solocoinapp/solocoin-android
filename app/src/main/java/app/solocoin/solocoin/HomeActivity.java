@@ -31,30 +31,19 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.JsonObject;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
-import app.solocoin.solocoin.api.APIClient;
-import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.receiver.GeofenceRegistrationService;
 import app.solocoin.solocoin.receiver.SessionPingManager;
 import app.solocoin.solocoin.util.AppPermissionChecker;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @SuppressLint("LogNotTimber")
 public class HomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-//    private static final String TAG = "xolo";
     private GoogleApiClient googleApiClient;
     private PendingIntent pendingIntent;
     private static final int GEOFENCE_RADIUS = 120;
@@ -212,7 +201,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    private void stopGeoFencing() {
+    public void stopGeoFencing() {
         pendingIntent = getGeofencePendingIntent();
         LocationServices.GeofencingApi.removeGeofences(googleApiClient, pendingIntent)
                 .setResultCallback(status -> {
