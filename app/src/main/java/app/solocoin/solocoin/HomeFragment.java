@@ -52,11 +52,11 @@ public class HomeFragment extends Fragment {
                 JsonObject resp = response.body();
                 if (resp != null) {
                     long uptime = resp.get("home_duration_in_seconds").getAsLong();
-                    float minutes = (float) ((uptime / (1000*60)) % 60);
-                    float hours   = (float) ((uptime / (1000*60*60)) % 24);
-                    float days = (float) (uptime / (1000*60*60*24));
+                    int minutes = (int) ((uptime / (60)) % 60);
+                    int hours   = (int) ((uptime / (60*60)) % 24);
+                    int days = (int) (uptime / (60*60*24));
 
-                    timerTextView.setText(days + "d " + hours + "h " + minutes + "m ");
+                    timerTextView.setText(days + "d " + hours + "h " + minutes + "m");
                 }
             }
 
