@@ -107,11 +107,7 @@ public class Phone2Verification extends AppCompatActivity {
         phno.append(phoneNo);
         final EditCodeView editCodeView = findViewById(R.id.edit_code);
         String s;
-        editCodeView.setEditCodeListener(code -> {
-            //This function gives the complete number inputted
-            OtpEnteredByUser=code;
-        });
-        //OtpEnteredByUser=editCodeView.getCode();
+
         resend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,24 +120,21 @@ public class Phone2Verification extends AppCompatActivity {
             }
         });
         sendVerificationCodeToUser(phoneNo);
-        verifyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String code=OtpEnteredByUser;
-                if(code != null){
-                    if(code.isEmpty()||code.length()<6){
-                        Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
-                        editCodeView.requestFocus();
-                    } else {
-                        progressBar.setVisibility(View.VISIBLE);
-                        verifyCode(code);
-                    }
+        verifyBtn.setOnClickListener(v -> {
+            String code = editCodeView.getCode();
+            if(code != null){
+                if(!editCodeView.getCode().equals("") || editCodeView.getCodeLength() < 6){
+                    Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
+                    editCodeView.requestFocus();
                 } else {
-                    Toast.makeText(Phone2Verification.this, "Please check your code.", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.VISIBLE);
+                    verifyCode(code);
                 }
-
+            } else {
+                Toast.makeText(Phone2Verification.this, "Please check your code.", Toast.LENGTH_LONG).show();
             }
         });
+
         tandc=binding.textView8;
         String terms=tandc.getText().toString();
         SpannableString ss= new SpannableString(terms);
