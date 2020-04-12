@@ -156,11 +156,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         locationRequest.setInterval(60000);
         locationRequest.setFastestInterval(30000);
 
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(10000 / 2);
-
-
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
 

@@ -92,7 +92,7 @@
 
         <TextView
             android:id="@+id/time"
-            android:text="0d 0h 0m 0s"
+            android:text="0d 0h 0m"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
