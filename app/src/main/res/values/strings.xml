@@ -73,4 +73,6 @@
     <string name="ob_header3">STAY SAFE</string>
     <string name="set_permissions"> SET PERMISSIONS </string>
     <string name="GEOFENCE_ID">GOSOLO</string>
+    <string name="ENABLE_LOCATION_REQUEST">Please enable location for solocoin</string>
+    <string name="SOLO_COIN_ALERT">Solocoin Alert</string>
 </resources>

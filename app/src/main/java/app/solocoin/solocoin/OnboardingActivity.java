@@ -2,14 +2,20 @@ package app.solocoin.solocoin;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,10 +49,12 @@ public class OnboardingActivity extends AppCompatActivity {
     private ViewPager onboard_pager;
     private OnBoard_Adapter mAdapter;
     private ArrayList<OnBoardItem> onBoardItems=new ArrayList<>();
+    LocationManager lm = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lm = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_on_boarding);
         ask_permissions();
 
@@ -134,6 +142,43 @@ public class OnboardingActivity extends AppCompatActivity {
         int locationPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (locationPermissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MULTIPLE_PERMISSION_REQUEST);
+            ask_permissions();
+        }else{
+            if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                navigateToLocationServiceSettings();
+            }
         }
     }
+
+    private void enableLocation(){
+        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            navigateToLocationServiceSettings();
+        }
+    }
+
+    void navigateToLocationServiceSettings(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.ENABLE_LOCATION_REQUEST) .setTitle(R.string.SOLO_COIN_ALERT)
+                .setCancelable(false)
+                .setPositiveButton("ENABLE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        enableLocation();
+                    }
+                });
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle(R.string.SOLO_COIN_ALERT);
+                alert.show();
+
+            }
+
 }
