@@ -2,6 +2,7 @@ package app.solocoin.solocoin;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -99,6 +100,11 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
     private FusedLocationProviderClient fusedLocationClient;
     private SharedPref sharedPref;
 
+    private GoogleApiClient googleApiClient;
+    private PendingIntent pendingIntent;
+    private LocationRequest request;
+    private boolean isGpsDialogShown = false;
+
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -174,18 +180,51 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
     protected void onResume() {
         super.onResume();
         if (AppPermissionChecker.isLocationPermissionGranted(this)) {
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .build();
+
+
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            LocationRequest request = new LocationRequest()
+            request = new LocationRequest()
                     .setInterval(600000)
                     .setFastestInterval(30000)
                     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             fusedLocationClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper());
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, this);
 
+            displayLocationSettingsRequest();
+
             mapFragment.getMapAsync(mOnMapReadyCallback);
         } else {
             Toast.makeText(this, "Please allow Location permission in Settings", Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, PermissionsActivity.class));
+        }
+    }
+
+    private void displayLocationSettingsRequest() {
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(request);
+        builder.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(result1 -> {
+            final Status status = result1.getStatus();
+            if (GlobalFunc.isGpsEnabled(this)) {
+                try {
+                    status.startResolutionForResult(MarkYourLocationActivity.this, 101);
+                } catch (IntentSender.SendIntentException e) {
+                    Log.d(TAG, "PendingIntent unable to execute request.");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (!GlobalFunc.isGpsEnabled(this)) {
+            displayLocationSettingsRequest();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
