@@ -2,7 +2,9 @@ package app.solocoin.solocoin;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -143,7 +145,7 @@ public class OnboardingActivity extends AppCompatActivity {
             ask_permissions();
         }else{
             if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                enableLocation();
+                navigateToLocationServiceSettings();
             }
         }
     }
@@ -156,11 +158,27 @@ public class OnboardingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //Have to convert it to popup asking for request if this changes accepted
-        Toast.makeText(getApplicationContext(),"Please enable location for solocoin",Toast.LENGTH_LONG).show();
         if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            enableLocation();
+            navigateToLocationServiceSettings();
         }
     }
+
+    void navigateToLocationServiceSettings(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.ENABLE_LOCATION_REQUEST) .setTitle(R.string.SOLO_COIN_ALERT)
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        enableLocation();
+                    }
+                });
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle(R.string.SOLO_COIN_ALERT);
+                alert.show();
+
+            }
 
 }
