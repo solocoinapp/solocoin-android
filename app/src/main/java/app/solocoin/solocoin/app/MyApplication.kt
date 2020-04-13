@@ -2,6 +2,7 @@ package app.solocoin.solocoin.app
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import app.solocoin.solocoin.logging.AppExceptionHandler
 import app.solocoin.solocoin.logging.FileLoggingTree
@@ -13,10 +14,15 @@ class MyApplication : Application(),Application.ActivityLifecycleCallbacks {
 
     override fun onCreate() {
         super.onCreate()
+        MyApplication.appContext = applicationContext
         registerActivityLifecycleCallbacks(this)
         Timber.plant(Timber.DebugTree())
         Timber.plant(FileLoggingTree())
         setUpCrashHandler()
+    }
+
+    companion object {
+        lateinit var appContext: Context
     }
 
     override fun onActivityPaused(activity: Activity?) {

@@ -89,17 +89,13 @@ public class Phone2Verification extends AppCompatActivity {
         phno.getText().clear();
         phno.append(phoneNo);
         final EditCodeView editCodeView = findViewById(R.id.edit_code);
-        String s;
 
-        resend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(timeout||incorrect){
-                    Toast.makeText(Phone2Verification.this,"Resending OTP..",Toast.LENGTH_SHORT).show();
-                    timeout=false;
-                    incorrect=false;
-                    sendVerificationCodeToUser(phoneNo);
-                }
+        resend.setOnClickListener(v -> {
+            if(timeout||incorrect){
+                Toast.makeText(Phone2Verification.this,"Resending OTP..",Toast.LENGTH_SHORT).show();
+                timeout=false;
+                incorrect=false;
+                sendVerificationCodeToUser(phoneNo);
             }
         });
         sendVerificationCodeToUser(phoneNo);
@@ -107,7 +103,7 @@ public class Phone2Verification extends AppCompatActivity {
             String code = editCodeView.getCode();
             if(code != null){
                 if(editCodeView.getCode().equals("") || editCodeView.getCodeLength() < 6){
-                    Toast.makeText(Phone2Verification.this,"Wrong OTP..",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Phone2Verification.this,"OTP too short.",Toast.LENGTH_SHORT).show();
                     editCodeView.requestFocus();
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
@@ -181,7 +177,7 @@ public class Phone2Verification extends AppCompatActivity {
         } catch (Exception ex) {
             Log.d(TAG, "Error: " + ex.getMessage());
             if (ex.getMessage() != null && ex.getMessage().contains("Cannot create PhoneAuthCredential")) {
-                Toast.makeText(this, "Otp validation error, please contact team!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "OTP validation error, please contact us.", Toast.LENGTH_SHORT).show();
                 return;
             }
             Toast.makeText(this, "Please try again!!!", Toast.LENGTH_SHORT).show();
@@ -212,7 +208,7 @@ public class Phone2Verification extends AppCompatActivity {
                                 apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
                                     @Override
                                     public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
-                                        if (response.code() == 200) {
+                                        if (response.isSuccessful()) {
                                             //existing user case
 
                                             JsonObject responseBody = response.body();
@@ -237,9 +233,7 @@ public class Phone2Verification extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
-                                        failureMessage("Something went wrong. Please try again.");
-                                    }
+                                    public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {}
                                 });
                             });
                         } else {
