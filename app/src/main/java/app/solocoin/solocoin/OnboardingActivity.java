@@ -167,7 +167,7 @@ public class OnboardingActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.ENABLE_LOCATION_REQUEST) .setTitle(R.string.SOLO_COIN_ALERT)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton("ENABLE", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         finish();
                         enableLocation();
