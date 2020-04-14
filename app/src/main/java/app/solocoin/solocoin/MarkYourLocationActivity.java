@@ -1,7 +1,10 @@
 package app.solocoin.solocoin;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -10,18 +13,28 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.gms.common.api.Api;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,11 +54,13 @@ import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
 import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.util.AppPermissionChecker;
+import app.solocoin.solocoin.util.GlobalFunc;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
+@SuppressLint("LogNotTimber")
 public class MarkYourLocationActivity extends FragmentActivity implements OnSuccessListener<Location>, View.OnClickListener {
 
     @Override
@@ -81,9 +96,14 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
     private TextInputEditText etLocation;
+
     private FusedLocationProviderClient fusedLocationClient;
     private SharedPref sharedPref;
-    private Location location;
+
+    private GoogleApiClient googleApiClient;
+    private PendingIntent pendingIntent;
+    private LocationRequest request;
+    private boolean isGpsDialogShown = false;
 
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
@@ -116,26 +136,13 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_your_location);
         sharedPref = SharedPref.getInstance(this);
-
         etLocation = findViewById(R.id.et_location);
         findViewById(R.id.btn_confirm).setOnClickListener(this);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        LocationRequest request = new LocationRequest()
-                .setInterval(80000L)
-                .setFastestInterval(50000L)
-                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        fusedLocationClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper());
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, this);
-
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(mOnMapReadyCallback);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        fusedLocationClient.removeLocationUpdates(locationCallback);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(mOnMapReadyCallback);
+        }
     }
 
     @Override
@@ -172,9 +179,52 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
     @Override
     protected void onResume() {
         super.onResume();
-        if(AppPermissionChecker.isLocationPermissionGranted(this)){
-            Toast.makeText(this,"Thanks for allowing permission, you can continue...",Toast.LENGTH_SHORT).show();
+        if (AppPermissionChecker.isLocationPermissionGranted(this)) {
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .build();
+
+
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            request = new LocationRequest()
+                    .setInterval(600000)
+                    .setFastestInterval(30000)
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            fusedLocationClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper());
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, this);
+
+            displayLocationSettingsRequest();
+
             mapFragment.getMapAsync(mOnMapReadyCallback);
+        } else {
+            Toast.makeText(this, "Please allow Location permission in Settings", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, PermissionsActivity.class));
+        }
+    }
+
+    private void displayLocationSettingsRequest() {
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(request);
+        builder.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(result1 -> {
+            final Status status = result1.getStatus();
+            if (GlobalFunc.isGpsEnabled(this)) {
+                try {
+                    status.startResolutionForResult(MarkYourLocationActivity.this, 101);
+                } catch (IntentSender.SendIntentException e) {
+                    Log.d(TAG, "PendingIntent unable to execute request.");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (!GlobalFunc.isGpsEnabled(this)) {
+            displayLocationSettingsRequest();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -204,5 +254,11 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 }

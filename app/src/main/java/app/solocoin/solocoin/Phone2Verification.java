@@ -90,12 +90,15 @@ public class Phone2Verification extends AppCompatActivity {
         phno.append(phoneNo);
         final EditCodeView editCodeView = findViewById(R.id.edit_code);
 
-        resend.setOnClickListener(v -> {
-            if(timeout||incorrect){
-                Toast.makeText(Phone2Verification.this,"Resending OTP..",Toast.LENGTH_SHORT).show();
-                timeout=false;
-                incorrect=false;
-                sendVerificationCodeToUser(phoneNo);
+        resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(timeout){
+                    Toast.makeText(Phone2Verification.this,"Resending OTP..",Toast.LENGTH_SHORT).show();
+                    timeout=false;
+                    incorrect=false;
+                    sendVerificationCodeToUser(phoneNo);
+                }
             }
         });
         sendVerificationCodeToUser(phoneNo);
@@ -167,6 +170,13 @@ public class Phone2Verification extends AppCompatActivity {
         @Override
         public void onVerificationFailed(@NonNull FirebaseException e) {
             Toast.makeText(Phone2Verification.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
+            super.onCodeAutoRetrievalTimeOut(s);
+            timeout=true;
+            Toast.makeText(Phone2Verification.this,"OTP time out has occurred. Please request for OTP again.\n",Toast.LENGTH_SHORT).show();
         }
     };
 

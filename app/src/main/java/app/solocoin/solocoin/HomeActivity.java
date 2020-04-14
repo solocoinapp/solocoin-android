@@ -39,6 +39,7 @@ import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.receiver.GeofenceRegistrationService;
 import app.solocoin.solocoin.receiver.SessionPingManager;
 import app.solocoin.solocoin.util.AppPermissionChecker;
+import app.solocoin.solocoin.util.GlobalFunc;
 
 @SuppressLint("LogNotTimber")
 public class HomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -46,7 +47,8 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
     private static final String TAG = HomeActivity.class.getSimpleName();
     private GoogleApiClient googleApiClient;
     private PendingIntent pendingIntent;
-    private static final int GEOFENCE_RADIUS = 120;
+    private static final int GEOFENCE_RADIUS = 200;
+    private boolean isGpsDialogShown = false;
 
     private SharedPref sharedPref;
 
@@ -139,8 +141,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void displayLocationSettingsRequest() {
         LocationRequest locationRequest = LocationRequest.create();
-
-//        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(60000);
         locationRequest.setFastestInterval(30000);
@@ -154,6 +154,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
             switch (status.getStatusCode()) {
                 case LocationSettingsStatusCodes.SUCCESS:
                 case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                    isGpsDialogShown = true;
                     break;
                 case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                     try {
@@ -223,8 +224,10 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 101 && resultCode != RESULT_OK) {
+        if (requestCode == 101 && resultCode != RESULT_OK || !GlobalFunc.isGpsEnabled(this)) {
             Toast.makeText(this, "We need GPS access to work, please allow!", Toast.LENGTH_LONG).show();
+            displayLocationSettingsRequest();
+        } else if (!isGpsDialogShown && !GlobalFunc.isGpsEnabled(this)) {
             displayLocationSettingsRequest();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
