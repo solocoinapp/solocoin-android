@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
     private static final String TAG = HomeActivity.class.getSimpleName();
     private GoogleApiClient googleApiClient;
     private PendingIntent pendingIntent;
-    private static final int GEOFENCE_RADIUS = 120;
+    private static final int GEOFENCE_RADIUS = 50;
     private boolean isGpsDialogShown = false;
 
     private SharedPref sharedPref;
