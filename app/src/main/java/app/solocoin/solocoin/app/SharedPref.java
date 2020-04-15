@@ -18,7 +18,7 @@ public class SharedPref {
         return instance;
     }
 
-    private static final String COUNTRY_CODE = "country_code";
+    private static final String COUNTRY_CODE = "COUNTRY_CODE";
     public void setCountryCode(String code){
         editor.putString(COUNTRY_CODE, code);
         editor.commit();
@@ -76,12 +76,12 @@ public class SharedPref {
         return pref.getFloat(LONGITUDE, 0);
     }
 
-    private static final String USERNAME= "username";
-    public void setUsername(String username){
-        editor.putString(USERNAME,username);
+    private static final String USER_NAME = "USER_NAME";
+    public void setUsername(String userName){
+        editor.putString(USER_NAME, userName);
         editor.commit();
     }
-    public String getUsername(){return pref.getString(USERNAME,"");}
+    public String getUsername(){return pref.getString(USER_NAME,null);}
 
     private static final String AUTH_TOKEN = "AUTH_TOKEN";
     public void setAuthToken(String authToken){
@@ -129,31 +129,14 @@ public class SharedPref {
     }
 
     //For Firebase Token generated
-    private static final String ID_TOKEN="id_token";
-    public void setIdToken(String idtoken){
-        editor.putString(ID_TOKEN,idtoken);
+    private static final String ID_TOKEN = "ID_TOKEN";
+    public void setIdToken(String idToken){
+        editor.putString(ID_TOKEN, idToken);
         editor.commit();
     }
     public String getIdToken(){
         return pref.getString(ID_TOKEN,null);
     }
-
-    //Since email and gender not required for profile right now.
-//    private static final String EMAIL="email";
-//    public void setEmail(String id){
-//        editor.putString(EMAIL,id);
-//        editor.commit();
-//    }
-//
-//    public String getEmail(){ return pref.getString(EMAIL,"");}
-//
-//    private static final String GENDER="email";
-//    public void setGender(String id){
-//        editor.putString(GENDER,id);
-//        editor.commit();
-//    }
-//
-//    public String getGender(){ return pref.getString(GENDER,"");}
 
     /**
      * Method call when user log-out of application

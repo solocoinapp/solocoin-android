@@ -114,6 +114,7 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
             verificationId = vid;
             forceResendToken = token;
             progressBar.setVisibility(View.GONE);
+            Toast.makeText(Phone2Verification.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -140,13 +141,16 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            sharedPref.clearSession();
+            FirebaseAuth.getInstance().signOut();
+        }
+
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener( Phone2Verification.this, task -> {
                     if (task.isComplete() && task.getResult() != null && task.getResult().getUser() != null) {
                         sharedPref.setSessionType("home");
-
-                        Log.d(TAG, task.getResult().getUser().getUid());
 
                         String uid = task.getResult().getUser().getUid();
                         if (uid != null) {
