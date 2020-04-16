@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "667382448546-c8v44c0tk190p5d846ujlb4gh97ot50q.apps.googleusercontent.com",
+          "client_id": "667382448546-l6s27grbsfn5jlj3bdocfv95j5hc77st.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.solocoin.solocoin",
+            "certificate_hash": "77d3075faad8e6c2465125b1bc7589c913aa646e"
+          }
+        },
+        {
+          "client_id": "667382448546-cjub8ak3263lvncrht4cqeajitorm67k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "app.solocoin.solocoin",
@@ -45,7 +53,7 @@
       ],
       "api_key": [
         {
-          "current_key": "CHANGE-ME-FOR-BUILD-BUT-DONT-ADD-ME-TO-GIT"
+          "current_key": "API-KEY"
         }
       ],
       "services": {

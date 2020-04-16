@@ -20,11 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bigbangbutton.editcodeview.EditCodeView;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.gson.JsonObject;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import app.solocoin.solocoin.api.APIClient;
 import app.solocoin.solocoin.api.APIService;
@@ -101,9 +103,9 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
 
     private void sendVerificationCodeToUser(String phoneNo, PhoneAuthProvider.ForceResendingToken token) {
         if (token == null) {
-            PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNo,60, TimeUnit.SECONDS, this, phoneAuthCallback);
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNo,120, TimeUnit.SECONDS, this, phoneAuthCallback);
         } else {
-            PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNo,60, TimeUnit.SECONDS, this, phoneAuthCallback, token);
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNo,120, TimeUnit.SECONDS, this, phoneAuthCallback, token);
         }
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -146,10 +148,9 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
             FirebaseAuth.getInstance().signOut();
         }
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithCredential(credential)
+        FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener( Phone2Verification.this, task -> {
-                    if (task.isComplete() && task.getResult() != null && task.getResult().getUser() != null) {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getUser() != null) {
                         sharedPref.setSessionType("home");
 
                         String uid = task.getResult().getUser().getUid();
@@ -168,6 +169,7 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
                                 apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
                                     @Override
                                     public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
+                                        Log.d(TAG, "reponse: " + response.body() + " / "+ response.code());
                                         progressBar.setVisibility(View.GONE);
                                         if (response.code() == 200) {
                                             //existing user case
@@ -195,6 +197,7 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
 
                                     @Override
                                     public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
+                                        Log.d(TAG, "failure: " + t.getMessage());
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(getApplicationContext(), "Something went wrong. Please try again.", Toast.LENGTH_SHORT).show();
                                     }
@@ -204,14 +207,16 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "Something went wrong. Please try again.", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Something went wrong. Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> {
+                    Log.d(TAG, "firebase-failure: " + e.toString());
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), "Something went wrong. Please try again.", Toast.LENGTH_SHORT).show();
+                    if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                        Toast.makeText(getApplicationContext(), "Please resend OTP again!!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Toast.makeText(getApplicationContext(), "Something went wrong, please try again!!!", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -220,7 +225,8 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
         if (view.getId() == R.id.tv_resend_otp) {
             sendVerificationCodeToUser(phoneNumber, forceResendToken);
         } else if (view.getId() == R.id.btn_verify_otp) {
-            if (!verificationId.equals("") && etOtp.getCodeLength() == 6) {
+            if (!verificationId.equals("") && etOtp.getCode().length() == 6) {
+                progressBar.setVisibility(View.VISIBLE);
                 verifyCode(verificationId, etOtp.getCode());
             } else {
                 Toast.makeText(this, "Please check otp again!!", Toast.LENGTH_SHORT).show();

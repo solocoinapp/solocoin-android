@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">SoloCoin</string>
-    <string name="BASE_URL">https://qa01.solocoin.app/api/v1/</string>
+    <string name="BASE_URL">https://prod.solocoin.app/api/v1/</string>
     <string name="get_reward_to_stay_away_from_people">Get rewards to stay away from people</string>
     <string name="get_reward_to_stay">Get rewards to stay</string>
     <string name="away_from_people">away from people</string>
@@ -15,7 +15,7 @@
     <string name="token">Token</string>
     <string name="_2348034638680">+2348034638680</string>
 
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBCb0PSiNojYsDohe_27au70ttcaWraFOk</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">API-KEY</string>
 
     <!-- Login page string -->
     <string name="login_hint">Email (Optional)</string>

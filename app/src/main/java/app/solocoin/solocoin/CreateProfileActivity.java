@@ -57,7 +57,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 Log.d("xoxo", response.code()+"/"+response.body());
                 if (response.code() == 200){
                     JsonObject body = response.body();
-                    String authToken = body.get("auth_token").toString();
+                    String authToken = body.get("auth_token").getAsString();
                     authToken = "Bearer " + authToken;
                     sharedPref.setAuthToken(authToken);
 

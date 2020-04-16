@@ -197,8 +197,7 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
 
             mapFragment.getMapAsync(mOnMapReadyCallback);
         } else {
-            Toast.makeText(this, "Please allow Location permission in Settings", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, PermissionsActivity.class));
+            requestPermission();
         }
     }
 
@@ -245,6 +244,8 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
                     Uri uri = Uri.fromParts("package", getPackageName(), null);
                     intent.setData(uri);
                     startActivity(intent);
+                } else {
+                    requestPermission();
                 }
             } else {
                 Toast.makeText(this,"Thanks for allowing permission, please wait getting location...",Toast.LENGTH_SHORT).show();
