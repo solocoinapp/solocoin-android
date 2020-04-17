@@ -101,9 +101,7 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
     private SharedPref sharedPref;
 
     private GoogleApiClient googleApiClient;
-    private PendingIntent pendingIntent;
     private LocationRequest request;
-    private boolean isGpsDialogShown = false;
 
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
@@ -138,6 +136,8 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
         sharedPref = SharedPref.getInstance(this);
         etLocation = findViewById(R.id.et_location);
         findViewById(R.id.btn_confirm).setOnClickListener(this);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -184,8 +184,6 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
                     .addApi(LocationServices.API)
                     .build();
 
-
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             request = new LocationRequest()
                     .setInterval(600000)
                     .setFastestInterval(30000)
@@ -208,19 +206,28 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
         result.setResultCallback(result1 -> {
             final Status status = result1.getStatus();
-            if (GlobalFunc.isGpsEnabled(this)) {
-                try {
-                    status.startResolutionForResult(MarkYourLocationActivity.this, 101);
-                } catch (IntentSender.SendIntentException e) {
-                    Log.d(TAG, "PendingIntent unable to execute request.");
-                }
+            switch (status.getStatusCode()) {
+                case LocationSettingsStatusCodes.SUCCESS:
+                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                    if (!GlobalFunc.isGpsEnabled(this)) {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                    break;
+                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                    try {
+                        status.startResolutionForResult(MarkYourLocationActivity.this, 102);
+                    } catch (IntentSender.SendIntentException e) {
+                        Log.d(TAG, "PendingIntent unable to execute request.");
+                    }
+                    break;
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (!GlobalFunc.isGpsEnabled(this)) {
+        if (requestCode == 102 && resultCode != RESULT_OK) {
+            Toast.makeText(this, "We need GPS access to work, please allow!", Toast.LENGTH_LONG).show();
             displayLocationSettingsRequest();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -249,8 +256,16 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
                 }
             } else {
                 Toast.makeText(this,"Thanks for allowing permission, please wait getting location...",Toast.LENGTH_SHORT).show();
-                mapFragment.getMapAsync(mOnMapReadyCallback);
+                request = new LocationRequest()
+                        .setInterval(600000)
+                        .setFastestInterval(30000)
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                fusedLocationClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper());
                 fusedLocationClient.getLastLocation().addOnSuccessListener(this, this);
+
+                displayLocationSettingsRequest();
+
+                mapFragment.getMapAsync(mOnMapReadyCallback);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
