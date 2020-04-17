@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bigbangbutton.editcodeview.EditCodeView;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -38,7 +39,7 @@ import retrofit2.Response;
 @SuppressLint("LogNotTimber")
 public class Phone2Verification extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "xoxo";
+    private static final String TAG = Phone2Verification.class.getSimpleName();
 
     private String phoneNumber = "";
     private String verificationId = "";
@@ -126,12 +127,14 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
 
         @Override
         public void onVerificationFailed(@NonNull FirebaseException e) {
+            Crashlytics.logException(e);
             Toast.makeText(Phone2Verification.this, "Some error occurred, please try again!!!", Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
         }
 
         @Override
         public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
+            Crashlytics.log(0, TAG, "onCodeAutoRetrievalTimeOut: " + s);
             Toast.makeText(Phone2Verification.this,"OTP time out has occurred. Please request for OTP again.",Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
         }
@@ -169,6 +172,7 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
                                 apiService.doMobileLogin(body).enqueue(new Callback<JsonObject>() {
                                     @Override
                                     public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
+                                        Crashlytics.log(0, TAG, "response: " + response.code());
                                         Log.d(TAG, "reponse: " + response.body() + " / "+ response.code());
                                         progressBar.setVisibility(View.GONE);
                                         if (response.code() == 200) {
@@ -197,6 +201,7 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
 
                                     @Override
                                     public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
+                                        Crashlytics.logException(t);
                                         Log.d(TAG, "failure: " + t.getMessage());
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(getApplicationContext(), "Something went wrong. Please try again.", Toast.LENGTH_SHORT).show();
@@ -210,6 +215,7 @@ public class Phone2Verification extends AppCompatActivity implements View.OnClic
                     }
                 })
                 .addOnFailureListener(e -> {
+                    Crashlytics.logException(e);
                     Log.d(TAG, "firebase-failure: " + e.toString());
                     progressBar.setVisibility(View.GONE);
                     if (e instanceof FirebaseAuthInvalidCredentialsException) {
