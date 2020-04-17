@@ -234,7 +234,7 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 101) {
+        if (requestCode == 101 && permissions.length != 0) {
             String permission = permissions[0];
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 boolean showRationale = shouldShowRequestPermissionRationale(permission);

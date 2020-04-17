@@ -81,22 +81,20 @@ public class PermissionsActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 101) {
-            for (int i = 0, len = permissions.length; i < len; i++) {
-                String permission = permissions[i];
-                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                    boolean showRationale = shouldShowRequestPermissionRationale(permission);
-                    if (!showRationale) {
-                        Toast.makeText(this, "Please allow us to access location, for working efficienlty", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getPackageName(), null);
-                        intent.setData(uri);
-                        startActivity(intent);
-                    }
-                } else {
-                    Toast.makeText(this,"Thanks for allowing permission, you can continue...",Toast.LENGTH_SHORT).show();
-                    changeLocationBtnColor();
+        if (requestCode == 101 && permissions.length != 0) {
+            String permission = permissions[0];
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                boolean showRationale = shouldShowRequestPermissionRationale(permission);
+                if (!showRationale) {
+                    Toast.makeText(this, "Please allow us to access location, for working efficienlty", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
                 }
+            } else {
+                Toast.makeText(this,"Thanks for allowing permission, you can continue...",Toast.LENGTH_SHORT).show();
+                changeLocationBtnColor();
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);

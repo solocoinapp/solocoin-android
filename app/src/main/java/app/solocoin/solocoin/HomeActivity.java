@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -48,7 +49,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
     private GoogleApiClient googleApiClient;
     private PendingIntent pendingIntent;
     private static final int GEOFENCE_RADIUS = 200;
-    private boolean isGpsDialogShown = false;
 
     private SharedPref sharedPref;
 
@@ -154,7 +154,9 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
             switch (status.getStatusCode()) {
                 case LocationSettingsStatusCodes.SUCCESS:
                 case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                    isGpsDialogShown = true;
+                    if (!GlobalFunc.isGpsEnabled(this)) {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
                     break;
                 case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                     try {
@@ -218,16 +220,13 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
             return pendingIntent;
         }
         Intent intent = new Intent(this, GeofenceRegistrationService.class);
-        return PendingIntent.getService(this, 0, intent, PendingIntent.
-                FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 101 && resultCode != RESULT_OK || !GlobalFunc.isGpsEnabled(this)) {
+        if (requestCode == 101 && resultCode != RESULT_OK) {
             Toast.makeText(this, "We need GPS access to work, please allow!", Toast.LENGTH_LONG).show();
-            displayLocationSettingsRequest();
-        } else if (!isGpsDialogShown && !GlobalFunc.isGpsEnabled(this)) {
             displayLocationSettingsRequest();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
