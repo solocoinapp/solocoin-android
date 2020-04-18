@@ -137,6 +137,9 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
         etLocation = findViewById(R.id.et_location);
         findViewById(R.id.btn_confirm).setOnClickListener(this);
 
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .build();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -180,10 +183,6 @@ public class MarkYourLocationActivity extends FragmentActivity implements OnSucc
     protected void onResume() {
         super.onResume();
         if (AppPermissionChecker.isLocationPermissionGranted(this)) {
-            googleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(LocationServices.API)
-                    .build();
-
             request = new LocationRequest()
                     .setInterval(600000)
                     .setFastestInterval(30000)
