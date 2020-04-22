@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Solocoin</string>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>Spanish</item>
+        <item>Mandarin</item>
+        <item>Portuguese</item>
+        <item>Hindi</item>
+    </string-array>
+</resources>
