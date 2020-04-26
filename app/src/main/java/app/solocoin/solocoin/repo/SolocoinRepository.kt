@@ -13,16 +13,6 @@ import retrofit2.Response
 
 @ExperimentalCoroutinesApi
 class SolocoinRepository(private val apiService: ApiService) {
-
-    fun mobileLogin(obj: JsonObject): Flow<NetworkCallState<JsonObject>> {
-        return object : NetworkBoundRepo<JsonObject>() {
-            override suspend fun fetchFromRemote(): Response<JsonObject> = apiService.mobileLogin(obj)
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-
-    fun mobileSignUp(obj: JsonObject): Flow<NetworkCallState<JsonObject>> {
-        return object : NetworkBoundRepo<JsonObject>() {
-            override suspend fun fetchFromRemote(): Response<JsonObject> = apiService.mobileSignUp(obj)
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
+    suspend fun mobileLogin(body: JsonObject) = apiService.mobileLogin(body)
+    suspend fun mobileSignUp(body: JsonObject) = apiService.mobileSignUp(body)
 }

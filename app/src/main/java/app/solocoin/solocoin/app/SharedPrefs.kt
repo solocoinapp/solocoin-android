@@ -11,13 +11,13 @@ import android.content.SharedPreferences
 class SharedPrefs(context: Context) {
     private val instance: SharedPreferences = context.getSharedPreferences("${context.packageName}_preferences", MODE_PRIVATE)
 
-    private val AUTH_TOKEN = "AUTH_TOKEN"
+    private val auth_token = "auth_token"
     var authToken: String?
-        get() = instance.getString(AUTH_TOKEN, null)
-        set(value) = instance.edit().putString(AUTH_TOKEN, value).apply()
+        get() = instance.getString(auth_token, null)
+        set(value) = instance.edit().putString(auth_token, value).apply()
 
-    private val COUNTRY_CODE = "COUNTRY_CODE"
+    private val country_code = "country_code"
     var countryCode: String?
-        get() = instance.getString(COUNTRY_CODE, null)
-        set(value) = instance.edit().putString(COUNTRY_CODE, value).apply()
+        get() = instance.getString(country_code, null)
+        set(value) = instance.edit().putString(country_code, value).apply()
 }

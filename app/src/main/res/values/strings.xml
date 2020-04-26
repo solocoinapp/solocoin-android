@@ -8,4 +8,14 @@
         <item>Portuguese</item>
         <item>Hindi</item>
     </string-array>
+    
+    <string name="intro_image">Application introduction image!</string>
+    <string name="intro_one">Practice social distancing</string>
+    <string name="intro_two">Earn real world rewards</string>
+    <string name="intro_three">Stay safe</string>
+
+    <string name="get_started">Get started</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="create_account">Create account</string>
 </resources>

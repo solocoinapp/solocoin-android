@@ -3,7 +3,7 @@ package app.solocoin.solocoin.di
 import android.content.Context
 import app.solocoin.solocoin.repo.ApiService
 import app.solocoin.solocoin.repo.SolocoinRepository
-import app.solocoin.solocoin.util.isNetworkAvailable
+import app.solocoin.solocoin.util.GlobalUtils.Companion.isNetworkAvailable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -33,10 +33,7 @@ fun getOkHttpClient(context: Context): OkHttpClient {
         .addInterceptor { chain ->
             val request = chain.request()
             if (isNetworkAvailable(context)) {
-                request.newBuilder().header(
-                    "Cache-Control",
-                    "public, max-age=" + 5
-                ).build()
+                request.newBuilder().build()
             } else {
                 throw NoConnectivityException()
             }
