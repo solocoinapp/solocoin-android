@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.auth
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -61,14 +62,10 @@ class OnboardActivity : AppCompatActivity(), ViewPager.OnPageChangeListener, Vie
                 when (VISIBLE_FRAG_INDEX) {
                     0 -> view_pager?.setCurrentItem(VISIBLE_FRAG_INDEX+1, true)
                     1 -> view_pager?.setCurrentItem(VISIBLE_FRAG_INDEX+1, true)
-                    2 -> {
-                        Toast.makeText(this, "start create account activity", Toast.LENGTH_SHORT).show()
-                    }
+                    2 -> startActivity(Intent(this, LoginSignupActivity::class.java))
                 }
             }
-            R.id.tv_skip -> {
-                Toast.makeText(this, "start create account activity", Toast.LENGTH_SHORT).show()
-            }
+            R.id.tv_skip -> startActivity(Intent(this, LoginSignupActivity::class.java))
         }
     }
 }

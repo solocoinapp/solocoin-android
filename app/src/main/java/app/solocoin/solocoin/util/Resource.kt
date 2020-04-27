@@ -1,5 +1,7 @@
 package app.solocoin.solocoin.util
 
+import app.solocoin.solocoin.util.enums.Status
+
 /**
  * Created by Aditya Sonel on 26/04/20.
  */

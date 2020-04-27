@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    tools:context=".ui.auth.LoginSignupActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@android:color/white"
+        app:elevation="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="@string/signup"
+                android:textAllCaps="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/tv_enter_number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+        android:layout_margin="?attr/actionBarSize"
+        android:fontFamily="@font/poppins"
+        android:text="@string/enter_number"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/layout_cd_number"
+        android:layout_marginTop="@dimen/app_padding"
+        app:layout_constraintTop_toBottomOf="@id/tv_enter_number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+            android:id="@+id/country_code_picker"
+            app:ccp_hideNameCode="true"
+            app:ccp_textColor="@color/colorPrimaryDark"
+            app:ccp_textFont="Poppins-SemiBold.ttf"
+            app:ccp_textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_mobile_number"
+            android:imeOptions="actionDone"
+            android:letterSpacing="0.1"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="@font/poppins_semibold"
+            android:hint="@string/hint_number"
+            android:inputType="phone"
+            android:textSize="20sp"
+            android:maxLength="10"
+            android:maxLines="1"
+            android:digits="0123456789"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <com.bigbangbutton.editcodeview.EditCodeView
+        android:id="@+id/otp_view"
+        android:visibility="gone"
+        app:codeHiddenMask="."
+        app:codeHiddenMode="false"
+        app:codeLength="6"
+        app:underlineReductionScale="0.4"
+        app:underlineStroke="4dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_cd_number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/app_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize" />
+    <TextView
+        android:id="@+id/tv_resend_otp"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:fontFamily="@font/poppins"
+        android:text="@string/resend_otp"
+        app:layout_constraintTop_toBottomOf="@id/otp_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_get_otp"
+        android:textSize="18sp"
+        android:textAllCaps="true"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:layout_marginBottom="?attr/actionBarSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/bg_button"
+        android:text="@string/get_otp"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
