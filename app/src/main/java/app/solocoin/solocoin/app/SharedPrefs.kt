@@ -20,4 +20,14 @@ class SharedPrefs(context: Context) {
     var countryCode: String?
         get() = instance.getString(country_code, null)
         set(value) = instance.edit().putString(country_code, value).apply()
+
+    private val latitude = "latitude"
+    var userLat: Long
+        get() = instance.getLong(latitude, 0)
+        set(value) = instance.edit().putLong(latitude, value).apply()
+
+    private val longitude = "longitude"
+    var userLong: Long
+        get() = instance.getLong(longitude, 0)
+        set(value) = instance.edit().putLong(longitude, value).apply()
 }

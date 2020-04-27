@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
+                android:visibility="gone"
                 android:text="@string/signup"
                 android:textAllCaps="true"
                 android:fontFamily="@font/poppins_semibold"
@@ -32,23 +33,45 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/tv_enter_number"
+    <ImageView
+        android:id="@+id/iv_appicon"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+        android:src="@mipmap/app_icon"
+        android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
-        android:layout_margin="?attr/actionBarSize"
+        android:layout_width="78dp"
+        android:layout_height="78dp" />
+
+    <TextView
+        android:id="@+id/tv_title1"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_appicon"
+        android:layout_margin="24dp"
         android:fontFamily="@font/poppins"
-        android:text="@string/enter_number"
+        android:text="@string/auth_title1"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_title2"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title1"
+        android:fontFamily="@font/poppins"
+        android:text="@string/auth_title2"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:id="@+id/layout_cd_number"
+        android:id="@+id/layout_number"
         android:layout_marginTop="@dimen/app_padding"
-        app:layout_constraintTop_toBottomOf="@id/tv_enter_number"
+        app:layout_constraintTop_toBottomOf="@id/tv_title2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/app_padding"
@@ -80,36 +103,44 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <com.bigbangbutton.editcodeview.EditCodeView
-        android:id="@+id/otp_view"
+    <LinearLayout
+        android:id="@+id/layout_otp"
         android:visibility="gone"
-        app:codeHiddenMask="."
-        app:codeHiddenMode="false"
-        app:codeLength="6"
-        app:underlineReductionScale="0.4"
-        app:underlineStroke="4dp"
-        app:layout_constraintTop_toBottomOf="@id/layout_cd_number"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/app_padding"
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize" />
-    <TextView
-        android:id="@+id/tv_resend_otp"
-        android:visibility="gone"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
-        android:fontFamily="@font/poppins"
-        android:text="@string/resend_otp"
-        app:layout_constraintTop_toBottomOf="@id/otp_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintBottom_toTopOf="@id/tv_get_otp"
+        app:layout_constraintTop_toBottomOf="@id/layout_number"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.bigbangbutton.editcodeview.EditCodeView
+            android:id="@+id/otp_view"
+            android:layout_gravity="center"
+            app:codeHiddenMode="false"
+            app:codeLength="6"
+            app:underlineSelectedColor="@color/colorAccent"
+            android:layout_margin="@dimen/app_padding"
+            android:paddingBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize" />
+        <TextView
+            android:id="@+id/tv_resend_otp"
+            android:enabled="false"
+            android:clickable="false"
+            android:padding="4dp"
+            android:layout_marginBottom="@dimen/app_padding"
+            android:fontFamily="@font/poppins"
+            android:text="@string/resend_otp"
+            app:layout_constraintTop_toBottomOf="@id/otp_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_get_otp"
-        android:textSize="18sp"
         android:textAllCaps="true"
         android:fontFamily="@font/poppins_semibold"
         android:textColor="@android:color/white"

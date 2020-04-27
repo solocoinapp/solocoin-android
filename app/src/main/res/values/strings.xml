@@ -20,11 +20,16 @@
     <string name="create_account">Create account</string>
 
     <string name="signup">Signup</string>
-    <string name="enter_number">Enter Mobile Number</string>
+    <string name="auth_title1">Mobile number</string>
+    <string name="auth_title2">Enter your mobile number\nwe will send you the OTP</string>
     <string name="hint_number">9855461111</string>
     <string name="get_otp">Get OTP</string>
+    <string name="resend_otp_timer">Resend OTP in 0:%d</string>
     <string name="resend_otp">Resend OTP?</string>
+    <string name="verify_otp">Verify OTP</string>
 
     <string name="okay">Okay</string>
     <string name="cancel">Cancel</string>
+
+    <string name="error_mobile_no">Please enter mobile number, to continue!</string>
 </resources>
