@@ -22,7 +22,7 @@
     <string name="signup">Signup</string>
     <string name="auth_title1">Mobile number</string>
     <string name="auth_title2">Enter your mobile number\nwe will send you the OTP</string>
-    <string name="hint_number">9855461111</string>
+    <string name="hint_number">9876543210</string>
     <string name="get_otp">Get OTP</string>
     <string name="resend_otp_timer">Resend OTP in 0:%d</string>
     <string name="resend_otp">Resend OTP?</string>
@@ -32,4 +32,8 @@
     <string name="cancel">Cancel</string>
 
     <string name="error_mobile_no">Please enter mobile number, to continue!</string>
+    <string name="otp_sent_success">Otp sent successfully</string>
+    <string name="otp_sent_failure">Otp sent failed!</string>
+
+    <string name="error_msg">Some error occurred, please try again!</string>
 </resources>

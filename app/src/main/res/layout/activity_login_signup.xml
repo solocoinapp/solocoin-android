@@ -76,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/app_padding"
         android:layout_marginEnd="@dimen/app_padding"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.rilixtech.widget.countrycodepicker.CountryCodePicker
@@ -99,7 +99,9 @@
             android:maxLength="10"
             android:maxLines="1"
             android:digits="0123456789"
-            android:layout_width="match_parent"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -155,5 +157,15 @@
         android:text="@string/get_otp"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
+    <TextView
+        android:id="@+id/tv_change_number"
+        android:visibility="gone"
+        android:text="Change number?"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_get_otp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

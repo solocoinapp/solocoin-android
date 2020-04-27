@@ -11,7 +11,11 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import app.solocoin.solocoin.R
 import kotlinx.android.synthetic.main.activity_onboard.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class OnboardActivity : AppCompatActivity(), ViewPager.OnPageChangeListener, View.OnClickListener {
 
     companion object {

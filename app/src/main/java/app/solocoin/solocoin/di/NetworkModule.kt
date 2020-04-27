@@ -1,9 +1,11 @@
 package app.solocoin.solocoin.di
 
 import android.content.Context
+import app.solocoin.solocoin.R
 import app.solocoin.solocoin.repo.ApiService
 import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.util.GlobalUtils.Companion.isNetworkAvailable
+import app.solocoin.solocoin.util.enums.Status
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -16,7 +18,7 @@ import java.io.IOException
 val networkModule = module {
     single {
         Retrofit.Builder()
-            .baseUrl(ApiService.BASE_URL)
+            .baseUrl(androidContext().getString(R.string.base_url))
             .addConverterFactory(GsonConverterFactory.create())
             .client(getOkHttpClient(androidContext()))
             .build()

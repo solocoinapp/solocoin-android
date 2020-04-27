@@ -21,6 +21,16 @@ class SharedPrefs(context: Context) {
         get() = instance.getString(country_code, null)
         set(value) = instance.edit().putString(country_code, value).apply()
 
+    private val mobile_number = "mobile_number"
+    var mobileNumber: String?
+        get() = instance.getString(mobile_number, null)
+        set(value) = instance.edit().putString(mobile_number, value).apply()
+
+    private val id_token = "id_token"
+    var idToken: String?
+        get() = instance.getString(id_token, null)
+        set(value) = instance.edit().putString(id_token, value).apply()
+
     private val latitude = "latitude"
     var userLat: Long
         get() = instance.getLong(latitude, 0)
@@ -30,4 +40,10 @@ class SharedPrefs(context: Context) {
     var userLong: Long
         get() = instance.getLong(longitude, 0)
         set(value) = instance.edit().putLong(longitude, value).apply()
+
+    fun clearSession() {
+        instance.edit()
+            .clear()
+            .apply()
+    }
 }

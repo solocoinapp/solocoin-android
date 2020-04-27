@@ -26,7 +26,7 @@ class AppDialog: DialogFragment() {
         /**
          * instance method for success, error or info type dialog
          */
-        fun instance(title: String, subtitle: String, listener: AppDialogListener,  confirmTitle: String = "Okay", cancelTitle: String = "Cancel") = AppDialog().apply {
+        fun instance(title: String, subtitle: String, listener: AppDialogListener?,  confirmTitle: String = "Okay", cancelTitle: String = "Cancel") = AppDialog().apply {
             val bundle = Bundle()
             bundle.putSerializable(TYPE, DialogType.INFO)
             bundle.putString(TITLE, title)
@@ -89,20 +89,12 @@ class AppDialog: DialogFragment() {
             tvCancel.text = canceltitle
 
             tvConfirm.setOnClickListener {
-                if (dialogListener == null) {
-                    throw ClassCastException("$context must implement AppDialogListener")
-                } else {
-                    dialogListener?.onClickConfirm()
-                    dismiss()
-                }
+                dialogListener?.onClickConfirm()
+                dismiss()
             }
             tvCancel.setOnClickListener {
-                if (dialogListener == null) {
-                    throw ClassCastException("$context must implement AppDialogListener")
-                } else {
-                    dialogListener?.onClickCancel()
-                    dismiss()
-                }
+                dialogListener?.onClickCancel()
+                dismiss()
             }
         }
     }
