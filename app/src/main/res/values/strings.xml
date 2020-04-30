@@ -35,5 +35,6 @@
     <string name="otp_sent_success">Otp sent successfully</string>
     <string name="otp_sent_failure">Otp sent failed!</string>
 
+    <string name="error_wrong_otp">Invalid OTP, please check again!</string>
     <string name="error_msg">Some error occurred, please try again!</string>
 </resources>

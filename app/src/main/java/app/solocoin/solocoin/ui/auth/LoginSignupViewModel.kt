@@ -11,7 +11,6 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 
@@ -23,11 +22,12 @@ import retrofit2.Response
 @ExperimentalCoroutinesApi
 class LoginSignupViewModel(private val repository: SolocoinRepository): ViewModel() {
     fun mobileLogin(body: JsonObject): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
-        Log.d("xoxo", "body, vm: $body")
         if (body.size() != 0) {
             emit(Resource.loading(data = null))
             try {
-                emit(Resource.success(data = repository.mobileLogin(body).body()))
+                repository.mobileLogin(body).apply {
+                    emit(Resource.success(data = body(), code = code()))
+                }
             } catch (exception: Exception) {
                 emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
             }
@@ -36,6 +36,5 @@ class LoginSignupViewModel(private val repository: SolocoinRepository): ViewMode
 
     override fun onCleared() {
         super.onCleared()
-        Log.wtf("xoxo", "onCleared!")
     }
 }

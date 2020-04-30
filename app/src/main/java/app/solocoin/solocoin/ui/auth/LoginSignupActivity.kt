@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.ui.home.HomeActivity
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
@@ -23,6 +24,7 @@ import com.bigbangbutton.editcodeview.EditCodeView
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.gson.JsonObject
@@ -37,7 +39,7 @@ import java.util.concurrent.TimeUnit
 @InternalCoroutinesApi
 class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeListener {
 
-    private val TAG = "xoxo"
+    private val TAG = LoginSignupActivity::class.java.simpleName
 
     private val viewModel: LoginSignupViewModel by viewModel()
 
@@ -107,10 +109,6 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
             Toast.makeText(this@LoginSignupActivity, getString(R.string.otp_sent_success), Toast.LENGTH_SHORT).show()
             loadingDialog.dismiss()
         }
-
-        override fun onCodeAutoRetrievalTimeOut(p0: String) {
-            super.onCodeAutoRetrievalTimeOut(p0)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,36 +121,15 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mFirebaseAuth = FirebaseAuth.getInstance()
-        setupObservers(JsonObject())
 
         countryCodePicker = findViewById(R.id.country_code_picker)
         etMobileNumber = findViewById(R.id.et_mobile_number)
-        etMobileNumber.setText("6505557777")
         otpView = findViewById(R.id.otp_view)
         otpView.setEditCodeListener(this)
 
         tv_resend_otp?.setOnClickListener(this)
         tv_get_otp?.setOnClickListener(this)
         tv_change_number?.setOnClickListener(this)
-    }
-
-    private fun setupObservers(body: JsonObject) {
-        viewModel.mobileLogin(body).observe(this, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        Log.d(TAG, "observer-success: $resource")
-                    }
-                    Status.ERROR -> {
-                        Log.d(TAG, "observer-error: $resource")
-                        Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show()
-                    }
-                    Status.LOADING -> {
-                        loadingDialog.show(supportFragmentManager, loadingDialog.tag)
-                    }
-                }
-            }
-        })
     }
 
     // initialize phone_auth_provider sent otp
@@ -177,6 +154,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                     if (resendToken == null) {
                         PhoneAuthProvider.getInstance().verifyPhoneNumber(countryCode+mobileNumber, otpTimeout, TimeUnit.SECONDS, this@LoginSignupActivity, authCallbacks)
                     } else {
+                        otpView.clearCode()
                         PhoneAuthProvider.getInstance().verifyPhoneNumber(countryCode+mobileNumber, otpTimeout, TimeUnit.SECONDS, this@LoginSignupActivity, authCallbacks, resendToken)
                     }
                 }
@@ -198,10 +176,8 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                         Toast.makeText(this, "Please check OTP again!", Toast.LENGTH_SHORT).show()
                         return
                     }
-                    loadingDialog.show(supportFragmentManager, "dialog")
 
-                    val credential = PhoneAuthProvider.getCredential(storedVerificationId, otpCode)
-                    signInWithPhoneAuthCredential(credential)
+                    signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(storedVerificationId, otpCode))
                 } else {
                     handleAuth(null)
                 }
@@ -212,15 +188,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                     "Entered mobile number ${countryCode+mobileNumber} is not your number?",
                     object: AppDialog.AppDialogListener{
                         override fun onClickConfirm() {
-                            timer.cancel()
-                            isOtpSent = false
-                            layout_otp?.visibility = GONE
-
-                            et_mobile_number.setText("")
-                            tv_get_otp.text = getString(R.string.get_otp)
-                            tv_resend_otp.text = ""
-
-                            tv_change_number.visibility = GONE
+                            changeNumberResetUi()
                         }
 
                         override fun onClickCancel() {}
@@ -230,15 +198,9 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        loadingDialog.show(supportFragmentManager, loadingDialog.tag)
+
         if (mFirebaseAuth.currentUser != null) {
             sharedPrefs?.clearSession()
             mFirebaseAuth.signOut()
@@ -246,8 +208,6 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
 
         mFirebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
-
-                loadingDialog.dismiss()
 
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
@@ -268,14 +228,42 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                         user.addProperty("uid", uid)
                         body.add("user", user)
 
-                        Log.d(TAG, "body: $body")
+                        viewModel.mobileLogin(body).observe(this, Observer {
+                            it?.let { resource ->
+                                when (resource.status) {
+                                    Status.SUCCESS -> {
+                                        Log.d(TAG, "observer-success: $resource")
+                                        loadingDialog.dismiss()
 
-                        viewModel.mobileLogin(body)
+                                        if (resource.code == 200) {
+                                            //existing-user
+                                            val authToken = "Bearer " + resource.data!!.get("auth_token").asString
+                                            sharedPrefs?.authToken = authToken
+                                            Toast.makeText(this, "Proud to be SOLO!" , Toast.LENGTH_SHORT).show()
+                                            GlobalUtils.startActivityAsNewStack(this, HomeActivity::class.java)
+                                            finish()
+                                        } else if (resource.code == 401) {
+                                            //TODO: new-user-setup
+                                            Log.d(TAG, "new-user-setup")
+                                        }
+                                    }
+                                    Status.ERROR -> {
+                                        Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show()
+                                        loadingDialog.dismiss()
+                                    }
+                                    Status.LOADING -> {}
+                                }
+                            }
+                        })
                     }
                 } else {
-                    // Sign in failed, display a message and update the UI
+                    loadingDialog.dismiss()
                     Log.wtf(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_LONG).show()
+                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        Toast.makeText(this, getString(R.string.error_wrong_otp), Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_LONG).show()
+                    }
                 }
             }
     }
@@ -283,5 +271,26 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
     override fun onCodeReady(code: String?) {
         otpCode = code!!
         GlobalUtils.closeKeyboard(this, otpView)
+    }
+
+    private fun changeNumberResetUi() {
+        timer.cancel()
+        isOtpSent = false
+        layout_otp?.visibility = GONE
+
+        otp_view.clearCode()
+        et_mobile_number.setText("")
+        tv_get_otp.text = getString(R.string.get_otp)
+        tv_resend_otp.text = ""
+
+        tv_change_number.visibility = GONE
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
