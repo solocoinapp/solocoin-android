@@ -20,4 +20,45 @@ class SharedPrefs(context: Context) {
     var countryCode: String?
         get() = instance.getString(country_code, null)
         set(value) = instance.edit().putString(country_code, value).apply()
+
+    private val mobile_number = "mobile_number"
+    var mobileNumber: String?
+        get() = instance.getString(mobile_number, null)
+        set(value) = instance.edit().putString(mobile_number, value).apply()
+
+    private val _name = "name"
+    var name: String?
+        get() = instance.getString(_name, null)
+        set(value) = instance.edit().putString(_name, value).apply()
+
+    private val id_token = "id_token"
+    var idToken: String?
+        get() = instance.getString(id_token, null)
+        set(value) = instance.edit().putString(id_token, value).apply()
+
+    private val user_lat = "user_lat"
+    var userLat: Long
+        get() = instance.getLong(user_lat, 0)
+        set(value) = instance.edit().putLong(user_lat, value).apply()
+
+    private val user_long = "user_long"
+    var userLong: Long
+        get() = instance.getLong(user_long, 0)
+        set(value) = instance.edit().putLong(user_long, value).apply()
+
+    private val current_lat = "current_lat"
+    var currentLat: Long
+        get() = instance.getLong(current_lat, 0)
+        set(value) = instance.edit().putLong(current_lat, value).apply()
+
+    private val current_long = "current_long"
+    var currentLong: Long
+        get() = instance.getLong(current_long, 0)
+        set(value) = instance.edit().putLong(current_long, value).apply()
+
+    fun clearSession() {
+        instance.edit()
+            .clear()
+            .apply()
+    }
 }

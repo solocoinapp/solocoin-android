@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.auth
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,7 +11,11 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import app.solocoin.solocoin.R
 import kotlinx.android.synthetic.main.activity_onboard.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class OnboardActivity : AppCompatActivity(), ViewPager.OnPageChangeListener, View.OnClickListener {
 
     companion object {
@@ -61,14 +66,10 @@ class OnboardActivity : AppCompatActivity(), ViewPager.OnPageChangeListener, Vie
                 when (VISIBLE_FRAG_INDEX) {
                     0 -> view_pager?.setCurrentItem(VISIBLE_FRAG_INDEX+1, true)
                     1 -> view_pager?.setCurrentItem(VISIBLE_FRAG_INDEX+1, true)
-                    2 -> {
-                        Toast.makeText(this, "start create account activity", Toast.LENGTH_SHORT).show()
-                    }
+                    2 -> startActivity(Intent(this, LoginSignupActivity::class.java))
                 }
             }
-            R.id.tv_skip -> {
-                Toast.makeText(this, "start create account activity", Toast.LENGTH_SHORT).show()
-            }
+            R.id.tv_skip -> startActivity(Intent(this, LoginSignupActivity::class.java))
         }
     }
 }
