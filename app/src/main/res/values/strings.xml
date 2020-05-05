@@ -4,11 +4,8 @@
     <string name="get_reward_to_stay_away_from_people">Get rewards to stay away from people</string>
     <string name="get_reward_to_stay">Get rewards to stay</string>
     <string name="away_from_people">away from people</string>
-    <string name="help_defeat_coronavirus">Help defeat Coronavirus</string>
-    <string name="corona_go">CORONA GO</string>
     <string name="start">Start</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
-    <string name="covid_19_fa">We can decrease the growth of Coronavirus by 90% if we just stayed at home.</string>
     <string name="namaste_is_scientifically">Namaste is scientifically</string>
     <string name="proven_the_best_way_to_greet">proven the best way to greet</string>
     <string name="someone">someone.</string>
@@ -58,19 +55,19 @@
 
     <string name="coming_soon">COMING SOON</string>
     <string name="rewards">Rewards</string>
-    <string name="wallet_description">Engage in social distancing and get SoloCoins which you can redeem for exciting coupons from Flipkart, Netflix etc.</string>
+    <string name="wallet_description">Beat simple challenges and get SoloCoins which you can redeem for exciting coupons from Flipkart, Netflix etc.</string>
     <string name="coins_in_wallet">Coins in Wallet</string>
     <!--daily chalkenges-->
     <string name="challenges">Daily Challenges</string>
-    <string name="challenge_description">Engage in social distancing, give correct answers and get exciting rewards everyday</string>
+    <string name="challenge_description">Beat simple challenges, give correct answers and get exciting rewards everyday</string>
 
 
     <string name="data_encrypted">Your data is encrypted and secure and is not shared with anyone.</string>
 
     //onboarding
-    <string name="ob_header1">PRACTICE SOCIAL DISTANCING</string>
+    <string name="ob_header1">BEAT SIMPLE CHALLENGES</string>
     <string name="ob_header2">EARN REAL WORLD REWARDS</string>
-    <string name="ob_header3">STAY SAFE</string>
+    <string name="ob_header3">CHALLENGE YOUR FRIENDS</string>
     <string name="set_permissions"> SET PERMISSIONS </string>
     <string name="GEOFENCE_ID">GOSOLO</string>
 </resources>
