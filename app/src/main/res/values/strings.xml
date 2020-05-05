@@ -46,13 +46,18 @@
     <string name="leaderboard">Leaderboard</string>
     <string name="profile">Profile</string>
 
-    <string-array name="profile_array">
-        <item>App usage guide</item>
-        <item>Profile</item>
-        <item>Invite</item>
-        <item>Permission</item>
-        <item>Privacy policy</item>
-        <item>Terms &amp; Conditions</item>
-        <item>Settings</item>
-    </string-array>
+    <string name="invite">Invite</string>
+    <string name="pp">Privacy policy</string>
+    <string name="tnc">Terms &amp; Conditions</string>
+    <string name="logout">Logout</string>
+
+    <string name="confirm">Confirm</string>
+    <string name="tag_logout">Do you really want to logout?</string>
+
+    <string name="url_pp">https://www.solocoin.app/privacy-policy/</string>
+    <string name="url_tnc">https://www.solocoin.app/terms-and-conditions/</string>
+
+    <string name="invite_subject">My application name</string>
+    <string name="invite_message">\nLet me recommend you this application\n\nhttps://play.google.com/store/apps/details?id=%s</string>
+    <string name="invite_title">Select an option</string>
 </resources>

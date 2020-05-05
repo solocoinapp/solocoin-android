@@ -238,8 +238,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
 
                                         if (resource.code == 200) {
                                             //existing-user
-                                            val authToken = "Bearer " + resource.data!!.get("auth_token").asString
-                                            sharedPrefs?.authToken = authToken
+                                            sharedPrefs?.authToken = "Bearer " + resource.data!!.get("auth_token").asString
                                             Toast.makeText(this, "Proud to be SOLO!" , Toast.LENGTH_SHORT).show()
 
                                             //redirect to home-activity

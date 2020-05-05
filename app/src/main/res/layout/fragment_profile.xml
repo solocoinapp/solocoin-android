@@ -1,17 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".ui.home.ProfileFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:scrollbars="none"
-        android:overScrollMode="never"
-        app:layout_constraintTop_toTopOf="parent"
+    <TextView
+        android:id="@+id/tv_invite"
+        android:drawableStart="@drawable/ic_invite"
+        android:drawablePadding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="@dimen/profile_item_height"
+        android:text="@string/invite"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical"
+        android:fontFamily="@font/poppins"
+        android:foreground="?attr/selectableItemBackground"
+        android:textColor="@android:color/black" />
+    <View
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <TextView
+        android:id="@+id/tv_pp"
+        android:drawableStart="@drawable/ic_privacy_policy"
+        android:drawablePadding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_item_height"
+        android:text="@string/pp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical"
+        android:fontFamily="@font/poppins"
+        android:foreground="?attr/selectableItemBackground"
+        android:textColor="@android:color/black" />
+    <View
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <TextView
+        android:id="@+id/tv_tnc"
+        android:drawableStart="@drawable/ic_tnc"
+        android:drawablePadding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_item_height"
+        android:text="@string/tnc"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical"
+        android:fontFamily="@font/poppins"
+        android:foreground="?attr/selectableItemBackground"
+        android:textColor="@android:color/black" />
+    <View
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <TextView
+        android:id="@+id/tv_logout"
+        android:drawableStart="@drawable/ic_logout"
+        android:drawablePadding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_item_height"
+        android:text="@string/logout"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical"
+        android:fontFamily="@font/poppins"
+        android:foreground="?attr/selectableItemBackground"
+        android:textColor="@android:color/black" />
+    <View
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+</LinearLayout>

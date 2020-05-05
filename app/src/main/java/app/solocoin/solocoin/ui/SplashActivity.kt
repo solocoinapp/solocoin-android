@@ -34,6 +34,6 @@ class SplashActivity : AppCompatActivity() {
                 GlobalUtils.startActivityAsNewStack(intent, this)
                 finish()
             }
-        }, 800)
+        }, 200)
     }
 }

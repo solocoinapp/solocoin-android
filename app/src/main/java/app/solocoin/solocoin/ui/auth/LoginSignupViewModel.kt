@@ -34,7 +34,14 @@ class LoginSignupViewModel(private val repository: SolocoinRepository): ViewMode
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    fun userData(): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            repository.userData().apply {
+                emit(Resource.success(data = body(), code = code()))
+            }
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
     }
 }
