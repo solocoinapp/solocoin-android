@@ -37,9 +37,8 @@ class GlobalUtils {
          *
          * Note: call finish() method after this function execution
          */
-        fun startActivityAsNewStack(context: Context, to: Class<*>) {
-            val intent = Intent(context, to)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        fun startActivityAsNewStack(intent: Intent, context: Context) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             context.startActivity(intent)
         }
 

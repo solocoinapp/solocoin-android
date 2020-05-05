@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -149,7 +150,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
             object: AppDialog.AppDialogListener{
                 override fun onClickConfirm() {
                     tv_change_number?.visibility = VISIBLE
-                    loadingDialog.show(supportFragmentManager, "dialog")
+                    loadingDialog.show(supportFragmentManager, loadingDialog.tag)
 
                     if (resendToken == null) {
                         PhoneAuthProvider.getInstance().verifyPhoneNumber(countryCode+mobileNumber, otpTimeout, TimeUnit.SECONDS, this@LoginSignupActivity, authCallbacks)
@@ -240,8 +241,13 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                             val authToken = "Bearer " + resource.data!!.get("auth_token").asString
                                             sharedPrefs?.authToken = authToken
                                             Toast.makeText(this, "Proud to be SOLO!" , Toast.LENGTH_SHORT).show()
-                                            GlobalUtils.startActivityAsNewStack(this, HomeActivity::class.java)
+
+                                            //redirect to home-activity
+                                            val intent = Intent(this, HomeActivity::class.java)
+                                            GlobalUtils.startActivityAsNewStack(intent, this)
                                             finish()
+                                            //redirect to home-activity
+
                                         } else if (resource.code == 401) {
                                             //TODO: new-user-setup
                                             Log.d(TAG, "new-user-setup")
