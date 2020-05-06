@@ -8,6 +8,10 @@ import android.view.ViewGroup
 
 import app.solocoin.solocoin.R
 
+/*
+Created by Vijay Daita
+ */
+
 class HomeFragment : Fragment() {
 
     private var mView: View? = null
