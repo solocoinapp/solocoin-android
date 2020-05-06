@@ -60,4 +60,7 @@
     <string name="invite_subject">My application name</string>
     <string name="invite_message">\nLet me recommend you this application\n\nhttps://play.google.com/store/apps/details?id=%s</string>
     <string name="invite_title">Select an option</string>
+
+    <string name="title_myl">Mark your location</string>
+    <string name="clear_current_session">Do you want to clear current session?</string>
 </resources>

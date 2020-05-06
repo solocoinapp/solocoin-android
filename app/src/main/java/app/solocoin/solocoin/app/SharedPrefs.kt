@@ -14,7 +14,7 @@ class SharedPrefs(context: Context) {
     private val auth_token = "auth_token"
     var authToken: String?
         get() = instance.getString(auth_token, null)
-        set(value) = instance.edit().putString(auth_token, value).apply()
+        set(value) = instance.edit().putString(auth_token, "Bearer $value").apply()
 
     private val country_code = "country_code"
     var countryCode: String?
@@ -37,24 +37,24 @@ class SharedPrefs(context: Context) {
         set(value) = instance.edit().putString(id_token, value).apply()
 
     private val user_lat = "user_lat"
-    var userLat: Long
-        get() = instance.getLong(user_lat, 0)
-        set(value) = instance.edit().putLong(user_lat, value).apply()
+    var userLat: String?
+        get() = instance.getString(user_lat, null)
+        set(value) = instance.edit().putString(user_lat, value).apply()
 
     private val user_long = "user_long"
-    var userLong: Long
-        get() = instance.getLong(user_long, 0)
-        set(value) = instance.edit().putLong(user_long, value).apply()
+    var userLong: String?
+        get() = instance.getString(user_long, null)
+        set(value) = instance.edit().putString(user_long, value).apply()
 
     private val current_lat = "current_lat"
-    var currentLat: Long
-        get() = instance.getLong(current_lat, 0)
-        set(value) = instance.edit().putLong(current_lat, value).apply()
+    var currentLat: String?
+        get() = instance.getString(current_lat, null)
+        set(value) = instance.edit().putString(current_lat, value).apply()
 
     private val current_long = "current_long"
-    var currentLong: Long
-        get() = instance.getLong(current_long, 0)
-        set(value) = instance.edit().putLong(current_long, value).apply()
+    var currentLong: String?
+        get() = instance.getString(current_long, null)
+        set(value) = instance.edit().putString(current_long, value).apply()
 
     fun clearSession() {
         instance.edit()

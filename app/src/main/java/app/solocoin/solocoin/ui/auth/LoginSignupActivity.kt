@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.repo.NoConnectivityException
+import app.solocoin.solocoin.ui.SplashActivity
 import app.solocoin.solocoin.ui.home.HomeActivity
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
@@ -117,7 +119,6 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         setContentView(R.layout.activity_login_signup)
 
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -214,7 +215,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                     // Sign in success, update UI with the signed-in user's information
 
                     val uid = task.result!!.user!!.uid
-                    Log.d(TAG, "user: $uid")
+                    Log.d(TAG, "user-id: $uid")
 
                     task.result?.user?.getIdToken(true)?.addOnCompleteListener { task1 ->
                         sharedPrefs?.idToken = task1.result?.token
@@ -233,28 +234,59 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                             it?.let { resource ->
                                 when (resource.status) {
                                     Status.SUCCESS -> {
-                                        Log.d(TAG, "observer-success: $resource")
                                         loadingDialog.dismiss()
 
                                         if (resource.code == 200) {
                                             //existing-user
-                                            sharedPrefs?.authToken = "Bearer " + resource.data!!.get("auth_token").asString
-                                            Toast.makeText(this, "Proud to be SOLO!" , Toast.LENGTH_SHORT).show()
 
-                                            //redirect to home-activity
-                                            val intent = Intent(this, HomeActivity::class.java)
+                                            sharedPrefs?.authToken = resource.data!!.get("auth_token").asString
+                                            //get-user-data
+                                            viewModel.userData().observe(this, Observer {res ->
+                                                res?.let { resource ->
+                                                    when (resource.status) {
+                                                        Status.SUCCESS -> {
+                                                            if (resource.code == 200) {
+                                                                sharedPrefs?.userLat = resource.data?.get("lat")?.asString
+                                                                sharedPrefs?.userLong = resource.data?.get("long")?.asString
+                                                                sharedPrefs?.name = resource.data?.get("name")?.asString
+
+                                                                val intent = Intent(this, SplashActivity::class.java)
+                                                                GlobalUtils.startActivityAsNewStack(intent, this)
+                                                                finish()
+                                                            } else {
+                                                                Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
+                                                            }
+                                                        }
+                                                        Status.ERROR -> {
+                                                            if (resource.exception is NoConnectivityException) {
+                                                                Toast.makeText(this, resource.exception.message, Toast.LENGTH_SHORT).show()
+                                                            } else {
+                                                                Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
+                                                            }
+                                                        }
+                                                        Status.LOADING -> {}
+                                                    }
+                                                }
+                                            })
+                                            //get-user-data
+
+                                            //existing-user
+                                        } else if (resource.code == 401) {
+                                            //new-user
+                                            val intent = Intent(this, MarkLocationActivity::class.java)
                                             GlobalUtils.startActivityAsNewStack(intent, this)
                                             finish()
-                                            //redirect to home-activity
-
-                                        } else if (resource.code == 401) {
-                                            //TODO: new-user-setup
-                                            Log.d(TAG, "new-user-setup")
+                                            //new-user
                                         }
                                     }
                                     Status.ERROR -> {
-                                        Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show()
                                         loadingDialog.dismiss()
+
+                                        if (resource.exception is NoConnectivityException) {
+                                            Toast.makeText(this, resource.exception.message, Toast.LENGTH_SHORT).show()
+                                        } else {
+                                            Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
+                                        }
                                     }
                                     Status.LOADING -> {}
                                 }
@@ -263,7 +295,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                     }
                 } else {
                     loadingDialog.dismiss()
-                    Log.wtf(TAG, "signInWithCredential:failure", task.exception)
+
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         Toast.makeText(this, getString(R.string.error_wrong_otp), Toast.LENGTH_LONG).show()
                     } else {
@@ -297,5 +329,20 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        if (sharedPrefs?.authToken != null || FirebaseAuth.getInstance().currentUser != null) {
+            val confirmDialog = AppDialog.instance(getString(R.string.confirm), getString(R.string.clear_current_session), object: AppDialog.AppDialogListener {
+                override fun onClickConfirm() {
+                    GlobalUtils.logout(applicationContext)
+                    finish()
+                }
+                override fun onClickCancel() {}
+            }, getString(R.string.okay), getString(R.string.cancel))
+            confirmDialog.show(supportFragmentManager, confirmDialog.tag)
+        } else {
+            super.onBackPressed()
+        }
     }
 }

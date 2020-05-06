@@ -1,8 +1,6 @@
 package app.solocoin.solocoin.ui.auth
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import app.solocoin.solocoin.repo.SolocoinRepository
@@ -11,7 +9,6 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import retrofit2.Response
 
 
 /**
@@ -29,7 +26,7 @@ class LoginSignupViewModel(private val repository: SolocoinRepository): ViewMode
                     emit(Resource.success(data = body(), code = code()))
                 }
             } catch (exception: Exception) {
-                emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+                emit(Resource.error(data = null, exception = exception))
             }
         }
     }
@@ -41,7 +38,7 @@ class LoginSignupViewModel(private val repository: SolocoinRepository): ViewMode
                 emit(Resource.success(data = body(), code = code()))
             }
         } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = null, exception = exception))
         }
     }
 }

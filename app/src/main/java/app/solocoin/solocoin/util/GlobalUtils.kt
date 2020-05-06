@@ -7,12 +7,18 @@ import android.net.NetworkInfo
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
+import app.solocoin.solocoin.app.SharedPrefs
+import app.solocoin.solocoin.app.SolocoinApp
+import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.ui.SplashActivity
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 
 /**
  * Created by Aditya Sonel on 22/04/20.
  */
-
 class GlobalUtils {
     companion object {
 
@@ -50,6 +56,16 @@ class GlobalUtils {
         fun closeKeyboard(context: Context, view: View) {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             imm?.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        @InternalCoroutinesApi
+        @ExperimentalCoroutinesApi
+        fun logout(context: Context) {
+            sharedPrefs?.clearSession()
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(context, SplashActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            context.startActivity(intent)
         }
     }
 }
