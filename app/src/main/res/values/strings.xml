@@ -61,6 +61,10 @@
     <string name="invite_message">\nLet me recommend you this application\n\nhttps://play.google.com/store/apps/details?id=%s</string>
     <string name="invite_title">Select an option</string>
 
+    <string name="badge_invite_subject">Look at my new achievement!</string>
+    <string name="badge_invite_message_start">I just got </string>
+    <string name="badge_invite_message_end"> on Solocoin! Stay home, stay safe. Get the app here: solocoin.app #Solocoin</string>
+
     <string name="title_myl">Mark your location</string>
     <string name="clear_current_session">Do you want to clear current session?</string>
 </resources>
