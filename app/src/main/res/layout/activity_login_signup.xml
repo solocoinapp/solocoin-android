@@ -15,22 +15,12 @@
         app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            app:contentInsetEnd="0dp"
-            app:contentInsetStart="0dp"
+            app:title="Login"
+            app:titleTextColor="@color/colorAccent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:visibility="gone"
-                android:text="@string/signup"
-                android:textAllCaps="true"
-                android:fontFamily="@font/poppins_semibold"
-                android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </androidx.appcompat.widget.Toolbar>
+            android:layout_height="match_parent" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ImageView
@@ -40,11 +30,13 @@
         android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/app_padding"
         android:layout_width="78dp"
         android:layout_height="78dp" />
 
     <TextView
         android:id="@+id/tv_title1"
+        android:visibility="gone"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +51,7 @@
     <TextView
         android:id="@+id/tv_title2"
         android:gravity="center"
+        android:layout_margin="@dimen/app_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title1"

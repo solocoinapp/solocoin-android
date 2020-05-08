@@ -30,6 +30,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //invite-btn
         view.findViewById<TextView>(R.id.tv_invite).setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
@@ -37,19 +38,25 @@ class ProfileFragment : Fragment() {
             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_message, BuildConfig.APPLICATION_ID))
             startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_title)))
         }
+        //invite-btn
+
+        //privacy-policy-btn
         view.findViewById<TextView>(R.id.tv_pp).setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_pp))))
         }
+        //privacy-policy-btn
+
+        //terms-condition-btn
         view.findViewById<TextView>(R.id.tv_tnc).setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_tnc))))
         }
+        //terms-condition-btn
+
+        //logout-btn
         view.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
             val logoutDialog = AppDialog.instance(getString(R.string.confirm), getString(R.string.tag_logout), object: AppDialog.AppDialogListener {
                 override fun onClickConfirm() {
-                    sharedPrefs?.clearSession()
-                    FirebaseAuth.getInstance().signOut()
-                    val intent = Intent(context, SplashActivity::class.java)
-                    GlobalUtils.startActivityAsNewStack(intent, context!!)
+                    GlobalUtils.logout(context!!)
                     activity?.finish()
                 }
 
@@ -57,6 +64,7 @@ class ProfileFragment : Fragment() {
             }, getString(R.string.logout), getString(R.string.cancel))
             logoutDialog.show(childFragmentManager, logoutDialog.tag)
         }
+        //logout-btn
     }
 
     companion object {

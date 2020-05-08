@@ -1,13 +1,21 @@
 package app.solocoin.solocoin.ui.home
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.repo.NoConnectivityException
+import app.solocoin.solocoin.ui.auth.LoginSignupViewModel
+import app.solocoin.solocoin.util.enums.Status
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.koin.android.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
