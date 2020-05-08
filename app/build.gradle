@@ -81,6 +81,9 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-auth:19.3.1'
 
+    //Google Play Services
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
     // External libraries
     implementation 'com.github.adityasonel:InkPageIndicator:1.0'
     implementation 'com.bigbangbutton:editcodeview:1.0.6'
