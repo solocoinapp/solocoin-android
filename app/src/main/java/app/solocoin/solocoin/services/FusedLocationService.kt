@@ -43,7 +43,7 @@ class FusedLocationService: Service() {
         return START_NOT_STICKY
     }
 
-    private fun getLastLocation(){
+    fun getLastLocation(){
         fusedLocationProviderClient.lastLocation
             .addOnCompleteListener{ taskLocation ->
                 if (taskLocation.isSuccessful && taskLocation.result != null){
@@ -57,7 +57,7 @@ class FusedLocationService: Service() {
 
     }
 
-    private fun fetchNewLocation() {
+    fun fetchNewLocation() {
 
 
         locationCallback = object : LocationCallback() {
