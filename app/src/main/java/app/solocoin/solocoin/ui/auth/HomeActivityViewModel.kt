@@ -34,11 +34,11 @@ class HomeActivityViewModel(application: Application) : AndroidViewModel(applica
     private fun getStateOfWork(): WorkInfo.State {
         return try {
             if (WorkManager.getInstance(getApplication())
-                    .getWorkInfosForUniqueWork(SESSION_PING_MANAGER)
+                    .getWorkInfosForUniqueWork(SESSION_PING_REQUEST)
                     .get().size > 0
             ) {
                 WorkManager.getInstance(getApplication())
-                    .getWorkInfosForUniqueWork(SESSION_PING_MANAGER).get()[0].state
+                    .getWorkInfosForUniqueWork(SESSION_PING_REQUEST).get()[0].state
             } else {
                 WorkInfo.State.CANCELLED
             }
