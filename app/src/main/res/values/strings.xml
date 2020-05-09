@@ -63,4 +63,13 @@
 
     <string name="title_myl">Mark your location</string>
     <string name="clear_current_session">Do you want to clear current session?</string>
+
+    <string name="tag_myl">Please hold on 5–10 seconds for accurate location, then continue…</string>
+    <string name="hint_current_loc">Location</string>
+    <string name="current_address">%s, %s, %s</string>
+    <string name="confirm_loc">Confirm location</string>
+    <string name="hint_fetching_loc">Fetching location</string>
+
+    <string name="permission">Permission</string>
+    <string name="tag_permission">Location permission is needed to application for working efficiently</string>
 </resources>

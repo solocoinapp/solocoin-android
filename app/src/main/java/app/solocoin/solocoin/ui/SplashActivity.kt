@@ -28,17 +28,14 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             if (sharedPrefs?.authToken != null) {
                 if (sharedPrefs?.userLat == null || sharedPrefs?.userLong == null) {
-                    val intent = Intent(this, MarkLocationActivity::class.java)
-                    GlobalUtils.startActivityAsNewStack(intent, this)
+                    GlobalUtils.startActivityAsNewStack(Intent(this, MarkLocationActivity::class.java), this)
                     finish()
                 } else {
-                    val intent = Intent(this, HomeActivity::class.java)
-                    GlobalUtils.startActivityAsNewStack(intent, this)
+                    GlobalUtils.startActivityAsNewStack(Intent(this, HomeActivity::class.java), this)
                     finish()
                 }
             } else {
-                val intent = Intent(this, OnboardActivity::class.java)
-                GlobalUtils.startActivityAsNewStack(intent, this)
+                GlobalUtils.startActivityAsNewStack(Intent(this, OnboardActivity::class.java), this)
                 finish()
             }
         }, 200)
