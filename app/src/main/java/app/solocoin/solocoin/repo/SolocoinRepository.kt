@@ -23,7 +23,7 @@ class SolocoinRepository(private val apiService: ApiService) {
      */
     fun doApiCall() {
         Log.wtf(SESSION_PING_API_CALL, "Calling api")
-        TODO("Add call to solocoin api")
+//        TODO("Add call to solocoin api")
     }
 
     companion object {
