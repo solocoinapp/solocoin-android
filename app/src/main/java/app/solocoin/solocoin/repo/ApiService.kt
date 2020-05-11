@@ -1,6 +1,7 @@
 package app.solocoin.solocoin.repo
 
 import com.google.gson.JsonObject
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -31,7 +32,10 @@ interface ApiService {
 
     @Headers("Content-Type: application/json")
     @POST("sessions/ping")
-    fun pingSession(@Header("Authorization") authToken: String, @Body body: JsonObject): Response<JsonObject>
+    fun pingSession(
+        @Header("Authorization") authToken: String,
+        @Body body: JsonObject
+    ): Call<JsonObject>
 
     @Headers("Content-Type: application/json")
     @GET("user/profile")
