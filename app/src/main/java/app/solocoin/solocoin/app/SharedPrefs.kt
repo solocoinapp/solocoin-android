@@ -56,6 +56,16 @@ class SharedPrefs(context: Context) {
         get() = instance.getString(current_long, null)
         set(value) = instance.edit().putString(current_long, value).apply()
 
+    private val _rewards = "rewards"
+    var rewards: String?
+        get() = instance.getString(_rewards, null)
+        set(value) = instance.edit().putString(_rewards, value).apply()
+
+    private val _status = "status"
+    var status: String?
+        get() = instance.getString(_status, null)
+        set(value) = instance.edit().putString(_status, value).apply()
+
     fun clearSession() {
         instance.edit()
             .clear()
