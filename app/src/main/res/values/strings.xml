@@ -64,7 +64,7 @@
     <string name="title_myl">Mark your location</string>
     <string name="clear_current_session">Do you want to clear current session?</string>
 
-    <string name="tag_myl">Please hold on 5–10 seconds for accurate location, then continue…</string>
+    <string name="tag_myl">Please hold on 5–10 seconds for accurate location or mark location then confirm</string>
     <string name="hint_current_loc">Location</string>
     <string name="current_address">%s, %s, %s</string>
     <string name="confirm_loc">Confirm location</string>
@@ -72,4 +72,9 @@
 
     <string name="permission">Permission</string>
     <string name="tag_permission">Location permission is needed to application for working efficiently</string>
+    <string name="refreshing_location">Refreshing location, please wait…</string>
+
+    <string name="title_create_profile">Create profile</string>
+    <string name="name">Name</string>
+    <string name="tag_tnc">By creating an account you agree to our Terms of Service and Privacy Policy</string>
 </resources>

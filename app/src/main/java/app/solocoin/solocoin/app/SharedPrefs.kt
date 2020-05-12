@@ -16,6 +16,11 @@ class SharedPrefs(context: Context) {
         get() = instance.getString(auth_token, null)
         set(value) = instance.edit().putString(auth_token, "Bearer $value").apply()
 
+    private val _id = "id"
+    var id: String?
+        get() = instance.getString(_id, null)
+        set(value) = instance.edit().putString(_id, value).apply()
+
     private val country_code = "country_code"
     var countryCode: String?
         get() = instance.getString(country_code, null)

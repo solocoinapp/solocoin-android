@@ -235,7 +235,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                 when (resource.status) {
                                     Status.SUCCESS -> {
                                         loadingDialog.dismiss()
-                                        Log.d(TAG, "mobilelogin-rc: ${resource.code}")
+                                        Log.d(TAG, "mobilelogin-rc: ${resource.code}, ${resource}")
 
                                         if (resource.code == 200) {
                                             //existing-user
@@ -248,7 +248,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                                         Status.SUCCESS -> {
                                                             if (resource.code == 200) {
                                                                 sharedPrefs?.userLat = resource.data?.get("lat")?.asString
-                                                                sharedPrefs?.userLong = resource.data?.get("long")?.asString
+                                                                sharedPrefs?.userLong = resource.data?.get("lng")?.asString
                                                                 sharedPrefs?.name = resource.data?.get("name")?.asString
 
                                                                 GlobalUtils.startActivityAsNewStack(Intent(this, SplashActivity::class.java), this)
