@@ -10,20 +10,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
-
 /**
- * Created by Aditya Sonel on 27/04/20.
+ * Created by Aditya Sonel on 12/05/20.
  */
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-class LoginSignupViewModel(private val repository: SolocoinRepository) : ViewModel() {
-
-    fun mobileLogin(body: JsonObject): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
+class CreateProfileViewModel(private val repository: SolocoinRepository): ViewModel() {
+    fun mobileSignup(body: JsonObject): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
         if (body.size() != 0) {
             emit(Resource.loading(data = null))
             try {
-                repository.mobileLogin(body).apply {
+                repository.mobileSignUp(body).apply {
                     emit(Resource.success(data = body(), code = code()))
                 }
             } catch (exception: Exception) {
@@ -32,14 +30,4 @@ class LoginSignupViewModel(private val repository: SolocoinRepository) : ViewMod
         }
     }
 
-    fun userData(): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            repository.userData().apply {
-                emit(Resource.success(data = body(), code = code()))
-            }
-        } catch (exception: Exception) {
-            emit(Resource.error(data = null, exception = exception))
-        }
-    }
 }
