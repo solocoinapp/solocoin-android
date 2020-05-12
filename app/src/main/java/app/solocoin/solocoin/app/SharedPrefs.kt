@@ -16,6 +16,11 @@ class SharedPrefs(context: Context) {
         get() = instance.getString(auth_token, null)
         set(value) = instance.edit().putString(auth_token, "Bearer $value").apply()
 
+    private val _id = "id"
+    var id: String?
+        get() = instance.getString(_id, null)
+        set(value) = instance.edit().putString(_id, value).apply()
+
     private val country_code = "country_code"
     var countryCode: String?
         get() = instance.getString(country_code, null)
@@ -55,6 +60,16 @@ class SharedPrefs(context: Context) {
     var currentLong: String?
         get() = instance.getString(current_long, null)
         set(value) = instance.edit().putString(current_long, value).apply()
+
+    private val home_duration = "home_duration"
+    var homeDuration: Long
+        get() = instance.getLong(home_duration, 0)
+        set(value) = instance.edit().putLong(home_duration, value).apply()
+
+    private val wallet_balance = "wallet_balance"
+    var walletBalance: String?
+        get() = instance.getString(wallet_balance, null)
+        set(value) = instance.edit().putString(wallet_balance, value).apply()
 
     private val _rewards = "rewards"
     var rewards: String?

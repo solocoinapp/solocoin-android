@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit
 @InternalCoroutinesApi
 class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeListener {
 
-    private val TAG = LoginSignupActivity::class.java.simpleName
+    private val TAG = LoginSignupActivity::class.simpleName
 
     private val viewModel: LoginSignupViewModel by viewModel()
 
@@ -233,6 +233,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                 when (resource.status) {
                                     Status.SUCCESS -> {
                                         loadingDialog.dismiss()
+                                        Log.d(TAG, "mobilelogin-rc: ${resource.code}, ${resource}")
 
                                         if (resource.code == 200) {
                                             //existing-user
@@ -245,11 +246,10 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                                         Status.SUCCESS -> {
                                                             if (resource.code == 200) {
                                                                 sharedPrefs?.userLat = resource.data?.get("lat")?.asString
-                                                                sharedPrefs?.userLong = resource.data?.get("long")?.asString
+                                                                sharedPrefs?.userLong = resource.data?.get("lng")?.asString
                                                                 sharedPrefs?.name = resource.data?.get("name")?.asString
 
-                                                                val intent = Intent(this, SplashActivity::class.java)
-                                                                GlobalUtils.startActivityAsNewStack(intent, this)
+                                                                GlobalUtils.startActivityAsNewStack(Intent(this, SplashActivity::class.java), this)
                                                                 finish()
                                                             } else {
                                                                 Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
@@ -271,8 +271,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                             //existing-user
                                         } else if (resource.code == 401) {
                                             //new-user
-                                            val intent = Intent(this, MarkLocationActivity::class.java)
-                                            GlobalUtils.startActivityAsNewStack(intent, this)
+                                            GlobalUtils.startActivityAsNewStack(Intent(this, MarkLocationActivity::class.java), this)
                                             finish()
                                             //new-user
                                         }
