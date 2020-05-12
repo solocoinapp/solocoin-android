@@ -15,12 +15,13 @@ class SolocoinRepository(private val apiService: ApiService) {
     suspend fun mobileLogin(body: JsonObject) = apiService.mobileLogin(body)
     suspend fun mobileSignUp(body: JsonObject) = apiService.mobileSignUp(body)
     suspend fun userData() = apiService.userData(sharedPrefs?.authToken!!)
+    suspend fun userUpdate(body: JsonObject) = apiService.userUpdate(sharedPrefs?.authToken!!, body)
     fun pingSession(body: JsonObject) = apiService.pingSession(sharedPrefs?.authToken!!, body)
     fun rewards(reward: String) {
         sharedPrefs?.rewards = reward
     }
-
     fun status(status: String) {
         sharedPrefs?.status = status
     }
+
 }
