@@ -75,5 +75,16 @@ class GlobalUtils {
             return ActivityCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         }
+
+        fun formattedHomeDuration(t: Long?): String {
+            return if (t != null) {
+                val minutes = (t / 60 % 60).toInt()
+                val hours = (t / (60 * 60) % 24).toInt()
+                val days = (t / (60 * 60 * 24)).toInt()
+                "$days d $hours h $minutes m"
+            } else {
+                "0d 0m 0s"
+            }
+        }
     }
 }
