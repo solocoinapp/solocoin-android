@@ -17,7 +17,8 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-class LoginSignupViewModel(private val repository: SolocoinRepository): ViewModel() {
+class LoginSignupViewModel(private val repository: SolocoinRepository) : ViewModel() {
+
     fun mobileLogin(body: JsonObject): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
         if (body.size() != 0) {
             emit(Resource.loading(data = null))

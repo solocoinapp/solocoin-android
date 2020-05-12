@@ -38,7 +38,7 @@ class GlobalUtils {
          * For starting desired activity as a new task,
          * intent_flags are added for clear back stack.
          * @param context: context of current fragment/activity
-         * @param to: activity class need to start
+         * @param intent: activity class need to start
          *
          * Note: call finish() method after this function execution
          */
@@ -85,6 +85,11 @@ class GlobalUtils {
             } else {
                 "0d 0m 0s"
             }
+        }
+
+        fun getSessionType(): String {
+            return ""
+            TODO("Find difference between current and pref location return status")
         }
     }
 }

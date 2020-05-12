@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
@@ -18,13 +17,11 @@ import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.repo.NoConnectivityException
 import app.solocoin.solocoin.ui.SplashActivity
-import app.solocoin.solocoin.ui.home.HomeActivity
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.bigbangbutton.editcodeview.EditCodeListener
 import com.bigbangbutton.editcodeview.EditCodeView
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -132,6 +129,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         tv_resend_otp?.setOnClickListener(this)
         tv_get_otp?.setOnClickListener(this)
         tv_change_number?.setOnClickListener(this)
+
     }
 
     // initialize phone_auth_provider sent otp
