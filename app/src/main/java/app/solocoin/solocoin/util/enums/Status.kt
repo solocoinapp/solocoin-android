@@ -7,5 +7,5 @@ package app.solocoin.solocoin.util.enums
 enum class Status {
     SUCCESS,
     ERROR,
-    LOADING
+    LOADING,
 }

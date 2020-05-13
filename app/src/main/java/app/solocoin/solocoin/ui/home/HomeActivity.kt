@@ -5,30 +5,21 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import app.solocoin.solocoin.R
-import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
-import app.solocoin.solocoin.repo.NoConnectivityException
 import app.solocoin.solocoin.services.FusedLocationService
-import app.solocoin.solocoin.ui.auth.LoginSignupViewModel
-import app.solocoin.solocoin.util.enums.Status
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class HomeActivity : AppCompatActivity() {
 
-    private val TAG = HomeActivity::class.java.simpleName
-
-    private val PERMISSION_REQUEST_CODE = 34
+    private val viewModel: HomeActivityViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +29,9 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottom_nav_view.selectedItemId = R.id.nav_home
 
+        // TODO : Setup permission request for Fused Location service properly
         checkPermissionForLocation()
+        viewModel.startSessionPingManager()
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -73,24 +66,10 @@ class HomeActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSION_REQUEST_CODE){
-            when {
-                grantResults.isEmpty() -> Log.d(TAG, "User Interaction Cancelled")
-                grantResults[0] == PackageManager.PERMISSION_GRANTED -> startFusedLocationService()
-                else -> Log.d(TAG, "Permissions Denied by User")
-
-                // TODO Show message when user denies location permissions or user interaction is cancelled
-            }
-        }
-    }
-
     private fun checkPermissionForLocation(){
+
         var permissionsArray = arrayOf<String>()
+
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             permissionsArray = permissionsArray.plus(android.Manifest.permission.ACCESS_FINE_LOCATION)
 
@@ -102,17 +81,39 @@ class HomeActivity : AppCompatActivity() {
             permissionsArray = permissionsArray.plus(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
         }
 
-        if (permissionsArray.count() == 0) {
-            startFusedLocationService()
-
-        } else {
-            ActivityCompat.requestPermissions(this, permissionsArray, PERMISSION_REQUEST_CODE)
+        when (permissionsArray.count()) {
+            0 -> startFusedLocationService()
+            else -> ActivityCompat.requestPermissions(
+                this,
+                permissionsArray,
+                PERMISSION_REQUEST_CODE
+            )
         }
     }
 
     private fun startFusedLocationService(){
+        Log.wtf(TAG, "Starting the fused location service.")
         val intent = Intent(this, FusedLocationService::class.java)
-        startService(intent)
+        applicationScope.launch {
+            startService(intent)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            when {
+                grantResults.isEmpty() -> Log.d(TAG, "User Interaction Cancelled")
+                grantResults[0] == PackageManager.PERMISSION_GRANTED -> startFusedLocationService()
+                else -> {
+                    Log.d(TAG, "Permissions Denied by User")
+                    TODO("Show message when user denies location permissions or user interaction is cancelled")
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -121,5 +122,11 @@ class HomeActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    companion object {
+        private val TAG = HomeActivity::class.java.simpleName
+        private const val PERMISSION_REQUEST_CODE = 34
+        private val applicationScope = CoroutineScope(Dispatchers.Default)
     }
 }

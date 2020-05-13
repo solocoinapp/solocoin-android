@@ -1,75 +1,84 @@
 package app.solocoin.solocoin.services
 
-import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.location.Location
-import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
+import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import com.google.android.gms.location.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 /**
-   * Created by Ankur Kumar on 08/05/20
+ * Created by Ankur Kumar on 08/05/20
  */
 
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 class FusedLocationService: Service() {
 
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var locationCallback: LocationCallback
-    private lateinit var location: Location
-    private lateinit var locationRequest: LocationRequest
-
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private lateinit var mLocation: Location
+    private lateinit var mLocationRequest: LocationRequest
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        startLocationUpdates()
+        return START_STICKY
+    }
+
     override fun onCreate() {
         super.onCreate()
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-        locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        mLocationRequest = LocationRequest.create().apply {
+            interval = 10 * 60 * 1000
+            fastestInterval = 5 * 60 * 1000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
-
+        // TODO : check whether Settings for the LocationRequest are available or not
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        getLastLocation()
-        return START_NOT_STICKY
-    }
-
-    fun getLastLocation(){
-        fusedLocationProviderClient.lastLocation
-            .addOnCompleteListener{ taskLocation ->
-                if (taskLocation.isSuccessful && taskLocation.result != null){
-                    location = taskLocation.result!!                    /** Get location coordinates here if last location is known*/
-
-                }
-                else {
-                    fetchNewLocation()
-                }
-            }
-
-    }
-
-    fun fetchNewLocation() {
-
-
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-
-                location = locationResult.lastLocation                 /** If last location is not known then new location is fetched here*/
-                fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    private val mLocationListener = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult?) {
+            super.onLocationResult(locationResult)
+            locationResult?.let {
+                mLocation = it.lastLocation
+                updateSharedPrefs(mLocation)
             }
         }
-
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
     }
 
+    private fun startLocationUpdates() {
+        mFusedLocationClient.requestLocationUpdates(
+            mLocationRequest,
+            mLocationListener,
+            Looper.getMainLooper()
+        )
+    }
 
+    /*
+     * Updates user current location in shared preferences.
+     * Required by work manager at regular interval.
+     */
+    private fun updateSharedPrefs(location: Location) {
+        Log.wtf(TAG, "Location : (" + location.longitude + location.latitude + ")")
+        sharedPrefs?.let {
+            it.currentLat = location.latitude.toString()
+            it.currentLong = location.longitude.toString()
+            if (it.userLat == null) {
+                it.userLat = location.latitude.toString()
+                it.userLong = location.longitude.toString()
+            }
+        }
+    }
+
+    companion object {
+        private val TAG = FusedLocationService::class.simpleName
+    }
 }

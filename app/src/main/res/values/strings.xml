@@ -79,4 +79,7 @@
     <string name="tag_tnc">By creating an account you agree to our Terms of Service and Privacy Policy</string>
 
     <string name="start_time">0h 0m 0s</string>
+
+    <!-- TODO Remove this key while pushing to Github -->
+    <string name="google_maps_key">AIzaSyBYNP5IMt-fEcxxIoQEKa-v7xPWONK46jI</string>
 </resources>

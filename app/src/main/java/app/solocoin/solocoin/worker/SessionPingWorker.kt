@@ -2,8 +2,9 @@ package app.solocoin.solocoin.worker
 
 import android.content.Context
 import android.util.Log
-import androidx.work.CoroutineWorker
+import androidx.work.Worker
 import androidx.work.WorkerParameters
+import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.model.SessionPingRequest
 import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.util.GlobalUtils
@@ -17,28 +18,30 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Created by Saurav Gupta on 07/05/20
+ */
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
-    CoroutineWorker(appContext, workerParams), KoinComponent {
+    Worker(appContext, workerParams), KoinComponent {
+
+    private val repository: SolocoinRepository by inject()
 
     /*
      * Updates the 'status' and 'rewards' of the user through calls to api and shared prefs
      * in the SolocoinRespository class.
      */
+    override fun doWork(): Result {
 
-    private val repository: SolocoinRepository by inject()
-
-    override suspend fun doWork(): Result {
-
-        Log.wtf(SESSION_PING_WORKER, "Initiating the work")
+        Log.wtf(TAG, "Initiating the work")
 
         val sessionType: String? = GlobalUtils.getSessionType()
-
-        if (sessionType != null) {
+        sessionType?.let {
             val body: JsonObject =
                 JsonParser().parse(SessionPingRequest(sessionType).toString()).asJsonObject
+            Log.wtf(TAG, body.toString())
             return doApiCall(body)
         }
         return Result.retry()
@@ -46,42 +49,30 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 
     private fun doApiCall(body: JsonObject): Result {
 
-        Log.wtf(SESSION_PING_API_CALL, "Calling api")
+        Log.wtf(API_CALL, "Calling api")
 
         var result: Result? = null
-        var rewards: String? = null
-        var status: String? = null
-
         val call: Call<JsonObject> = repository.pingSession(body)
         call.enqueue(object : Callback<JsonObject?> {
 
-            override fun onResponse(
-                call: Call<JsonObject?>,
-                response: Response<JsonObject?>
-            ) {
+            override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 val resp = response.body()
-                if (resp != null) {
-                    status = resp["status"].asString
-                    rewards = resp["rewards"].asString
+                resp?.let {
+                    sharedPrefs?.status = resp["status"].asString
+                    sharedPrefs?.rewards = resp["rewards"].asString
                 }
                 result = Result.success()
             }
 
-            override fun onFailure(
-                call: Call<JsonObject?>,
-                t: Throwable
-            ) {
+            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 result = Result.failure()
             }
         })
-
-        repository.rewards(rewards!!)
-        repository.status(status!!)
         return result!!
     }
 
     companion object {
-        private const val SESSION_PING_WORKER: String = "SESSION_PING_WORKER"
-        private const val SESSION_PING_API_CALL: String = "SESSION_PING_API_CALL"
+        private val TAG: String? = SessionPingWorker::class.simpleName
+        private val API_CALL: String = SessionPingWorker::class.simpleName + " API_CALL"
     }
 }

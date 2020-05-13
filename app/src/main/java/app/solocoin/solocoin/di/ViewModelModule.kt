@@ -3,6 +3,7 @@ package app.solocoin.solocoin.di
 import app.solocoin.solocoin.ui.auth.CreateProfileViewModel
 import app.solocoin.solocoin.ui.auth.LoginSignupViewModel
 import app.solocoin.solocoin.ui.auth.MarkYourLocationViewModel
+import app.solocoin.solocoin.ui.home.HomeActivityViewModel
 import app.solocoin.solocoin.ui.home.HomeFragmentViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -19,9 +20,12 @@ val viewModelModule = module {
         MarkYourLocationViewModel(repository = get())
     }
     viewModel {
-        CreateProfileViewModel(get())
+        CreateProfileViewModel(repository = get())
     }
     viewModel {
-        HomeFragmentViewModel(get())
+        HomeFragmentViewModel(repository = get())
+    }
+    viewModel {
+        HomeActivityViewModel(application = get())
     }
 }

@@ -1,4 +1,4 @@
-package app.solocoin.solocoin.ui.auth
+package app.solocoin.solocoin.ui.home
 
 import android.app.Application
 import android.util.Log
@@ -14,7 +14,8 @@ import java.util.concurrent.TimeUnit
 class HomeActivityViewModel(application: Application) : AndroidViewModel(application) {
 
     /*
-     * Generates new periodic work request with unique identifier name 'SESSION_PING_MANAGER'
+     * Generates new periodic work request with unique work identifier = 'SESSION_PING_REQUEST'
+     * @see companion object of the class for constant identifiers.
      */
     private fun createWorkRequest() {
         val constraints = Constraints.Builder()
@@ -30,7 +31,10 @@ class HomeActivityViewModel(application: Application) : AndroidViewModel(applica
         )
     }
 
-
+    /*
+     * Returns the state of the work performed by work manager using unique work identifier .
+     * States of Work Manager : STOPPED, RUNNING, ENQUEUED.
+     */
     private fun getStateOfWork(): WorkInfo.State {
         return try {
             if (WorkManager.getInstance(getApplication())
@@ -69,7 +73,7 @@ class HomeActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     companion object {
-        private const val SESSION_PING_REQUEST = "SOLOCOIN_API_V1"
+        private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.v1"
         private const val SESSION_PING_MANAGER: String = "SESSION_PING_MANAGER"
         private val applicationScope = CoroutineScope(Dispatchers.Default)
     }

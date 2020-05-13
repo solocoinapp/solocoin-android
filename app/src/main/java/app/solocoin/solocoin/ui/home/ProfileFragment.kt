@@ -10,14 +10,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import app.solocoin.solocoin.BuildConfig
 import app.solocoin.solocoin.R
-import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
-import app.solocoin.solocoin.ui.SplashActivity
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
