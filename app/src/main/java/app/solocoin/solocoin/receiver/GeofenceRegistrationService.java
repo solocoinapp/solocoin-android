@@ -2,38 +2,25 @@ package app.solocoin.solocoin.receiver;
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.work.ListenableWorker;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import app.solocoin.solocoin.R;
-import app.solocoin.solocoin.Session;
-import app.solocoin.solocoin.SessionBody;
-import app.solocoin.solocoin.app.Wallet;
-import app.solocoin.solocoin.api.APIClient;
-import app.solocoin.solocoin.api.APIService;
-import app.solocoin.solocoin.app.SharedPref;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import app.solocoin.solocoin.R;
+import app.solocoin.solocoin.api.APIClient;
+import app.solocoin.solocoin.api.APIService;
+import app.solocoin.solocoin.app.SharedPref;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
