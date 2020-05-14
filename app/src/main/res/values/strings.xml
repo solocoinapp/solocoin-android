@@ -37,6 +37,7 @@
     <string name="error_occurred">Something went wrong, please try again!</string>
 
     <string name="create_account">CREATE ACCOUNT</string>
+    <string name="Rs">\u20B9</string>
 
 
     <string name="permission">Permissions</string>
