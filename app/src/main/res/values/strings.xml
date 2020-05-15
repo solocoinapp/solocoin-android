@@ -63,4 +63,8 @@
 
     <string name="title_myl">Mark your location</string>
     <string name="clear_current_session">Do you want to clear current session?</string>
+
+    <string name="default_timer_text">14h:24m</string>
+    <string name="challenges_text">Challenges</string>
+    <string name="participate_text">Participate in the #StayAtHome challenge and win exciting badges and rewards.</string>
 </resources>
