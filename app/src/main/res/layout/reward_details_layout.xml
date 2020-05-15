@@ -11,9 +11,10 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:layout_height="196dp"
             android:id="@+id/offer_image_1"
             android:layout_width="match_parent"
-            android:layout_height="216dp"
+            android:contentDescription="@string/reward_image_1"
             android:scaleType="centerCrop"
             android:src="@drawable/reward" />
 
@@ -26,7 +27,7 @@
             android:background="@color/grey_black"
             android:fontFamily="@font/poppins"
             android:padding="2dp"
-            android:text="* Extra Terms and Conditions"
+            android:text="@string/extra_reward_detail"
             android:textColor="@color/white"
             android:textSize="12sp" />
     </RelativeLayout>
@@ -37,7 +38,8 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/offer_image_2"
+            android:id="@+id/reward_image_2"
+            android:contentDescription="@string/reward_image_2"
             android:layout_width="84dp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/offer_name"
@@ -54,11 +56,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_toEndOf="@id/offer_image_2"
+            android:layout_toEndOf="@id/reward_image_2"
             android:fontFamily="@font/poppins"
-            android:text="6 Months Youtube Premium Membership Trail For New Users"
+            android:text="@string/reward_description"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:id="@+id/coins"
@@ -66,13 +68,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/offer_name"
             android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/offer_image_2"
+            android:layout_toEndOf="@id/reward_image_2"
             android:orientation="horizontal">
 
             <ImageView
+                android:layout_width="24dp"
                 android:id="@+id/coin_image"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/coins_image"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 android:src="@drawable/coin" />
@@ -84,9 +87,9 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/poppins"
-                android:text="200 Coins"
+                android:text="@string/reward_cost_coins"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="14sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -97,15 +100,18 @@
         android:id="@+id/tnc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="12dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:text="@string/terms_and_conditions"
             android:fontFamily="@font/poppins"
-            android:text="Offer Details:"
+            android:textSize="16sp"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold" />
 
