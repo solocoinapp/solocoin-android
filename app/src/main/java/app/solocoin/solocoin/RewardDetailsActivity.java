@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import app.solocoin.solocoin.adapter.RewardDetailsAdapter;
 import app.solocoin.solocoin.model.Reward;
 
+/**
+ * Created by Saurav Gupta on 14/5/2020
+ */
 public class RewardDetailsActivity extends AppCompatActivity {
 
     private RewardDetailsActivity context;

@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Saurav Gupta on 14/5/2020
+ */
 public class Reward implements Parcelable {
 
     public static final Creator<Reward> CREATOR = new Creator<Reward>() {

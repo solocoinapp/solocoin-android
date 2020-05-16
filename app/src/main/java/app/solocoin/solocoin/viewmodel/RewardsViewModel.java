@@ -1,27 +1,61 @@
 package app.solocoin.solocoin.viewmodel;
 
+import android.annotation.SuppressLint;
+import android.app.Application;
+
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import app.solocoin.solocoin.api.APIClient;
+import app.solocoin.solocoin.api.APIService;
+import app.solocoin.solocoin.app.SharedPref;
 import app.solocoin.solocoin.model.Reward;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class RewardsViewModel extends ViewModel {
+/**
+ * Created by Saurav Gupta on 14/5/2020
+ */
+public class RewardsViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<Reward>> rewardsLiveData;
-    private ArrayList<Reward> rewardsArrayList;
+    private MutableLiveData<String> coinsInWallet;
 
-    public RewardsViewModel() {
+    public RewardsViewModel(Application application) {
+        super(application);
         rewardsLiveData = new MutableLiveData<>();
-        loadData();
+        coinsInWallet = new MutableLiveData<>();
     }
 
-    private void loadData() {
-        fetchApiData();
-        rewardsLiveData.setValue(rewardsArrayList);
+    private void fetchWalletData() {
+
+        SharedPref sharedPref = SharedPref.getInstance(getApplication());
+        APIService apiService = APIClient.getRetrofitInstance(getApplication()).create(APIService.class);
+        apiService.showUserData(sharedPref.getAuthToken()).enqueue(new Callback<JsonObject>() {
+            @SuppressLint({"SetTextI18n", "LogNotTimber"})
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                JsonObject resp = response.body();
+                if (resp != null) {
+                    String balance = resp.get("wallet_balance").getAsString();
+                    coinsInWallet.setValue(balance);
+                }
+            }
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                coinsInWallet.setValue("0.0");
+            }
+        });
     }
 
-    private void fetchApiData() {
+    private void fetchRewardsData() {
 
         Reward dummy = new Reward();
         dummy.setCostCoins("200 Coins");
@@ -35,7 +69,7 @@ public class RewardsViewModel extends ViewModel {
         }
         dummy.setOfferDetails(offerDetails);
 
-        rewardsArrayList = new ArrayList<>();
+        ArrayList<Reward> rewardsArrayList = new ArrayList<>();
         rewardsArrayList.add(dummy);
         rewardsArrayList.add(dummy);
         rewardsArrayList.add(dummy);
@@ -44,11 +78,17 @@ public class RewardsViewModel extends ViewModel {
         rewardsArrayList.add(dummy);
         rewardsArrayList.add(dummy);
         rewardsArrayList.add(dummy);
-
+        rewardsLiveData.setValue(rewardsArrayList);
     }
 
-    public MutableLiveData<ArrayList<Reward>> getOfferMutableLiveData() {
+    public MutableLiveData<ArrayList<Reward>> getRewards() {
+        fetchRewardsData();
         return rewardsLiveData;
+    }
+
+    public MutableLiveData<String> getWalletAmount() {
+        fetchWalletData();
+        return coinsInWallet;
     }
 
 }

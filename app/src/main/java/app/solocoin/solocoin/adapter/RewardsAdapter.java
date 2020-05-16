@@ -16,6 +16,9 @@ import app.solocoin.solocoin.R;
 import app.solocoin.solocoin.RewardDetailsActivity;
 import app.solocoin.solocoin.model.Reward;
 
+/**
+ * Created by Saurav Gupta on 14/5/2020
+ */
 public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHolder> {
 
     private ArrayList<Reward> rewardsArrayList;
