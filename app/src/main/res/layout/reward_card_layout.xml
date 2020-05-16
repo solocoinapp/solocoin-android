@@ -28,29 +28,28 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Company"
+            android:text="@string/reward_company_name"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <ImageView
+            android:layout_width="72dp"
             android:id="@+id/company_logo"
-            android:layout_width="84dp"
-            android:layout_height="84dp"
+            android:layout_height="72dp"
+            android:contentDescription="@string/reward_company_logo"
             android:layout_below="@id/company_name"
             android:layout_centerHorizontal="true"
-            android:layout_margin="6dp"
             android:scaleType="fitCenter"
             android:src="@drawable/logo" />
 
         <LinearLayout
-            android:id="@+id/cost_rupees"
+            android:id="@+id/amt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/company_logo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
             <TextView
@@ -65,11 +64,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/cost_rupees"
                 android:layout_marginStart="6dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="500"
+                android:text="@string/reward_cost_rupees"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -78,12 +78,12 @@
             android:id="@+id/cost_coins"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cost_rupees"
+            android:layout_below="@id/amt"
             android:layout_centerHorizontal="true"
             android:fontFamily="@font/poppins"
-            android:text="2500 Points"
+            android:text="@string/reward_cost_coins"
             android:textColor="@color/colorPrimary"
-            android:textSize="14sp" />
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

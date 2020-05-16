@@ -17,6 +17,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RewardDetailsActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -41,11 +42,12 @@
         <activity android:name=".PermissionsActivity" />
         <activity android:name=".CreateProfileActivity" />
         <activity
-            android:screenOrientation="sensorPortrait"
             android:name=".HomeActivity"
-            tools:ignore="LockedOrientationActivity" >
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

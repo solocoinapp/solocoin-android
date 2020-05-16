@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="0dp"
     tools:context=".WalletFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -14,9 +13,6 @@
         android:background="@color/colorAccent"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <ImageView
@@ -28,40 +24,55 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/tv_coins_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="0.0"
-        android:layout_marginTop="12dp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="38sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/profile_toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_coins_in_wallet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="@string/coins_in_wallet"
-        android:paddingBottom="28dp"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@id/tv_coins_count"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rewards_recycler_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="2dp"
-        android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@id/tv_coins_in_wallet" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/profile_toolbar"
+        android:animateLayoutChanges="false">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_coins_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/coins_value"
+                android:textColor="@color/colorPrimary"
+                android:textSize="38sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_coins_in_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_coins_count"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingBottom="28dp"
+                android:text="@string/coins_in_wallet"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rewards_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_coins_in_wallet"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="2dp"
+                android:fitsSystemWindows="true"
+                android:overScrollMode="never"
+                android:scrollbars="vertical" />
+
+        </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>
