@@ -20,4 +20,5 @@ class SolocoinRepository(private val apiService: ApiService) {
     suspend fun mobileSignUp(body: JsonObject) = apiService.mobileSignUp(body)
 
     suspend fun userData() = apiService.userData(sharedPrefs?.authToken!!)
+    suspend fun userUpdate(body: JsonObject) = apiService.userUpdate(sharedPrefs?.authToken!!, body)
 }
