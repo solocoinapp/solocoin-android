@@ -15,7 +15,6 @@ import app.solocoin.solocoin.util.enums.DialogType
  */
 
 class AppDialog: DialogFragment() {
-
     companion object {
         private const val TYPE = "TYPE"
         private const val TITLE = "TITLE"
