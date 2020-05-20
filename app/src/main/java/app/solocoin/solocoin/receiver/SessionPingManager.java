@@ -41,7 +41,12 @@ public class SessionPingManager extends Worker {
             JsonObject body = new JsonObject();
             JsonObject session = new JsonObject();
             body.add("session", session);
-            session.addProperty("type", sharedPref.getSessionType());
+            LegalChecker lc = new LegalChecker(getApplicationContext());
+            if(lc.isCheating()){
+                session.addProperty("type", "away");
+            } else {
+                session.addProperty("type", sharedPref.getSessionType());
+            }
             Call<JsonObject> call = apiService.pingSession(sharedPref.getAuthToken(), body);
             call.enqueue(new Callback<JsonObject>() {
                 @Override
