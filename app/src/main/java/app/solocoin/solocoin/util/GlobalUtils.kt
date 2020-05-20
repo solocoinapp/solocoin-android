@@ -13,6 +13,11 @@ import app.solocoin.solocoin.ui.SplashActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import java.lang.Math.toRadians
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 
 /**
@@ -87,9 +92,56 @@ class GlobalUtils {
             }
         }
 
-        fun getSessionType(): String {
-            return ""
-            TODO("Find difference between current and pref location return status")
+        val THRESHOLD: Double = 20.0  // in meters
+        val STATUS_HOME = "home"
+        val STATUS_AWAY = "away"
+
+        @InternalCoroutinesApi
+        @ExperimentalCoroutinesApi
+        fun getSessionType(): String? {
+            var sessionType: String? = null
+            sharedPrefs?.let {
+                val currentLat = it.currentLat
+                val currentLong = it.currentLong
+                val userLat = it.userLat
+                val userLong = it.userLong
+                sessionType = currentLat?.let {
+                    currentLong?.let {
+                        userLat?.let {
+                            userLong?.let {
+                                val dist = haversineFormula(
+                                    currentLat.toDouble(),
+                                    currentLong.toDouble(),
+                                    userLat.toDouble(),
+                                    userLong.toDouble()
+                                )
+                                return if (dist <= THRESHOLD)
+                                    STATUS_HOME
+                                else
+                                    STATUS_AWAY
+                            }
+                        }
+                    }
+                }
+            }
+            return sessionType
+        }
+
+        private fun haversineFormula(
+            lat1: Double,
+            lng1: Double,
+            lat2: Double,
+            lng2: Double
+        ): Double {
+            val r = 6371 // average radius of the earth in km
+            val dLat = toRadians(lat2 - lat1)
+            val dLon = toRadians(lng2 - lng1)
+            val a =
+                sin(dLat / 2) * sin(dLat / 2) + (cos(toRadians(lat1)) * cos(toRadians(lat2)) * sin(
+                    dLon / 2
+                ) * sin(dLon / 2))
+            val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+            return (r * c * 1000) // in meters
         }
     }
 }

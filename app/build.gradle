@@ -42,8 +42,9 @@ dependencies {
     def gson = '2.8.1'
     def workmanager_version = '2.3.4'
     def koin_version = '2.1.5'
+    def work_version = '1.0.1'
+    def googleplay_version = '17.0.0'
     def picasso_version = '2.71828'
-    def work_version = "1.0.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -83,8 +84,9 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-auth:19.3.1'
 
-    implementation "com.google.android.gms:play-services-location:17.0.0"
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    //Google Play Services
+    implementation "com.google.android.gms:play-services-location:$googleplay_version"
+    implementation "com.google.android.gms:play-services-maps:$googleplay_version"
 
     // External libraries
     implementation 'com.github.adityasonel:InkPageIndicator:1.0'
