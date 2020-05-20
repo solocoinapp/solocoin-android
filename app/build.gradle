@@ -101,4 +101,7 @@ dependencies {
     //Work Manager
     implementation "android.arch.work:work-runtime-ktx:$work_version"
 
+    // Cheat detection
+    implementation project(path: ':RootTools')
+
 }
