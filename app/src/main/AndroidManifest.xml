@@ -17,12 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".NotificationAlarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
-<!--        auth-stack-->
+            android:value="@string/google_maps_key" /> <!-- auth-stack -->
         <activity
             android:name=".ui.auth.OnboardActivity"
             android:screenOrientation="portrait"
@@ -51,17 +53,15 @@
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-<!--        auth-stack-->
-
-<!--        home-stack-->
+        </activity> <!-- auth-stack -->
+        <!-- home-stack -->
         <activity
             android:name=".ui.home.HomeActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-<!--        home-stack-->
     </application>
 
 </manifest>
