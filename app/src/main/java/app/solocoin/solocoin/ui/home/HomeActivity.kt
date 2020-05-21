@@ -3,7 +3,6 @@ package app.solocoin.solocoin.ui.home
 import android.app.AlarmManager
 import android.app.Notification
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -39,9 +38,9 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.selectedItemId = R.id.nav_home
 
         // TODO : Setup permission request for Fused Location service properly
-        checkPermissionForLocation()
-        viewModel.startSessionPingManager()
-        alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+//        checkPermissionForLocation()
+//        viewModel.startSessionPingManager()
+//        alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
 
     }

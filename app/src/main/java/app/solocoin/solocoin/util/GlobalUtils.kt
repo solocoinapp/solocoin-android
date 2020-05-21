@@ -101,8 +101,8 @@ class GlobalUtils {
         @ExperimentalCoroutinesApi
         fun getSessionType(context: Context): String? {
             var sessionType: String? = null
-            var checker = LegalChecker(context);
-            if(checker.isCheating()){
+            val checker = LegalChecker(context)
+            if (checker.isCheating) {
                 return STATUS_AWAY
             }
             sharedPrefs?.let {
