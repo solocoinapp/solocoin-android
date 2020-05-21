@@ -12,6 +12,10 @@ import com.stericson.RootTools.RootTools;
 import java.util.List;
 import java.util.Objects;
 
+/*
+* Created by Vijay Daita on 5/20
+ */
+
 public class LegalChecker {
     private Context context;
 

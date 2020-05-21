@@ -108,5 +108,6 @@ dependencies {
 
     // Cheat detection
     implementation project(path: ':RootTools')
+    implementation 'androidx.fragment:fragment-ktx:1.2.4'
 
 }
