@@ -3,6 +3,7 @@ package app.solocoin.solocoin.ui.home
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +16,28 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
+import android.app.AlarmManager
+
+import androidx.core.content.ContextCompat.getSystemService
+
+import android.os.SystemClock
+
+import android.app.PendingIntent
+
+import android.content.Intent
+
+import android.R.attr.fragment
+import android.app.Notification
+import androidx.core.content.ContextCompat
+import app.solocoin.solocoin.NotificationAlarmReceiver
+
+
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class HomeActivity : AppCompatActivity() {
 
     private val viewModel: HomeActivityViewModel by viewModel()
+    private var alarmManager: AlarmManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +48,38 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.selectedItemId = R.id.nav_home
 
         // TODO : Setup permission request for Fused Location service properly
-//        checkPermissionForLocation()
-//        viewModel.startSessionPingManager()
+        checkPermissionForLocation()
+        viewModel.startSessionPingManager()
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager;
+        // Manage notification checking
+
+    }
+
+    // https://gist.github.com/BrandonSmith/6679223
+
+    private fun scheduleNotification(delay: Int, info: String) {
+        val notification: Notification? = getNotification(info);
+        val notificationIntent = Intent(this,  NotificationAlarmReceiver::class.java)
+        notificationIntent.putExtra("notification-id", 1)
+        notificationIntent.putExtra("notification", notification)
+        val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            notificationIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val futureInMillis: Long = SystemClock.elapsedRealtime() + delay
+        val alarmManager: AlarmManager =
+            ContextCompat.getSystemService(this, AlarmManager::class.java) as AlarmManager
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
+    }
+
+    private fun getNotification(content: String): Notification? {
+        val builder: Notification.Builder = Notification.Builder(this)
+        builder.setContentTitle("Solocoin Says...")
+        builder.setContentText(content)
+        builder.setSmallIcon(app.solocoin.solocoin.R.drawable.app_icon)
+        return builder.build()
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->

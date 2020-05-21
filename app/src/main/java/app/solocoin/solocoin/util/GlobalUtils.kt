@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.ui.SplashActivity
+import app.solocoin.solocoin.worker.LegalChecker
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -98,8 +99,12 @@ class GlobalUtils {
 
         @InternalCoroutinesApi
         @ExperimentalCoroutinesApi
-        fun getSessionType(): String? {
+        fun getSessionType(context: Context): String? {
             var sessionType: String? = null
+            var checker = LegalChecker(context);
+            if(checker.isCheating()){
+                return STATUS_AWAY
+            }
             sharedPrefs?.let {
                 val currentLat = it.currentLat
                 val currentLong = it.currentLong
@@ -124,6 +129,7 @@ class GlobalUtils {
                     }
                 }
             }
+
             return sessionType
         }
 
