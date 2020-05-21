@@ -14,6 +14,10 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.List;
 
+/*
+* Created by Vijay Daita on 5/20
+ */
+
 public class LegalChecker {
     Context context;
 
