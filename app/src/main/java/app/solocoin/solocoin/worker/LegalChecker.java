@@ -9,17 +9,15 @@ import android.util.Log;
 
 import com.stericson.RootTools.RootTools;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Objects;
 
 /*
 * Created by Vijay Daita on 5/20
  */
 
 public class LegalChecker {
-    Context context;
+    private Context context;
 
     public LegalChecker(Context context){
         this.context = context;
@@ -28,16 +26,13 @@ public class LegalChecker {
         return RootTools.isRootAvailable() || isMockSettingsON(context) || areThereMockPermissionApps(context);
     }
 
-    public static boolean isMockSettingsON(Context context) {
+    private static boolean isMockSettingsON(Context context) {
         // returns true if mock location enabled, false if not enabled.
-        if (Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
-            return false;
-        else
-            return true;
+        return !Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ALLOW_MOCK_LOCATION).equals("0");
     }
 
-    public static boolean areThereMockPermissionApps(Context context) {
+    private static boolean areThereMockPermissionApps(Context context) {
         int count = 0;
 
         PackageManager pm = context.getPackageManager();
@@ -53,8 +48,8 @@ public class LegalChecker {
                 String[] requestedPermissions = packageInfo.requestedPermissions;
 
                 if (requestedPermissions != null) {
-                    for (int i = 0; i < requestedPermissions.length; i++) {
-                        if (requestedPermissions[i]
+                    for (String requestedPermission : requestedPermissions) {
+                        if (requestedPermission
                                 .equals("android.permission.ACCESS_MOCK_LOCATION")
                                 && !applicationInfo.packageName.equals(context.getPackageName())) {
                             count++;
@@ -62,12 +57,10 @@ public class LegalChecker {
                     }
                 }
             } catch (PackageManager.NameNotFoundException e) {
-                Log.e("Got exception " , e.getMessage());
+                Log.e("Got exception ", Objects.requireNonNull(e.getMessage()));
             }
         }
 
-        if (count > 0)
-            return true;
-        return false;
+        return count > 0;
     }
 }

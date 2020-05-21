@@ -84,4 +84,21 @@
 
     <string name="start_time">0h 0m 0s</string>
 
+    //rewards + wallet section
+    <string name="claim_offer">CLAIM OFFER</string>
+    <string name="reward_details">Reward Details</string>
+    <string name="coins_value">0.0</string>
+    <string name="reward_cost_coins">2500 Coins</string>
+    <string name="reward_cost_rupees">500</string>
+    <string name="reward_company_logo">Company Logo</string>
+    <string name="reward_company_name">Company Name</string>
+    <string name="coins_image">Coins Symbol</string>
+    <string name="reward_description">6 Months Youtube Premium Membership Trail For New Users</string>
+    <string name="reward_image_2">Reward Image 2</string>
+    <string name="extra_reward_detail">* Extra Terms and Conditions</string>
+    <string name="reward_image_1">Offer Image 1</string>
+    <string name="terms_and_conditions">Terms and Conditions :</string>
+    <string name="Rs">\u20B9</string>
+    <string name="coins_in_wallet">Coins in Wallet</string>
+
 </resources>
