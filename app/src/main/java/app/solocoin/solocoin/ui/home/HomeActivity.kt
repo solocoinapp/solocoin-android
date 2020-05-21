@@ -30,8 +30,8 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.selectedItemId = R.id.nav_home
 
         // TODO : Setup permission request for Fused Location service properly
-        checkPermissionForLocation()
-        viewModel.startSessionPingManager()
+//        checkPermissionForLocation()
+//        viewModel.startSessionPingManager()
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
