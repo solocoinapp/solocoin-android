@@ -38,9 +38,9 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.selectedItemId = R.id.nav_home
 
         // TODO : Setup permission request for Fused Location service properly
-//        checkPermissionForLocation()
-//        viewModel.startSessionPingManager()
-//        alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+       checkPermissionForLocation()
+       viewModel.startSessionPingManager()
+       alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
 
     }
