@@ -5,9 +5,7 @@ Created by Vijay Daita
  */
 
 object Badge {
-    var imageUrl: String? = null;
-    var name: String? = null;
-    var has: Boolean? = false;
-
-
+    var imageUrl: String? = null
+    var name: String? = null
+    var has: Boolean? = false
 }
