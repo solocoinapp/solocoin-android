@@ -90,4 +90,5 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.joielechong:countrycodepicker:2.4.1'
     implementation 'com.karumi:dexter:6.1.2'
+    implementation 'com.github.instacart.truetime-android:library:3.4'
 }

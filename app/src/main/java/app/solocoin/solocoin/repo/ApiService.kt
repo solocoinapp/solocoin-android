@@ -36,4 +36,14 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("user/profile")
     fun getProfile(@Header("Authorization") authToken: String): Response<JsonObject>
+
+    @GET("questions/daily")
+    suspend fun getDailyQuiz(@Header("Authorization") authToken: String): Response<JsonObject>
+
+    @GET("questions/weekly")
+    suspend fun getWeeklyQuiz(@Header("Authorization") authToken: String): Response<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @POST("user_questions_answers")
+    suspend fun submitQuizAnswer(@Header("Authorization") authToken: String, @Body body: JsonObject): Response<JsonObject>
 }

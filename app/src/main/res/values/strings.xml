@@ -19,6 +19,8 @@
     <string name="skip">Skip</string>
     <string name="create_account">Create account</string>
 
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">API-KEY</string>
+
     <string name="signup">Signup</string>
     <string name="auth_title1">Mobile number</string>
     <string name="auth_title2">Enter your mobile number\nwe will send you the OTP</string>
@@ -64,7 +66,27 @@
     <string name="title_myl">Mark your location</string>
     <string name="clear_current_session">Do you want to clear current session?</string>
 
-    <string name="default_timer_text">14h:24m</string>
+    <string name="tag_myl">Please hold on 5–10 seconds for accurate location or mark location then confirm</string>
+    <string name="hint_current_loc">Location</string>
+    <string name="current_address">%s, %s, %s</string>
+    <string name="confirm_loc">Confirm location</string>
+    <string name="hint_fetching_loc">Fetching location</string>
+
+    <string name="permission">Permission</string>
+    <string name="tag_permission">Location permission is needed to application for working efficiently</string>
+    <string name="refreshing_location">Refreshing location, please wait…</string>
+
+    <string name="title_create_profile">Create profile</string>
+    <string name="name">Name</string>
+    <string name="tag_tnc">By creating an account you agree to our Terms of Service and Privacy Policy</string>
+
+    <string name="default_timer_text">0d 0h 0m</string>
     <string name="challenges_text">Challenges</string>
     <string name="participate_text">Participate in the #StayAtHome challenge and win exciting badges and rewards.</string>
+
+    <string name="noconnectivity_error_msg">No network available, please check your WiFi or Data connection</string>
+    <string name="after_two_hours_msg">The quiz will be available after %1$d hour %2$d minutes</string>
+    <string name="available_sunday_msg">The quiz will be available on next Sunday</string>
+    <string name="device_time_incorrect_msg">Your phone date or time is inaccurate! \nAdjust your clock and try again</string>
+    <string name="quiz_unavailable_msg">The quiz is currently unavailable, please try again after sometime</string>
 </resources>

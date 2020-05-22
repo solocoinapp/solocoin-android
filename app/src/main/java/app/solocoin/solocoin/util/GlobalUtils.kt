@@ -11,8 +11,11 @@ import androidx.core.app.ActivityCompat
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.ui.SplashActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.instacart.library.truetime.TrueTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import java.util.*
+import kotlin.math.abs
 
 
 /**
@@ -75,5 +78,28 @@ class GlobalUtils {
             return ActivityCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         }
+
+        fun formattedHomeDuration(t: Long?): String {
+            return if (t != null) {
+                val minutes = (t / 60 % 60).toInt()
+                val hours = (t / (60 * 60) % 24).toInt()
+                val days = (t / (60 * 60 * 24)).toInt()
+                "$days d $hours h $minutes m"
+            } else {
+                "0d 0m 0s"
+            }
+        }
+
+        fun verifyDeviceTimeConfig(): Boolean {
+            if (TrueTime.isInitialized()) {
+                val trueTime = TrueTime.now().time
+                val deviceTime = Calendar.getInstance().timeInMillis
+                if (abs(deviceTime - trueTime)/10000 > 0L) {
+                    return false
+                }
+            }
+            return true
+        }
+
     }
 }
