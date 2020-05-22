@@ -47,8 +47,7 @@ class FusedLocationService: Service() {
                 fastestInterval = 5 * 60 * 1000
                 priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             }
-            // TODO : check whether Settings for the LocationRequest are available or not
-        } catch (Exception e){
+        } catch (exception: Exception){
             // Create an explicit intent for an Activity in your app
             val intent = Intent(applicationContext, HomeActivity::class.java)
             val pendingIntent: PendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)

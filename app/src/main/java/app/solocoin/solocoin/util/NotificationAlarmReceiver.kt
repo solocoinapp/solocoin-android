@@ -9,6 +9,8 @@ import android.content.Intent
 
 // https://gist.github.com/BrandonSmith/6679223
 
+// Created by Vijay Daita
+
 class NotificationAlarmReceiver : BroadcastReceiver() {
 
     var NOTIFICATION_ID = "notification-id"

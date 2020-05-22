@@ -42,7 +42,7 @@ class RewardDetailsActivity : AppCompatActivity() {
         claimOffer.setOnClickListener {
             Toast.makeText(
                 context,
-                "You have claimed the offer !!",
+                "You have claimed the offer.",
                 Toast.LENGTH_LONG
             ).show()
         }

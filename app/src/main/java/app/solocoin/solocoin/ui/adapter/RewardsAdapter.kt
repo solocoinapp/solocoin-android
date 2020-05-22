@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
+import com.squareup.picasso.Picasso
 import java.util.*
 
 /**
@@ -74,8 +75,7 @@ class RewardsAdapter(
         }
 
         private fun updateImage(reward: Reward) {
-            //TODO: add code to update image from api or download the image
-            companyLogo?.setImageResource(R.drawable.app_icon)
+            Picasso.get().load(reward.companyLogoUrl).into(companyLogo)
         }
     }
 
