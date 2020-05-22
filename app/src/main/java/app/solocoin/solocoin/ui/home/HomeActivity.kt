@@ -21,6 +21,17 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
+import androidx.core.content.ContextCompat.getSystemService
+
+import android.os.SystemClock
+
+import android.content.Intent
+
+import android.R.attr.fragment
+import android.app.*
+import androidx.core.content.ContextCompat
+import app.solocoin.solocoin.NotificationAlarmReceiver
+
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
@@ -43,6 +54,22 @@ class HomeActivity : AppCompatActivity() {
        alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
 
+        createNotificationChannel()
+    }
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("1", "Solocoin", importance).apply {
+                description = "Solocoin"
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     // https://gist.github.com/BrandonSmith/6679223
