@@ -47,20 +47,23 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:contentDescription="@string/reward_image_2"
-            android:scaleType="centerCrop"
-            android:src="@drawable/reward" />
+            android:background="@drawable/grey_border"
+            android:padding="1dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/app_icon" />
 
         <TextView
             android:id="@+id/offer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/reward_image_2"
             android:fontFamily="@font/poppins"
             android:text="@string/reward_description"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp" />
+            android:textSize="22sp" />
 
         <LinearLayout
             android:id="@+id/coins"
@@ -89,7 +92,7 @@
                 android:fontFamily="@font/poppins"
                 android:text="@string/reward_cost_coins"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

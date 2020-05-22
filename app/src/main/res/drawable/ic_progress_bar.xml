@@ -1,24 +1,24 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="200dp"
     android:height="9dp"
-    android:viewportWidth="360"
+    android:viewportWidth="200"
     android:viewportHeight="9">
     <group>
-        <clip-path android:pathData="M0,0h360v9h-360z" />
+        <clip-path android:pathData="M0,0h200v9h-200z" />
         <path
             android:fillColor="#fff"
-            android:pathData="M1.5,2.936L358.5,2.936A1.5,1.5 0,0 1,360 4.436L360,4.436A1.5,1.5 0,0 1,358.5 5.936L1.5,5.936A1.5,1.5 0,0 1,0 4.436L0,4.436A1.5,1.5 0,0 1,1.5 2.936z" />
+            android:pathData="M0,2.936h200v3h-200z" />
         <path
             android:fillColor="#fff"
-            android:pathData="M314.5,4.5m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
+            android:pathData="M154.5,4.5m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
         <path
             android:fillColor="#fff"
-            android:pathData="M355.5,4.478m-3.5,0a3.5,3.5 0,1 1,7 0a3.5,3.5 0,1 1,-7 0" />
+            android:pathData="M195.5,4.478m-3.5,0a3.5,3.5 0,1 1,7 0a3.5,3.5 0,1 1,-7 0" />
         <path
             android:fillColor="#fff"
             android:pathData="M45.5,4.5m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
         <path
             android:fillColor="#fff"
-            android:pathData="M179.5,4.5m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
+            android:pathData="M99.728,4.5m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
     </group>
 </vector>

@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.model.Badge
 import com.squareup.picasso.Picasso
 
 /**
@@ -19,7 +20,7 @@ class BadgesAdapter(val items: ArrayList<Badge>, val context: Context): Recycler
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BadgeHolder {
         return BadgeHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_badge, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_badge_card, parent, false)
         )
     }
 
@@ -35,7 +36,7 @@ class BadgesAdapter(val items: ArrayList<Badge>, val context: Context): Recycler
         private var view: View = v
 
         fun setUpView(badge: Badge?, context: Context){
-            val imgView: ImageView = view.findViewById(R.id.badge_image)
+            val imgView: ImageView = view.findViewById(R.id.badge_iv)
             val txtView: TextView = view.findViewById(R.id.badge_name)
             Picasso.get().load(badge?.imageUrl).into(imgView)
             txtView.text = badge?.name

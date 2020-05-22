@@ -1,7 +1,6 @@
 package app.solocoin.solocoin.ui.adapter
 
 import android.app.Activity
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
-import app.solocoin.solocoin.ui.home.RewardDetailsActivity
 import java.util.*
 
 /**
@@ -21,47 +19,20 @@ class RewardsAdapter(
     private val rewardsArrayList: ArrayList<Reward>
 ) :
     RecyclerView.Adapter<RewardsAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ViewHolder {
-        val rootView: View =
-            LayoutInflater.from(context).inflate(R.layout.reward_card_layout, parent, false)
-        return ViewHolder(rootView)
-    }
+    ): ViewHolder =
+        ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_reward_card, parent, false))
 
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int
-    ) {
-        rewardsArrayList[position].let {
-            updateImage(holder, it)
-            with(holder) {
-                companyName?.text = it.companyName
-                costCoins?.text = it.costCoins
-                costRupees?.text = it.costRupees
-                mListener = object : RecyclerViewClickListener {
-                    override fun onClick(view: View?, position: Int) {
-                        val intent = Intent(context, RewardDetailsActivity::class.java)
-                        intent.putExtra("EXTRA_INFO", rewardsArrayList[position])
-                        context.startActivity(intent)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun updateImage(
-        viewHolder: ViewHolder,
-        reward: Reward
-    ) {
-        //TODO: add code to update image from api or download the image
-        viewHolder.companyLogo?.setImageResource(R.drawable.app_icon)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bindRewards(context, rewardsArrayList[position])
     }
 
     override fun getItemCount() = rewardsArrayList.size
 
-    inner class ViewHolder internal constructor(itemView: View) :
+    class ViewHolder internal constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
 
@@ -81,6 +52,30 @@ class RewardsAdapter(
 
         override fun onClick(view: View) {
             mListener?.onClick(view, adapterPosition)
+        }
+
+        fun bindRewards(context: Activity, reward: Reward) {
+            reward.let {
+                updateImage(it)
+                companyName?.text = it.companyName
+                costCoins?.text = it.costCoins
+                costRupees?.text = it.costRupees
+                mListener = object : RecyclerViewClickListener {
+                    override fun onClick(view: View?, position: Int) {
+                        val intent = android.content.Intent(
+                            context,
+                            app.solocoin.solocoin.ui.home.RewardDetailsActivity::class.java
+                        )
+                        intent.putExtra("EXTRA_INFO", it)
+                        context.startActivity(intent)
+                    }
+                }
+            }
+        }
+
+        private fun updateImage(reward: Reward) {
+            //TODO: add code to update image from api or download the image
+            companyLogo?.setImageResource(R.drawable.app_icon)
         }
     }
 
