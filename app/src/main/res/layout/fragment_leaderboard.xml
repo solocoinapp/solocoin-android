@@ -5,11 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.LeaderboardFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/leaderboard_sl"
         android:layout_width="match_parent"
-        android:id="@+id/leaderboard_recycler_view"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:animateLayoutChanges="false"
+        android:overScrollMode="never">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/leaderboard_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="false"
+            android:overScrollMode="never"
+            android:paddingTop="32dp"
+            android:scrollbars="vertical" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

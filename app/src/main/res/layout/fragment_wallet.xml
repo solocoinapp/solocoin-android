@@ -11,9 +11,10 @@
         tools:ignore="UselessParent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_layout"
+            android:id="@+id/wallet_sl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:overScrollMode="never"
             android:animateLayoutChanges="false">
 
             <RelativeLayout
@@ -54,6 +55,7 @@
                     android:layout_marginBottom="2dp"
                     android:fitsSystemWindows="true"
                     android:overScrollMode="never"
+                    android:animateLayoutChanges="false"
                     android:scrollbars="vertical" />
 
             </RelativeLayout>

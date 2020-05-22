@@ -26,57 +26,18 @@ class RewardDetailsAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ViewHolder {
-        val rootView: View =
-            LayoutInflater.from(context).inflate(R.layout.reward_details_layout, parent, false)
-        return ViewHolder(rootView)
-    }
+    ): ViewHolder =
+        ViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.item_reward_details, parent, false)
+        )
 
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int
-    ) {
-        rewardArrayList[position]?.let {
-            holder.let { h ->
-                updateImage(h, it)
-                h.coinsAmt?.text = it.costCoins
-                h.extraTnc?.text = it.offerExtraDetails
-                h.offerName?.text = it.offerName
-                updateOfferDetails(h, it)
-            }
-        }
-    }
-
-    private fun updateOfferDetails(
-        viewHolder: ViewHolder,
-        reward: Reward
-    ) {
-        reward.offerDetails.let {
-            it.forEach { x ->
-                val offerDetails = TextView(viewHolder.tnc?.context).apply {
-                    text = x.toString()
-                    setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
-                    typeface = ResourcesCompat.getFont(context, R.font.poppins)
-                }
-                viewHolder.tnc?.addView(offerDetails)
-            }
-        }
-    }
-
-    private fun updateImage(
-        viewHolder: ViewHolder,
-        reward: Reward
-    ) {
-        //TODO: add code to update image from api or download the image
-        viewHolder.offerImage1?.setImageResource(R.drawable.reward)
-        viewHolder.offerImage2?.setImageResource(R.drawable.reward)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.setUpView(rewardArrayList[position])
     }
 
     override fun getItemCount() = rewardArrayList.size
 
-    inner class ViewHolder internal constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var offerImage1: ImageView? = null
         var offerImage2: ImageView? = null
@@ -86,13 +47,46 @@ class RewardDetailsAdapter(
         var tnc: LinearLayout? = null
 
         init {
-            offerImage1 = itemView.findViewById(R.id.offer_image_1)
-            offerImage2 = itemView.findViewById(R.id.reward_image_2)
-            extraTnc = itemView.findViewById(R.id.extra_tnc)
-            offerName = itemView.findViewById(R.id.offer_name)
-            coinsAmt = itemView.findViewById(R.id.coins_amt)
-            tnc = itemView.findViewById(R.id.tnc)
+            with(itemView) {
+                offerImage1 = findViewById(R.id.offer_image_1)
+                offerImage2 = findViewById(R.id.reward_image_2)
+                extraTnc = findViewById(R.id.extra_tnc)
+                offerName = findViewById(R.id.offer_name)
+                coinsAmt = findViewById(R.id.coins_amt)
+                tnc = findViewById(R.id.tnc)
+            }
         }
+
+        fun setUpView(reward: Reward?) {
+            reward?.let {
+                updateImage(it)
+                coinsAmt?.text = it.costCoins
+                extraTnc?.text = it.offerExtraDetails
+                offerName?.text = it.offerName
+                updateOfferDetails(it)
+            }
+        }
+
+        private fun updateImage(reward: Reward) {
+            //TODO: add code to update image from api or download the image
+            offerImage1?.setImageResource(R.drawable.reward)
+            offerImage2?.setImageResource(R.drawable.app_icon)
+        }
+
+        private fun updateOfferDetails(reward: Reward) {
+            reward.offerDetails.let {
+                it.forEach { x ->
+                    val offerDetails = TextView(tnc?.context).apply {
+                        text = x.toString()
+                        setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                        setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                        typeface = ResourcesCompat.getFont(context, R.font.poppins)
+                    }
+                    tnc?.addView(offerDetails)
+                }
+            }
+        }
+
     }
 
 }

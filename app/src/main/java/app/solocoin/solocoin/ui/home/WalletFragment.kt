@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -50,10 +49,9 @@ class WalletFragment : Fragment() {
 
         balanceTextView = view.findViewById(R.id.tv_coins_count)
         recyclerView = view.findViewById(R.id.rewards_recycler_view)
-        swipeRefreshLayout = view.findViewById(R.id.swipe_layout)
+        swipeRefreshLayout = view.findViewById(R.id.wallet_sl)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.itemAnimator = DefaultItemAnimator()
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
         swipeRefreshLayout.setOnRefreshListener {
             updateWallet()
