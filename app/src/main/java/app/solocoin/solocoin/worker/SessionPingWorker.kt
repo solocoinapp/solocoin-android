@@ -46,7 +46,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 
         Log.wtf(TAG, "Initiating the work")
 
-        val sessionType: String? = GlobalUtils.getSessionType()
+        val sessionType: String? = GlobalUtils.getSessionType(applicationContext)
         sessionType?.let {
             val body: JsonObject =
                 JsonParser().parse(SessionPingRequest(sessionType).toString()).asJsonObject

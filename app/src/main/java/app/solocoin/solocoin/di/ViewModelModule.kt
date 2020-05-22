@@ -5,6 +5,8 @@ import app.solocoin.solocoin.ui.auth.LoginSignupViewModel
 import app.solocoin.solocoin.ui.auth.MarkYourLocationViewModel
 import app.solocoin.solocoin.ui.home.HomeActivityViewModel
 import app.solocoin.solocoin.ui.home.HomeFragmentViewModel
+import app.solocoin.solocoin.ui.home.LeaderboardFragmentViewModel
+import app.solocoin.solocoin.ui.home.WalletFragmentViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.viewmodel.dsl.viewModel
@@ -27,5 +29,11 @@ val viewModelModule = module {
     }
     viewModel {
         HomeActivityViewModel(application = get())
+    }
+    viewModel {
+        WalletFragmentViewModel(repository = get())
+    }
+    viewModel {
+        LeaderboardFragmentViewModel(repository = get())
     }
 }

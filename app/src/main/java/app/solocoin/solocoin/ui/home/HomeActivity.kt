@@ -1,14 +1,19 @@
 package app.solocoin.solocoin.ui.home
 
+import android.app.AlarmManager
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.content.Context
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import app.solocoin.solocoin.NotificationAlarmReceiver
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.services.FusedLocationService
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -44,9 +49,9 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.selectedItemId = R.id.nav_home
 
         // TODO : Setup permission request for Fused Location service properly
-        checkPermissionForLocation()
-        viewModel.startSessionPingManager()
-        alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager;
+       checkPermissionForLocation()
+       viewModel.startSessionPingManager()
+       alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
 
         createNotificationChannel()
@@ -70,7 +75,7 @@ class HomeActivity : AppCompatActivity() {
     // https://gist.github.com/BrandonSmith/6679223
 
     private fun scheduleNotification(delay: Int, info: String) {
-        val notification: Notification? = getNotification(info);
+        val notification: Notification? = getNotification(info)
         val notificationIntent = Intent(this,  NotificationAlarmReceiver::class.java)
         notificationIntent.putExtra("notification-id", 1)
         notificationIntent.putExtra("notification", notification)
@@ -90,7 +95,7 @@ class HomeActivity : AppCompatActivity() {
         val builder: Notification.Builder = Notification.Builder(this)
         builder.setContentTitle("Solocoin Says...")
         builder.setContentText(content)
-        builder.setSmallIcon(app.solocoin.solocoin.R.drawable.app_icon)
+        builder.setSmallIcon(R.drawable.app_icon)
         return builder.build()
     }
 

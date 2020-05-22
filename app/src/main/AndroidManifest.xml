@@ -16,7 +16,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
+
         <receiver
             android:name=".NotificationAlarmReceiver"
             android:enabled="true"
@@ -25,6 +27,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" /> <!-- auth-stack -->
+        <activity
+            android:name=".ui.home.RewardDetailsActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.auth.OnboardActivity"
             android:screenOrientation="portrait"
@@ -44,7 +50,7 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 
-        <service android:name=".services.FusedLocationService"/>
+        <service android:name=".services.FusedLocationService" />
 
         <activity
             android:name=".ui.SplashActivity"

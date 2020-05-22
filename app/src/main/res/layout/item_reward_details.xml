@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/offer_details_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/offer_image_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/offer_image_1"
+            android:layout_width="match_parent"
+            android:layout_height="196dp"
+            android:contentDescription="@string/reward_image_1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/reward" />
+
+        <TextView
+            android:id="@+id/extra_tnc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/offer_image_1"
+            android:layout_margin="16dp"
+            android:background="@color/grey_black"
+            android:fontFamily="@font/poppins"
+            android:padding="2dp"
+            android:text="@string/extra_reward_detail"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/offer_brief_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/reward_image_2"
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/offer_name"
+            android:layout_alignBottom="@id/coins"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:contentDescription="@string/reward_image_2"
+            android:background="@drawable/grey_border"
+            android:padding="1dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/app_icon" />
+
+        <TextView
+            android:id="@+id/offer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_toEndOf="@id/reward_image_2"
+            android:fontFamily="@font/poppins"
+            android:text="@string/reward_description"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="22sp" />
+
+        <LinearLayout
+            android:id="@+id/coins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/offer_name"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/reward_image_2"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/coin_image"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/coins_image"
+                android:scaleType="centerCrop"
+                android:src="@drawable/coin" />
+
+            <TextView
+                android:id="@+id/coins_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/reward_cost_coins"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/tnc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/poppins"
+            android:text="@string/terms_and_conditions"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

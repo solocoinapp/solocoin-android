@@ -42,10 +42,6 @@ interface ApiService {
     fun getProfile(@Header("Authorization") authToken: String): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
-    @GET("rewards_sponsors")
-    fun getRewards(@Header("Authorization") authToken: String): Response<JsonObject>
-
-    @Headers("Content-Type: application/json")
-    @GET("rewards_sponsors")
-    fun getRewards(@Header("Authorization") authToken: String): Response<JsonObject>
+    @GET("rewards")
+    fun rewards(@Header("Authorization") authToken: String): Response<JsonObject>
 }

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp">
+
+        <TextView
+            android:id="@+id/level_tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_toStartOf="@id/trophy"
+            android:gravity="center_horizontal"
+            android:text="@string/level_tv_1"
+            android:textColor="@color/colorPrimary"
+            android:textSize="64sp"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/level_info_tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/level_tv_1"
+            android:layout_alignStart="@id/level_tv_1"
+            android:layout_alignEnd="@id/level_tv_1"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:text="@string/level_info_tv_2"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/trophy"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:layout_alignTop="@id/level_tv_2"
+            android:layout_alignBottom="@id/level_tv_2"
+            android:layout_marginStart="12dp"
+            android:layout_toStartOf="@id/level_tv_2"
+            android:contentDescription="@string/trophy_icon"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="6dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_trophy_pink" />
+
+        <TextView
+            android:id="@+id/level_tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:paddingEnd="12dp"
+            android:text="@string/level_tv_2"
+            android:textColor="@color/colorPrimary"
+            android:textSize="64sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/level_tv_2"
+            android:layout_alignStart="@id/trophy"
+            android:layout_alignEnd="@id/level_tv_2"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/awards_unlocked"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorAccent"
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/level_info_tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/poppins"
+            android:text="@string/level_info_tv_1"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <ProgressBar
+            android:id="@+id/level_pb"
+            style="@style/ProgressBarTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="24dp"
+            android:progress="38" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/leaderboard"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:alpha="0.8"
+        app:cardBackgroundColor="@color/colorPrimary"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0.0px"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true">
+
+        <!-- TODO: Leaderboard section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:fontFamily="@font/poppins"
+            android:text="@string/coming_soon"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/awards_achieved"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp" />
+
+    <GridLayout
+        android:id="@+id/badges_gl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:useDefaultMargins="true"
+        android:columnCount="2"
+        android:rowCount="1" />
+
+</LinearLayout>

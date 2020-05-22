@@ -13,4 +13,7 @@
 
     <color name="selected_dot">#2D9CDB</color>
     <color name="idle_dot">#662D9CDB</color>
+
+    <color name="grey_black">#CC252525</color>
+
 </resources>
