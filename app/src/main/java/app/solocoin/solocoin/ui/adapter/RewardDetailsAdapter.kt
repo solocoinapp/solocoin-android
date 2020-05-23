@@ -61,7 +61,7 @@ class RewardDetailsAdapter(
             reward?.let {
                 updateImage(it)
                 coinsAmt?.text = it.costCoins
-                extraTnc?.text = it.offerExtraDetails
+                extraTnc?.text = it.offerDetails
                 offerName?.text = it.offerName
                 updateOfferDetails(it)
             }
@@ -75,7 +75,7 @@ class RewardDetailsAdapter(
 
         private fun updateOfferDetails(reward: Reward) {
             reward.offerDetails.let {
-                it.forEach { x ->
+                it?.forEach { x ->
                     val offerDetails = TextView(tnc?.context).apply {
                         text = x.toString()
                         setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))

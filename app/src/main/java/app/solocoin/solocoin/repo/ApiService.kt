@@ -44,4 +44,8 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @GET("rewards")
     fun rewards(@Header("Authorization") authToken: String): Response<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @POST("redeem_rewards")
+    fun redeemRewards(@Header("Authorization") authToken: String, @Body body: JsonObject): Call<JsonObject>
 }
