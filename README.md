@@ -6,7 +6,7 @@ SoloCoin gamifies the act of social-distancing by rewarding users in points and 
 
 # Contributing (Remember Read this 1st before you ask anything)
 
-Discord link : https://discord.gg/9Cegpv
+Discord link : https://www.guilded.gg/i/wEwlNMd2
 Participate : Ask @arbob to add you in as a collaborators
 
 FAQ: HOW DO I START??
