@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/app_padding"
+    android:paddingStart="@dimen/app_padding"
+    android:paddingEnd="@dimen/app_padding"
+    android:minWidth="280dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_title"
+        tools:text="Info!"
+        android:layout_gravity="center"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tv_subtitle"
+        android:fontFamily="@font/poppins"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:maxLines="2"
+        tools:text="Be solo, be safe!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_confirm"
+        android:text="@string/okay"
+        android:textAllCaps="true"
+        android:fontFamily="@font/poppins_semibold"
+        android:background="@drawable/bg_button"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="@dimen/app_padding"
+        android:paddingEnd="@dimen/app_padding"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:text="@string/cancel"
+        android:fontFamily="@font/poppins"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="@dimen/app_padding"
+        android:paddingEnd="@dimen/app_padding"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

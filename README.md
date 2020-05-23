@@ -1,24 +1,38 @@
-(Primary work is being done on `dev` branch, now deprecated. Further work will continue on `dev-v2` branch)
+# Welcome to Solocoin!
 
-# SoloCoin
-Welcome to The SoloCoin, it's great to have you here! We thank you in advance for your contributions.
-SoloCoin gamifies the act of social-distancing by rewarding users in points and badges for staying at home and away from people.
+The SoloCoin, it's great to have you here! We thank you in advance for your contributions. SoloCoin gamifies the act of social-distancing by rewarding users in points and badges for staying at home and away from people.
 
-# Contributing (Remember Read this 1st before you ask anything)
+Initial development is started on `dev` branch after releasing beta version. Further development is going on `dev-v2` branch. MVVM architecture is used for structuring `dev-v2` branch with Kotlin and Koin integration for dependency injection.
 
-Discord link : https://www.guilded.gg/i/wEwlNMd2
-Participate : Ask @arbob to add you in as a collaborators
+## Project structure
 
-FAQ: HOW DO I START??
-Answer:
+```
+app.solocoin.solocoin    	# Root Package
+    .
+    ├── app 				# For app level classes
+    ├── repo                # Repository to handle data from network using API.
+    ├── model               # Model classes
+    ├── di                  # Dependency Injection     
+    |
+    ├── ui                  # Activity/View layer  
+    |
+    ├── utils               # Utility Classes / Kotlin extensions
+    └── worker              # Worker class.
+```
 
-1. Make sure to discuss your ideas with the community in an Project board or on the Discord channel.
-2. Take a look on the Project board, create the issue for the task you think is need to be done and label it according to "UI" or "Features", "Bug" etc, then assign to yourself.
-3. If you have too much to work on an issue you can label it as "help-wanted", so people can work on that item with you.
-4. Before starting to write code, make sure to pull from DEV branch. So you can have a latest build of application.
-   Then create a new branch according to your task that you are working on, for example mark_your_location branch.
-5. If you are at this point, you really want to do or you did some great work. After task completion create a pull request from your to DEV. So other developers can review your code and then merge to DEV.
+## Libraries used
+- [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
+- [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) - For asynchronous and more..
+- [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) - A cold asynchronous data stream that sequentially emits values and completes normally or with an exception.
+- [Android Architecture Components](https://developer.android.com/topic/libraries/architecture) - Collection of libraries that help you design robust, testable, and maintainable apps.
+  - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) - Data objects that notify views when the underlying database changes.
+  - [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) - Stores UI-related data that isn't destroyed on UI changes. 
+  - [ViewBinding](https://developer.android.com/topic/libraries/view-binding) - Generates a binding class for each XML layout file present in that module and allows you to more easily write code that interacts with views.
+- [Koin](https://start.insert-koin.io/) - Dependency Injection Framework (Kotlin)
+- [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android and Java.
+- [Gson](https://github.com/google/gson) - A modern JSON library for Kotlin and Java.
+- [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - The WorkManager API makes it easy to schedule deferrable, asynchronous tasks that are expected to run even if the app exits or device restarts.
+- [Material Components for Android](https://github.com/material-components/material-components-android) - Modular and customizable Material Design UI components for Android
 
-# Note (Look at this video,if you absolutely no idea about github project!!)
-
-If you are new Github project boards, just check out this video (https://www.youtube.com/watch?v=ff5cBkPg-bQ),a short tutorial about GitHub project boards
+## Contribution
+Connect on [Discord](https://discord.gg/9Cegpv), ask @arbob to get started with contribution

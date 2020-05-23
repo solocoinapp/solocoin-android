@@ -1,0 +1,4 @@
+/build
+/google-services.json
+/src/main/res/values/keys.xml
+/src/main/java/app/solocoin/solocoin/util/ParceableUtils.kt
