@@ -13,6 +13,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
+import com.squareup.picasso.Picasso
 import java.util.*
 
 /**
@@ -61,21 +62,20 @@ class RewardDetailsAdapter(
             reward?.let {
                 updateImage(it)
                 coinsAmt?.text = it.costCoins
-                extraTnc?.text = it.offerExtraDetails
+                extraTnc?.text = it.offerDetails
                 offerName?.text = it.offerName
                 updateOfferDetails(it)
             }
         }
 
         private fun updateImage(reward: Reward) {
-            //TODO: add code to update image from api or download the image
-            offerImage1?.setImageResource(R.drawable.reward)
-            offerImage2?.setImageResource(R.drawable.app_icon)
+            Picasso.get().load(reward.offerImageUrl).into(offerImage1)
+            Picasso.get().load(reward.companyLogoUrl).into(offerImage2)
         }
 
         private fun updateOfferDetails(reward: Reward) {
             reward.offerDetails.let {
-                it.forEach { x ->
+                it?.forEach { x ->
                     val offerDetails = TextView(tnc?.context).apply {
                         text = x.toString()
                         setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))

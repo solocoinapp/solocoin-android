@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.solocoin.solocoin.R
@@ -29,7 +30,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class WalletFragment : Fragment() {
 
     private lateinit var mAdapter: RewardsAdapter
+    private lateinit var mScratchTicketsAdapter: ScratchDetailsAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var scratchRecyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var balanceTextView: TextView
     private lateinit var context: Activity
@@ -41,7 +44,7 @@ class WalletFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        context = activity!!
+        context = requireActivity()
         return inflater.inflate(R.layout.fragment_wallet, container, false)
     }
 
@@ -49,9 +52,12 @@ class WalletFragment : Fragment() {
 
         balanceTextView = view.findViewById(R.id.tv_coins_count)
         recyclerView = view.findViewById(R.id.rewards_recycler_view)
+        scratchRecyclerView = view.findViewById(R.id.scratch_ticket_recycler_view)
+
         swipeRefreshLayout = view.findViewById(R.id.wallet_sl)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
+        scratchRecyclerView.layoutManager = GridLayoutManager(context)
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
         swipeRefreshLayout.setOnRefreshListener {
             updateWallet()
@@ -64,7 +70,7 @@ class WalletFragment : Fragment() {
     }
 
     private fun updateWallet() {
-        viewModel.userData().observe(this, Observer { response ->
+        viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
             Log.d(TAG, "$response")
             when (response.status) {
                 Status.SUCCESS -> {
@@ -84,18 +90,17 @@ class WalletFragment : Fragment() {
     }
 
     private fun updateRewards() {
-        val offerDetails = ArrayList<String?>().apply {
-            for (i in 0..14) {
-                add("\u2022 Reward Detail " + (i + 1) + ".")
-            }
-        }
+
         val dummy = Reward(
             "YouTube Premium Subscription for 6 Months",
             "1000",
             "200 Coins",
-            offerDetails,
             "** Reward is valid for only Premium User",
-            "Solocoin"
+            "Solocoin",
+            "Solocoin",
+            null,
+            null,
+            null
         )
         ArrayList<Reward>().let {
             it.add(dummy)
@@ -107,6 +112,25 @@ class WalletFragment : Fragment() {
             mAdapter = RewardsAdapter(context, it)
         }
         recyclerView.adapter = mAdapter
+    }
+
+    private fun updateScratch() {
+
+        val dummy = Reward(
+            "50 rupees",
+            "100 rupees",
+            null
+        )
+        ArrayList<Reward>().let {
+            it.add(dummy)
+            it.add(dummy)
+            it.add(dummy)
+            it.add(dummy)
+            it.add(dummy)
+            it.add(dummy)
+            mScratchTicketsAdapter = ScratchDetailsAdapter(context, it)
+        }
+        scratchRecyclerView.adapter = mScratchTicketsAdapter
     }
 
     companion object {
