@@ -89,4 +89,7 @@
     <string name="available_sunday_msg">The quiz will be available on next Sunday</string>
     <string name="device_time_incorrect_msg">Your phone date or time is inaccurate! \nAdjust your clock and try again</string>
     <string name="quiz_unavailable_msg">The quiz is currently unavailable, please try again after sometime</string>
+
+    <string name="share_earn_text1">Invite your friends and Earn SoloCoins</string>
+    <string name="share_earn_text2">Each Invite will earn you 50 coins</string>
 </resources>

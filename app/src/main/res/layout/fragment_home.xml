@@ -115,6 +115,73 @@
                     android:layout_marginBottom="12dp"/>
 
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Share &amp; Earn"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/colorAccent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/share_earn_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeColor="@color/orange_stroke_color"
+                app:strokeWidth="3dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/share_earn_text1"
+                            android:textSize="15sp"
+                            android:textColor="@color/blue"
+                            android:fontFamily="@font/poppins_semibold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/share_earn_text2"
+                            android:textSize="15sp"
+                            android:textColor="@color/pink_dark"
+                            android:fontFamily="@font/poppins_semibold" />
+                    </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/shape_circle"
+                            android:text="50"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textSize="20sp"
+                            android:padding="15dp"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:layout_gravity="center_vertical|end" />
+
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
     </FrameLayout>
