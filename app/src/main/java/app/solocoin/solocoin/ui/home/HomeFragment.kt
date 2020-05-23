@@ -9,15 +9,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi

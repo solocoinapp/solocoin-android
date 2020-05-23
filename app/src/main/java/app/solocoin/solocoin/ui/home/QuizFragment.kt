@@ -139,13 +139,18 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener{
     }
 
     private fun getDailyQuizQuestion() {
-        quiz_error_msg.visibility = View.GONE
-        quiz_container.visibility = View.VISIBLE
+        quiz_container.visibility = View.GONE
+        quiz_message.visibility = View.GONE
+        quiz_placeholder.visibility = View.VISIBLE
         viewModel.getDailyQuiz().observe(this, Observer {
             it?.let { resource ->
                 when (resource.status){
                     Status.SUCCESS -> {
                         if (resource.code == 200) {
+                            quiz_placeholder.visibility = View.GONE
+                            quiz_message.visibility = View.GONE
+                            quiz_container.visibility = View.VISIBLE
+
                             answers = resource.data!!.getAsJsonArray("answers")
                             question_id = resource.data.get("id").asInt
                             question_textview.text = resource.data.get("name").toString()
@@ -173,13 +178,18 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener{
     }
 
     private fun getWeeklyQuizQuestion() {
-        quiz_error_msg.visibility = View.GONE
-        quiz_container.visibility = View.VISIBLE
+        quiz_message.visibility = View.GONE
+        quiz_container.visibility = View.GONE
+        quiz_placeholder.visibility = View.VISIBLE
         viewModel.getWeeklyQuiz().observe(this, Observer {
             it?.let { resource ->
                 when (resource.status){
                     Status.SUCCESS -> {
                         if (resource.code == 200) {
+                            quiz_placeholder.visibility = View.GONE
+                            quiz_message.visibility = View.GONE
+                            quiz_container.visibility = View.VISIBLE
+
                             answers = resource.data!!.getAsJsonArray("answers")
                             question_id = resource.data.get("id").asInt
                             question_textview.text = resource.data.get("name").toString()
@@ -210,6 +220,10 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener{
         val body = JsonObject()
         body.addProperty("question_id", question_id)
         body.addProperty("answer_id", answers[optionId].asJsonObject.get("id").asInt)
+        quiz_container.visibility = View.GONE
+        quiz_message.visibility = View.GONE
+        quiz_placeholder.visibility = View.VISIBLE
+
         viewModel.submitQuizAnswer(body).observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {
@@ -228,9 +242,10 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener{
                             showFallbackText(NOCONNECTIVITY_EXCEPTION)
 
                         } else {
-                            quiz_error_msg.visibility = View.VISIBLE
+                            quiz_placeholder.visibility = View.GONE
                             quiz_container.visibility = View.GONE
-                            quiz_error_text.text = getString(R.string.error_msg)
+                            quiz_message.visibility = View.VISIBLE
+                            quiz_message_text.text = getString(R.string.error_msg)
                         }
                     }
 
@@ -241,23 +256,25 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener{
     }
 
     private fun showFallbackText(category: Int) {
-        quiz_error_msg.visibility = View.VISIBLE
+        quiz_placeholder.visibility = View.GONE
         quiz_container.visibility = View.GONE
+        quiz_message.visibility = View.VISIBLE
+
         when(category) {
-            NOCONNECTIVITY_EXCEPTION -> quiz_error_text.text = getString(R.string.noconnectivity_error_msg)
+            NOCONNECTIVITY_EXCEPTION -> quiz_message_text.text = getString(R.string.noconnectivity_error_msg)
 
             AFTER_TWO_HOURS -> {
                 val millisecLeft = TWO_HOURS - abs(sharedPrefs!!.dailyQuizTime - Calendar.getInstance().timeInMillis)
                 val minsLeft = ((millisecLeft/60000)%60).toInt()
                 val hrsLeft = (millisecLeft/3600000).toInt()
-                quiz_error_text.text = String.format(getString(R.string.after_two_hours_msg), hrsLeft, minsLeft)
+                quiz_message_text.text = String.format(getString(R.string.after_two_hours_msg), hrsLeft, minsLeft)
             }
 
-            DEVICE_TIME_INCORRECT -> quiz_error_text.text = getString(R.string.device_time_incorrect_msg)
+            DEVICE_TIME_INCORRECT -> quiz_message_text.text = getString(R.string.device_time_incorrect_msg)
 
-            AVAILABLE_SUNDAY -> quiz_error_text.text = getString(R.string.available_sunday_msg)
+            AVAILABLE_SUNDAY -> quiz_message_text.text = getString(R.string.available_sunday_msg)
 
-            QUIZ_UNAVAILABLE -> quiz_error_text.text = getString(R.string.quiz_unavailable_msg)
+            QUIZ_UNAVAILABLE -> quiz_message_text.text = getString(R.string.quiz_unavailable_msg)
         }
     }
 
