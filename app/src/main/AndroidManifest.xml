@@ -12,23 +12,23 @@
     <application
         android:name=".app.SolocoinApp"
         android:allowBackup="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
 
         <receiver
             android:name=".NotificationAlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" /> <!-- auth-stack -->
         <activity
-            android:name=".ui.home.RewardDetailsActivity"
+            android:name=".ui.home.RewardRedeemActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
@@ -49,6 +49,7 @@
             android:name=".ui.auth.CreateProfileActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+        <activity android:name=".ui.home.ShareBadgeActivity" />
 
         <service android:name=".services.FusedLocationService" />
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="@dimen/app_padding"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -85,30 +86,70 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="24dp"
         android:background="@color/colorAccent"
-        android:orientation="vertical"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/level_info_tv_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="18dp"
-            android:fontFamily="@font/poppins"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_semibold"
             android:text="@string/level_info_tv_1"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <ProgressBar
             android:id="@+id/level_pb"
             style="@style/ProgressBarTheme"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="26dp"
             android:layout_gravity="center"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="24dp"
-            android:progress="38" />
+            android:layout_marginTop="8dp"
+            android:progress="56" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/level_front"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:text="@string/level_first"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/level_mid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/level_first"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/level_rear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:text="@string/level_first"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -124,28 +165,31 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="24dp"
+        android:backgroundTint="#2E3E77"
         android:layout_marginBottom="24dp"
-        android:alpha="0.8"
-        app:cardBackgroundColor="@color/colorPrimary"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
         android:dividerHeight="0.0px"
         app:cardCornerRadius="8dp"
-        app:cardElevation="8dp"
+        app:cardElevation="10dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true">
 
-        <!-- TODO: Leaderboard section -->
+        <ImageView
+            android:id="@+id/rank_card"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/rank_card_blur" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
             android:fontFamily="@font/poppins"
             android:text="@string/coming_soon"
+            android:layout_gravity="center"
             android:textColor="@color/colorAccent"
             android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
@@ -162,11 +206,10 @@
     <GridLayout
         android:id="@+id/badges_gl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="match_parent"
+        android:useDefaultMargins="true"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:useDefaultMargins="true"
         android:columnCount="2"
         android:rowCount="1" />
 

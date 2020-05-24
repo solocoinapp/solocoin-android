@@ -15,7 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.model.Reward
-import app.solocoin.solocoin.ui.adapter.RewardsAdapter
+import app.solocoin.solocoin.ui.adapter.RewardsListAdapter
 import app.solocoin.solocoin.util.enums.Status
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -28,7 +28,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 @ExperimentalCoroutinesApi
 class WalletFragment : Fragment() {
 
-    private lateinit var mAdapter: RewardsAdapter
+    private lateinit var mListAdapter: RewardsListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var balanceTextView: TextView
@@ -41,7 +41,7 @@ class WalletFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        context = activity!!
+        context = requireActivity()
         return inflater.inflate(R.layout.fragment_wallet, container, false)
     }
 
@@ -64,7 +64,7 @@ class WalletFragment : Fragment() {
     }
 
     private fun updateWallet() {
-        viewModel.userData().observe(this, Observer { response ->
+        viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
             Log.d(TAG, "$response")
             when (response.status) {
                 Status.SUCCESS -> {
@@ -85,8 +85,8 @@ class WalletFragment : Fragment() {
 
     private fun updateRewards() {
         val offerDetails = ArrayList<String?>().apply {
-            for (i in 0..14) {
-                add("\u2022 Reward Detail " + (i + 1) + ".")
+            for (i in 0..20) {
+                add("\u2022 Reward Detail ${i + 1}. : abcdefghijk")
             }
         }
         val dummy = Reward(
@@ -104,9 +104,9 @@ class WalletFragment : Fragment() {
             it.add(dummy)
             it.add(dummy)
             it.add(dummy)
-            mAdapter = RewardsAdapter(context, it)
+            mListAdapter = RewardsListAdapter(context, it)
         }
-        recyclerView.adapter = mAdapter
+        recyclerView.adapter = mListAdapter
     }
 
     companion object {

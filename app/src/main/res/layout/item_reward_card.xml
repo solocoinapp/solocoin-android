@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/offer_card"
+    android:id="@+id/reward_cv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clipChildren="false"
@@ -9,16 +9,14 @@
     android:divider="@android:color/transparent"
     android:dividerHeight="0.0px"
     app:cardCornerRadius="8dp"
-    app:cardUseCompatPadding="true"
     app:cardElevation="10dp"
-    app:cardPreventCornerOverlap="false">
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="12dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_margin="12dp">
 
         <TextView
             android:id="@+id/company_name"
@@ -49,7 +47,6 @@
             android:layout_below="@id/company_logo"
             android:layout_centerHorizontal="true"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,7 +55,6 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
             <TextView
                 android:id="@+id/cost_rupees"
                 android:layout_width="wrap_content"
@@ -69,7 +65,6 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
         <TextView

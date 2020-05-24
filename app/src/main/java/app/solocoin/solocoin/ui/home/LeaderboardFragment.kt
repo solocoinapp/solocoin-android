@@ -37,7 +37,7 @@ class LeaderboardFragment : Fragment() {
     private val viewModel: LeaderboardFragmentViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        context = activity!!
+        context = requireActivity()
         return inflater.inflate(R.layout.fragment_leaderboard, container, false)
     }
 
@@ -66,18 +66,16 @@ class LeaderboardFragment : Fragment() {
     }
 
     private fun updateWallet() {
-        viewModel.userData().observe(this, Observer { response ->
+        viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
             Log.d(TAG, "$response")
             when (response.status) {
                 Status.SUCCESS -> {
                     val balance = response.data?.get("wallet_balance")?.asString
                     SolocoinApp.sharedPrefs?.walletBalance = balance
                     Leaderboard.balance = balance
-                    mAdapter.notifyDataSetChanged()
                 }
                 Status.ERROR -> {
                     Leaderboard.balance = SolocoinApp.sharedPrefs?.walletBalance
-                    mAdapter.notifyDataSetChanged()
                 }
                 Status.LOADING -> {
                 }
@@ -99,7 +97,6 @@ class LeaderboardFragment : Fragment() {
             add(Badge(null, "Commander", "Level 5", true))
         }
         Leaderboard.badges = badges
-        mAdapter.notifyDataSetChanged()
     }
 
     companion object {
