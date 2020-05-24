@@ -1,16 +1,20 @@
 package app.solocoin.solocoin.ui.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.GridLayout
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Leaderboard
+import app.solocoin.solocoin.ui.home.ShareBadgeActivity
 import com.squareup.picasso.Picasso
-
 
 /**
  * Created by Saurav Gupta on 22/05/2020
@@ -61,6 +65,7 @@ class LeaderboardAdapter(
             var col = 0
             var row = 0
             leaderboard.badges!!.forEach {
+                it!!
                 if (col == 2) {
                     col = 0
                     row++
@@ -74,19 +79,27 @@ class LeaderboardAdapter(
                 }
                 val badgeCv = LayoutInflater.from(badgesGridL!!.context)
                     .inflate(R.layout.item_badge_card, badgesGridL!!, false).apply {
+
                         findViewById<TextView>(R.id.badge_name).apply {
-                            text = it!!.name
+                            text = it.name!!
                         }
                         findViewById<TextView>(R.id.badge_level).apply {
-                            text = it!!.level
+                            text = it.level!!
                         }
                         findViewById<ImageView>(R.id.badge_iv).apply {
-                            if (it?.imageUrl != null) {
-                                Picasso.get().load(it.imageUrl).into(this)
+                            try {
+                                Picasso.get().load(it.imageUrl!!).into(this)
+                            } catch (e: Exception) {
+                                // TODO: In case unable to fetch image using internet
                             }
                         }
-                        setOnClickListener {
-                            Toast.makeText(context, "Congratulation!!", Toast.LENGTH_LONG).show()
+                        setOnClickListener { _ ->
+                            val intent = Intent(
+                                context,
+                                ShareBadgeActivity::class.java
+                            )
+                            intent.putExtra("EXTRA_INFO", it)
+                            context.startActivity(intent)
                         }
                         layoutParams = param
                     }

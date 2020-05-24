@@ -11,7 +11,7 @@ data class Reward(
     var offerName: String?,
     var costRupees: String?,
     var costCoins: String?,
-    var offerDetails: ArrayList<String?>,
+    var rewardDetails: ArrayList<String?>,
     var offerExtraDetails: String?,
     var companyName: String?
 ) : Parcelable

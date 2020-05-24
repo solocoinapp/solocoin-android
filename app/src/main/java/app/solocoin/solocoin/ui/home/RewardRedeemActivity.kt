@@ -9,22 +9,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
-import app.solocoin.solocoin.ui.adapter.RewardDetailsAdapter
+import app.solocoin.solocoin.ui.adapter.RewardRedeemAdapter
 import java.util.*
 
 /**
  * Created by Saurav Gupta on 14/5/2020
  */
-class RewardDetailsActivity : AppCompatActivity() {
+class RewardRedeemActivity : AppCompatActivity() {
 
-    private lateinit var context: RewardDetailsActivity
+    private lateinit var context: RewardRedeemActivity
     private lateinit var recyclerView: RecyclerView
-    private lateinit var mAdapter: RewardDetailsAdapter
+    private lateinit var mAdapter: RewardRedeemAdapter
     private lateinit var rewardArrayList: ArrayList<Reward?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_reward_details)
+        setContentView(R.layout.activity_reward_redeem)
         context = this
 
         rewardArrayList = ArrayList()
@@ -33,7 +33,7 @@ class RewardDetailsActivity : AppCompatActivity() {
         )
 
         recyclerView = findViewById(R.id.offer_recycler_view)
-        mAdapter = RewardDetailsAdapter(context, rewardArrayList)
+        mAdapter = RewardRedeemAdapter(context, rewardArrayList)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = mAdapter

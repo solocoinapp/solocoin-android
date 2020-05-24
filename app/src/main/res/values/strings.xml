@@ -111,5 +111,10 @@
     <string name="badge_icon">Badge Icon</string>
     <string name="badge_name">Common Man</string>
     <string name="badge_level">Level 1</string>
+    <string name="level_first">Level 1</string>
+    <string name="share">Share</string>
+    <string name="country">IND</string>
+    <string name="username">You</string>
+    <string name="user_rank">#12345</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package app.solocoin.solocoin.ui.adapter
 
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +10,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
+import app.solocoin.solocoin.ui.home.RewardRedeemActivity
 import java.util.*
 
 /**
  * Created by Saurav Gupta on 14/5/2020
  */
-class RewardsAdapter(
+class RewardsListAdapter(
     private val context: Activity,
     private val rewardsArrayList: ArrayList<Reward>
 ) :
-    RecyclerView.Adapter<RewardsAdapter.ViewHolder>() {
+    RecyclerView.Adapter<RewardsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -62,9 +64,9 @@ class RewardsAdapter(
                 costRupees?.text = it.costRupees
                 mListener = object : RecyclerViewClickListener {
                     override fun onClick(view: View?, position: Int) {
-                        val intent = android.content.Intent(
+                        val intent = Intent(
                             context,
-                            app.solocoin.solocoin.ui.home.RewardDetailsActivity::class.java
+                            RewardRedeemActivity::class.java
                         )
                         intent.putExtra("EXTRA_INFO", it)
                         context.startActivity(intent)
