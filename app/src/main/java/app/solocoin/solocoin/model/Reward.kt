@@ -11,9 +11,9 @@ data class Reward(
     var offerName: String?,
     var costRupees: String?,
     var costCoins: String?,
-    var offerTermsAndConditions: String?,
-//    var offerDetails: ArrayList<String?>,
-    var offerDetails: String?,
+//    var offerTermsAndConditions: String?,
+    var offerDetails: ArrayList<String?>,
+    var offerExtraDetails: String?,
     var companyName: String?,
     var couponCode: String?,
     var companyLogoUrl: String?

@@ -75,7 +75,11 @@ class RewardsAdapter(
         }
 
         private fun updateImage(reward: Reward) {
-            Picasso.get().load(reward.companyLogoUrl).into(companyLogo)
+            try {
+                Picasso.get().load(reward.companyLogoUrl!!).into(companyLogo)
+            } catch (e: Exception){
+
+            }
         }
     }
 

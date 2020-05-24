@@ -1,8 +1,8 @@
 package app.solocoin.solocoin.ui.home
 
-import android.app.AlarmManager
-import android.app.Notification
-import android.app.PendingIntent
+
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -21,17 +21,6 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-import androidx.core.content.ContextCompat.getSystemService
-
-import android.os.SystemClock
-
-import android.content.Intent
-
-import android.R.attr.fragment
-import android.app.*
-import androidx.core.content.ContextCompat
-import app.solocoin.solocoin.NotificationAlarmReceiver
-
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
@@ -49,9 +38,9 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.selectedItemId = R.id.nav_home
 
         // TODO : Setup permission request for Fused Location service properly
-       checkPermissionForLocation()
-       viewModel.startSessionPingManager()
-       alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        checkPermissionForLocation()
+        viewModel.startSessionPingManager()
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
 
         createNotificationChannel()
@@ -76,7 +65,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun scheduleNotification(delay: Int, info: String) {
         val notification: Notification? = getNotification(info)
-        val notificationIntent = Intent(this,  NotificationAlarmReceiver::class.java)
+        val notificationIntent = Intent(this, NotificationAlarmReceiver::class.java)
         notificationIntent.putExtra("notification-id", 1)
         notificationIntent.putExtra("notification", notification)
         val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
@@ -99,31 +88,32 @@ class HomeActivity : AppCompatActivity() {
         return builder.build()
     }
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.nav_home -> {
-                toolbar.title = getString(R.string.home)
-                openFragment(HomeFragment.instance())
-                return@OnNavigationItemSelectedListener true
+    private val mOnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    toolbar.title = getString(R.string.home)
+                    openFragment(HomeFragment.instance())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.nav_wallet -> {
+                    toolbar.title = getString(R.string.wallet)
+                    openFragment(WalletFragment.instance())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.nav_leaderboard -> {
+                    toolbar.title = getString(R.string.leaderboard)
+                    openFragment(LeaderboardFragment.instance())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.nav_profile -> {
+                    toolbar.title = getString(R.string.profile)
+                    openFragment(ProfileFragment.instance())
+                    return@OnNavigationItemSelectedListener true
+                }
             }
-            R.id.nav_wallet -> {
-                toolbar.title = getString(R.string.wallet)
-                openFragment(WalletFragment.instance())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_leaderboard -> {
-                toolbar.title = getString(R.string.leaderboard)
-                openFragment(LeaderboardFragment.instance())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_profile -> {
-                toolbar.title = getString(R.string.profile)
-                openFragment(ProfileFragment.instance())
-                return@OnNavigationItemSelectedListener true
-            }
+            false
         }
-        false
-    }
 
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -131,19 +121,34 @@ class HomeActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-    private fun checkPermissionForLocation(){
+    private fun checkPermissionForLocation() {
 
         var permissionsArray = arrayOf<String>()
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            permissionsArray = permissionsArray.plus(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        )
+            permissionsArray =
+                permissionsArray.plus(android.Manifest.permission.ACCESS_FINE_LOCATION)
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            permissionsArray = permissionsArray.plus(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        )
+            permissionsArray =
+                permissionsArray.plus(android.Manifest.permission.ACCESS_COARSE_LOCATION)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            permissionsArray = permissionsArray.plus(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            )
+                permissionsArray =
+                    permissionsArray.plus(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
         }
 
         when (permissionsArray.count()) {
@@ -156,7 +161,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun startFusedLocationService(){
+    private fun startFusedLocationService() {
         Log.wtf(TAG, "Starting the fused location service.")
         val intent = Intent(this, FusedLocationService::class.java)
         applicationScope.launch {

@@ -41,7 +41,7 @@ class WalletFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        context = activity!!
+        context = requireActivity()
         return inflater.inflate(R.layout.fragment_wallet, container, false)
     }
 
@@ -64,7 +64,7 @@ class WalletFragment : Fragment() {
     }
 
     private fun updateWallet() {
-        viewModel.userData().observe(this, Observer { response ->
+        viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
             Log.d(TAG, "$response")
             when (response.status) {
                 Status.SUCCESS -> {
@@ -95,7 +95,9 @@ class WalletFragment : Fragment() {
             "200 Coins",
             offerDetails,
             "** Reward is valid for only Premium User",
-            "Solocoin"
+            "Solocoin",
+            "hdsah29374",
+            ""
         )
         ArrayList<Reward>().let {
             it.add(dummy)
