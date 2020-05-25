@@ -1,10 +1,16 @@
 package app.solocoin.solocoin.worker
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.model.SessionPingRequest
 import app.solocoin.solocoin.repo.SolocoinRepository
@@ -76,6 +82,24 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 result = Result.failure()
+                // Create an explicit intent for an Activity in your app
+                val intent = Intent(applicationContext, HomeActivity::class.java)
+                val pendingIntent: PendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+
+                val builder = NotificationCompat.Builder(applicationContext, "1")
+                    .setSmallIcon(R.drawable.app_icon)
+                    .setContentTitle("Important Update")
+                    .setContentText("Your network request was unable to be processed. Please check Internet settings.")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    // Set the intent that will fire when the user taps the notification
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+
+                with(NotificationManagerCompat.from(applicationContext)) {
+                    // notificationId is a unique int for each notification that you must define
+                    notify(1, builder.build())
+                }
+
             }
         })
         return result!!
