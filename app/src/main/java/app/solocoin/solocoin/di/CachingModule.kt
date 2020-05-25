@@ -1,6 +1,7 @@
 package app.solocoin.solocoin.di
 
 import android.content.Context
+import android.util.Log
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -18,6 +19,8 @@ import java.util.concurrent.TimeUnit
  * Still that case is taken into consideration.
  */
 object CachingModule : Interceptor {
+
+    private val TAG = CachingModule::class.simpleName
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
@@ -48,9 +51,14 @@ object CachingModule : Interceptor {
 
     private const val DISK_CACHE_SIZE: Long = 15 * 1024 * 1024  // 10 MB cache allotted for app
     val mCache = { context: Context ->
-        Cache(
-            File(context.cacheDir, "http-cache"),
-            DISK_CACHE_SIZE
-        )
+        try {
+            Cache(
+                File(context.cacheDir, "http-cache"),
+                DISK_CACHE_SIZE
+            )
+        } catch (e: Exception) {
+            Log.wtf(TAG, "Unable to create cache!")
+            null
+        }
     }
 }
