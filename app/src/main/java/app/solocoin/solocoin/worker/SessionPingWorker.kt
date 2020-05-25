@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -15,12 +14,11 @@ import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.model.SessionPingRequest
 import app.solocoin.solocoin.repo.SolocoinRepository
-import app.solocoin.solocoin.ui.home.HomeActivity
+import app.solocoin.solocoin.services.FusedLocationService
 import app.solocoin.solocoin.util.GlobalUtils
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import retrofit2.Call
@@ -46,6 +44,15 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 
         Log.wtf(TAG, "Initiating the work")
 
+        /*
+         * Checking if fused location service is running.
+         * If running then ok else restart service.
+         */
+        statusFusedLocationService()
+
+        /*
+         * Pinging the session type to backend
+         */
         val sessionType: String? = GlobalUtils.getSessionType(applicationContext)
         sessionType?.let {
             val body: JsonObject =
@@ -98,8 +105,28 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
         return result!!
     }
 
+    private fun statusFusedLocationService() {
+
+        Log.wtf(TAG, "Checking fused location service is running or not.")
+
+        if (!FusedLocationService.isRunning) {
+            Log.wtf(TAG, "Starting the fused location service.")
+            val intent = Intent().apply {
+                setClass(applicationContext, FusedLocationService::class.java)
+                action = FusedLocationService::class.simpleName
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+            }
+            applicationScope.launch {
+                applicationContext.startService(intent)
+            }
+        } else {
+            Log.wtf(TAG, "Fused location service already running")
+        }
+    }
+
     companion object {
         private val TAG: String? = SessionPingWorker::class.simpleName
         private val API_CALL: String = SessionPingWorker::class.simpleName + " API_CALL"
+        private val applicationScope = CoroutineScope(Dispatchers.Default)
     }
 }

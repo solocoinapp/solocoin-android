@@ -59,9 +59,9 @@ class RewardsListAdapter(
         fun bindRewards(context: Activity, reward: Reward) {
             reward.let {
                 updateImage(it)
-                companyName?.text = it.companyName
-                costCoins?.text = it.costCoins
-                costRupees?.text = it.costRupees
+                companyName?.text = it.companyName!!
+                costCoins?.text = it.costCoins!!
+                costRupees?.text = it.costRupees!!
                 mListener = object : RecyclerViewClickListener {
                     override fun onClick(view: View?, position: Int) {
                         val intent = Intent(
