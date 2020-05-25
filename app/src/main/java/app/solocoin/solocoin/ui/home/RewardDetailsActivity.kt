@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.ui.adapter.RewardDetailsAdapter
+import kotlinx.coroutines.InternalCoroutinesApi
 import java.util.*
 
 /**
@@ -22,6 +24,7 @@ class RewardDetailsActivity : AppCompatActivity() {
     private lateinit var mAdapter: RewardDetailsAdapter
     private lateinit var rewardArrayList: ArrayList<Reward?>
 
+    @InternalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reward_details)
@@ -31,6 +34,8 @@ class RewardDetailsActivity : AppCompatActivity() {
         rewardArrayList.add(
             intent.extras?.getParcelable("EXTRA_INFO")
         )
+
+        var r = intent.extras?.getParcelable("EXTRA_INFO") as Reward?
 
         recyclerView = findViewById(R.id.offer_recycler_view)
         mAdapter = RewardDetailsAdapter(context, rewardArrayList)
@@ -45,6 +50,9 @@ class RewardDetailsActivity : AppCompatActivity() {
                 "You have claimed the offer.",
                 Toast.LENGTH_LONG
             ).show()
+            var intent = Intent(this, RedeemCodeActivity::class.java)
+            intent.putExtra("code", r?.couponCode);
+            startActivity(intent)
         }
 
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.profile_toolbar)
