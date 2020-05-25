@@ -17,11 +17,21 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-class FusedLocationService: Service() {
+object FusedLocationService : Service() {
+
+    private val TAG = FusedLocationService::class.simpleName
 
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private lateinit var mLocation: Location
     private lateinit var mLocationRequest: LocationRequest
+
+    /*
+     * To handle case when service is already running
+     * @ref : https://stackoverflow.com/questions/600207/how-to-check-if-a-service-is-running-on-android
+     */
+    @JvmStatic
+    var isRunning: Boolean = false
+
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
@@ -47,6 +57,7 @@ class FusedLocationService: Service() {
     private val mLocationListener = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
+            isRunning = true
             locationResult?.let {
                 mLocation = it.lastLocation
                 updateSharedPrefs(mLocation)
@@ -76,9 +87,5 @@ class FusedLocationService: Service() {
                 it.userLong = location.longitude.toString()
             }
         }
-    }
-
-    companion object {
-        private val TAG = FusedLocationService::class.simpleName
     }
 }

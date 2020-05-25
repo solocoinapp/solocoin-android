@@ -130,10 +130,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startFusedLocationService(){
-        Log.wtf(TAG, "Starting the fused location service.")
-        val intent = Intent(this, FusedLocationService::class.java)
-        applicationScope.launch {
-            startService(intent)
+        if (!FusedLocationService.isRunning) {
+            Log.wtf(TAG, "Starting the fused location service.")
+            val intent = Intent(this, FusedLocationService::class.java)
+            applicationScope.launch {
+                startService(intent)
+            }
+        } else {
+            Log.wtf(TAG, "Fused location service already running")
         }
     }
 
