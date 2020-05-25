@@ -16,5 +16,6 @@ data class Reward(
     var offerDetails: String?,
     var companyName: String?,
     var couponCode: String?,
-    var companyLogoUrl: String?
+    var companyLogoUrl: String?,
+    var offerImageUrl: String?
 ) : Parcelable
