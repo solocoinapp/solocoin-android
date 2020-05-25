@@ -34,15 +34,17 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener{
     private val WEEKLY_QUIZ: Int = 1
     private val CURRENT_QUIZ: Int = position
 
+    private val WEEKLY_QUIZ_QUESTION_LIMIT: Int = 10
+
     private val TWO_HOURS: Long = 7200000
 
     private var IS_DEVICE_TIME_CORRECT = GlobalUtils.verifyDeviceTimeConfig()
 
-    private val NOCONNECTIVITY_EXCEPTION = 11
-    private val AFTER_TWO_HOURS = 12
-    private val DEVICE_TIME_INCORRECT = 13
-    private val AVAILABLE_SUNDAY = 14
-    private val QUIZ_UNAVAILABLE = 15
+    private val NOCONNECTIVITY_EXCEPTION: Int = 11
+    private val AFTER_TWO_HOURS: Int = 12
+    private val DEVICE_TIME_INCORRECT: Int = 13
+    private val AVAILABLE_SUNDAY: Int = 14
+    private val QUIZ_UNAVAILABLE: Int = 15
 
     private val viewModel: QuizViewModel by viewModel()
 
@@ -128,10 +130,17 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener{
         if (IS_DEVICE_TIME_CORRECT) {
 
             if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                getWeeklyQuizQuestion()
+
+                if (sharedPrefs!!.countAnsweredWeeklyQuiz < WEEKLY_QUIZ_QUESTION_LIMIT) {
+                    getWeeklyQuizQuestion()
+
+                } else {
+                    showFallbackText(AVAILABLE_SUNDAY)
+                }
 
             } else {
                 showFallbackText(AVAILABLE_SUNDAY)
+                sharedPrefs!!.countAnsweredWeeklyQuiz = 0
             }
         } else {
            showFallbackText(DEVICE_TIME_INCORRECT)
@@ -233,7 +242,10 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener{
                             sharedPrefs?.dailyQuizTime = Calendar.getInstance().timeInMillis
                             showFallbackText(AFTER_TWO_HOURS)
                         } else if (CURRENT_QUIZ == WEEKLY_QUIZ) {
-                            showFallbackText(AVAILABLE_SUNDAY)
+                            var countAnswered = sharedPrefs!!.countAnsweredWeeklyQuiz
+                            countAnswered += 1
+                            sharedPrefs!!.countAnsweredWeeklyQuiz = countAnswered
+                            getWeeklyQuiz()
                         }
                     }
 

@@ -19,8 +19,6 @@
     <string name="skip">Skip</string>
     <string name="create_account">Create account</string>
 
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">API-KEY</string>
-
     <string name="signup">Signup</string>
     <string name="auth_title1">Mobile number</string>
     <string name="auth_title2">Enter your mobile number\nwe will send you the OTP</string>
