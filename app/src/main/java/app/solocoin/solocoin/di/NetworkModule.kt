@@ -6,7 +6,6 @@ import app.solocoin.solocoin.repo.ApiService
 import app.solocoin.solocoin.repo.NoConnectivityException
 import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.util.GlobalUtils.Companion.isNetworkAvailable
-import app.solocoin.solocoin.util.enums.Status
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import okhttp3.OkHttpClient
@@ -14,7 +13,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -35,6 +33,7 @@ val networkModule = module {
 
 fun getOkHttpClient(context: Context): OkHttpClient {
     return OkHttpClient.Builder()
+        .cache(CachingModule.mCache(context))
         .addInterceptor { chain ->
             val request = chain.request()
             if (isNetworkAvailable(context)) {
@@ -44,5 +43,6 @@ fun getOkHttpClient(context: Context): OkHttpClient {
             }
             chain.proceed(request)
         }
+        .addNetworkInterceptor(CachingModule)
         .build()
 }
