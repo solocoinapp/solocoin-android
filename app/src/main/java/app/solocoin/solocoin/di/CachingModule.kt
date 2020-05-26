@@ -23,7 +23,6 @@ object CachingModule : Interceptor {
     private val TAG = CachingModule::class.simpleName
 
     override fun intercept(chain: Interceptor.Chain): Response {
-
         chain.proceed(chain.request()).apply {
 
             /* Check whether cache control is enable by server or not.
@@ -37,14 +36,12 @@ object CachingModule : Interceptor {
                 responseCC.contains("must-revalidate") ||
                 responseCC.contains("max-stale=0")
             ) {
-
+                Log.d(TAG, "Setting up cache for response")
                 val cacheControl = CacheControl.Builder()
-                    .maxAge(5, TimeUnit.MINUTES)  // Cache Control period is set to 5 minutes
+                    .maxAge(2, TimeUnit.MINUTES)  // Cache Control period is set to 5 minutes
                     .build()
-
                 return newBuilder().header("Cache-Control", cacheControl.toString()).build()
             }
-
             return this
         }
     }

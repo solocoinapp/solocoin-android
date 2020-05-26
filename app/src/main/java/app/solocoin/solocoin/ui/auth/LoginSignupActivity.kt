@@ -198,7 +198,8 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        loadingDialog.show(supportFragmentManager, loadingDialog.tag)
+//        loadingDialog.show(supportFragmentManager, loadingDialog.tag)
+//        supportFragmentManager.executePendingTransactions()
 
         if (mFirebaseAuth.currentUser != null) {
             sharedPrefs?.clearSession()
