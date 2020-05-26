@@ -86,6 +86,7 @@
 
     //rewards + wallet section
     <string name="claim_offer">CLAIM OFFER</string>
+    <string name="claim_error">Sorry, an error occurred. Please contact customer support if this persists.</string>
     <string name="reward_details">Reward Details</string>
     <string name="coins_value">0.0</string>
     <string name="reward_cost_coins">2500 Coins</string>
@@ -116,5 +117,6 @@
     <string name="country">IND</string>
     <string name="username">You</string>
     <string name="user_rank">#12345</string>
+    <string name="your_code">Your Code</string>
 
 </resources>

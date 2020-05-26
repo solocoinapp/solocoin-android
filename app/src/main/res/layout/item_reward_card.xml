@@ -78,6 +78,7 @@
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

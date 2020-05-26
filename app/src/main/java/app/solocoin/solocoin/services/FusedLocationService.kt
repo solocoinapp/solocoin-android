@@ -44,7 +44,6 @@ class FusedLocationService : Service() {
                 fastestInterval = 5 * 60 * 1000
                 priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             }
-            // TODO : check whether Settings for the LocationRequest are available or not
         } catch (e: Exception) {
             GlobalUtils.notifyUser(
                 applicationContext,

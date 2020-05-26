@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.ui.home.RewardRedeemActivity
+import com.squareup.picasso.Picasso
 import java.util.*
 
 /**
@@ -18,7 +19,7 @@ import java.util.*
  */
 class RewardsListAdapter(
     private val context: Activity,
-    private val rewardsArrayList: ArrayList<Reward>
+    private val rewardsArrayList: ArrayList<Reward?>
 ) :
     RecyclerView.Adapter<RewardsListAdapter.ViewHolder>() {
 
@@ -56,10 +57,10 @@ class RewardsListAdapter(
             mListener?.onClick(view, adapterPosition)
         }
 
-        fun bindRewards(context: Activity, reward: Reward) {
+        fun bindRewards(context: Activity, reward: Reward?) {
             reward.let {
                 updateImage(it)
-                companyName?.text = it.companyName!!
+                companyName?.text = it?.companyName!!
                 costCoins?.text = it.costCoins!!
                 costRupees?.text = it.costRupees!!
                 mListener = object : RecyclerViewClickListener {
@@ -75,9 +76,9 @@ class RewardsListAdapter(
             }
         }
 
-        private fun updateImage(reward: Reward) {
-            //TODO: add code to update image from api or download the image
-            companyLogo?.setImageResource(R.drawable.app_icon)
+        // TODO : add sanity check to ignore image not available case
+        private fun updateImage(reward: Reward?) {
+            Picasso.get().load(reward?.companyLogoUrl).into(companyLogo)
         }
     }
 

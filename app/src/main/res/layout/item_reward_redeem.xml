@@ -3,13 +3,14 @@
     android:id="@+id/reward_details_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="?android:actionBarSize"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="?android:actionBarSize">
 
     <RelativeLayout
         android:id="@+id/offer_image_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/reward_image_1"
             android:layout_width="match_parent"
@@ -17,6 +18,7 @@
             android:contentDescription="@string/reward_image_1"
             android:scaleType="centerCrop"
             android:src="@drawable/reward" />
+
         <TextView
             android:id="@+id/extra_tnc"
             android:layout_width="wrap_content"
@@ -45,8 +47,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:contentDescription="@string/reward_image_2"
             android:background="@drawable/grey_border"
+            android:contentDescription="@string/reward_image_2"
             android:padding="1dp"
             android:scaleType="fitCenter"
             android:src="@drawable/app_icon" />
@@ -72,6 +74,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@id/reward_image_2"
             android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/coin_image"
                 android:layout_width="24dp"
@@ -80,6 +83,7 @@
                 android:contentDescription="@string/coins_image"
                 android:scaleType="centerCrop"
                 android:src="@drawable/coin" />
+
             <TextView
                 android:id="@+id/coins_amt"
                 android:layout_width="wrap_content"

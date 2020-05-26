@@ -13,6 +13,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
+import com.squareup.picasso.Picasso
 import java.util.*
 
 /**
@@ -48,6 +49,7 @@ class RewardRedeemAdapter(
 
         init {
             with(itemView) {
+                // TODO: change variable name to add company and reward image
                 rewardImage1 = findViewById(R.id.reward_image_1)
                 rewardImage2 = findViewById(R.id.reward_image_2)
                 extraTnc = findViewById(R.id.extra_tnc)
@@ -61,32 +63,30 @@ class RewardRedeemAdapter(
             reward?.let {
                 updateImage(it)
                 coinsAmt?.text = it.costCoins
-                extraTnc?.text = it.offerExtraDetails
-                rewardName?.text = it.offerName
+                extraTnc?.text = it.rewardDetails
+                rewardName?.text = it.rewardName
                 updateOfferDetails(it)
             }
         }
 
         private fun updateImage(reward: Reward) {
-            //TODO: add code to update image from api or download the image
-            rewardImage1?.setImageResource(R.drawable.reward)
-            rewardImage2?.setImageResource(R.drawable.app_icon)
+            //TODO: add code to handle case when either image is not available
+            Picasso.get().load(reward.rewardImageUrl).into(rewardImage1)
+            Picasso.get().load(reward.companyLogoUrl).into(rewardImage2)
         }
 
         private fun updateOfferDetails(reward: Reward) {
-            reward.rewardDetails.let {
-                it.forEach { x ->
-                    val rewardDetail = TextView(tnc?.context).apply {
-                        text = x.toString()
-                        setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                        setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                        typeface = ResourcesCompat.getFont(context, R.font.poppins)
-                    }
-                    tnc?.addView(rewardDetail)
+            reward.rewardTermsAndConditions?.let {
+                val rewardTncTV = TextView(tnc?.context).apply {
+                    text = it
+                    setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                    typeface = ResourcesCompat.getFont(context, R.font.poppins)
                 }
+                tnc?.addView(rewardTncTV)
             }
         }
-
     }
+
 
 }
