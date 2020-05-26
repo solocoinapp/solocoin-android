@@ -1,15 +1,21 @@
 package app.solocoin.solocoin.ui.home
 
+import android.content.ClipData
+import android.content.Context
 import android.os.Bundle
+import android.text.ClipboardManager
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.ui.adapter.RewardRedeemAdapter
+import kotlinx.android.synthetic.main.item_reward_redeem.*
 import java.util.*
 
 /**
@@ -27,6 +33,8 @@ class RewardRedeemActivity : AppCompatActivity() {
         setContentView(R.layout.activity_reward_redeem)
         context = this
 
+        redeem_code_container.visibility = View.GONE
+
         rewardArrayList = ArrayList()
         rewardArrayList.add(
             intent.extras?.getParcelable("EXTRA_INFO")
@@ -38,11 +46,26 @@ class RewardRedeemActivity : AppCompatActivity() {
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = mAdapter
 
+        //TODO set the redeem coupon code to redeem_code textview in item_reward_redeem layout
+
         val claimOffer = findViewById<Button>(R.id.claim_offer)
         claimOffer.setOnClickListener {
+            redeem_code_container.visibility = View.VISIBLE
             Toast.makeText(
                 context,
                 "You have claimed the offer !!",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        val copyButton = findViewById<Button>(R.id.copy_button)
+        copyButton.setOnClickListener {
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip: ClipData = ClipData.newPlainText("Code", redeem_code.text.toString())
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(
+                context,
+                "Coupon code copied sucessfully!",
                 Toast.LENGTH_LONG
             ).show()
         }
