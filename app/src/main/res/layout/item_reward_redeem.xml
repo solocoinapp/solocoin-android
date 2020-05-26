@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/offer_details_layout"
+    android:id="@+id/reward_details_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="?android:actionBarSize">
 
     <RelativeLayout
         android:id="@+id/offer_image_holder"
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/offer_image_1"
+            android:id="@+id/reward_image_1"
             android:layout_width="match_parent"
             android:layout_height="196dp"
             android:contentDescription="@string/reward_image_1"
@@ -22,7 +23,7 @@
             android:id="@+id/extra_tnc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/offer_image_1"
+            android:layout_alignBottom="@id/reward_image_1"
             android:layout_margin="16dp"
             android:background="@color/grey_black"
             android:fontFamily="@font/poppins"
@@ -41,19 +42,19 @@
             android:id="@+id/reward_image_2"
             android:layout_width="84dp"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/offer_name"
+            android:layout_alignTop="@id/reward_name"
             android:layout_alignBottom="@id/coins"
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:contentDescription="@string/reward_image_2"
             android:background="@drawable/grey_border"
+            android:contentDescription="@string/reward_image_2"
             android:padding="1dp"
             android:scaleType="fitCenter"
             android:src="@drawable/app_icon" />
 
         <TextView
-            android:id="@+id/offer_name"
+            android:id="@+id/reward_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -69,7 +70,7 @@
             android:id="@+id/coins"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/offer_name"
+            android:layout_below="@id/reward_name"
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@id/reward_image_2"
             android:orientation="horizontal">
@@ -94,7 +95,6 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
     </RelativeLayout>
@@ -117,7 +117,6 @@
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:textStyle="bold" />
-
     </LinearLayout>
 
 </LinearLayout>

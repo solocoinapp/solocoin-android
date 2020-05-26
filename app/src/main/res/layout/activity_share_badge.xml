@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:gravity="center"
+    tools:context=".ui.home.ShareBadgeActivity">
+
+    <ImageView
+        android:id="@+id/badge_iv"
+        android:layout_width="560dp"
+        android:layout_height="480dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/badge_icon"
+        android:scaleType="centerCrop"
+        android:src="@drawable/badge" />
+
+    <TextView
+        android:id="@+id/badge_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/badge_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/badge_name"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/badge_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/badge_name"
+        android:layout_centerHorizontal="true"
+        android:text="@string/badge_level"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/share"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/badge_level"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/white"
+        android:elevation="8dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/share"
+        android:textColor="@color/colorAccent"
+        app:cornerRadius="18dp" />
+
+</RelativeLayout>

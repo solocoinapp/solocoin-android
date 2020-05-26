@@ -3,78 +3,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/app_padding"
     tools:context=".ui.home.WalletFragment">
 
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/wallet_sl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        android:animateLayoutChanges="false"
+        android:overScrollMode="never">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/wallet_sl"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:animateLayoutChanges="false">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/tv_coins_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/coins_value"
+                android:textColor="@color/colorPrimary"
+                android:textSize="38sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_coins_in_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_coins_count"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingBottom="28dp"
+                android:text="@string/coins_in_wallet"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/scratch_ticket_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_coins_in_wallet"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="2dp"
+                android:animateLayoutChanges="false"
+                android:fitsSystemWindows="true"
+                android:overScrollMode="never"
+                android:scrollbars="vertical" />
 
-                <TextView
-                    android:id="@+id/tv_coins_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/coins_value"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="38sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_coins_in_wallet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_coins_count"
-                    android:layout_centerHorizontal="true"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:paddingBottom="28dp"
-                    android:text="@string/coins_in_wallet"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/scratch_ticket_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/tv_coins_in_wallet"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="2dp"
-                    android:fitsSystemWindows="true"
-                    android:overScrollMode="never"
-                    android:animateLayoutChanges="false"
-                    android:scrollbars="vertical" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rewards_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/scratch_ticket_recycler_view"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="2dp"
-                    android:fitsSystemWindows="true"
-                    android:overScrollMode="never"
-                    android:animateLayoutChanges="false"
-                    android:scrollbars="vertical" />
-
-
-
-            </RelativeLayout>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </RelativeLayout>
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rewards_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_coins_in_wallet"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="2dp"
+                android:animateLayoutChanges="false"
+                android:fitsSystemWindows="true"
+                android:overScrollMode="never"
+                android:scrollbars="vertical" />
+        </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

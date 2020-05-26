@@ -1,5 +1,7 @@
 package app.solocoin.solocoin.util
 
+import android.app.ActivityManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,7 +10,11 @@ import android.net.NetworkInfo
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.services.FusedLocationService
 import app.solocoin.solocoin.ui.SplashActivity
 import app.solocoin.solocoin.worker.LegalChecker
 import com.google.firebase.auth.FirebaseAuth
@@ -74,12 +80,21 @@ class GlobalUtils {
         }
 
         fun isLocationPermissionGranted(context: Context): Boolean {
-            return ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            return ActivityCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
         }
 
         fun isStoragePermissionGranted(context: Context): Boolean {
-            return ActivityCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            return ActivityCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
         }
 
         fun formattedHomeDuration(t: Long?): String {
@@ -148,6 +163,47 @@ class GlobalUtils {
                 ) * sin(dLon / 2))
             val c = 2 * atan2(sqrt(a), sqrt(1 - a))
             return (r * c * 1000) // in meters
+        }
+
+        /**
+         * For creating notification for user
+         */
+        fun <T> notifyUser(
+            appContext: Context,
+            activityClass: Class<in T>,
+            title: String,
+            content: String
+        ) {
+
+            // Create an explicit intent for an Activity in your app
+            val intent = Intent(appContext, activityClass)
+            val pendingIntent: PendingIntent = PendingIntent.getActivity(appContext, 0, intent, 0)
+
+            val builder = NotificationCompat.Builder(appContext, "1")
+                .setSmallIcon(R.drawable.app_icon)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+
+            with(NotificationManagerCompat.from(appContext)) {
+                // notificationId is a unique int for each notification that you must define
+                notify(1, builder.build())
+            }
+        }
+
+        @InternalCoroutinesApi
+        @ExperimentalCoroutinesApi
+        fun isServiceRunning(context: Context, serviceClass: Class<FusedLocationService>): Boolean {
+            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
+            for (service in manager!!.getRunningServices(Int.MAX_VALUE)) {
+                if (serviceClass.name == service.service.className) {
+                    return true
+                }
+            }
+            return false
         }
     }
 }

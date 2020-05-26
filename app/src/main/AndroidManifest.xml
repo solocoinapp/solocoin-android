@@ -18,7 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.RedeemCodeActivity"></activity>
 
         <receiver
             android:name=".NotificationAlarmReceiver"
@@ -29,7 +28,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" /> <!-- auth-stack -->
         <activity
-            android:name=".ui.home.RewardDetailsActivity"
+            android:name=".ui.home.RewardRedeemActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
@@ -50,6 +49,8 @@
             android:name=".ui.auth.CreateProfileActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+        <activity android:name=".ui.home.ShareBadgeActivity" />
+        <activity android:name=".ui.home.RedeemCodeActivity" />
 
         <service android:name=".services.FusedLocationService" />
 

@@ -8,47 +8,49 @@
     android:clipToPadding="false"
     android:divider="@android:color/transparent"
     android:dividerHeight="0.0px"
-    app:cardBackgroundColor="#d4d7db"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="8dp"
+    android:layout_centerHorizontal="true"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="10dp"
     app:cardPreventCornerOverlap="false"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="6dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
+        android:background="#40d4d7db"
+        android:paddingBottom="12dp">
         <ImageView
             android:id="@+id/badge_iv"
-            android:layout_width="164dp"
-            android:layout_height="124dp"
+            android:layout_width="158dp"
+            android:layout_height="164dp"
+            android:layout_centerHorizontal="true"
             android:contentDescription="@string/badge_icon"
             android:scaleType="centerCrop"
             android:src="@drawable/badge" />
-
         <TextView
             android:id="@+id/badge_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_below="@id/badge_iv"
+            android:layout_alignStart="@id/badge_iv"
+            android:layout_alignEnd="@id/badge_iv"
+            android:gravity="center_horizontal"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/badge_name"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp" />
-
         <TextView
             android:id="@+id/badge_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_below="@id/badge_name"
+            android:layout_alignStart="@id/badge_name"
+            android:layout_alignEnd="@id/badge_name"
+            android:gravity="center_horizontal"
             android:text="@string/badge_level"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp"
             android:textStyle="bold" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

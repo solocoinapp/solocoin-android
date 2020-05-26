@@ -19,17 +19,17 @@ import java.util.*
 /**
  * Created by Saurav Gupta on 14/5/2020
  */
-class RewardDetailsAdapter(
+class RewardRedeemAdapter(
     private val context: Activity,
     private val rewardArrayList: ArrayList<Reward?>
 ) :
-    RecyclerView.Adapter<RewardDetailsAdapter.ViewHolder>() {
+    RecyclerView.Adapter<RewardRedeemAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder =
         ViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.item_reward_details, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_reward_redeem, parent, false)
         )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -40,19 +40,20 @@ class RewardDetailsAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var offerImage1: ImageView? = null
-        var offerImage2: ImageView? = null
+        var rewardImage1: ImageView? = null
+        var rewardImage2: ImageView? = null
         var extraTnc: TextView? = null
-        var offerName: TextView? = null
+        var rewardName: TextView? = null
         var coinsAmt: TextView? = null
         var tnc: LinearLayout? = null
 
         init {
             with(itemView) {
-                offerImage1 = findViewById(R.id.offer_image_1)
-                offerImage2 = findViewById(R.id.reward_image_2)
+                // TODO: change variable name to add company and reward image
+                rewardImage1 = findViewById(R.id.reward_image_1)
+                rewardImage2 = findViewById(R.id.reward_image_2)
                 extraTnc = findViewById(R.id.extra_tnc)
-                offerName = findViewById(R.id.offer_name)
+                rewardName = findViewById(R.id.reward_name)
                 coinsAmt = findViewById(R.id.coins_amt)
                 tnc = findViewById(R.id.tnc)
             }
@@ -62,31 +63,30 @@ class RewardDetailsAdapter(
             reward?.let {
                 updateImage(it)
                 coinsAmt?.text = it.costCoins
-                extraTnc?.text = it.offerDetails
-                offerName?.text = it.offerName
+                extraTnc?.text = it.rewardDetails
+                rewardName?.text = it.rewardName
                 updateOfferDetails(it)
             }
         }
 
         private fun updateImage(reward: Reward) {
-            Picasso.get().load(reward.offerImageUrl).into(offerImage1)
-            Picasso.get().load(reward.companyLogoUrl).into(offerImage2)
+            //TODO: add code to handle case when either image is not available
+            Picasso.get().load(reward.rewardImageUrl).into(rewardImage1)
+            Picasso.get().load(reward.companyLogoUrl).into(rewardImage2)
         }
 
         private fun updateOfferDetails(reward: Reward) {
-            reward.offerDetails.let {
-                it?.forEach { x ->
-                    val offerDetails = TextView(tnc?.context).apply {
-                        text = x.toString()
-                        setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                        setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                        typeface = ResourcesCompat.getFont(context, R.font.poppins)
-                    }
-                    tnc?.addView(offerDetails)
+            reward.rewardTermsAndConditions?.let {
+                val rewardTncTV = TextView(tnc?.context).apply {
+                    text = it
+                    setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                    typeface = ResourcesCompat.getFont(context, R.font.poppins)
                 }
+                tnc?.addView(rewardTncTV)
             }
         }
-
     }
+
 
 }

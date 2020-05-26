@@ -8,14 +8,13 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class Reward(
-    var offerName: String?,
-    var costRupees: String?,
-    var costCoins: String?,
-    var offerTermsAndConditions: String?,
-//    var offerDetails: ArrayList<String?>,
-    var offerDetails: String?,
+    var rewardName: String?,
     var companyName: String?,
+    var rewardTermsAndConditions: String?,
+    var costCoins: String?,
+    var costRupees: String?,
     var couponCode: String?,
+    var rewardDetails: String?,
     var companyLogoUrl: String?,
-    var offerImageUrl: String?
+    var rewardImageUrl: String?
 ) : Parcelable

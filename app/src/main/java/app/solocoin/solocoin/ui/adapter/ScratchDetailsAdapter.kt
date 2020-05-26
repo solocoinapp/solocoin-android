@@ -1,7 +1,5 @@
 package app.solocoin.solocoin.ui.adapter
 
-import app.solocoin.solocoin.model.ScratchTicket
-
 // Author: Vijay Daita
 
 import android.app.Activity
@@ -9,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.model.ScratchTicket
 import java.util.*
 
 /**
@@ -37,8 +37,8 @@ class ScratchDetailsAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var scratchCost: TextView? = null
-        var scratchReward: TextView? = null
+        private var scratchCost: TextView? = null
+        private var scratchReward: TextView? = null
         var scratchCardLayout: ConstraintLayout? = null
 
         init {
@@ -51,8 +51,8 @@ class ScratchDetailsAdapter(
 
         fun setUpView(scratchTicket: ScratchTicket?) {
             scratchTicket?.let {
-                scratchCost?.text = it.costCoins
-                scratchReward?.text = it.rewardCoins
+                scratchCost?.text = it.costRupees!!
+                scratchReward?.text = it.rewardRupees!!
                 // TODO: make network call when layout is clicked.
             }
         }

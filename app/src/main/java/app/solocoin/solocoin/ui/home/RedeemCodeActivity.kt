@@ -1,8 +1,8 @@
 package app.solocoin.solocoin.ui.home
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.repo.SolocoinRepository
 import com.google.gson.JsonObject
@@ -25,20 +25,20 @@ class RedeemCodeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_redeem_code)
 
-        var codeTextView = findViewById<TextView>(R.id.redeemed_code)
-        var intent = getIntent()
+        val codeTextView = findViewById<TextView>(R.id.redeemed_code)
+        val intent = intent
         val body = JsonObject()
         body.addProperty("reward_sponsor_id", intent.getStringExtra("code"))
-        var call: Call<JsonObject> = solocoinRepository.redeemRewards(body)
+        val call: Call<JsonObject> = solocoinRepository.redeemRewards(body)
         call.enqueue(object: Callback<JsonObject?>{
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                codeTextView.setText(getString(R.string.claim_error))
+                codeTextView.text = getString(R.string.claim_error)
             }
 
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
-                val resp = response.body();
+                val resp = response.body()
                 resp?.let{
-                    codeTextView.setText(resp["couponCode"].asString)
+                    codeTextView.text = resp["couponCode"].asString
                 }
             }
 

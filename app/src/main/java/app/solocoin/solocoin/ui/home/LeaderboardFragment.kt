@@ -73,11 +73,9 @@ class LeaderboardFragment : Fragment() {
                     val balance = response.data?.get("wallet_balance")?.asString
                     SolocoinApp.sharedPrefs?.walletBalance = balance
                     Leaderboard.balance = balance
-                    mAdapter.notifyDataSetChanged()
                 }
                 Status.ERROR -> {
                     Leaderboard.balance = SolocoinApp.sharedPrefs?.walletBalance
-                    mAdapter.notifyDataSetChanged()
                 }
                 Status.LOADING -> {
                 }
@@ -99,7 +97,6 @@ class LeaderboardFragment : Fragment() {
             add(Badge(null, "Commander", "Level 5", true))
         }
         Leaderboard.badges = badges
-        mAdapter.notifyDataSetChanged()
     }
 
     companion object {
