@@ -14,9 +14,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.model.Badge
-import app.solocoin.solocoin.model.Leaderboard
 import app.solocoin.solocoin.model.Level
-import app.solocoin.solocoin.ui.adapter.LeaderboardAdapter
+import app.solocoin.solocoin.model.Milestones
+import app.solocoin.solocoin.ui.adapter.MilestonesAdapter
 import app.solocoin.solocoin.util.enums.Status
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -27,24 +27,24 @@ import org.koin.android.viewmodel.ext.android.viewModel
  */
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-class LeaderboardFragment : Fragment() {
+class MilestonesFragment : Fragment() {
 
-    private lateinit var mAdapter: LeaderboardAdapter
+    private lateinit var mAdapter: MilestonesAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var context: Activity
 
-    private val viewModel: LeaderboardFragmentViewModel by viewModel()
+    private val viewModel: MilestonesFragmentViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         context = requireActivity()
-        return inflater.inflate(R.layout.fragment_leaderboard, container, false)
+        return inflater.inflate(R.layout.fragment_milestones, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        recyclerView = view.findViewById(R.id.leaderboard_recycler_view)
-        swipeRefreshLayout = view.findViewById(R.id.leaderboard_sl)
+        recyclerView = view.findViewById(R.id.milestones_recycler_view)
+        swipeRefreshLayout = view.findViewById(R.id.milestones_sl)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
@@ -57,8 +57,8 @@ class LeaderboardFragment : Fragment() {
     }
 
     private fun updateUI() {
-        mAdapter = LeaderboardAdapter(context, ArrayList<Leaderboard>().apply {
-            add(Leaderboard)
+        mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
+            add(Milestones)
         })
         recyclerView.adapter = mAdapter
         updateWallet()
@@ -72,10 +72,10 @@ class LeaderboardFragment : Fragment() {
                 Status.SUCCESS -> {
                     val balance = response.data?.get("wallet_balance")?.asString
                     SolocoinApp.sharedPrefs?.walletBalance = balance
-                    Leaderboard.balance = balance
+                    Milestones.balance = balance
                 }
                 Status.ERROR -> {
-                    Leaderboard.balance = SolocoinApp.sharedPrefs?.walletBalance
+                    Milestones.balance = SolocoinApp.sharedPrefs?.walletBalance
                 }
                 Status.LOADING -> {
                 }
@@ -96,11 +96,11 @@ class LeaderboardFragment : Fragment() {
             add(Badge(null, "Chief", "Level 4", true))
             add(Badge(null, "Commander", "Level 5", true))
         }
-        Leaderboard.badges = badges
+        Milestones.badges = badges
     }
 
     companion object {
-        fun instance() = LeaderboardFragment().apply {}
-        private val TAG = LeaderboardFragment::class.java.simpleName
+        fun instance() = MilestonesFragment().apply {}
+        private val TAG = MilestonesFragment::class.java.simpleName
     }
 }

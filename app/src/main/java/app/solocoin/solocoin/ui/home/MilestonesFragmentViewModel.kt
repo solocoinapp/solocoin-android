@@ -15,7 +15,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
  */
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-class LeaderboardFragmentViewModel(private val repository: SolocoinRepository) : ViewModel() {
+class MilestonesFragmentViewModel(private val repository: SolocoinRepository) : ViewModel() {
 
     fun userData(): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))

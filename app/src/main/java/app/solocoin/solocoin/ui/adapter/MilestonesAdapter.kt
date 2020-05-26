@@ -12,23 +12,23 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
-import app.solocoin.solocoin.model.Leaderboard
+import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.ui.home.ShareBadgeActivity
 import com.squareup.picasso.Picasso
 
 /**
  * Created by Saurav Gupta on 22/05/2020
  */
-class LeaderboardAdapter(
+class MilestonesAdapter(
     private val context: Context,
-    private val leaderboardArrayList: ArrayList<Leaderboard>
-) : RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>() {
+    private val leaderboardArrayList: ArrayList<Milestones>
+) : RecyclerView.Adapter<MilestonesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder =
-        ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_leaderboard, parent, false))
+        ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_milestones, parent, false))
 
     override fun getItemCount() = leaderboardArrayList.size
 
@@ -58,7 +58,7 @@ class LeaderboardAdapter(
             }
         }
 
-        fun bindBadges(context: Context, leaderboard: Leaderboard) {
+        fun bindBadges(context: Context, leaderboard: Milestones) {
             val total = leaderboard.badges!!.size
             badgesGridL!!.columnCount = 2
             badgesGridL!!.rowCount = total / 2 + 1
@@ -108,7 +108,7 @@ class LeaderboardAdapter(
             }
         }
 
-        fun bindLevel(leaderboard: Leaderboard) {
+        fun bindLevel(leaderboard: Milestones) {
             // TODO: Add logic to update the level achieved by user till now and update UI
         }
 

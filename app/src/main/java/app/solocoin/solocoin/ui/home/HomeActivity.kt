@@ -102,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.nav_leaderboard -> {
                     toolbar.title = getString(R.string.leaderboard)
-                    openFragment(LeaderboardFragment.instance())
+                    openFragment(MilestonesFragment.instance())
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_profile -> {
