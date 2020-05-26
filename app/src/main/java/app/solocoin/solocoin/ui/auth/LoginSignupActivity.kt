@@ -176,7 +176,6 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                         Toast.makeText(this, "Please check OTP again!", Toast.LENGTH_SHORT).show()
                         return
                     }
-
                     signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(storedVerificationId, otpCode))
                 } else {
                     handleAuth(null)
@@ -199,7 +198,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        loadingDialog.show(supportFragmentManager, loadingDialog.tag)
+//        loadingDialog.show(supportFragmentManager, loadingDialog.tag)
 
         if (mFirebaseAuth.currentUser != null) {
             sharedPrefs?.clearSession()
@@ -213,13 +212,13 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                     // Sign in success, update UI with the signed-in user's information
 
                     val uid = task.result!!.user!!.uid
-                    Log.d(TAG, "user-id: $uid")
+                    Log.wtf(TAG, "user-id: $uid")
 
                     task.result?.user?.getIdToken(true)?.addOnCompleteListener { task1 ->
                         sharedPrefs?.idToken = task1.result?.token
                         sharedPrefs?.countryCode = countryCode
                         sharedPrefs?.mobileNumber = mobileNumber
-
+                        Log.wtf(TAG, sharedPrefs?.idToken)
                         val body = JsonObject()
                         val user = JsonObject()
                         user.addProperty("country_code", sharedPrefs?.countryCode)

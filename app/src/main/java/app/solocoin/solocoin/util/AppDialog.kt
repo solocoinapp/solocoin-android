@@ -44,6 +44,7 @@ class AppDialog: DialogFragment() {
             val bundle = Bundle()
             bundle.putSerializable(TYPE, DialogType.LOADING)
             arguments = bundle
+
         }
     }
 
