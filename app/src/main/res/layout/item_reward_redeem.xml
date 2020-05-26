@@ -103,6 +103,43 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="12dp"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/redeem_code_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Code: "
+                android:fontFamily="@font/poppins"/>
+
+            <TextView
+                android:id="@+id/redeem_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="QAZWSXEDC"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_toEndOf="@+id/code"
+                android:layout_toStartOf="@+id/copy_button"
+                android:layout_margin="2dp"
+                android:layout_centerVertical="true"/>
+
+            <Button
+                android:id="@+id/copy_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="Copy"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
