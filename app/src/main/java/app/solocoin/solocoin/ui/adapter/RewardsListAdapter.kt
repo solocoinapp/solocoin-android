@@ -11,15 +11,20 @@ import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.ui.home.RewardRedeemActivity
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import java.util.*
 
 /**
  * Created by Saurav Gupta on 14/5/2020
  */
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 class RewardsListAdapter(
     private val context: Activity,
-    private val rewardsArrayList: ArrayList<Reward?>
+    private val rewardsArrayList: ArrayList<Reward>
 ) :
     RecyclerView.Adapter<RewardsListAdapter.ViewHolder>() {
 
@@ -39,11 +44,11 @@ class RewardsListAdapter(
         RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
 
-        var companyLogo: ImageView? = null
-        var costRupees: TextView? = null
-        var companyName: TextView? = null
-        var costCoins: TextView? = null
-        var mListener: RecyclerViewClickListener? = null
+        private var companyLogo: ImageView
+        private var costRupees: TextView
+        private var companyName: TextView
+        private var costCoins: TextView
+        private var mListener: RecyclerViewClickListener? = null
 
         init {
             companyLogo = itemView.findViewById(R.id.company_logo)
@@ -57,12 +62,12 @@ class RewardsListAdapter(
             mListener?.onClick(view, adapterPosition)
         }
 
-        fun bindRewards(context: Activity, reward: Reward?) {
+        fun bindRewards(context: Activity, reward: Reward) {
             reward.let {
                 updateImage(it)
-                companyName?.text = it?.companyName!!
-                costCoins?.text = it.costCoins!!
-                costRupees?.text = it.costRupees!!
+                companyName.text = it.companyName
+                costCoins.text = it.costCoins
+                costRupees.text = it.costRupees
                 mListener = object : RecyclerViewClickListener {
                     override fun onClick(view: View?, position: Int) {
                         val intent = Intent(
@@ -76,9 +81,15 @@ class RewardsListAdapter(
             }
         }
 
-        // TODO : add sanity check to ignore image not available case
-        private fun updateImage(reward: Reward?) {
-            Picasso.get().load(reward?.companyLogoUrl).into(companyLogo)
+        private fun updateImage(reward: Reward) {
+            Picasso.get().load(reward.companyLogoUrl).into(companyLogo, object : Callback {
+                override fun onSuccess() {
+                }
+
+                override fun onError(e: Exception?) {
+                    companyLogo.visibility = View.GONE
+                }
+            })
         }
     }
 

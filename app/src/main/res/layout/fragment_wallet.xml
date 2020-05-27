@@ -49,6 +49,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
                 android:animateLayoutChanges="false"
                 android:fitsSystemWindows="true"
                 android:overScrollMode="never"
@@ -62,10 +63,40 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
                 android:animateLayoutChanges="false"
                 android:fitsSystemWindows="true"
                 android:overScrollMode="never"
                 android:scrollbars="vertical" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/tv_coins_in_wallet"
+                android:background="#40636161" />
+
+            <ImageView
+                android:id="@+id/error_label"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/load_issue"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_error"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/load_issue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/error_label"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/load_issue"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
         </RelativeLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

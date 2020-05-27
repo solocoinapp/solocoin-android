@@ -100,8 +100,8 @@ class HomeActivity : AppCompatActivity() {
                     openFragment(WalletFragment.instance())
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.nav_leaderboard -> {
-                    toolbar.title = getString(R.string.leaderboard)
+                R.id.nav_milestones -> {
+                    toolbar.title = getString(R.string.milestones)
                     openFragment(MilestonesFragment.instance())
                     return@OnNavigationItemSelectedListener true
                 }

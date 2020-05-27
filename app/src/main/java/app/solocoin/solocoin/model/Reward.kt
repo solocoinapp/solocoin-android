@@ -1,6 +1,7 @@
 package app.solocoin.solocoin.model
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -8,13 +9,29 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class Reward(
-    var rewardName: String?,
-    var companyName: String?,
+    @SerializedName("id")
+    var rewardId: String,
+    @SerializedName("offer_name")
+    var rewardName: String,
+    @SerializedName("company_name")
+    var companyName: String,
+    @SerializedName("terms_and_conditions")
     var rewardTermsAndConditions: String?,
-    var costCoins: String?,
-    var costRupees: String?,
-    var couponCode: String?,
-    var rewardDetails: String?,
-    var companyLogoUrl: String?,
-    var rewardImageUrl: String?
+    @SerializedName("coins")
+    var costCoins: String,
+    @SerializedName("offer_amount")
+    var costRupees: String,
+    @SerializedName("coupon_code")
+    var couponCode: String,
+    var companyLogoUrl: String? = null,
+    var rewardImageUrl: String? = null,
+    var isClaimed: Boolean = false
 ) : Parcelable
+
+//"id": 2,
+//"offer_name": "asdasdas",
+//"company_name": "adasdas",
+//"terms_and_conditions": "asdasdsad",
+//"coins": 50,
+//"rupees": 100,
+//"coupon_code": "asdasd"

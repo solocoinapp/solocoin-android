@@ -50,7 +50,6 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".ui.home.ShareBadgeActivity" />
-        <activity android:name=".ui.home.RedeemCodeActivity" />
 
         <service android:name=".services.FusedLocationService" />
 

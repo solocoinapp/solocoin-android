@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.repo
 
+import app.solocoin.solocoin.model.Reward
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Response
@@ -43,7 +44,7 @@ interface ApiService {
 
     @Headers("Content-Type: application/json")
     @GET("rewards")
-    fun rewards(@Header("Authorization") authToken: String): Response<JsonObject>
+    fun rewards(@Header("Authorization") authToken: String): Response<ArrayList<Reward>>
 
     @Headers("Content-Type: application/json")
     @POST("redeem_rewards")

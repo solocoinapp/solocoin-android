@@ -43,7 +43,7 @@
 
     <string name="home">Home</string>
     <string name="wallet">Wallet</string>
-    <string name="leaderboard">Leaderboard</string>
+    <string name="milestones">Milestones</string>
     <string name="profile">Profile</string>
 
     <string name="invite">Invite</string>
@@ -88,19 +88,25 @@
     <string name="claim_offer">CLAIM OFFER</string>
     <string name="claim_error">Sorry, an error occurred. Please contact customer support if this persists.</string>
     <string name="reward_details">Reward Details</string>
-    <string name="coins_value">0.0</string>
+    <string name="coins_value">0</string>
     <string name="reward_cost_coins">2500 Coins</string>
     <string name="reward_cost_rupees">500</string>
     <string name="reward_company_logo">Company Logo</string>
     <string name="reward_company_name">Company Name</string>
     <string name="coins_image">Coins Symbol</string>
     <string name="reward_description">6 Months Youtube Premium Membership Trail For New Users</string>
-    <string name="reward_image_2">Reward Image 2</string>
     <string name="extra_reward_detail">* Extra Terms and Conditions</string>
-    <string name="reward_image_1">Offer Image 1</string>
+    <string name="reward_image">Reward Image</string>
     <string name="terms_and_conditions">Terms and Conditions :</string>
     <string name="Rs">\u20B9</string>
     <string name="coins_in_wallet">Coins in Wallet</string>
+    <string name="claim_success">"Offer claimed successfully.\nPress "Okay" to reveal Coupon Code."</string>
+    <string name="already_claimed">"Coupon already Redeemed."</string>
+    <string name="load_issue">Some error occurred.\n Please refresh.</string>
+    <string name="internet_issue">No internet connectivity.</string>
+    <string name="zero_rewards">"No offers available."</string>
+
+    // Milestones
     <string name="level_tv_1">Level 2</string>
     <string name="level_info_tv_2">260 coins to move to next level!</string>
     <string name="level_tv_2">2</string>
@@ -118,5 +124,8 @@
     <string name="username">You</string>
     <string name="user_rank">#12345</string>
     <string name="your_code">Your Code</string>
+    <string name="text_copy">Copy</string>
+    <string name="coupon_code">QAZWSXEDC</string>
+    <string name="code">Code:</string>
 
 </resources>

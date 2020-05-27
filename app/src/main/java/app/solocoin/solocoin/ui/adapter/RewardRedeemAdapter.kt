@@ -1,18 +1,21 @@
 package app.solocoin.solocoin.ui.adapter
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
+import com.google.android.material.button.MaterialButton
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -21,7 +24,7 @@ import java.util.*
  */
 class RewardRedeemAdapter(
     private val context: Activity,
-    private val rewardArrayList: ArrayList<Reward?>
+    private val rewardArrayList: ArrayList<Reward>
 ) :
     RecyclerView.Adapter<RewardRedeemAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
@@ -33,57 +36,91 @@ class RewardRedeemAdapter(
         )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setUpView(rewardArrayList[position])
+        holder.setUpView(context, rewardArrayList[position])
     }
 
     override fun getItemCount() = rewardArrayList.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var rewardImage1: ImageView? = null
-        var rewardImage2: ImageView? = null
-        var extraTnc: TextView? = null
-        var rewardName: TextView? = null
-        var coinsAmt: TextView? = null
-        var tnc: LinearLayout? = null
+        private var rewardImage: ImageView
+        private var companyLogo: ImageView
+        private var rewardName: TextView
+        private var coinsAmt: TextView
+        private var tnc: LinearLayout
+        private var copyBtn: MaterialButton
+        private var rewardCouponCode: TextView
+        private var rewardCouponCodeRl: RelativeLayout
 
         init {
             with(itemView) {
-                // TODO: change variable name to add company and reward image
-                rewardImage1 = findViewById(R.id.reward_image_1)
-                rewardImage2 = findViewById(R.id.reward_image_2)
-                extraTnc = findViewById(R.id.extra_tnc)
+                rewardImage = findViewById(R.id.reward_image)
+                companyLogo = findViewById(R.id.company_logo)
                 rewardName = findViewById(R.id.reward_name)
                 coinsAmt = findViewById(R.id.coins_amt)
                 tnc = findViewById(R.id.tnc)
+                copyBtn = findViewById(R.id.copy_button)
+                rewardCouponCode = findViewById(R.id.redeem_code)
+                rewardCouponCodeRl = findViewById(R.id.redeem_code_container)
             }
         }
 
-        fun setUpView(reward: Reward?) {
-            reward?.let {
+        fun setUpView(context: Activity, reward: Reward) {
+            reward.let {
                 updateImage(it)
-                coinsAmt?.text = it.costCoins
-                extraTnc?.text = it.rewardDetails
-                rewardName?.text = it.rewardName
-                updateOfferDetails(it)
+                coinsAmt.text = it.costCoins
+                rewardName.text = it.rewardName
+                updateRewardTnc(it)
+                rewardCouponCode.text = it.couponCode
+                copyBtn.setOnClickListener {
+                    (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).apply {
+                        setPrimaryClip(ClipData.newPlainText("Code", rewardCouponCode.text))
+                    }
+                    Toast.makeText(
+                        context,
+                        "Coupon code copied successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                when (it.isClaimed) {
+                    false -> rewardCouponCodeRl.visibility = View.GONE
+                    true -> rewardCouponCodeRl.visibility = View.VISIBLE
+                }
             }
         }
 
         private fun updateImage(reward: Reward) {
-            //TODO: add code to handle case when either image is not available
-            Picasso.get().load(reward.rewardImageUrl).into(rewardImage1)
-            Picasso.get().load(reward.companyLogoUrl).into(rewardImage2)
+            reward.rewardImageUrl?.let {
+                Picasso.get().load(reward.rewardImageUrl).into(rewardImage, object : Callback {
+                    override fun onError(e: Exception?) {
+                        rewardImage.visibility = View.GONE
+                    }
+
+                    override fun onSuccess() {
+                    }
+                })
+            }
+            reward.companyLogoUrl?.let {
+                Picasso.get().load(reward.companyLogoUrl).into(companyLogo, object : Callback {
+                    override fun onError(e: Exception?) {
+                        companyLogo.visibility = View.GONE
+                    }
+
+                    override fun onSuccess() {
+                    }
+                })
+            }
         }
 
-        private fun updateOfferDetails(reward: Reward) {
+        private fun updateRewardTnc(reward: Reward) {
             reward.rewardTermsAndConditions?.let {
-                val rewardTncTV = TextView(tnc?.context).apply {
+                val rewardTncTV = TextView(tnc.context).apply {
                     text = it
                     setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                     typeface = ResourcesCompat.getFont(context, R.font.poppins)
                 }
-                tnc?.addView(rewardTncTV)
+                tnc.addView(rewardTncTV)
             }
         }
     }

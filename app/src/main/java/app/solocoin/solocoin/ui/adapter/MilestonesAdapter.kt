@@ -58,14 +58,13 @@ class MilestonesAdapter(
             }
         }
 
-        // TODO: change to milestones
-        fun bindBadges(context: Context, leaderboard: Milestones) {
-            val total = leaderboard.badges!!.size
+        fun bindBadges(context: Context, milestones: Milestones) {
+            val total = milestones.badges!!.size
             badgesGridL!!.columnCount = 2
             badgesGridL!!.rowCount = total / 2 + 1
             var col = 0
             var row = 0
-            leaderboard.badges!!.forEach {
+            milestones.badges!!.forEach {
                 it!!
                 if (col == 2) {
                     col = 0

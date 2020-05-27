@@ -3,6 +3,7 @@ package app.solocoin.solocoin.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.util.Resource
 import com.google.gson.JsonObject
@@ -28,7 +29,7 @@ class WalletFragmentViewModel(private val repository: SolocoinRepository) : View
         }
     }
 
-    fun rewards(): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
+    fun rewards(): LiveData<Resource<ArrayList<Reward>?>> = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
             repository.rewards().apply {
