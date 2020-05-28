@@ -106,12 +106,24 @@
     <string name="internet_issue">No internet connectivity.</string>
     <string name="zero_rewards">"No offers available."</string>
 
-    // Milestones
+    //Quiz
+    <string name="default_timer_text">0d 0h 0m</string>
+    <string name="challenges_text">Challenges</string>
+    <string name="participate_text">Participate in the #StayAtHome challenge and win exciting badges and rewards.</string>
+    <string name="noconnectivity_error_msg">No network available, please check your WiFi or Data connection</string>
+    <string name="after_two_hours_msg">The quiz will be available after %1$d hour %2$d minutes</string>
+    <string name="available_sunday_msg">The quiz will be available on next Sunday</string>
+    <string name="device_time_incorrect_msg">Your phone date or time is inaccurate! \nAdjust your clock and try again</string>
+    <string name="quiz_unavailable_msg">The quiz is currently unavailable, please try again after sometime</string>
+    <string name="share_earn_text1">Invite your friends and Earn SoloCoins</string>
+    <string name="share_earn_text2">Each Invite will earn you 50 coins</string>
+
+    //Milestones
     <string name="level_tv_1">Level 2</string>
     <string name="level_info_tv_2">260 coins to move to next level!</string>
     <string name="level_tv_2">2</string>
     <string name="awards_unlocked">Awards Unlocked</string>
-    <string name="coming_soon">Coming Soon!</string>
+    <string name="coming_soon">Coming Soon..</string>
     <string name="awards_achieved">Awards Achieved</string>
     <string name="level_info_tv_1">260 coins away!</string>
     <string name="trophy_icon">trophy_icon</string>
@@ -127,5 +139,16 @@
     <string name="text_copy">Copy</string>
     <string name="coupon_code">QAZWSXEDC</string>
     <string name="code">Code:</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="level_second">Level 2</string>
+    <string name="level_third">Level 3</string>
+    <string name="milestones_info">Compete globally with players, achieve milestones, collect badges and brag about it on social media.</string>
+    <string name="share_n_earn"><![CDATA[Share & Earn]]></string>
+    <string name="of_social_distancing">of Social Distancing</string>
+    <string name="option_a">A. Option 1</string>
+    <string name="option_b">B. Option 2</string>
+    <string name="option_c">C. Option 3</string>
+    <string name="option_d">D. Option 4</string>
+    <string name="question_n">1. Question</string>
 
 </resources>

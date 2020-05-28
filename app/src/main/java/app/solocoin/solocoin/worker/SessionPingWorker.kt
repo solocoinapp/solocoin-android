@@ -37,6 +37,12 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
     override fun doWork(): Result {
         Log.d(TAG, "Initiating the work")
 
+//        /*
+//         * Checking if fused location service is running.
+//         * If running then ok else restart service.
+//         */
+//        statusFusedLocationService()
+//        firstTime = false
         /*
          * Pinging the session type to backend
          */
@@ -79,13 +85,31 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
         return result!!
     }
 
-    override fun onStopped() {
-        super.onStopped()
-        Log.wtf(TAG, "Stopping worker.")
-    }
+//    private fun statusFusedLocationService() {
+//        Log.d(TAG, "Checking fused location service is running or not.")
+//        if(firstTime){
+//            Log.d(TAG,"First time work manager started so skipping")
+//            return
+//        }
+//        if (GlobalUtils.isServiceRunning(applicationContext,FusedLocationService::class.java)) {
+//            Log.wtf(TAG, "Creating request to start fused location service")
+//            GlobalUtils.notifyUser(
+//                applicationContext,
+//                HomeActivity::class.java,
+//                "Important Update",
+//                "Please allow location updates to the application by starting the App and continue receiving rewards."
+//            )
+//        } else {
+//            Log.d(TAG, "Fused location service already running")
+//        }
+//    }
 
     companion object {
         private val TAG: String? = SessionPingWorker::class.java.simpleName
         private val API_CALL: String = SessionPingWorker::class.java.simpleName + " API_CALL"
+//        /*
+//         * Avoid notification for fused location service start on first time user open home activity
+//         */
+//        @JvmStatic private var firstTime: Boolean = true
     }
 }

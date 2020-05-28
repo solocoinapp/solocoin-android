@@ -81,6 +81,16 @@ class SharedPrefs(context: Context) {
         get() = instance.getString(_status, null)
         set(value) = instance.edit().putString(_status, value).apply()
 
+    private val daily_quiz_time = "daily_quiz_time"
+    var dailyQuizTime: Long
+        get() = instance.getLong(daily_quiz_time, 0)
+        set(value) = instance.edit().putLong(daily_quiz_time, value).apply()
+
+    private val count_answered_weekly_quiz = "count_answered_weekly_quiz"
+    var countAnsweredWeeklyQuiz: Int
+        get() = instance.getInt(count_answered_weekly_quiz, 0)
+        set(value) = instance.edit().putInt(count_answered_weekly_quiz, value).apply()
+
     fun clearSession() {
         instance.edit()
             .clear()

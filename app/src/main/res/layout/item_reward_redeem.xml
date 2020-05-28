@@ -13,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:adjustViewBounds="true"
             android:id="@+id/reward_image"
             android:layout_width="match_parent"
             android:layout_height="196dp"
@@ -30,6 +31,7 @@
         <ImageView
             android:id="@+id/company_logo"
             android:layout_width="84dp"
+            android:adjustViewBounds="true"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/reward_name"
             android:layout_alignBottom="@id/coins"
@@ -68,11 +70,11 @@
             <ImageView
                 android:id="@+id/coin_image"
                 android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_height="27dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/coins_image"
                 android:scaleType="centerCrop"
-                android:src="@drawable/coin" />
+                android:src="@drawable/ic_coin" />
 
             <TextView
                 android:id="@+id/coins_amt"

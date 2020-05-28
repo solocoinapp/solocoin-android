@@ -18,13 +18,12 @@ import app.solocoin.solocoin.services.FusedLocationService
 import app.solocoin.solocoin.ui.SplashActivity
 import app.solocoin.solocoin.worker.LegalChecker
 import com.google.firebase.auth.FirebaseAuth
+import com.instacart.library.truetime.TrueTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import java.lang.Math.toRadians
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import java.util.*
+import kotlin.math.*
 
 
 /**
@@ -205,5 +204,17 @@ class GlobalUtils {
             }
             return false
         }
+
+        fun verifyDeviceTimeConfig(): Boolean {
+            if (TrueTime.isInitialized()) {
+                val trueTime = TrueTime.now().time
+                val deviceTime = Calendar.getInstance().timeInMillis
+                if (abs(deviceTime - trueTime) / 10000 > 0L) {
+                    return false
+                }
+            }
+            return true
+        }
+
     }
 }

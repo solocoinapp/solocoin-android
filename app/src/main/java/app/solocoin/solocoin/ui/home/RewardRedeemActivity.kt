@@ -76,6 +76,7 @@ class RewardRedeemActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = "Reward Details"
+
     }
 
     private fun redeemCoupon() {

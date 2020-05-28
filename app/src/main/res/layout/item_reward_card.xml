@@ -34,6 +34,7 @@
             android:id="@+id/company_logo"
             android:layout_width="72dp"
             android:layout_height="72dp"
+            android:adjustViewBounds="true"
             android:layout_below="@id/company_name"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/reward_company_logo"

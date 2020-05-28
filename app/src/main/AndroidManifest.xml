@@ -26,7 +26,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_api_key" /> <!-- auth-stack -->
+            android:value="@string/google_maps_key" /> <!-- auth-stack -->
         <activity
             android:name=".ui.home.RewardRedeemActivity"
             android:screenOrientation="portrait"
