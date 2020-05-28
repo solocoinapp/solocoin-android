@@ -29,6 +29,10 @@ class FusedLocationService : Service() {
         return null
     }
 
+    override fun onDestroy() {
+        Log.wtf(TAG, "Stopping Fused location service.")
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startLocationUpdates()
         return START_STICKY

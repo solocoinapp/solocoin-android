@@ -14,7 +14,7 @@ import app.solocoin.solocoin.util.AppDialog
 import com.google.gson.JsonObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +32,7 @@ class RewardRedeemActivity : AppCompatActivity() {
     private lateinit var mAdapter: RewardRedeemAdapter
     private lateinit var rewardArrayList: ArrayList<Reward>
 
-    private val repository: SolocoinRepository by viewModel()
+    private val repository: SolocoinRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +76,6 @@ class RewardRedeemActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = "Reward Details"
-
     }
 
     private fun redeemCoupon() {

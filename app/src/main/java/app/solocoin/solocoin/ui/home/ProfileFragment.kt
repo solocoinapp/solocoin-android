@@ -3,17 +3,20 @@ package app.solocoin.solocoin.ui.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import app.solocoin.solocoin.BuildConfig
+import androidx.work.WorkManager
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.services.FusedLocationService
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.koin.android.BuildConfig
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
@@ -53,6 +56,13 @@ class ProfileFragment : Fragment() {
             val logoutDialog = AppDialog.instance(getString(R.string.confirm), getString(R.string.tag_logout), object: AppDialog.AppDialogListener {
                 override fun onClickConfirm() {
                     GlobalUtils.logout(context!!)
+                    try {
+                        WorkManager.getInstance(activity!!.applicationContext)
+                            .cancelUniqueWork(SESSION_PING_REQUEST)
+                        activity!!.stopService(Intent(activity, FusedLocationService::class.java))
+                    } catch (e: Exception) {
+                        Log.wtf(TAG, "Unable to close services.")
+                    }
                     activity?.finish()
                 }
 
@@ -64,6 +74,8 @@ class ProfileFragment : Fragment() {
     }
 
     companion object {
+        private val TAG = ProfileFragment::class.java.simpleName
+        private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.v1"
         fun instance() = ProfileFragment()
     }
 }
