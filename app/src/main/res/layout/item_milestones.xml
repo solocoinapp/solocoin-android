@@ -16,7 +16,7 @@
         android:paddingEnd="18dp">
 
         <TextView
-            android:id="@+id/level_tv_1"
+            android:id="@+id/level_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
@@ -26,17 +26,19 @@
             android:textColor="@color/colorPrimary"
             android:textSize="64sp"
             android:textStyle="bold"
+            android:textAlignment="center"
             tools:ignore="RelativeOverlap" />
 
         <TextView
             android:id="@+id/level_info_tv_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/level_tv_1"
-            android:layout_alignStart="@id/level_tv_1"
-            android:layout_alignEnd="@id/level_tv_1"
+            android:layout_below="@id/level_tv"
+            android:layout_alignStart="@id/level_tv"
+            android:layout_alignEnd="@id/level_tv"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
+            android:textAlignment="center"
             android:text="@string/level_info_tv_2"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
@@ -44,11 +46,12 @@
         <ImageView
             android:id="@+id/trophy"
             android:layout_width="64dp"
+            android:layout_alignTop="@id/award_cnt"
             android:layout_height="48dp"
-            android:layout_alignTop="@id/level_tv_2"
-            android:layout_alignBottom="@id/level_tv_2"
+            android:layout_alignBottom="@id/award_cnt"
+            android:layout_toStartOf="@id/award_cnt"
             android:layout_marginStart="12dp"
-            android:layout_toStartOf="@id/level_tv_2"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/trophy_icon"
             android:paddingStart="12dp"
             android:paddingTop="6dp"
@@ -57,12 +60,13 @@
             android:src="@drawable/ic_trophy_pink" />
 
         <TextView
-            android:id="@+id/level_tv_2"
+            android:id="@+id/award_cnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="6dp"
             android:paddingEnd="12dp"
             android:text="@string/level_tv_2"
+            android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="64sp"
             android:textStyle="bold" />
@@ -70,9 +74,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/level_tv_2"
+            android:layout_below="@id/award_cnt"
             android:layout_alignStart="@id/trophy"
-            android:layout_alignEnd="@id/level_tv_2"
+            android:layout_alignEnd="@id/award_cnt"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/awards_unlocked"
             android:textAlignment="center"
@@ -93,9 +97,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="6dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/level_info_tv_1"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="14sp" />
 
@@ -106,7 +112,7 @@
             android:layout_height="26dp"
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
-            android:progress="56" />
+            android:progress="99" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -159,6 +165,7 @@
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/leaderboard"
+        android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="22sp" />
 
@@ -180,6 +187,7 @@
             android:id="@+id/rank_card"
             android:layout_width="wrap_content"
             android:layout_height="64dp"
+            android:adjustViewBounds="true"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:scaleType="fitCenter"
@@ -200,6 +208,7 @@
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/awards_achieved"
+        android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="22sp" />
 

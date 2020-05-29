@@ -15,13 +15,14 @@ import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.ui.home.ShareBadgeActivity
 import com.squareup.picasso.Picasso
+import kotlin.math.ceil
 
 /**
  * Created by Saurav Gupta on 22/05/2020
  */
 class MilestonesAdapter(
     private val context: Context,
-    private val leaderboardArrayList: ArrayList<Milestones>
+    private val milestonesArrayList: ArrayList<Milestones>
 ) : RecyclerView.Adapter<MilestonesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -30,27 +31,32 @@ class MilestonesAdapter(
     ): ViewHolder =
         ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_milestones, parent, false))
 
-    override fun getItemCount() = leaderboardArrayList.size
+    override fun getItemCount() = milestonesArrayList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindLevel(leaderboardArrayList[position])
-        holder.bindBadges(context, leaderboardArrayList[position])
+        holder.bindBadges(context, milestonesArrayList[position])
     }
 
     class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        var levelTv1: TextView? = null
-        var levelTv2: TextView? = null
-        var levelInfoTv1: TextView? = null
-        var levelInfoTv2: TextView? = null
-        var progressBar: ProgressBar? = null
-        var badgesGridL: GridLayout? = null
+        private var levelFront: TextView
+        private var levelMid: TextView
+        private var levelRear: TextView
+        private var levelTv: TextView
+        private var trophyCntTv: TextView
+        private var levelInfoTv1: TextView
+        private var levelInfoTv2: TextView
+        private var progressBar: ProgressBar
+        private var badgesGridL: GridLayout
 
         init {
             with(itemView) {
-                levelTv1 = findViewById(R.id.level_tv_1)
-                levelTv2 = findViewById(R.id.level_tv_2)
+                levelFront = findViewById(R.id.level_front)
+                levelMid = findViewById(R.id.level_mid)
+                levelRear = findViewById(R.id.level_rear)
+                levelTv = findViewById(R.id.level_tv)
+                trophyCntTv = findViewById(R.id.award_cnt)
                 levelInfoTv1 = findViewById(R.id.level_info_tv_1)
                 levelInfoTv2 = findViewById(R.id.level_info_tv_2)
                 progressBar = findViewById(R.id.level_pb)
@@ -59,13 +65,14 @@ class MilestonesAdapter(
         }
 
         fun bindBadges(context: Context, milestones: Milestones) {
-            val total = milestones.badges!!.size
-            badgesGridL!!.columnCount = 2
-            badgesGridL!!.rowCount = total / 2 + 1
+            var userBadgesCnt = 0
+            var userLevel = 0
+            val total = milestones.badgeLevel.size
+            badgesGridL.columnCount = 2
+            badgesGridL.rowCount = total / 2 + 1
             var col = 0
             var row = 0
-            milestones.badges!!.forEach {
-                it!!
+            milestones.badgeLevel.forEach {
                 if (col == 2) {
                     col = 0
                     row++
@@ -77,21 +84,16 @@ class MilestonesAdapter(
                     columnSpec = GridLayout.spec(col)
                     rowSpec = GridLayout.spec(row)
                 }
-                val badgeCv = LayoutInflater.from(badgesGridL!!.context)
-                    .inflate(R.layout.item_badge_card, badgesGridL!!, false).apply {
-
+                val badgeCv = LayoutInflater.from(badgesGridL.context)
+                    .inflate(R.layout.item_badge_card, badgesGridL, false).apply {
                         findViewById<TextView>(R.id.badge_name).apply {
-                            text = it.name!!
+                            text = it.name
                         }
                         findViewById<TextView>(R.id.badge_level).apply {
-                            text = it.level!!
+                            text = it.level
                         }
                         findViewById<ImageView>(R.id.badge_iv).apply {
-                            try {
-                                Picasso.get().load(it.imageUrl!!).into(this)
-                            } catch (e: Exception) {
-                                // TODO: In case unable to fetch image using internet
-                            }
+                            Picasso.get().load(it.imageUrl).into(this)
                         }
                         setOnClickListener { _ ->
                             val intent = Intent(
@@ -103,14 +105,69 @@ class MilestonesAdapter(
                         }
                         layoutParams = param
                     }
-                badgesGridL!!.addView(badgeCv)
+                if (milestones.earnedPoints >= it.minPoints) {
+                    it.has = true
+                    userLevel++
+                    userBadgesCnt++
+                }
+                badgesGridL.addView(badgeCv)
                 col++
             }
+            // trophy counts
+            trophyCntTv.text = "$userBadgesCnt"
+
+            bindLevel(userLevel, milestones)
         }
 
-        fun bindLevel(leaderboard: Milestones) {
-            // TODO: Add logic to update the level achieved by user till now and update UI
-        }
+        private fun bindLevel(
+            userLevel: Int,
+            milestones: Milestones
+        ) {
+            // user current level
+            levelTv.text = ("Level $userLevel")
 
+            // handle case when all the levels are exhausted/ acheived by the user
+            if (userLevel < milestones.badgeLevel.size) {
+                val nextLevelPoints = milestones.badgeLevel[userLevel].minPoints.toInt()
+                val currentLevelPoints = milestones.badgeLevel[userLevel - 1].minPoints.toInt()
+
+                // till next level points left message
+                val tillNextLevel = nextLevelPoints - milestones.earnedPoints.toInt()
+                levelInfoTv1.text = ("$tillNextLevel coins away.")
+                levelInfoTv2.text = ("$tillNextLevel coins to move to next level!")
+
+                //progress bar
+                levelRear.text = "${(ceil(userLevel / 3.0) * 3).toInt()}"
+                levelMid.text = "${(ceil(userLevel / 3.0) * 3 - 1).toInt()}"
+                levelFront.text = "${(ceil(userLevel / 3.0) * 3 - 2).toInt()}"
+                var extraProgress = 1.0 * milestones.earnedPoints.toInt() - currentLevelPoints
+                when (userLevel - ceil(userLevel / 3.0).toInt() * 3 + 2) {
+                    0 -> {
+                        extraProgress *= (27.0 / nextLevelPoints - currentLevelPoints)
+                        extraProgress = ceil(extraProgress)
+                        progressBar.progress = 26 + extraProgress.toInt()
+                    }
+                    1 -> {
+                        extraProgress *= (27.0 / nextLevelPoints - currentLevelPoints)
+                        extraProgress = ceil(extraProgress)
+                        progressBar.progress = 53 + extraProgress.toInt()
+                    }
+                    2 -> {
+                        extraProgress *= (19.0 / nextLevelPoints - currentLevelPoints)
+                        extraProgress = ceil(extraProgress)
+                        progressBar.progress = 80 + extraProgress.toInt()
+                    }
+                }
+
+            } else {
+                levelInfoTv1.text =
+                    ("Congratulations! Reached last level.\n New levels coming soon....")
+                levelInfoTv2.text = ("0 coins to move to next level!")
+                levelFront.text = "${userLevel - 3}"
+                levelMid.text = "${userLevel - 2}"
+                levelRear.text = "${userLevel - 1}"
+                progressBar.progress = 99
+            }
+        }
     }
 }

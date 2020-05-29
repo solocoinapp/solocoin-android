@@ -12,20 +12,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.work.*
 import app.solocoin.solocoin.NotificationAlarmReceiver
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.services.FusedLocationService
+import app.solocoin.solocoin.worker.SessionPingWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
 
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class HomeActivity : AppCompatActivity() {
 
-    private val viewModel: HomeActivityViewModel by viewModel()
     private var alarmManager: AlarmManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -189,6 +191,65 @@ class HomeActivity : AppCompatActivity() {
 //        }
     }
 
+    /*
+     * Generates new periodic work request with unique work identifier = 'SESSION_PING_REQUEST'
+     * @see companion object of the class for constant identifiers.
+     */
+    private fun createWorkRequest() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val periodicWorkRequest =
+            PeriodicWorkRequest.Builder(SessionPingWorker::class.java, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build()
+        WorkManager.getInstance(application).enqueueUniquePeriodicWork(
+            SESSION_PING_REQUEST,
+            ExistingPeriodicWorkPolicy.KEEP,
+            periodicWorkRequest
+        )
+    }
+
+    /*
+     * Returns the state of the work performed by work manager using unique work identifier .
+     * States of Work Manager : STOPPED, RUNNING, ENQUEUED.
+     */
+    private fun getStateOfWork(): WorkInfo.State {
+        return try {
+            if (WorkManager.getInstance(application)
+                    .getWorkInfosForUniqueWork(SESSION_PING_REQUEST)
+                    .get().size > 0
+            ) {
+                WorkManager.getInstance(application)
+                    .getWorkInfosForUniqueWork(SESSION_PING_REQUEST).get()[0].state
+            } else {
+                WorkInfo.State.CANCELLED
+            }
+        } catch (e: ExecutionException) {
+            e.printStackTrace()
+            WorkInfo.State.CANCELLED
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+            WorkInfo.State.CANCELLED
+        }
+    }
+
+    /*
+     * Once user reaches 'HomeActivity' worker manager service is executed through this function
+     * in current view model. The state of the work request is checked using its unique identifier
+     * 'SESSION_PING_MANAGER'. In case, work request is already enqueued then new work request is
+     * not generated else new work request is created.
+     */
+    fun startSessionPingManager() {
+        if (getStateOfWork() != WorkInfo.State.ENQUEUED && getStateOfWork() != WorkInfo.State.RUNNING) {
+            applicationScope.launch {
+                createWorkRequest()
+            }
+            Log.wtf(SESSION_PING_MANAGER, ": Server Started !!")
+        } else {
+            Log.wtf(SESSION_PING_MANAGER, ": Server Already Working !!")
+        }
+    }
+
     override fun onBackPressed() {
         if (bottom_nav_view.selectedItemId != R.id.nav_home) {
             bottom_nav_view.selectedItemId = R.id.nav_home
@@ -200,6 +261,8 @@ class HomeActivity : AppCompatActivity() {
     companion object {
         private val TAG = HomeActivity::class.java.simpleName
         private const val PERMISSION_REQUEST_CODE = 34
+        private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.v1"
+        private const val SESSION_PING_MANAGER: String = "SESSION_PING_MANAGER"
         private val applicationScope = CoroutineScope(Dispatchers.Default)
     }
 }

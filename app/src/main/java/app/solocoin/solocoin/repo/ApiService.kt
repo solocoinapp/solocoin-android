@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.repo
 
+import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.model.Reward
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -29,7 +30,7 @@ interface ApiService {
 
     @Headers("Content-Type: application/json")
     @POST("notification_tokens")
-    fun registerNotificationToken(@Body body: JsonObject): Response<JsonObject>
+    suspend fun registerNotificationToken(@Body body: JsonObject): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @POST("sessions/ping")
@@ -40,11 +41,10 @@ interface ApiService {
 
     @Headers("Content-Type: application/json")
     @GET("user/profile")
-    fun getProfile(@Header("Authorization") authToken: String): Response<JsonObject>
+    suspend fun getProfile(@Header("Authorization") authToken: String): Response<JsonObject>
 
-    @Headers("Content-Type: application/json")
     @GET("rewards")
-    fun rewards(@Header("Authorization") authToken: String): Response<ArrayList<Reward>>
+    suspend fun getRewards(@Header("Authorization") authToken: String): Response<ArrayList<Reward>>
 
     @Headers("Content-Type: application/json")
     @POST("redeem_rewards")
@@ -52,6 +52,9 @@ interface ApiService {
         @Header("Authorization") authToken: String,
         @Body body: JsonObject
     ): Call<JsonObject>
+
+    @GET("badges")
+    suspend fun getBadgesLevels(@Header("Authorization") authToken: String): Response<Milestones>
 
     @GET("questions/daily")
     suspend fun getDailyQuiz(@Header("Authorization") authToken: String): Response<JsonObject>

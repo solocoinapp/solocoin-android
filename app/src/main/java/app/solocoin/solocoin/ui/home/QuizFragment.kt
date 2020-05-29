@@ -26,7 +26,6 @@ import kotlin.math.abs
 /**
  * Created by Ankur Kumar on 14/05/20
  */
-
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
@@ -109,7 +108,6 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
         }
 
         submitQuizAnswer(optionNumber)
-
     }
 
     private fun getDailyQuiz() {

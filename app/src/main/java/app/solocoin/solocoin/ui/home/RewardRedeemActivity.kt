@@ -11,6 +11,7 @@ import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.ui.adapter.RewardRedeemAdapter
 import app.solocoin.solocoin.util.AppDialog
+import app.solocoin.solocoin.util.EventBus
 import com.google.gson.JsonObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -31,6 +32,7 @@ class RewardRedeemActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var mAdapter: RewardRedeemAdapter
     private lateinit var rewardArrayList: ArrayList<Reward>
+    private val loadingDialog = AppDialog.instance()
 
     private val repository: SolocoinRepository by inject()
 
@@ -60,7 +62,6 @@ class RewardRedeemActivity : AppCompatActivity() {
                         override fun onClickConfirm() {
                             onClickCancel()
                         }
-
                         override fun onClickCancel() {}
                     },
                     getString(R.string.okay)
@@ -76,25 +77,25 @@ class RewardRedeemActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = "Reward Details"
-
     }
 
     private fun redeemCoupon() {
+        loadingDialog.show(supportFragmentManager, loadingDialog.tag)
         val body = JsonObject()
         body.addProperty("reward_sponsor_id", rewardArrayList[0].rewardId)
         val call: Call<JsonObject> = repository.redeemRewards(body)
         call.enqueue(object : Callback<JsonObject?> {
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                loadingDialog.dismiss()
                 val infoDialog = AppDialog.instance(
-                    "",
+                    "Error",
                     getString(R.string.claim_error),
                     object : AppDialog.AppDialogListener {
                         override fun onClickConfirm() {
                             onClickCancel()
                         }
 
-                        override fun onClickCancel() {
-                        }
+                        override fun onClickCancel() {}
                     },
                     getString(R.string.okay)
                 )
@@ -102,20 +103,25 @@ class RewardRedeemActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
+                loadingDialog.dismiss()
                 val resp = response.body()
                 resp?.let {
+                    try {
+                        rewardArrayList[0].isClaimed = true
+                        mAdapter.notifyDataSetChanged()
+                        EventBus.publish(rewardArrayList[0])
+                    } catch (e: Exception) {
+                        EventBus.publish("null")
+                    }
                     val infoDialog = AppDialog.instance(
-                        "",
+                        "Offer Claimed",
                         getString(R.string.claim_success),
                         object : AppDialog.AppDialogListener {
                             override fun onClickConfirm() {
-                                rewardArrayList[0].isClaimed = true
-                                mAdapter.notifyDataSetChanged()
                                 onClickCancel()
                             }
 
-                            override fun onClickCancel() {
-                            }
+                            override fun onClickCancel() {}
                         },
                         getString(R.string.okay)
                     )
@@ -124,8 +130,14 @@ class RewardRedeemActivity : AppCompatActivity() {
             }
         })
     }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onDestroy() {
+        loadingDialog.dismiss()
+        super.onDestroy()
     }
 }

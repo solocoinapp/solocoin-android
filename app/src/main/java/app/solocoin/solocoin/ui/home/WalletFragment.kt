@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.home
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
@@ -20,10 +21,12 @@ import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.model.ScratchTicket
 import app.solocoin.solocoin.ui.adapter.RewardsListAdapter
 import app.solocoin.solocoin.ui.adapter.ScratchDetailsAdapter
+import app.solocoin.solocoin.util.EventBus
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.Resource
 import app.solocoin.solocoin.util.enums.Status
 import com.google.gson.JsonObject
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -44,6 +47,8 @@ class WalletFragment : Fragment() {
     private lateinit var errorLabel: ImageView
     private lateinit var errorTextView: TextView
     private lateinit var context: Activity
+    private var eventBusReward: Disposable? = null
+    private var eventBusString: Disposable? = null
 
     private val viewModel: WalletFragmentViewModel by viewModel()
 
@@ -67,6 +72,8 @@ class WalletFragment : Fragment() {
 
         errorLabel.visibility = View.GONE
         errorTextView.visibility = View.GONE
+        rewardsRecyclerView.visibility = View.GONE
+        scratchRecyclerView.visibility = View.GONE
         rewardsRecyclerView.layoutManager = LinearLayoutManager(context)
         scratchRecyclerView.layoutManager = GridLayoutManager(context, 2)
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
@@ -78,6 +85,32 @@ class WalletFragment : Fragment() {
 
         updateWallet()
 //        updateScratch()
+    }
+
+    override fun onDestroyView() {
+        removeEventBus()
+        super.onDestroyView()
+    }
+
+    @SuppressLint("CheckResult")
+    private fun addEventBus() {
+        eventBusReward = EventBus.listen(Reward::class.java).subscribe {
+            if (it != null) {
+                mListAdapter.rewardsArrayList[it.adapterPos].isClaimed = true
+                mListAdapter.notifyDataSetChanged()
+            }
+        }
+
+        eventBusString = EventBus.listen(String::class.java).subscribe {
+            if (it == "null") {
+                updateWallet()
+            }
+        }
+    }
+
+    private fun removeEventBus() {
+        eventBusReward?.dispose()
+        eventBusString?.dispose()
     }
 
     private fun updateWallet() {
@@ -113,6 +146,8 @@ class WalletFragment : Fragment() {
                             if (rewards.size == 0) {
                                 fetchIssue(3)
                             } else {
+                                // Remove event bus if already present on this fragment
+                                removeEventBus()
                                 rewardsRecyclerView.visibility = View.VISIBLE
                                 errorLabel.visibility = View.GONE
                                 errorTextView.visibility = View.GONE
@@ -124,6 +159,8 @@ class WalletFragment : Fragment() {
                                 }
                                 mListAdapter = RewardsListAdapter(context, rewards)
                                 rewardsRecyclerView.adapter = mListAdapter
+                                // Add event bus to listen to changes in RewardRedeemActivity for isClaimed variable
+                                addEventBus()
                             }
                         } else {
                             fetchIssue(2)
@@ -140,21 +177,23 @@ class WalletFragment : Fragment() {
     }
 
     val fetchIssue = { option: Int ->
-        when (option) {
-            1 -> {
-                if (!GlobalUtils.isNetworkAvailable(context)) {
-                    errorTextView.text = getString(R.string.internet_issue)
-                } else {
-                    errorTextView.text = getString(R.string.load_issue)
+        {
+            when (option) {
+                1 -> {
+                    if (!GlobalUtils.isNetworkAvailable(context)) {
+                        errorTextView.text = getString(R.string.internet_issue)
+                    } else {
+                        errorTextView.text = getString(R.string.load_issue)
+                    }
                 }
+                2 -> errorTextView.text = getString(R.string.load_issue)
+                3 -> errorTextView.text = getString(R.string.zero_rewards)
             }
-            2 -> errorTextView.text = getString(R.string.load_issue)
-            3 -> errorTextView.text = getString(R.string.zero_rewards)
+            rewardsRecyclerView.visibility = View.GONE
+            scratchRecyclerView.visibility = View.GONE
+            errorLabel.visibility = View.VISIBLE
+            errorTextView.visibility = View.VISIBLE
         }
-        rewardsRecyclerView.visibility = View.GONE
-        scratchRecyclerView.visibility = View.GONE
-        errorLabel.visibility = View.VISIBLE
-        errorTextView.visibility = View.VISIBLE
     }
 
     private fun updateScratch() {

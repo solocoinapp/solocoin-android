@@ -24,7 +24,7 @@ import java.util.*
 @ExperimentalCoroutinesApi
 class RewardsListAdapter(
     private val context: Activity,
-    private val rewardsArrayList: ArrayList<Reward>
+    val rewardsArrayList: ArrayList<Reward>
 ) :
     RecyclerView.Adapter<RewardsListAdapter.ViewHolder>() {
 
@@ -35,6 +35,7 @@ class RewardsListAdapter(
         ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_reward_card, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        rewardsArrayList[position].adapterPos = position
         holder.bindRewards(context, rewardsArrayList[position])
     }
 
@@ -56,6 +57,8 @@ class RewardsListAdapter(
             companyName = itemView.findViewById(R.id.company_name)
             costCoins = itemView.findViewById(R.id.cost_coins)
             itemView.setOnClickListener(this)
+
+            companyLogo.visibility = View.GONE
         }
 
         override fun onClick(view: View) {
@@ -84,6 +87,7 @@ class RewardsListAdapter(
         private fun updateImage(reward: Reward) {
             Picasso.get().load(reward.companyLogoUrl).into(companyLogo, object : Callback {
                 override fun onSuccess() {
+                    companyLogo.visibility = View.VISIBLE
                 }
 
                 override fun onError(e: Exception?) {

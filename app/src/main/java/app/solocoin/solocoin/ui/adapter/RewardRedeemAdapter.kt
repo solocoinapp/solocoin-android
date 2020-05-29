@@ -63,6 +63,9 @@ class RewardRedeemAdapter(
                 rewardCouponCode = findViewById(R.id.redeem_code)
                 rewardCouponCodeRl = findViewById(R.id.redeem_code_container)
             }
+
+            rewardImage.visibility = View.GONE
+            companyLogo.visibility = View.GONE
         }
 
         fun setUpView(context: Activity, reward: Reward) {
@@ -97,6 +100,7 @@ class RewardRedeemAdapter(
                     }
 
                     override fun onSuccess() {
+                        rewardImage.visibility = View.VISIBLE
                     }
                 })
             }
@@ -107,6 +111,7 @@ class RewardRedeemAdapter(
                     }
 
                     override fun onSuccess() {
+                        rewardImage.visibility = View.VISIBLE
                     }
                 })
             }
