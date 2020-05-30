@@ -76,8 +76,9 @@
                         android:id="@+id/quiz_tablayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:tabBackground="@color/quiz_tab_color"
-                        app:tabIndicatorHeight="0dp"
+                        android:background="@color/grey_light"
+                        app:tabIndicatorHeight="50dp"
+                        app:tabIndicatorColor="@color/white"
                         app:tabGravity="fill"
                         app:tabMode="fixed" />
 
