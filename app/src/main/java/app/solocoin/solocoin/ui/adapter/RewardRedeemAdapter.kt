@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -14,9 +15,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
+import app.solocoin.solocoin.util.GlobalUtils
 import com.google.android.material.button.MaterialButton
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import java.util.*
 
 /**
@@ -68,11 +68,12 @@ class RewardRedeemAdapter(
             companyLogo.visibility = View.GONE
         }
 
+        @SuppressLint("DefaultLocale")
         fun setUpView(context: Activity, reward: Reward) {
             reward.let {
                 updateImage(it)
-                coinsAmt.text = it.costCoins
-                rewardName.text = it.rewardName
+                coinsAmt.text = ("${it.costCoins} coins")
+                rewardName.text = it.rewardName.capitalize()
                 updateRewardTnc(it)
                 rewardCouponCode.text = it.couponCode
                 copyBtn.setOnClickListener {
@@ -93,36 +94,16 @@ class RewardRedeemAdapter(
         }
 
         private fun updateImage(reward: Reward) {
-            reward.rewardImageUrl?.let {
-                Picasso.get().load(reward.rewardImageUrl).into(rewardImage, object : Callback {
-                    override fun onError(e: Exception?) {
-                        rewardImage.visibility = View.GONE
-                    }
-
-                    override fun onSuccess() {
-                        rewardImage.visibility = View.VISIBLE
-                    }
-                })
-            }
-            reward.companyLogoUrl?.let {
-                Picasso.get().load(reward.companyLogoUrl).into(companyLogo, object : Callback {
-                    override fun onError(e: Exception?) {
-                        companyLogo.visibility = View.GONE
-                    }
-
-                    override fun onSuccess() {
-                        rewardImage.visibility = View.VISIBLE
-                    }
-                })
-            }
+            GlobalUtils.loadImageNetworkCacheVisibility(reward.rewardImageUrl, rewardImage)
+            GlobalUtils.loadImageNetworkCacheVisibility(reward.companyLogoUrl, companyLogo)
         }
 
         private fun updateRewardTnc(reward: Reward) {
             reward.rewardTermsAndConditions?.let {
                 val rewardTncTV = TextView(tnc.context).apply {
-                    text = it
+                    text = ("\u2022 " + it.trim().replace("[\n\r]", "\n\u2022 ").trimIndent())
                     setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
                     typeface = ResourcesCompat.getFont(context, R.font.poppins)
                 }
                 tnc.addView(rewardTncTV)

@@ -13,6 +13,8 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "0.9-Beta"
+        renderscriptTargetApi 29
+        renderscriptSupportModeEnabled true
     }
 
     buildTypes {

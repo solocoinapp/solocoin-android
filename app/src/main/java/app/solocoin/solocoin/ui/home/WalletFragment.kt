@@ -1,7 +1,7 @@
 package app.solocoin.solocoin.ui.home
 
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,9 +22,7 @@ import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.model.ScratchTicket
 import app.solocoin.solocoin.ui.adapter.RewardsListAdapter
 import app.solocoin.solocoin.ui.adapter.ScratchDetailsAdapter
-import app.solocoin.solocoin.util.EventBus
 import app.solocoin.solocoin.util.GlobalUtils
-import app.solocoin.solocoin.util.Resource
 import app.solocoin.solocoin.util.enums.Status
 import com.google.gson.JsonObject
 import io.reactivex.disposables.Disposable
@@ -36,6 +35,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  */
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
+@RequiresApi(Build.VERSION_CODES.N)
 class WalletFragment : Fragment() {
 
     private lateinit var mListAdapter: RewardsListAdapter
@@ -88,46 +88,52 @@ class WalletFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        removeEventBus()
+//        removeEventBus()
         super.onDestroyView()
     }
 
-    @SuppressLint("CheckResult")
-    private fun addEventBus() {
-        eventBusReward = EventBus.listen(Reward::class.java).subscribe {
-            if (it != null) {
-                mListAdapter.rewardsArrayList[it.adapterPos].isClaimed = true
-                mListAdapter.notifyDataSetChanged()
-            }
-        }
+//    @SuppressLint("CheckResult")
+//    private fun addEventBus() {
+//        eventBusReward = EventBus.listen(Reward::class.java).subscribe { event ->
+//            event?.let { x ->
+//                val index = mListAdapter.rewardsArrayList.binarySearchBy(x.rewardId) { it.rewardId }
+//                mListAdapter.rewardsArrayList[index].isClaimed = true
+//                mListAdapter.notifyDataSetChanged()
+//            }
+//        }
+//
+//        eventBusString = EventBus.listen(String::class.java).subscribe {
+//            if (it == "null") {
+//                updateWallet()
+//            }
+//        }
+//    }
 
-        eventBusString = EventBus.listen(String::class.java).subscribe {
-            if (it == "null") {
-                updateWallet()
-            }
-        }
-    }
-
-    private fun removeEventBus() {
-        eventBusReward?.dispose()
-        eventBusString?.dispose()
-    }
+//    private fun removeEventBus() {
+//        eventBusReward?.dispose()
+//        eventBusString?.dispose()
+//    }
 
     private fun updateWallet() {
+        // Fetch wallet amount and offers already redeemed from user
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
             Log.d(TAG, "$response")
             when (response.status) {
                 Status.SUCCESS -> {
                     val balance = response.data?.get("wallet_balance")?.asString
-                    balanceTextView.text = balance
-                    updateRewards(response)
-                    SolocoinApp.sharedPrefs?.walletBalance = balance
+                    if (balance != null) {
+                        balanceTextView.text = balance
+                        SolocoinApp.sharedPrefs?.walletBalance = balance
+                    } else {
+                        SolocoinApp.sharedPrefs?.walletBalance?.let {
+                            balanceTextView.text = it
+                        }
+                    }
+                    fetchOffers(response.data)
                 }
                 Status.ERROR -> {
-                    SolocoinApp.sharedPrefs?.walletBalance?.let {
-                        balanceTextView.text = SolocoinApp.sharedPrefs?.walletBalance
-                    }
-                    fetchIssue(1)
+                    balanceTextView.text = SolocoinApp.sharedPrefs?.walletBalance
+                    fetchOffers(null)
                 }
                 Status.LOADING -> {
                 }
@@ -135,65 +141,95 @@ class WalletFragment : Fragment() {
         })
     }
 
-    private fun updateRewards(userProfile: Resource<JsonObject?>) {
-        if (userProfile.data != null) {
-            viewModel.rewards().observe(viewLifecycleOwner, Observer { response ->
-                Log.d(TAG, "${response.data?.size}")
-                when (response.status) {
-                    Status.SUCCESS -> {
-                        if (response.data != null) {
-                            val rewards: ArrayList<Reward> = response.data
-                            if (rewards.size == 0) {
-                                fetchIssue(3)
-                            } else {
-                                // Remove event bus if already present on this fragment
-                                removeEventBus()
-                                rewardsRecyclerView.visibility = View.VISIBLE
-                                errorLabel.visibility = View.GONE
-                                errorTextView.visibility = View.GONE
-                                rewards.sortBy { it.rewardId }
-                                userProfile.data.getAsJsonArray("redeemed_rewards").forEach { itr ->
-                                    val index =
-                                        rewards.binarySearchBy(itr.asJsonObject.get("id").asString) { it.rewardId }
-                                    rewards[index].isClaimed = true
-                                }
-                                mListAdapter = RewardsListAdapter(context, rewards)
-                                rewardsRecyclerView.adapter = mListAdapter
-                                // Add event bus to listen to changes in RewardRedeemActivity for isClaimed variable
-                                addEventBus()
-                            }
-                        } else {
-                            fetchIssue(2)
-                        }
-                    }
-                    Status.ERROR -> fetchIssue(1)
-                    Status.LOADING -> {
-                    }
-                }
-            })
+    private fun setOffersAdapter(offers: ArrayList<Reward>) {
+        // Remove event bus if already present on this fragment
+//        removeEventBus()
+        rewardsRecyclerView.visibility = View.VISIBLE
+        errorLabel.visibility = View.GONE
+        errorTextView.visibility = View.GONE
+        mListAdapter = RewardsListAdapter(context, offers)
+        rewardsRecyclerView.adapter = mListAdapter
+
+        // Add event bus to listen to changes in RewardRedeemActivity for isClaimed variable
+//        addEventBus()
+    }
+
+    private fun fetchOffersSharedPrefs() {
+        val offers = SolocoinApp.sharedPrefs?.offers
+        if (offers != null) {
+            setOffersAdapter(offers)
+        } else {
+            fetchIssue(1)
+        }
+    }
+
+    // remove the offers not claimed yet since no offers are available
+    private fun updateNFetchOffersSharedPrefs() {
+        val offers = SolocoinApp.sharedPrefs?.offers?.apply {
+            removeIf { !it.isClaimed }
+        }
+        if (offers != null) {
+            setOffersAdapter(offers)
+            // Update shared prefs
+            SolocoinApp.sharedPrefs?.offers = offers
         } else {
             fetchIssue(2)
         }
     }
 
-    val fetchIssue = { option: Int ->
-        {
-            when (option) {
-                1 -> {
-                    if (!GlobalUtils.isNetworkAvailable(context)) {
-                        errorTextView.text = getString(R.string.internet_issue)
-                    } else {
-                        errorTextView.text = getString(R.string.load_issue)
+    private fun fetchOffers(userProfile: JsonObject?) {
+        if (userProfile?.get("redeemed_rewards") == null) {
+            fetchOffersSharedPrefs()
+        } else {
+            viewModel.getOffers().observe(viewLifecycleOwner, Observer { response ->
+                Log.d(TAG, "$response")
+                when (response.status) {
+                    Status.SUCCESS -> {
+                        if (response.data != null) {
+                            val offers: ArrayList<Reward> = response.data
+                            if (offers.size == 0) {
+                                updateNFetchOffersSharedPrefs()
+                            } else {
+                                // Check which offers are claimed already n create adapter
+                                offers.sortBy { it.rewardId }
+                                userProfile.getAsJsonArray("redeemed_rewards").forEach { itr ->
+                                    val index =
+                                        offers.binarySearchBy(itr.asJsonObject.get("id").asString) { it.rewardId }
+                                    offers[index].isClaimed = true
+                                }
+                                setOffersAdapter(offers)
+
+                                // Update shared prefs
+                                SolocoinApp.sharedPrefs?.offers = offers
+                            }
+                        } else {
+                            fetchOffersSharedPrefs()
+                        }
+                    }
+                    Status.ERROR -> fetchOffersSharedPrefs()
+                    Status.LOADING -> {
                     }
                 }
-                2 -> errorTextView.text = getString(R.string.load_issue)
-                3 -> errorTextView.text = getString(R.string.zero_rewards)
-            }
-            rewardsRecyclerView.visibility = View.GONE
-            scratchRecyclerView.visibility = View.GONE
-            errorLabel.visibility = View.VISIBLE
-            errorTextView.visibility = View.VISIBLE
+            })
         }
+    }
+
+    // Display error messages in place of offers list
+    private fun fetchIssue(option: Int) {
+        when (option) {
+            1 -> {
+                if (!GlobalUtils.isNetworkAvailable(context)) {
+                    errorTextView.text = getString(R.string.internet_issue)
+                } else {
+                    errorTextView.text = getString(R.string.load_issue)
+                }
+            }
+            2 -> errorTextView.text = getString(R.string.zero_rewards)
+        }
+        rewardsRecyclerView.visibility = View.GONE
+        scratchRecyclerView.visibility = View.GONE
+        errorLabel.visibility = View.VISIBLE
+        errorTextView.visibility = View.VISIBLE
     }
 
     private fun updateScratch() {

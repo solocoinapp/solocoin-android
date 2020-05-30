@@ -7,11 +7,16 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.work.WorkManager
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.services.FusedLocationService
@@ -19,6 +24,9 @@ import app.solocoin.solocoin.ui.SplashActivity
 import app.solocoin.solocoin.worker.LegalChecker
 import com.google.firebase.auth.FirebaseAuth
 import com.instacart.library.truetime.TrueTime
+import com.squareup.picasso.Callback
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import java.lang.Math.toRadians
@@ -68,11 +76,25 @@ class GlobalUtils {
             imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
+        private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.v1"
         @InternalCoroutinesApi
         @ExperimentalCoroutinesApi
-        fun logout(context: Context) {
+        fun logout(
+            context: Context,
+            activity: FragmentActivity?
+        ) {
             sharedPrefs?.clearSession()
             FirebaseAuth.getInstance().signOut()
+            context.cacheDir.deleteRecursively()
+            activity?.let {
+                try {
+                    WorkManager.getInstance(activity.applicationContext)
+                        .cancelUniqueWork(SESSION_PING_REQUEST)
+                    activity.stopService(Intent(activity, FusedLocationService::class.java))
+                } catch (e: Exception) {
+                    Log.wtf("Application Logout", "Unable to close services.")
+                }
+            }
             val intent = Intent(context, SplashActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             context.startActivity(intent)
@@ -216,5 +238,61 @@ class GlobalUtils {
             return true
         }
 
+        fun loadImageNetworkCacheVisibility(url: String?, view: ImageView) {
+            Picasso.get()
+                .load(url)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(view, object : Callback {
+                    override fun onSuccess() {
+                        view.visibility = View.VISIBLE
+                        view.alpha = 1f
+                    }
+
+                    override fun onError(e: Exception?) {
+                        Picasso.get()
+                            .load(url)
+                            .into(view, object : Callback {
+                                override fun onSuccess() {
+                                    view.visibility = View.VISIBLE
+                                    view.alpha = 1f
+                                }
+
+                                override fun onError(e: Exception?) {
+                                    view.visibility = View.GONE
+                                }
+
+                            })
+                    }
+
+                })
+        }
+
+        fun loadImageNetworkCachePlaceholder(url: String?, view: ImageView) {
+            Picasso.get()
+                .load(Uri.parse(url))
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(view, object : Callback {
+                    override fun onSuccess() {
+                        view.alpha = 1f
+                    }
+
+                    override fun onError(e: Exception?) {
+                        Picasso.get()
+                            .load(Uri.parse(url))
+                            .into(view, object : Callback {
+                                override fun onSuccess() {
+                                    view.alpha = 1f
+                                }
+
+                                override fun onError(e: Exception?) {
+                                    view.setImageResource(R.drawable.bronze_badge)
+                                    view.alpha = 0.01F
+                                }
+
+                            })
+                    }
+
+                })
+        }
     }
 }

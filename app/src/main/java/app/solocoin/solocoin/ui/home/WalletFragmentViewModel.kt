@@ -29,10 +29,10 @@ class WalletFragmentViewModel(private val repository: SolocoinRepository) : View
         }
     }
 
-    fun rewards(): LiveData<Resource<ArrayList<Reward>?>> = liveData(Dispatchers.IO) {
+    fun getOffers(): LiveData<Resource<ArrayList<Reward>?>> = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            repository.rewards().apply {
+            repository.getOffers().apply {
                 emit(Resource.success(data = body(), code = code()))
             }
         } catch (exception: Exception) {

@@ -43,17 +43,17 @@ interface ApiService {
     @GET("user/profile")
     suspend fun getProfile(@Header("Authorization") authToken: String): Response<JsonObject>
 
-    @GET("rewards")
-    suspend fun getRewards(@Header("Authorization") authToken: String): Response<ArrayList<Reward>>
+    @GET("rewards_sponsors")
+    suspend fun getOffers(@Header("Authorization") authToken: String): Response<ArrayList<Reward>>
 
     @Headers("Content-Type: application/json")
-    @POST("redeem_rewards")
-    fun redeemRewards(
+    @POST("user/redeem_rewards")
+    suspend fun redeemRewards(
         @Header("Authorization") authToken: String,
         @Body body: JsonObject
-    ): Call<JsonObject>
+    ): Response<JsonObject>
 
-    @GET("badges")
+    @GET("user/badges")
     suspend fun getBadgesLevels(@Header("Authorization") authToken: String): Response<Milestones>
 
     @GET("questions/daily")

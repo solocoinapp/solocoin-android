@@ -69,12 +69,6 @@
                 android:overScrollMode="never"
                 android:scrollbars="vertical" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/tv_coins_in_wallet"
-                android:background="#40636161" />
-
             <ImageView
                 android:id="@+id/error_label"
                 android:layout_width="56dp"

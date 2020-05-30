@@ -88,7 +88,7 @@
     <string name="claim_offer">CLAIM OFFER</string>
     <string name="claim_error">Sorry, an error occurred. Please contact customer support if this persists.</string>
     <string name="reward_details">Reward Details</string>
-    <string name="coins_value">0</string>
+    <string name="coins_value">0.0</string>
     <string name="reward_cost_coins">2500 Coins</string>
     <string name="reward_cost_rupees">500</string>
     <string name="reward_company_logo">Company Logo</string>
@@ -148,5 +148,6 @@
     <string name="code">Code:</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="milestones_info">Compete globally with players, achieve milestones, collect badges and brag about it on social media.</string>
+    <string name="one_liner">Every Alpha Warrior was a trainee once</string>
 
 </resources>

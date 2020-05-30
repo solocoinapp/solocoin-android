@@ -25,8 +25,7 @@ data class Reward(
     var couponCode: String,
     var companyLogoUrl: String? = null,
     var rewardImageUrl: String? = null,
-    var isClaimed: Boolean = false,
-    var adapterPos: Int = 0
+    var isClaimed: Boolean = false
 ) : Parcelable
 
 //"id": 2,

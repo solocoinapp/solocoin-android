@@ -7,8 +7,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Badge
+import app.solocoin.solocoin.util.GlobalUtils
 import com.google.android.material.button.MaterialButton
-import com.squareup.picasso.Picasso
 
 class ShareBadgeActivity : AppCompatActivity() {
 
@@ -19,17 +19,16 @@ class ShareBadgeActivity : AppCompatActivity() {
         val badge: Badge = intent.extras?.getParcelable("EXTRA_INFO")!!
 
         findViewById<TextView>(R.id.badge_name).apply {
-            text = badge.name!!
+            text = badge.name
         }
         findViewById<TextView>(R.id.badge_level).apply {
-            text = badge.level!!
+            text = badge.level
+        }
+        findViewById<TextView>(R.id.one_liner).apply {
+            text = badge.oneLiner
         }
         findViewById<ImageView>(R.id.badge_iv).apply {
-            try {
-                Picasso.get().load(badge.imageUrl!!).into(this)
-            } catch (e: Exception) {
-                // TODO: if internet not available handle that case
-            }
+            GlobalUtils.loadImageNetworkCachePlaceholder(badge.imageUrl, this)
         }
         findViewById<MaterialButton>(R.id.share).apply {
             setOnClickListener {
@@ -41,7 +40,7 @@ class ShareBadgeActivity : AppCompatActivity() {
                 )
                 shareIntent.putExtra(
                     Intent.EXTRA_TEXT,
-                    context.getString(R.string.badge_invite_message_start) + badge.name!! + context.getString(
+                    context.getString(R.string.badge_invite_message_start) + badge.name + context.getString(
                         R.string.badge_invite_message_end
                     )
                 )

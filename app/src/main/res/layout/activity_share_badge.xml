@@ -8,15 +8,31 @@
     android:gravity="center"
     tools:context=".ui.home.ShareBadgeActivity">
 
+    <TextView
+        android:id="@+id/one_liner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/poppins"
+        android:text="@string/one_liner"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
     <ImageView
+        android:layout_width="wrap_content"
         android:id="@+id/badge_iv"
-        android:layout_width="560dp"
-        android:layout_height="480dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/one_liner"
         android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/badge_icon"
         android:scaleType="centerCrop"
-        android:src="@drawable/badge" />
+        android:src="@drawable/bronze_badge" />
 
     <TextView
         android:id="@+id/badge_name"
@@ -27,6 +43,7 @@
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/badge_name"
+        android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="36sp" />
 
@@ -37,6 +54,7 @@
         android:layout_below="@id/badge_name"
         android:layout_centerHorizontal="true"
         android:text="@string/badge_level"
+        android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         android:textStyle="bold" />

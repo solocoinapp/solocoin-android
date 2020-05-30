@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.app.SolocoinApp
+import app.solocoin.solocoin.model.Badge
 import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.ui.adapter.MilestonesAdapter
 import app.solocoin.solocoin.util.enums.Status
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
@@ -33,7 +34,11 @@ class MilestonesFragment : Fragment() {
 
     private val viewModel: MilestonesFragmentViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         context = requireActivity()
         return inflater.inflate(R.layout.fragment_milestones, container, false)
     }
@@ -49,25 +54,82 @@ class MilestonesFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
         }
 
+        initializeMilestones()
+    }
+
+    // initialize basic milestone section to avoid waiting for response
+    private fun initializeMilestones() {
+        val milestones = Milestones("0", ArrayList<Badge>().apply {
+            add(
+                Badge(
+                    "error",
+                    "Infant",
+                    "1",
+                    "One who stays home is not common",
+                    "0"
+                )
+            )
+            add(
+                Badge(
+                    "error",
+                    "Alpha Warrior",
+                    "2",
+                    "Every Alpha Warrior was a trainee once",
+                    "1000"
+                )
+            )
+            add(
+                Badge(
+                    "error",
+                    "Beta Warrior",
+                    "3",
+                    "Soldier! Lead the Way!",
+                    "2500"
+                )
+            )
+        })
+        mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(milestones) })
+        recyclerView.adapter = mAdapter
+
+        // updating milestone through api or shared prefs
         updateMilestones()
+    }
+
+    private fun fetchMilestonesSharedPrefs() {
+        CoroutineScope(Dispatchers.IO).launch {
+            SolocoinApp.sharedPrefs?.milestones?.let {
+                if (it.badgeLevel.size > 3) {
+                    mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(it) })
+                    recyclerView.adapter = mAdapter
+                }
+            }
+        }
     }
 
     private fun updateMilestones() {
         viewModel.getBadgesLevels().observe(viewLifecycleOwner, Observer { response ->
             Log.d(TAG, "$response")
-            when (response.status) {
-                Status.SUCCESS -> {
-                    response.data?.let {
-                        mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
-                            it.badgeLevel.sortBy { x -> x.minPoints }
-                            add(it)
-                        })
-                        recyclerView.adapter = mAdapter
+            CoroutineScope(Dispatchers.Default).launch {
+                when (response.status) {
+                    Status.SUCCESS -> {
+                        val milestones = response.data
+                        if ((milestones?.badgeLevel != null) && (milestones.badgeLevel.size > 3)) {
+                            Log.wtf(TAG, "from api call")
+                            mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
+                                milestones.badgeLevel.sortBy { x -> x.minPoints }
+                                add(milestones)
+                            })
+                            recyclerView.adapter = mAdapter
+                            SolocoinApp.sharedPrefs?.milestones = milestones
+                        } else {
+                            fetchMilestonesSharedPrefs()
+                        }
                     }
-                }
-                Status.ERROR -> {
-                }
-                Status.LOADING -> {
+                    Status.ERROR -> {
+                        fetchMilestonesSharedPrefs()
+                    }
+                    Status.LOADING -> {
+                    }
                 }
             }
         })

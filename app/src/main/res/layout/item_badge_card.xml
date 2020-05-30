@@ -4,21 +4,22 @@
     android:id="@+id/badge_cv"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:divider="@android:color/transparent"
     android:dividerHeight="0.0px"
-    android:layout_centerHorizontal="true"
     app:cardCornerRadius="8dp"
     app:cardElevation="10dp"
     app:cardPreventCornerOverlap="false"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
+        android:id="@+id/badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#40d4d7db"
-        android:paddingBottom="12dp">
+        android:background="#40d4d7db">
+
         <ImageView
             android:id="@+id/badge_iv"
             android:layout_width="158dp"
@@ -26,7 +27,8 @@
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/badge_icon"
             android:scaleType="centerCrop"
-            android:src="@drawable/badge" />
+            android:src="@drawable/bronze_badge" />
+
         <TextView
             android:id="@+id/badge_name"
             android:layout_width="wrap_content"
@@ -34,11 +36,12 @@
             android:layout_below="@id/badge_iv"
             android:layout_alignStart="@id/badge_iv"
             android:layout_alignEnd="@id/badge_iv"
-            android:gravity="center_horizontal"
             android:fontFamily="@font/poppins_semibold"
+            android:gravity="center_horizontal"
             android:text="@string/badge_name"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp" />
+
         <TextView
             android:id="@+id/badge_level"
             android:layout_width="wrap_content"
@@ -50,7 +53,19 @@
             android:text="@string/badge_level"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp"
+            android:paddingBottom="12dp"
             android:textStyle="bold" />
+
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/blurView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/badge_iv"
+            android:layout_alignTop="@id/badge_iv"
+            android:layout_alignEnd="@id/badge_iv"
+            android:layout_alignBottom="@id/badge_level" />
+
     </RelativeLayout>
+
 
 </androidx.cardview.widget.CardView>

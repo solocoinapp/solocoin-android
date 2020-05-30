@@ -330,7 +330,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         if (sharedPrefs?.authToken != null || FirebaseAuth.getInstance().currentUser != null) {
             val confirmDialog = AppDialog.instance(getString(R.string.confirm), getString(R.string.clear_current_session), object: AppDialog.AppDialogListener {
                 override fun onClickConfirm() {
-                    GlobalUtils.logout(applicationContext)
+                    GlobalUtils.logout(applicationContext, null)
                     finish()
                 }
                 override fun onClickCancel() {}

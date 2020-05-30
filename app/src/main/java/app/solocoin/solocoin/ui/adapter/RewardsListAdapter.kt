@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
@@ -11,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.ui.home.RewardRedeemActivity
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
+import app.solocoin.solocoin.util.GlobalUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import java.util.*
@@ -35,7 +35,6 @@ class RewardsListAdapter(
         ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_reward_card, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        rewardsArrayList[position].adapterPos = position
         holder.bindRewards(context, rewardsArrayList[position])
     }
 
@@ -65,11 +64,12 @@ class RewardsListAdapter(
             mListener?.onClick(view, adapterPosition)
         }
 
+        @SuppressLint("DefaultLocale")
         fun bindRewards(context: Activity, reward: Reward) {
             reward.let {
                 updateImage(it)
-                companyName.text = it.companyName
-                costCoins.text = it.costCoins
+                companyName.text = it.companyName.capitalize()
+                costCoins.text = ("${it.costCoins} coins")
                 costRupees.text = it.costRupees
                 mListener = object : RecyclerViewClickListener {
                     override fun onClick(view: View?, position: Int) {
@@ -85,15 +85,7 @@ class RewardsListAdapter(
         }
 
         private fun updateImage(reward: Reward) {
-            Picasso.get().load(reward.companyLogoUrl).into(companyLogo, object : Callback {
-                override fun onSuccess() {
-                    companyLogo.visibility = View.VISIBLE
-                }
-
-                override fun onError(e: Exception?) {
-                    companyLogo.visibility = View.GONE
-                }
-            })
+            GlobalUtils.loadImageNetworkCacheVisibility(reward.companyLogoUrl, companyLogo)
         }
     }
 

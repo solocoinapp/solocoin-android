@@ -1,5 +1,7 @@
 package app.solocoin.solocoin.ui.adapter
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.Gravity
@@ -14,7 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.ui.home.ShareBadgeActivity
-import com.squareup.picasso.Picasso
+import app.solocoin.solocoin.util.GlobalUtils
+import eightbitlab.com.blurview.BlurView
+import eightbitlab.com.blurview.RenderScriptBlur
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
 /**
@@ -64,6 +71,7 @@ class MilestonesAdapter(
             }
         }
 
+        @SuppressLint("DefaultLocale")
         fun bindBadges(context: Context, milestones: Milestones) {
             var userBadgesCnt = 0
             var userLevel = 0
@@ -87,28 +95,58 @@ class MilestonesAdapter(
                 val badgeCv = LayoutInflater.from(badgesGridL.context)
                     .inflate(R.layout.item_badge_card, badgesGridL, false).apply {
                         findViewById<TextView>(R.id.badge_name).apply {
-                            text = it.name
+                            text = it.name.capitalize()
                         }
                         findViewById<TextView>(R.id.badge_level).apply {
-                            text = it.level
+                            text = ("Level ${it.level}")
                         }
                         findViewById<ImageView>(R.id.badge_iv).apply {
-                            Picasso.get().load(it.imageUrl).into(this)
-                        }
-                        setOnClickListener { _ ->
-                            val intent = Intent(
-                                context,
-                                ShareBadgeActivity::class.java
-                            )
-                            intent.putExtra("EXTRA_INFO", it)
-                            context.startActivity(intent)
+                            if (it.imageUrl == "error") {
+                                when (it.level) {
+                                    "1" -> {
+                                        setImageResource(R.drawable.bronze_badge)
+                                        alpha = 0.01f
+                                    }
+                                    "2" -> {
+                                        setImageResource(R.drawable.bronze_badge)
+                                        alpha = 1f
+                                    }
+                                    "3" -> {
+                                        setImageResource(R.drawable.silver_badge)
+                                        alpha = 1f
+                                    }
+                                }
+                            } else {
+                                GlobalUtils.loadImageNetworkCachePlaceholder(it.imageUrl, this)
+                            }
                         }
                         layoutParams = param
                     }
                 if (milestones.earnedPoints >= it.minPoints) {
                     it.has = true
+                    badgeCv.setOnClickListener { _ ->
+                        val intent = Intent(
+                            context,
+                            ShareBadgeActivity::class.java
+                        )
+                        intent.putExtra("EXTRA_INFO", it)
+                        context.startActivity(intent)
+                    }
                     userLevel++
                     userBadgesCnt++
+                } else {
+                    it.has = false
+                    CoroutineScope(Dispatchers.Default).launch {
+                        val radius = 4f
+                        val blurView = badgeCv.findViewById<BlurView>(R.id.blurView)
+                        val decorView = (context as Activity).window.decorView
+                        val rootView = decorView.findViewById<ViewGroup>(android.R.id.content)
+                        val windowBackground = decorView.background
+                        blurView.setupWith(rootView)
+                            .setFrameClearDrawable(windowBackground)
+                            .setBlurAlgorithm(RenderScriptBlur(context))
+                            .setBlurRadius(radius)
+                    }
                 }
                 badgesGridL.addView(badgeCv)
                 col++

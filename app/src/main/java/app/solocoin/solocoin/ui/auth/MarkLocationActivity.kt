@@ -298,7 +298,7 @@ class MarkLocationActivity : AppCompatActivity(), PermissionListener, View.OnCli
     override fun onBackPressed() {
         val confirmDialog = AppDialog.instance(getString(R.string.confirm), getString(R.string.clear_current_session), object: AppDialog.AppDialogListener {
             override fun onClickConfirm() {
-                GlobalUtils.logout(applicationContext)
+                GlobalUtils.logout(applicationContext, null)
                 finish()
             }
             override fun onClickCancel() {}

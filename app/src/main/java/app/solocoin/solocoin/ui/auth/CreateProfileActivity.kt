@@ -141,7 +141,7 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
     override fun onBackPressed() {
         val confirmDialog = AppDialog.instance(getString(R.string.confirm), getString(R.string.clear_current_session), object: AppDialog.AppDialogListener {
             override fun onClickConfirm() {
-                GlobalUtils.logout(this@CreateProfileActivity)
+                GlobalUtils.logout(this@CreateProfileActivity, null)
                 finish()
             }
             override fun onClickCancel() {}
