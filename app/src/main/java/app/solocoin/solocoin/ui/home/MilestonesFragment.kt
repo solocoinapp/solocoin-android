@@ -17,7 +17,8 @@ import app.solocoin.solocoin.model.Badge
 import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.ui.adapter.MilestonesAdapter
 import app.solocoin.solocoin.util.enums.Status
-import kotlinx.coroutines.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
@@ -96,27 +97,23 @@ class MilestonesFragment : Fragment() {
     }
 
     private fun fetchMilestonesSharedPrefs() {
-        CoroutineScope(Dispatchers.IO).launch {
             SolocoinApp.sharedPrefs?.milestones?.let {
                 if (it.badgeLevel.size > 3) {
                     mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(it) })
                     recyclerView.adapter = mAdapter
                 }
             }
-        }
     }
 
     private fun updateMilestones() {
         viewModel.getBadgesLevels().observe(viewLifecycleOwner, Observer { response ->
             Log.d(TAG, "$response")
-            CoroutineScope(Dispatchers.Default).launch {
                 when (response.status) {
                     Status.SUCCESS -> {
                         val milestones = response.data
                         if ((milestones?.badgeLevel != null) && (milestones.badgeLevel.size > 3)) {
-                            Log.wtf(TAG, "from api call")
                             mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
-                                milestones.badgeLevel.sortBy { x -> x.minPoints }
+                                milestones.badgeLevel.sortBy { x -> x.level.toInt() }
                                 add(milestones)
                             })
                             recyclerView.adapter = mAdapter
@@ -131,7 +128,6 @@ class MilestonesFragment : Fragment() {
                     Status.LOADING -> {
                     }
                 }
-            }
         })
     }
 

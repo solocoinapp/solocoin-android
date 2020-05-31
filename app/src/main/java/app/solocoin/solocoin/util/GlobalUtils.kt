@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -245,7 +244,6 @@ class GlobalUtils {
                 .into(view, object : Callback {
                     override fun onSuccess() {
                         view.visibility = View.VISIBLE
-                        view.alpha = 1f
                     }
 
                     override fun onError(e: Exception?) {
@@ -254,7 +252,6 @@ class GlobalUtils {
                             .into(view, object : Callback {
                                 override fun onSuccess() {
                                     view.visibility = View.VISIBLE
-                                    view.alpha = 1f
                                 }
 
                                 override fun onError(e: Exception?) {
@@ -269,7 +266,7 @@ class GlobalUtils {
 
         fun loadImageNetworkCachePlaceholder(url: String?, view: ImageView) {
             Picasso.get()
-                .load(Uri.parse(url))
+                .load(url)
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .into(view, object : Callback {
                     override fun onSuccess() {
@@ -278,15 +275,15 @@ class GlobalUtils {
 
                     override fun onError(e: Exception?) {
                         Picasso.get()
-                            .load(Uri.parse(url))
+                            .load(url)
                             .into(view, object : Callback {
                                 override fun onSuccess() {
                                     view.alpha = 1f
                                 }
 
                                 override fun onError(e: Exception?) {
-                                    view.setImageResource(R.drawable.bronze_badge)
-                                    view.alpha = 0.01F
+                                    view.alpha = 0.5f
+                                    view.setImageResource(R.drawable.badge)
                                 }
 
                             })

@@ -13,4 +13,8 @@
     <style name="ProgressBarTheme" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_bar</item>
     </style>
+
+    <style name="mobiles_width">
+        <item name="android:layout_width">match_parent</item>
+    </style>
 </resources>

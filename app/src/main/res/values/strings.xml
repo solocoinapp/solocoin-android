@@ -126,9 +126,9 @@
     <string name="share_earn_text2">Each Invite will earn you 50 coins</string>
 
     //Milestones
-    <string name="level_tv_1">Level 2</string>
+    <string name="level_tv">Level 2</string>
     <string name="level_info_tv_2">coins to move to next level!</string>
-    <string name="level_tv_2">2</string>
+    <string name="award_cnt">2</string>
     <string name="awards_unlocked">Awards Unlocked</string>
     <string name="coming_soon">Coming Soon..</string>
     <string name="awards_achieved">Awards Achieved</string>
@@ -149,5 +149,7 @@
     <string name="leaderboard">Leaderboard</string>
     <string name="milestones_info">Compete globally with players, achieve milestones, collect badges and brag about it on social media.</string>
     <string name="one_liner">Every Alpha Warrior was a trainee once</string>
+    <string name="image_error">Unable to load your badge.</string>
+    <string name="wallet_update_info">Wallet will take 3–4 minutes to update</string>
 
 </resources>

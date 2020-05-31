@@ -4,4 +4,5 @@
     <dimen name="app_padding">32dp</dimen>
     <dimen name="nav_icon_size">20dp</dimen>
     <dimen name="profile_item_height">68dp</dimen>
+    <dimen name="mobile_match_parent">-1px</dimen>
 </resources>

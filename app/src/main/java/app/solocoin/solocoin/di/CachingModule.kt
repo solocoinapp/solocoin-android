@@ -38,7 +38,7 @@ object CachingModule : Interceptor {
             ) {
                 Log.d(TAG, "Setting up cache for response")
                 val cacheControl = CacheControl.Builder()
-                    .maxAge(2, TimeUnit.MINUTES)  // Cache Control period is set to 5 minutes
+                    .maxAge(30, TimeUnit.SECONDS)  // Cache Control period is set to 5 minutes
                     .build()
                 return newBuilder().header("Cache-Control", cacheControl.toString()).build()
             }

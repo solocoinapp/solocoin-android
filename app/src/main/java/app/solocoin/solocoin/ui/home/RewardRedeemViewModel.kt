@@ -12,13 +12,14 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-class RewardRedeemViewModel(private val repository: SolocoinRepository) : ViewModel() {
-    fun redeemReward(body: JsonObject): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
+class RewardRedeemViewModel(val repository: SolocoinRepository) : ViewModel() {
+    fun redeemRewards(body: JsonObject): LiveData<Resource<JsonObject?>> =
+        liveData(Dispatchers.IO) {
         if (body.size() != 0) {
             emit(Resource.loading(data = null))
             try {
                 repository.redeemRewards(body).apply {
-                    emit(Resource.success(data = body(), code = code()))
+                    emit(Resource.success(data = body(), code = code(), response = this))
                 }
             } catch (exception: Exception) {
                 emit(Resource.error(data = null, exception = exception))

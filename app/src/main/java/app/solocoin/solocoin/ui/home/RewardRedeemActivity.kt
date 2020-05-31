@@ -11,15 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
+import app.solocoin.solocoin.model.ErrorResponse
 import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.ui.adapter.RewardRedeemAdapter
 import app.solocoin.solocoin.util.AppDialog
+import app.solocoin.solocoin.util.EventBus
 import app.solocoin.solocoin.util.enums.Status
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
+
 
 /**
  * Created by Saurav Gupta on 14/5/2020
@@ -89,103 +93,78 @@ class RewardRedeemActivity : AppCompatActivity() {
             addProperty("rewards_sponsor_id", rewardArrayList[0].rewardId.toInt())
         }
 
-        viewModel.redeemReward(body).observe(this, Observer { response ->
+        viewModel.redeemRewards(body).observe(this, Observer { response ->
             Log.d(TAG, "$response")
             when (response.status) {
                 Status.SUCCESS -> {
-                    if (response.data != null) {
-                        when (response.code) {
-                            200 -> {
-                                try {
-                                    // update this activity adapter to show coupon code
-                                    rewardArrayList[0].isClaimed = true
-                                    mAdapter.notifyDataSetChanged()
-                                    val offers = SolocoinApp.sharedPrefs?.offers
-                                    offers?.let { x ->
-                                        val index =
-                                            x.binarySearchBy(rewardArrayList[0].rewardId) { it.rewardId }
-                                        x[index].isClaimed = true
-                                    }
+                    when (response.code) {
+                        200 -> {
+                            // update this activity adapter to show coupon code
+                            rewardArrayList[0].isClaimed = true
+                            mAdapter.notifyDataSetChanged()
 
-                                    // update shared prefs offers list
-                                    SolocoinApp.sharedPrefs?.offers = offers
-
-                                    // inform Milestones fragment about changes
-//                                    EventBus.publish(rewardArrayList[0])
-
-                                } catch (e: Exception) {
-//                                    EventBus.publish("null")
-                                    Log.d(TAG, e.toString())
-                                }
-                                loadingDialog.dismiss()
-                                val infoDialog = AppDialog.instance(
-                                    "Offer Claimed",
-                                    getString(R.string.claim_success),
-                                    object : AppDialog.AppDialogListener {
-                                        override fun onClickConfirm() {
-                                            onClickCancel()
-                                        }
-
-                                        override fun onClickCancel() {}
-                                    },
-                                    getString(R.string.okay)
-                                )
-                                infoDialog.show(supportFragmentManager, infoDialog.tag)
+                            try {
+                                // update rewards list locally
+                                EventBus.publish(rewardArrayList[0])
+                            } catch (e: Exception) {
+                                EventBus.publish("null")
                             }
 
-                            422 -> {
-                                loadingDialog.dismiss()
-                                val infoDialog = AppDialog.instance(
-                                    "Error",
-                                    response.data.get("error").asString.capitalize(),
-                                    object : AppDialog.AppDialogListener {
-                                        override fun onClickConfirm() {
-                                            onClickCancel()
-                                        }
-
-                                        override fun onClickCancel() {}
-                                    }
-                                )
-                                infoDialog.show(supportFragmentManager, infoDialog.tag)
+                            // update shared prefs offers list
+                            val offers = SolocoinApp.sharedPrefs?.offers
+                            offers?.let { x ->
+                                val index =
+                                    x.binarySearchBy(rewardArrayList[0].rewardId.toInt()) { it.rewardId.toInt() }
+                                x[index].isClaimed = true
                             }
+                            SolocoinApp.sharedPrefs?.offers = offers
+                            loadingDialog.dismiss()
+                            showInfoDialog("Offer Claimed", getString(R.string.claim_success))
+
                         }
-                    } else {
-                        loadingDialog.dismiss()
-                        val infoDialog = AppDialog.instance(
-                            "Error",
-                            getString(R.string.claim_error),
-                            object : AppDialog.AppDialogListener {
-                                override fun onClickConfirm() {
-                                    onClickCancel()
-                                }
-
-                                override fun onClickCancel() {}
-                            },
-                            getString(R.string.okay)
-                        )
-                        infoDialog.show(supportFragmentManager, infoDialog.tag)
+                        422 -> {
+                            val error = Gson().fromJson(
+                                response.response?.errorBody()?.charStream(),
+                                ErrorResponse::class.java
+                            )
+                            Log.wtf(TAG, error?.error)
+                            if (error?.error.equals("Already Redeemed")) {
+                                rewardArrayList[0].isClaimed = true
+                                mAdapter.notifyDataSetChanged()
+                            }
+                            loadingDialog.dismiss()
+                            showInfoDialog("Oops!", error?.error.toString())
+                        }
+                        else -> {
+                            loadingDialog.dismiss()
+                            showInfoDialog("Error", getString(R.string.claim_error))
+                        }
                     }
                 }
                 Status.ERROR -> {
                     loadingDialog.dismiss()
-                    val infoDialog = AppDialog.instance(
-                        "Error",
-                        getString(R.string.claim_error),
-                        object : AppDialog.AppDialogListener {
-                            override fun onClickConfirm() {
-                                onClickCancel()
-                            }
-
-                            override fun onClickCancel() {}
-                        },
-                        getString(R.string.okay)
-                    )
-                    infoDialog.show(supportFragmentManager, infoDialog.tag)
+                    showInfoDialog("Error", getString(R.string.claim_error))
                 }
                 Status.LOADING -> {
                 }
             }
         })
+    }
+
+    val showInfoDialog: (String, String) -> Unit = { title: String, message: String ->
+        val infoDialog = AppDialog.instance(
+            title,
+            message,
+            object : AppDialog.AppDialogListener {
+                override fun onClickConfirm() {
+                    onClickCancel()
+                }
+
+                override fun onClickCancel() {}
+            },
+            getString(R.string.okay)
+        )
+        infoDialog.show(supportFragmentManager, infoDialog.tag)
     }
 
     override fun onSupportNavigateUp(): Boolean {

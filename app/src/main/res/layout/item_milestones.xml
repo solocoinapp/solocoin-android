@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:gravity="center"
+        android:gravity="center_horizontal"
+
         android:paddingStart="18dp"
         android:paddingEnd="18dp">
 
@@ -22,12 +22,11 @@
             android:layout_marginEnd="12dp"
             android:layout_toStartOf="@id/trophy"
             android:gravity="center_horizontal"
-            android:text="@string/level_tv_1"
+            android:text="@string/level_tv"
             android:textColor="@color/colorPrimary"
-            android:textSize="64sp"
-            android:textStyle="bold"
             android:textAlignment="center"
-            tools:ignore="RelativeOverlap" />
+            android:textSize="48sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/level_info_tv_2"
@@ -65,10 +64,11 @@
             android:layout_height="wrap_content"
             android:paddingStart="6dp"
             android:paddingEnd="12dp"
-            android:text="@string/level_tv_2"
+            android:layout_alignParentEnd="true"
+            android:text="@string/award_cnt"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="64sp"
+            android:textSize="48sp"
             android:textStyle="bold" />
 
         <TextView
@@ -85,7 +85,8 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/mobile_match_parent"
+        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="24dp"
@@ -170,7 +171,8 @@
         android:textSize="22sp" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/mobile_match_parent"
+        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:backgroundTint="#2E3E77"
         android:layout_marginBottom="24dp"
@@ -187,9 +189,9 @@
             android:id="@+id/rank_card"
             android:layout_width="wrap_content"
             android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
             android:adjustViewBounds="true"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/rank_card_blur" />
         <TextView
@@ -214,7 +216,8 @@
 
     <GridLayout
         android:id="@+id/badges_gl"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/mobile_match_parent"
+        android:layout_gravity="center_horizontal"
         android:layout_height="match_parent"
         android:useDefaultMargins="true"
         android:layout_marginStart="8dp"

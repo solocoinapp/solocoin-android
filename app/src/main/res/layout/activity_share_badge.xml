@@ -32,7 +32,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/badge_icon"
         android:scaleType="centerCrop"
-        android:src="@drawable/bronze_badge" />
+        android:src="@drawable/badge" />
 
     <TextView
         android:id="@+id/badge_name"

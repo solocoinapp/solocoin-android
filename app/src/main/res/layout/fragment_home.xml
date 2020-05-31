@@ -77,9 +77,10 @@
                         android:id="@+id/quiz_tablayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:tabBackground="@color/quiz_tab_color"
+                        android:background="@color/grey_light"
+                        app:tabIndicatorColor="@color/white"
+                        app:tabIndicatorHeight="50dp"
                         app:tabGravity="fill"
-                        app:tabIndicatorHeight="0dp"
                         app:tabMode="fixed" />
 
                     <androidx.viewpager2.widget.ViewPager2

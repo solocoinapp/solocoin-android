@@ -26,8 +26,9 @@
             android:layout_height="164dp"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/badge_icon"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bronze_badge" />
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/badge" />
 
         <TextView
             android:id="@+id/badge_name"

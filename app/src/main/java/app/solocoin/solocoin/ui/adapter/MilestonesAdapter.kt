@@ -8,10 +8,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Milestones
@@ -93,36 +90,35 @@ class MilestonesAdapter(
                     rowSpec = GridLayout.spec(row)
                 }
                 val badgeCv = LayoutInflater.from(badgesGridL.context)
-                    .inflate(R.layout.item_badge_card, badgesGridL, false).apply {
-                        findViewById<TextView>(R.id.badge_name).apply {
+                    .inflate(R.layout.item_badge_card, badgesGridL, false).let { badgeCv ->
+                        badgeCv.findViewById<TextView>(R.id.badge_name).apply {
                             text = it.name.capitalize()
                         }
-                        findViewById<TextView>(R.id.badge_level).apply {
+                        badgeCv.findViewById<TextView>(R.id.badge_level).apply {
                             text = ("Level ${it.level}")
                         }
-                        findViewById<ImageView>(R.id.badge_iv).apply {
-                            if (it.imageUrl == "error") {
-                                when (it.level) {
-                                    "1" -> {
-                                        setImageResource(R.drawable.bronze_badge)
-                                        alpha = 0.01f
-                                    }
-                                    "2" -> {
-                                        setImageResource(R.drawable.bronze_badge)
-                                        alpha = 1f
-                                    }
-                                    "3" -> {
-                                        setImageResource(R.drawable.silver_badge)
-                                        alpha = 1f
-                                    }
+                        badgeCv.findViewById<ImageView>(R.id.badge_iv).apply {
+                            if (it.level == "1") {
+                                visibility = View.GONE
+                                val hPadding =
+                                    (resources.displayMetrics.density * 82 + 0.5f).toInt()
+                                val width = (resources.displayMetrics.density * 158 + 0.5f).toInt()
+                                badgeCv.findViewById<RelativeLayout>(R.id.badge).apply {
+                                    setPadding(0, hPadding, 0, hPadding)
+                                    layoutParams.width = width
+                                    gravity = Gravity.CENTER
                                 }
                             } else {
-                                GlobalUtils.loadImageNetworkCachePlaceholder(it.imageUrl, this)
+                                GlobalUtils.loadImageNetworkCachePlaceholder(
+                                    context.getString(R.string.image_base_url) + it.imageUrl,
+                                    this
+                                )
                             }
                         }
-                        layoutParams = param
+                        badgeCv.layoutParams = param
+                        badgeCv
                     }
-                if (milestones.earnedPoints >= it.minPoints) {
+                if (milestones.earnedPoints.toDouble() >= it.minPoints.toDouble()) {
                     it.has = true
                     badgeCv.setOnClickListener { _ ->
                         val intent = Intent(
@@ -168,30 +164,28 @@ class MilestonesAdapter(
             if (userLevel < milestones.badgeLevel.size) {
                 val nextLevelPoints = milestones.badgeLevel[userLevel].minPoints.toInt()
                 val currentLevelPoints = milestones.badgeLevel[userLevel - 1].minPoints.toInt()
-
-                // till next level points left message
                 val tillNextLevel = nextLevelPoints - milestones.earnedPoints.toInt()
                 levelInfoTv1.text = ("$tillNextLevel coins away.")
                 levelInfoTv2.text = ("$tillNextLevel coins to move to next level!")
 
                 //progress bar
-                levelRear.text = "${(ceil(userLevel / 3.0) * 3).toInt()}"
-                levelMid.text = "${(ceil(userLevel / 3.0) * 3 - 1).toInt()}"
-                levelFront.text = "${(ceil(userLevel / 3.0) * 3 - 2).toInt()}"
-                var extraProgress = 1.0 * milestones.earnedPoints.toInt() - currentLevelPoints
+                levelRear.text = ("Level ${(ceil(userLevel / 3.0) * 3).toInt()}")
+                levelMid.text = ("Level ${(ceil(userLevel / 3.0) * 3 - 1).toInt()}")
+                levelFront.text = ("Level ${(ceil(userLevel / 3.0) * 3 - 2).toInt()}")
+                var extraProgress = 1.0 * (milestones.earnedPoints.toInt() - currentLevelPoints)
                 when (userLevel - ceil(userLevel / 3.0).toInt() * 3 + 2) {
                     0 -> {
-                        extraProgress *= (27.0 / nextLevelPoints - currentLevelPoints)
+                        extraProgress *= (27.0 / (nextLevelPoints - currentLevelPoints))
                         extraProgress = ceil(extraProgress)
                         progressBar.progress = 26 + extraProgress.toInt()
                     }
                     1 -> {
-                        extraProgress *= (27.0 / nextLevelPoints - currentLevelPoints)
+                        extraProgress *= (27.0 / (nextLevelPoints - currentLevelPoints))
                         extraProgress = ceil(extraProgress)
                         progressBar.progress = 53 + extraProgress.toInt()
                     }
                     2 -> {
-                        extraProgress *= (19.0 / nextLevelPoints - currentLevelPoints)
+                        extraProgress *= (19.0 / (nextLevelPoints - currentLevelPoints))
                         extraProgress = ceil(extraProgress)
                         progressBar.progress = 80 + extraProgress.toInt()
                     }
@@ -201,9 +195,9 @@ class MilestonesAdapter(
                 levelInfoTv1.text =
                     ("Congratulations! Reached last level.\n New levels coming soon....")
                 levelInfoTv2.text = ("0 coins to move to next level!")
-                levelFront.text = "${userLevel - 3}"
-                levelMid.text = "${userLevel - 2}"
-                levelRear.text = "${userLevel - 1}"
+                levelFront.text = ("Level ${(userLevel - 3)}")
+                levelMid.text = ("Level ${(userLevel - 2)}")
+                levelRear.text = ("Level ${(userLevel - 1)}")
                 progressBar.progress = 99
             }
         }

@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.home
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
@@ -22,6 +23,7 @@ import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.model.ScratchTicket
 import app.solocoin.solocoin.ui.adapter.RewardsListAdapter
 import app.solocoin.solocoin.ui.adapter.ScratchDetailsAdapter
+import app.solocoin.solocoin.util.EventBus
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.google.gson.JsonObject
@@ -46,6 +48,7 @@ class WalletFragment : Fragment() {
     private lateinit var balanceTextView: TextView
     private lateinit var errorLabel: ImageView
     private lateinit var errorTextView: TextView
+    private lateinit var walletUpdateInfoTv: TextView
     private lateinit var context: Activity
     private var eventBusReward: Disposable? = null
     private var eventBusString: Disposable? = null
@@ -69,11 +72,13 @@ class WalletFragment : Fragment() {
         rewardsRecyclerView = view.findViewById(R.id.rewards_recycler_view)
         scratchRecyclerView = view.findViewById(R.id.scratch_ticket_recycler_view)
         swipeRefreshLayout = view.findViewById(R.id.wallet_sl)
+        walletUpdateInfoTv = view.findViewById(R.id.wallet_update_info)
 
         errorLabel.visibility = View.GONE
         errorTextView.visibility = View.GONE
         rewardsRecyclerView.visibility = View.GONE
         scratchRecyclerView.visibility = View.GONE
+        walletUpdateInfoTv.visibility = View.INVISIBLE
         rewardsRecyclerView.layoutManager = LinearLayoutManager(context)
         scratchRecyclerView.layoutManager = GridLayoutManager(context, 2)
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
@@ -88,33 +93,37 @@ class WalletFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-//        removeEventBus()
+        removeEventBus()
         super.onDestroyView()
     }
 
-//    @SuppressLint("CheckResult")
-//    private fun addEventBus() {
-//        eventBusReward = EventBus.listen(Reward::class.java).subscribe { event ->
-//            event?.let { x ->
-//                val index = mListAdapter.rewardsArrayList.binarySearchBy(x.rewardId) { it.rewardId }
-//                mListAdapter.rewardsArrayList[index].isClaimed = true
-//                mListAdapter.notifyDataSetChanged()
-//            }
-//        }
-//
-//        eventBusString = EventBus.listen(String::class.java).subscribe {
-//            if (it == "null") {
-//                updateWallet()
-//            }
-//        }
-//    }
+    @SuppressLint("CheckResult")
+    private fun addEventBus() {
+        eventBusReward = EventBus.listen(Reward::class.java).subscribe { event ->
+            event?.let { x ->
+                val index =
+                    mListAdapter.rewardsArrayList.binarySearchBy(x.rewardId.toInt()) { it.rewardId.toInt() }
+                mListAdapter.rewardsArrayList[index].isClaimed = true
+                mListAdapter.notifyDataSetChanged()
+                walletUpdateInfoTv.visibility = View.VISIBLE
+            }
+        }
 
-//    private fun removeEventBus() {
-//        eventBusReward?.dispose()
-//        eventBusString?.dispose()
-//    }
+        eventBusString = EventBus.listen(String::class.java).subscribe {
+            if (it == "null") {
+                walletUpdateInfoTv.visibility = View.VISIBLE
+                updateWallet()
+            }
+        }
+    }
+
+    private fun removeEventBus() {
+        eventBusReward?.dispose()
+        eventBusString?.dispose()
+    }
 
     private fun updateWallet() {
+        walletUpdateInfoTv.visibility = View.INVISIBLE
         // Fetch wallet amount and offers already redeemed from user
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
             Log.d(TAG, "$response")
@@ -143,7 +152,7 @@ class WalletFragment : Fragment() {
 
     private fun setOffersAdapter(offers: ArrayList<Reward>) {
         // Remove event bus if already present on this fragment
-//        removeEventBus()
+        removeEventBus()
         rewardsRecyclerView.visibility = View.VISIBLE
         errorLabel.visibility = View.GONE
         errorTextView.visibility = View.GONE
@@ -151,7 +160,7 @@ class WalletFragment : Fragment() {
         rewardsRecyclerView.adapter = mListAdapter
 
         // Add event bus to listen to changes in RewardRedeemActivity for isClaimed variable
-//        addEventBus()
+        addEventBus()
     }
 
     private fun fetchOffersSharedPrefs() {
@@ -191,10 +200,10 @@ class WalletFragment : Fragment() {
                                 updateNFetchOffersSharedPrefs()
                             } else {
                                 // Check which offers are claimed already n create adapter
-                                offers.sortBy { it.rewardId }
+                                offers.sortBy { it.rewardId.toInt() }
                                 userProfile.getAsJsonArray("redeemed_rewards").forEach { itr ->
                                     val index =
-                                        offers.binarySearchBy(itr.asJsonObject.get("id").asString) { it.rewardId }
+                                        offers.binarySearchBy(itr.asJsonObject.get("rewards_sponsor_id").asInt) { it.rewardId.toInt() }
                                     offers[index].isClaimed = true
                                 }
                                 setOffersAdapter(offers)
