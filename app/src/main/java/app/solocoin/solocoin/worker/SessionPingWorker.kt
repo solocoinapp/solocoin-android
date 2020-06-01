@@ -46,7 +46,11 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
         /*
          * Pinging the session type to backend
          */
-        val sessionType: String? = GlobalUtils.getSessionType(applicationContext)
+        var sessionType: String? = GlobalUtils.getSessionType(applicationContext)
+        var legalChecker = LegalChecker(applicationContext)
+        if(legalChecker.isCheating()){
+            sessionType = "away"
+        }
         sessionType?.let {
             val body: JsonObject =
                 JsonParser().parse(SessionPingRequest(sessionType).toString()).asJsonObject
