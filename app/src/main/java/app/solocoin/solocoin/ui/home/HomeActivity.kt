@@ -16,6 +16,7 @@ import androidx.work.*
 import app.solocoin.solocoin.NotificationAlarmReceiver
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.services.FusedLocationService
+import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.worker.SessionPingWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
@@ -39,9 +40,9 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.selectedItemId = R.id.nav_home
 
         // TODO : Setup permission request for Fused Location service properly
-//        checkPermissionForLocation()
-//        viewModel.startSessionPingManager()
-//        alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        checkPermissionForLocation()
+        startSessionPingManager()
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
 
         createNotificationChannel()
@@ -180,15 +181,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startFusedLocationService() {
-//        if (!GlobalUtils.isServiceRunning(applicationContext, FusedLocationService::class.java)) {
-        Log.wtf(TAG, "Starting the fused location service.")
-        val intent = Intent(this, FusedLocationService::class.java)
-        applicationScope.launch {
-            startService(intent)
+        if (!GlobalUtils.isServiceRunning(applicationContext, FusedLocationService::class.java)) {
+            Log.wtf(TAG, "Starting the fused location service.")
+            val intent = Intent(applicationContext, FusedLocationService::class.java)
+            applicationScope.launch {
+                startService(intent)
+            }
+        } else {
+            Log.wtf(TAG, "Fused location service already running")
         }
-//        } else {
-//            Log.wtf(TAG, "Fused location service already running")
-//        }
     }
 
     /*
@@ -239,7 +240,7 @@ class HomeActivity : AppCompatActivity() {
      * 'SESSION_PING_MANAGER'. In case, work request is already enqueued then new work request is
      * not generated else new work request is created.
      */
-    fun startSessionPingManager() {
+    private fun startSessionPingManager() {
         if (getStateOfWork() != WorkInfo.State.ENQUEUED && getStateOfWork() != WorkInfo.State.RUNNING) {
             applicationScope.launch {
                 createWorkRequest()
