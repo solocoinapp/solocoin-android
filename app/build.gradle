@@ -108,7 +108,7 @@ dependencies {
     implementation "android.arch.work:work-runtime-ktx:$work_version"
 
     // Cheat detection
-    implementation project(path: ':RootTools')
+    implementation 'com.scottyab:rootbeer-lib:0.0.8'
     implementation 'androidx.fragment:fragment-ktx:1.2.4'
 
 }
