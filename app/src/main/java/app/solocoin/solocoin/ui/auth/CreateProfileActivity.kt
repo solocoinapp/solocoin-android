@@ -7,7 +7,6 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -78,7 +77,7 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
                 Status.SUCCESS -> {
                     loadingDialog.dismiss()
 
-                    Log.d(TAG, "code: ${resource.code}")
+//                    Log.d(TAG, "code: ${resource.code}")
                     if (resource.code == 200) {
                         val authToken = resource.data?.get("auth_token")?.asString
                         val id = resource.data?.get("id")?.asString
@@ -87,7 +86,7 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
                             sharedPrefs?.id = id
 
                             GlobalUtils.startActivityAsNewStack(Intent(this@CreateProfileActivity, HomeActivity::class.java), this@CreateProfileActivity)
-                            finish()
+//                            finish()
                         } else {
                             Toast.makeText(this@CreateProfileActivity, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
                         }

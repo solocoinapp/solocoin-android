@@ -2,7 +2,6 @@ package app.solocoin.solocoin.ui.home
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,7 +97,7 @@ class MilestonesFragment : Fragment() {
 
     private fun fetchMilestonesSharedPrefs() {
             SolocoinApp.sharedPrefs?.milestones?.let {
-                if (it.badgeLevel.size > 3) {
+                if (it.badgeLevel.size > 3 && it.earnedPoints.toDouble() >= 0.0) {
                     mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(it) })
                     recyclerView.adapter = mAdapter
                 }
@@ -107,11 +106,11 @@ class MilestonesFragment : Fragment() {
 
     private fun updateMilestones() {
         viewModel.getBadgesLevels().observe(viewLifecycleOwner, Observer { response ->
-            Log.d(TAG, "$response")
+            //Log.d(TAG, "$response")
                 when (response.status) {
                     Status.SUCCESS -> {
                         val milestones = response.data
-                        if ((milestones?.badgeLevel != null) && (milestones.badgeLevel.size > 3)) {
+                        if ((milestones?.badgeLevel != null) && (milestones.badgeLevel.size > 3 && milestones.earnedPoints.toDouble() >= 0.0)) {
                             mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
                                 milestones.badgeLevel.sortBy { x -> x.level.toInt() }
                                 add(milestones)

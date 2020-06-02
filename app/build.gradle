@@ -6,13 +6,21 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\Administrator\\Desktop\\Solocoin Build\\solocoin-release-keystore\\solocoin-release-keystore\\solocoin-keystore')
+            storePassword 'solocoin@1'
+            keyAlias = 'solocoin'
+            keyPassword 'solocoin@1'
+        }
+    }
     compileSdkVersion 29
     defaultConfig {
         applicationId "app.solocoin.solocoin"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "0.9-Beta"
+        versionCode 2
+        versionName '1.0.1'
         renderscriptTargetApi 29
         renderscriptSupportModeEnabled true
     }
@@ -21,6 +29,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
@@ -111,7 +120,7 @@ dependencies {
     implementation "android.arch.work:work-runtime-ktx:$work_version"
 
     // Cheat detection
-    implementation project(path: ':RootTools')
+    implementation 'com.scottyab:rootbeer-lib:0.0.8'
     implementation 'androidx.fragment:fragment-ktx:1.2.4'
 
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'

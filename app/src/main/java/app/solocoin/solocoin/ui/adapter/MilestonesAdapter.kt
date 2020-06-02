@@ -159,7 +159,7 @@ class MilestonesAdapter(
         ) {
             // user current level
             levelTv.text = ("Level $userLevel")
-
+//            Log.wtf("MilestonesAdapter", ("Level $userLevel"))
             // handle case when all the levels are exhausted/ acheived by the user
             if (userLevel < milestones.badgeLevel.size) {
                 val nextLevelPoints = milestones.badgeLevel[userLevel].minPoints.toInt()

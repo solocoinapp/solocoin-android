@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -180,7 +179,7 @@ class MarkLocationActivity : AppCompatActivity(), PermissionListener, View.OnCli
                 try {
                     exception.startResolutionForResult(this, 102)
                 } catch (sendEx: IntentSender.SendIntentException) {
-                    Log.d(TAG, "PendingIntent unable to execute request.")
+//                    Log.d(TAG, "PendingIntent unable to execute request.")
                 }
             }
         }
@@ -228,7 +227,7 @@ class MarkLocationActivity : AppCompatActivity(), PermissionListener, View.OnCli
                 when(resource.status) {
                     Status.SUCCESS -> {
                         GlobalUtils.startActivityAsNewStack(Intent(this@MarkLocationActivity, HomeActivity::class.java), this@MarkLocationActivity)
-                        finish()
+//                        finish()
                     }
                     Status.ERROR -> {
                         if (resource.exception is NoConnectivityException) {

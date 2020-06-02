@@ -1,7 +1,6 @@
 package app.solocoin.solocoin.di
 
 import android.content.Context
-import android.util.Log
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -36,7 +35,7 @@ object CachingModule : Interceptor {
                 responseCC.contains("must-revalidate") ||
                 responseCC.contains("max-stale=0")
             ) {
-                Log.d(TAG, "Setting up cache for response")
+//                Log.d(TAG, "Setting up cache for response")
                 val cacheControl = CacheControl.Builder()
                     .maxAge(30, TimeUnit.SECONDS)  // Cache Control period is set to 5 minutes
                     .build()
@@ -54,7 +53,7 @@ object CachingModule : Interceptor {
                 DISK_CACHE_SIZE
             )
         } catch (e: Exception) {
-            Log.wtf(TAG, "Unable to create cache!")
+//            Log.wtf(TAG, "Unable to create cache!")
             null
         }
     }
