@@ -1,5 +1,6 @@
 /build
 /google-services.json
 /src/main/res/values/keys.xml
-/src/release/*
 /release
+/src/release/
+/src/release/res/

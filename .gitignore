@@ -14,5 +14,6 @@
 .cxx
 
 /app/google-services.json
-/app/src/release/*
 /app/release
+/app/src/release/
+/app/src/release/res/
