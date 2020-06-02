@@ -81,6 +81,11 @@ class SharedPrefs(context: Context) {
         get() = instance.getString(_status, null)
         set(value) = instance.edit().putString(_status, value).apply()
 
+    private val _mock = "mock"
+    var mock: Boolean
+        get() = instance.getBoolean(_mock, false)
+        set(value) = instance.edit().putBoolean(_mock, value).apply()
+
     fun clearSession() {
         instance.edit()
             .clear()
