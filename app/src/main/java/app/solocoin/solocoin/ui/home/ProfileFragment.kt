@@ -49,32 +49,41 @@ class ProfileFragment : Fragment(), KoinComponent {
         }
         //terms-condition-btn
 
-        if (!GlobalUtils.isNetworkAvailable(requireActivity())) {
-            view.findViewById<TextView>(R.id.tv_logout).visibility = View.GONE
-        } else {
-            view.findViewById<TextView>(R.id.tv_logout).apply {
-                setOnClickListener {
-                    val logoutDialog = AppDialog.instance(
-                        getString(R.string.confirm),
-                        getString(R.string.tag_logout),
-                        object : AppDialog.AppDialogListener {
-                            override fun onClickConfirm() {
-                                GlobalUtils.logout(context!!, activity!!)
+        //logout-btn
+        view.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
+            if (!GlobalUtils.isNetworkAvailable(requireContext())) {
+                val logoutDialog = AppDialog.instance(
+                    "Sorry",
+                    getString(R.string.logout_issue),
+                    object : AppDialog.AppDialogListener {
+                        override fun onClickConfirm() {
+                            onClickCancel()
+                        }
 
-                                activity?.finish()
-                            }
+                        override fun onClickCancel() {}
+                    },
+                    getString(R.string.logout),
+                    getString(R.string.cancel)
+                )
+                logoutDialog.show(childFragmentManager, logoutDialog.tag)
+            } else {
+                val logoutDialog = AppDialog.instance(
+                    getString(R.string.confirm),
+                    getString(R.string.tag_logout),
+                    object : AppDialog.AppDialogListener {
+                        override fun onClickConfirm() {
+                            GlobalUtils.logout(context!!, activity!!)
+                            activity?.finish()
+                        }
 
-                            override fun onClickCancel() {}
-                        },
-                        getString(R.string.logout),
-                        getString(R.string.cancel)
-                    )
-                    logoutDialog.show(childFragmentManager, logoutDialog.tag)
-                }
-                visibility = View.VISIBLE
+                        override fun onClickCancel() {}
+                    },
+                    getString(R.string.logout),
+                    getString(R.string.cancel)
+                )
+                logoutDialog.show(childFragmentManager, logoutDialog.tag)
             }
         }
-        //logout-btn
         //logout-btn
     }
 
