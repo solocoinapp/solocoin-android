@@ -118,72 +118,72 @@
 
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/share_n_earn"
-                android:textColor="@color/colorAccent"
-                android:textSize="15sp" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:fontFamily="@font/poppins_semibold"-->
+<!--                android:text="@string/share_n_earn"-->
+<!--                android:textColor="@color/colorAccent"-->
+<!--                android:textSize="15sp" />-->
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/share_earn_cv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="8dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="8dp"
-                app:strokeColor="@color/orange_stroke_color"
-                app:strokeWidth="3dp">
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:id="@+id/share_earn_cv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                app:cardBackgroundColor="@color/white"-->
+<!--                app:cardCornerRadius="8dp"-->
+<!--                app:strokeColor="@color/orange_stroke_color"-->
+<!--                app:strokeWidth="3dp">-->
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+<!--                <FrameLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal">-->
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="10dp"
-                        android:orientation="vertical">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_vertical"-->
+<!--                        android:layout_margin="10dp"-->
+<!--                        android:orientation="vertical">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="@string/share_earn_text1"
-                            android:textColor="@color/blue"
-                            android:textSize="15sp" />
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:fontFamily="@font/poppins_semibold"-->
+<!--                            android:text="@string/share_earn_text1"-->
+<!--                            android:textColor="@color/blue"-->
+<!--                            android:textSize="15sp" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="@string/share_earn_text2"
-                            android:textColor="@color/pink_dark"
-                            android:textSize="15sp" />
-                    </LinearLayout>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:fontFamily="@font/poppins_semibold"-->
+<!--                            android:text="@string/share_earn_text2"-->
+<!--                            android:textColor="@color/pink_dark"-->
+<!--                            android:textSize="15sp" />-->
+<!--                    </LinearLayout>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/shape_circle"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:padding="15dp"
-                        android:text="50"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_gravity="center_vertical|end"-->
+<!--                        android:layout_marginEnd="10dp"-->
+<!--                        android:background="@drawable/shape_circle"-->
+<!--                        android:fontFamily="@font/poppins_semibold"-->
+<!--                        android:gravity="center_vertical|center_horizontal"-->
+<!--                        android:padding="15dp"-->
+<!--                        android:text="50"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="20sp" />-->
 
-                </FrameLayout>
-            </com.google.android.material.card.MaterialCardView>
+<!--                </FrameLayout>-->
+<!--            </com.google.android.material.card.MaterialCardView>-->
         </LinearLayout>
 
     </FrameLayout>
