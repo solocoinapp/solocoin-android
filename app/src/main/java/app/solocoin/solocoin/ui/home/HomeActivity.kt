@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -170,10 +169,10 @@ class HomeActivity : AppCompatActivity() {
     ) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             when {
-                grantResults.isEmpty() -> Log.d(TAG, "User Interaction Cancelled")
+//                grantResults.isEmpty() -> Log.d(TAG, "User Interaction Cancelled")
                 grantResults[0] == PackageManager.PERMISSION_GRANTED -> startFusedLocationService()
                 else -> {
-                    Log.d(TAG, "Permissions Denied by User")
+//                    Log.d(TAG, "Permissions Denied by User")
                     TODO("Show message when user denies location permissions or user interaction is cancelled")
                 }
             }
@@ -182,13 +181,13 @@ class HomeActivity : AppCompatActivity() {
 
     private fun startFusedLocationService() {
         if (!GlobalUtils.isServiceRunning(applicationContext, FusedLocationService.javaClass)) {
-            Log.wtf(TAG, "Starting the fused location service.")
+//            Log.wtf(TAG, "Starting the fused location service.")
             val intent = Intent(applicationContext, FusedLocationService::class.java)
             applicationScope.launch {
                 startService(intent)
             }
         } else {
-            Log.wtf(TAG, "Fused location service already running")
+//            Log.wtf(TAG, "Fused location service already running")
         }
     }
 
@@ -245,9 +244,9 @@ class HomeActivity : AppCompatActivity() {
             applicationScope.launch {
                 createWorkRequest()
             }
-            Log.wtf(SESSION_PING_MANAGER, ": Server Started !!")
+//            Log.wtf(SESSION_PING_MANAGER, ": Server Started !!")
         } else {
-            Log.wtf(SESSION_PING_MANAGER, ": Server Already Working !!")
+//            Log.wtf(SESSION_PING_MANAGER, ": Server Already Working !!")
         }
     }
 

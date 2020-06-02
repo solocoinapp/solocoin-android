@@ -3,7 +3,6 @@ package app.solocoin.solocoin.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
@@ -87,7 +86,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         // for instance if the the phone number format is not valid.
         override fun onVerificationFailed(e: FirebaseException) {
             loadingDialog.dismiss()
-            Log.wtf(TAG, e.toString())
+//            Log.wtf(TAG, e.toString())
             val errorDialog = AppDialog.instance("Error!", getString(R.string.error_msg), null)
             errorDialog.show(supportFragmentManager, errorDialog.tag)
         }
@@ -213,13 +212,13 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                     // Sign in success, update UI with the signed-in user's information
 
                     val uid = task.result!!.user!!.uid
-                    Log.wtf(TAG, "user-id: $uid")
+//                    Log.wtf(TAG, "user-id: $uid")
 
                     task.result?.user?.getIdToken(true)?.addOnCompleteListener { task1 ->
                         sharedPrefs?.idToken = task1.result?.token
                         sharedPrefs?.countryCode = countryCode
                         sharedPrefs?.mobileNumber = mobileNumber
-                        Log.wtf(TAG, sharedPrefs?.idToken)
+//                        Log.wtf(TAG, sharedPrefs?.idToken)
                         val body = JsonObject()
                         val user = JsonObject()
                         user.addProperty("country_code", sharedPrefs?.countryCode)
@@ -233,7 +232,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                 when (resource.status) {
                                     Status.SUCCESS -> {
                                         loadingDialog.dismiss()
-                                        Log.d(TAG, "mobilelogin-rc: ${resource.code}, ${resource}")
+//                                        Log.d(TAG, "mobilelogin-rc: ${resource.code}, ${resource}")
 
                                         if (resource.code == 200) {
                                             //existing-user
@@ -248,10 +247,10 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                                                 sharedPrefs?.userLat = resource.data?.get("lat")?.asString
                                                                 sharedPrefs?.userLong = resource.data?.get("lng")?.asString
                                                                 sharedPrefs?.name = resource.data?.get("name")?.asString
-                                                                Log.d(TAG, "blah ok $resource")
+//                                                                Log.d(TAG, "blah ok $resource")
                                                                 GlobalUtils.startActivityAsNewStack(Intent(this, SplashActivity::class.java), this)
                                                             } else {
-                                                                Log.d(TAG, "blah not ok $resource")
+//                                                                Log.d(TAG, "blah not ok $resource")
                                                                 Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
                                                             }
                                                         }

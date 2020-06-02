@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -93,7 +92,7 @@ class GlobalUtils {
                         .cancelUniqueWork(SESSION_PING_REQUEST)
                     activity.stopService(Intent(activity, FusedLocationService::class.java))
                 } catch (e: Exception) {
-                    Log.wtf("Application Logout", "Unable to close services.")
+                    //Log.wtf("Application Logout", "Unable to close services.")
                 }
             }
             val intent = Intent(context, SplashActivity::class.java)
@@ -139,7 +138,7 @@ class GlobalUtils {
         fun getSessionType(context: Context): String? {
             var sessionType: String? = null
             val checker = LegalChecker(context)
-            if (checker.isCheating) {
+            if (checker.isCheating()) {
                 return STATUS_AWAY
             }
             sharedPrefs?.let {
@@ -157,7 +156,7 @@ class GlobalUtils {
                                     userLat.toDouble(),
                                     userLong.toDouble()
                                 )
-                                Log.wtf("Global Utils", "$dist")
+                                //Log.wtf("Global Utils", "$dist")
                                 return if (dist <= THRESHOLD) {
                                     STATUS_HOME
                                 } else {

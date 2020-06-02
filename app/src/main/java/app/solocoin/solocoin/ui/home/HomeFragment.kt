@@ -1,7 +1,6 @@
 package app.solocoin.solocoin.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +47,7 @@ class HomeFragment : Fragment() {
 
     private fun updateTime() {
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
-            Log.d(TAG, "$response")
+            //Log.d(TAG, "$response")
             when(response.status) {
                 Status.SUCCESS -> {
                     val duration = response.data?.get("home_duration_in_seconds")?.asLong

@@ -2,7 +2,6 @@ package app.solocoin.solocoin.ui.home
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -107,7 +106,7 @@ class MilestonesFragment : Fragment() {
 
     private fun updateMilestones() {
         viewModel.getBadgesLevels().observe(viewLifecycleOwner, Observer { response ->
-            Log.d(TAG, "$response")
+            //Log.d(TAG, "$response")
                 when (response.status) {
                     Status.SUCCESS -> {
                         val milestones = response.data

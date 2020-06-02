@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -131,7 +130,7 @@ class WalletFragment : Fragment() {
         walletUpdateInfoTv.visibility = View.INVISIBLE
         // Fetch wallet amount and offers already redeemed from user
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
-            Log.d(TAG, "$response")
+            //Log.d(TAG, "$response")
             when (response.status) {
                 Status.SUCCESS -> {
                     val balance = response.data?.get("wallet_balance")?.asString
@@ -201,7 +200,7 @@ class WalletFragment : Fragment() {
             fetchOffersSharedPrefs()
         } else {
             viewModel.getOffers().observe(viewLifecycleOwner, Observer { response ->
-                Log.d(TAG, "$response")
+                //Log.d(TAG, "$response")
                 when (response.status) {
                     Status.SUCCESS -> {
                         if (response.data != null) {

@@ -1,7 +1,6 @@
 package app.solocoin.solocoin.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -242,7 +241,7 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        Log.d("Question submit SUCESS", question_id.toString())
+//                        Log.d("Question submit SUCESS", question_id.toString())
                         if (CURRENT_QUIZ == DAILY_QUIZ) {
                             sharedPrefs?.dailyQuizTime = Calendar.getInstance().timeInMillis
                             showFallbackText(AFTER_TWO_HOURS)
