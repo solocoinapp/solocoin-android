@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,10 +11,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import app.solocoin.solocoin.BuildConfig
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
@@ -50,15 +53,31 @@ class ProfileFragment : Fragment() {
 
         //logout-btn
         view.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
-            val logoutDialog = AppDialog.instance(getString(R.string.confirm), getString(R.string.tag_logout), object: AppDialog.AppDialogListener {
-                override fun onClickConfirm() {
-                    GlobalUtils.logout(context!!)
-                    activity?.finish()
-                }
+            val nInfo =
+                activity.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE).activeNetworkInfo
+            val connected = nInfo != null && nInfo.isAvailable && nInfo.isConnected
+            if(connected){
+                val logoutDialog = AppDialog.instance(getString(R.string.confirm), getString(R.string.tag_logout), object: AppDialog.AppDialogListener {
+                    override fun onClickConfirm() {
+                        GlobalUtils.logout(context!!)
+                        sharedPrefs?.let{
+                            it.loggedIn = false
+                        }
+                        activity?.finish()
+                    }
 
-                override fun onClickCancel() {}
-            }, getString(R.string.logout), getString(R.string.cancel))
-            logoutDialog.show(childFragmentManager, logoutDialog.tag)
+                    override fun onClickCancel() {}
+                }, getString(R.string.logout), getString(R.string.cancel))
+                logoutDialog.show(childFragmentManager, logoutDialog.tag)
+            } else {
+                val logoutDialog = AppDialog.instance(getString(R.string.unable_logout), getString(R.string.tag_logout), object: AppDialog.AppDialogListener {
+                    override fun onClickConfirm() {}
+
+                    override fun onClickCancel() {}
+                }, getString(R.string.okay))
+                logoutDialog.show(childFragmentManager, logoutDialog.tag)
+            }
+
         }
         //logout-btn
     }

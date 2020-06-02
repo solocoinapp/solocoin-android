@@ -54,6 +54,9 @@
     <string name="confirm">Confirm</string>
     <string name="tag_logout">Do you really want to logout?</string>
 
+
+    <string name="unable_logout">Please connect to the Internet to logout. No changes will happen to your data.</string>
+
     <string name="url_pp">https://www.solocoin.app/privacy-policy/</string>
     <string name="url_tnc">https://www.solocoin.app/terms-and-conditions/</string>
 

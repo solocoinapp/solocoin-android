@@ -34,7 +34,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tvHomeDuration = view.findViewById(R.id.tv_home_duration)
-
+        sharedPrefs?.let {
+            it.loggedIn = true
+        }
         updateTime()
     }
 
