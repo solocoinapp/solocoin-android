@@ -35,7 +35,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tvHomeDuration = view.findViewById(R.id.time)
-
+//        sharedPrefs?.let {
+//            it.loggedIn = true
+//        }
         updateTime()
 
         quiz_viewpager.adapter = QuizFragmentAdapter(this)

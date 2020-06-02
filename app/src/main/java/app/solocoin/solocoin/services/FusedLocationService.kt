@@ -63,11 +63,11 @@ class FusedLocationService : Service() {
             super.onLocationResult(locationResult)
             locationResult?.let {
                 mLocation = it.lastLocation
-                if (mLocation.isFromMockProvider) {
-                    sharedPrefs?.let { prefs ->
-                        prefs.mock = true
-                    }
-                }
+//                if(mLocation.isFromMockProvider){
+//                    sharedPrefs?.let{
+//                        it.mock = true;
+//                    }
+//                }
                 updateSharedPrefs(mLocation)
             }
         }

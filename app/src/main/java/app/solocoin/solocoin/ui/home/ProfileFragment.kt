@@ -53,12 +53,10 @@ class ProfileFragment : Fragment(), KoinComponent {
         view.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
             if (!GlobalUtils.isNetworkAvailable(requireContext())) {
                 val logoutDialog = AppDialog.instance(
-                    "Sorry",
-                    getString(R.string.logout_issue),
+                    getString(R.string.unable_logout),
+                    getString(R.string.tag_logout),
                     object : AppDialog.AppDialogListener {
-                        override fun onClickConfirm() {
-                            onClickCancel()
-                        }
+                        override fun onClickConfirm() {}
 
                         override fun onClickCancel() {}
                     },
@@ -73,6 +71,9 @@ class ProfileFragment : Fragment(), KoinComponent {
                     object : AppDialog.AppDialogListener {
                         override fun onClickConfirm() {
                             GlobalUtils.logout(context!!, activity!!)
+//                            SolocoinApp.sharedPrefs?.let{
+//                                it.loggedIn = false
+//                            }
                             activity?.finish()
                         }
 
