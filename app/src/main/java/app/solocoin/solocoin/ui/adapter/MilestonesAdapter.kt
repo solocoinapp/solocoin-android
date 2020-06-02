@@ -16,9 +16,6 @@ import app.solocoin.solocoin.ui.home.ShareBadgeActivity
 import app.solocoin.solocoin.util.GlobalUtils
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
 /**
@@ -132,17 +129,7 @@ class MilestonesAdapter(
                     userBadgesCnt++
                 } else {
                     it.has = false
-                    CoroutineScope(Dispatchers.Default).launch {
-                        val radius = 4f
-                        val blurView = badgeCv.findViewById<BlurView>(R.id.blurView)
-                        val decorView = (context as Activity).window.decorView
-                        val rootView = decorView.findViewById<ViewGroup>(android.R.id.content)
-                        val windowBackground = decorView.background
-                        blurView.setupWith(rootView)
-                            .setFrameClearDrawable(windowBackground)
-                            .setBlurAlgorithm(RenderScriptBlur(context))
-                            .setBlurRadius(radius)
-                    }
+                    addBlurView(context, badgeCv)
                 }
                 badgesGridL.addView(badgeCv)
                 col++
@@ -151,6 +138,18 @@ class MilestonesAdapter(
             trophyCntTv.text = "$userBadgesCnt"
 
             bindLevel(userLevel, milestones)
+        }
+
+        private fun addBlurView(context: Context, badgeCv: View) {
+            val radius = 4f
+            val blurView = badgeCv.findViewById<BlurView>(R.id.blurView)
+            val decorView = (context as Activity).window.decorView
+            val rootView = decorView.findViewById<ViewGroup>(android.R.id.content)
+            val windowBackground = decorView.background
+            blurView.setupWith(rootView)
+                .setFrameClearDrawable(windowBackground)
+                .setBlurAlgorithm(RenderScriptBlur(context))
+                .setBlurRadius(radius)
         }
 
         private fun bindLevel(
