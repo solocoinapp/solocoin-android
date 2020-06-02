@@ -103,6 +103,17 @@
                 android:textSize="18sp"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/error_label"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/refresh_reward"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
         </RelativeLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

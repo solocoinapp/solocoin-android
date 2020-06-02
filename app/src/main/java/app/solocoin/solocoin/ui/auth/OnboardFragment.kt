@@ -1,14 +1,12 @@
 package app.solocoin.solocoin.ui.auth
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-
+import androidx.fragment.app.Fragment
 import app.solocoin.solocoin.R
 
 /**
@@ -37,7 +35,7 @@ class OnboardFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val mView = inflater.inflate(R.layout.fragment_onboard, container, false)
 
-        idx = arguments!!.getInt(FRAG_INDEX)
+        idx = requireArguments().getInt(FRAG_INDEX)
 
         val ivIntro = mView.findViewById<ImageView>(R.id.iv_intro)
         val tvIntro = mView.findViewById<TextView>(R.id.tv_intro)

@@ -181,7 +181,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startFusedLocationService() {
-        if (!GlobalUtils.isServiceRunning(applicationContext, FusedLocationService::class.java)) {
+        if (!GlobalUtils.isServiceRunning(applicationContext, FusedLocationService.javaClass)) {
             Log.wtf(TAG, "Starting the fused location service.")
             val intent = Intent(applicationContext, FusedLocationService::class.java)
             applicationScope.launch {

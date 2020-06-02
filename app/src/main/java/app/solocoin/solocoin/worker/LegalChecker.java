@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.stericson.RootTools.RootTools;
+import com.scottyab.rootbeer.RootBeer;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +23,8 @@ public class LegalChecker {
         this.context = context;
     }
     public boolean isCheating() {
-        return RootTools.isRootAvailable() || isMockSettingsON(context) || areThereMockPermissionApps(context);
+        RootBeer rootBeer = new RootBeer(context);
+        return rootBeer.isRootedWithBusyBoxCheck() || isMockSettingsON(context) || areThereMockPermissionApps(context);
     }
 
     private static boolean isMockSettingsON(Context context) {

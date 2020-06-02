@@ -228,7 +228,7 @@ class MarkLocationActivity : AppCompatActivity(), PermissionListener, View.OnCli
                 when(resource.status) {
                     Status.SUCCESS -> {
                         GlobalUtils.startActivityAsNewStack(Intent(this@MarkLocationActivity, HomeActivity::class.java), this@MarkLocationActivity)
-                        finish()
+//                        finish()
                     }
                     Status.ERROR -> {
                         if (resource.exception is NoConnectivityException) {

@@ -87,7 +87,7 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
                             sharedPrefs?.id = id
 
                             GlobalUtils.startActivityAsNewStack(Intent(this@CreateProfileActivity, HomeActivity::class.java), this@CreateProfileActivity)
-                            finish()
+//                            finish()
                         } else {
                             Toast.makeText(this@CreateProfileActivity, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
                         }

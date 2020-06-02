@@ -98,7 +98,7 @@ class MilestonesFragment : Fragment() {
 
     private fun fetchMilestonesSharedPrefs() {
             SolocoinApp.sharedPrefs?.milestones?.let {
-                if (it.badgeLevel.size > 3) {
+                if (it.badgeLevel.size > 3 && it.earnedPoints.toDouble() >= 0.0) {
                     mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(it) })
                     recyclerView.adapter = mAdapter
                 }
@@ -111,7 +111,7 @@ class MilestonesFragment : Fragment() {
                 when (response.status) {
                     Status.SUCCESS -> {
                         val milestones = response.data
-                        if ((milestones?.badgeLevel != null) && (milestones.badgeLevel.size > 3)) {
+                        if ((milestones?.badgeLevel != null) && (milestones.badgeLevel.size > 3 && milestones.earnedPoints.toDouble() >= 0.0)) {
                             mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
                                 milestones.badgeLevel.sortBy { x -> x.level.toInt() }
                                 add(milestones)

@@ -86,7 +86,7 @@
 
     //rewards + wallet section
     <string name="claim_offer">CLAIM OFFER</string>
-    <string name="claim_error">Sorry, an error occurred. Please contact customer support if this persists.</string>
+    <string name="claim_error">Sorry, an error occurred. Please contact customer support.</string>
     <string name="reward_details">Reward Details</string>
     <string name="coins_value">0.0</string>
     <string name="reward_cost_coins">2500 Coins</string>
@@ -151,5 +151,6 @@
     <string name="one_liner">Every Alpha Warrior was a trainee once</string>
     <string name="image_error">Unable to load your badge.</string>
     <string name="wallet_update_info">Wallet will take 3–4 minutes to update</string>
+    <string name="refresh_reward">Loading your offers...</string>
 
 </resources>

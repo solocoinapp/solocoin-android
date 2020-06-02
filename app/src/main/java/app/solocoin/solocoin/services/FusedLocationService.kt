@@ -30,6 +30,7 @@ class FusedLocationService : Service() {
     }
 
     override fun onDestroy() {
+        mFusedLocationClient.removeLocationUpdates(mLocationListener)
         Log.wtf(TAG, "Stopping Fused location service.")
     }
 

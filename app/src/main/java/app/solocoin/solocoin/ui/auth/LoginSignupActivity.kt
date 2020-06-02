@@ -87,7 +87,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         // for instance if the the phone number format is not valid.
         override fun onVerificationFailed(e: FirebaseException) {
             loadingDialog.dismiss()
-
+            Log.wtf(TAG, e.toString())
             val errorDialog = AppDialog.instance("Error!", getString(R.string.error_msg), null)
             errorDialog.show(supportFragmentManager, errorDialog.tag)
         }
@@ -198,6 +198,8 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        loadingDialog.dismiss()
+        loadingDialog.show(supportFragmentManager, loadingDialog.tag)
 
         if (mFirebaseAuth.currentUser != null) {
             sharedPrefs?.clearSession()
@@ -246,10 +248,10 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                                                 sharedPrefs?.userLat = resource.data?.get("lat")?.asString
                                                                 sharedPrefs?.userLong = resource.data?.get("lng")?.asString
                                                                 sharedPrefs?.name = resource.data?.get("name")?.asString
-
+                                                                Log.d(TAG, "blah ok $resource")
                                                                 GlobalUtils.startActivityAsNewStack(Intent(this, SplashActivity::class.java), this)
-                                                                finish()
                                                             } else {
+                                                                Log.d(TAG, "blah not ok $resource")
                                                                 Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
                                                             }
                                                         }
@@ -270,7 +272,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                         } else if (resource.code == 401) {
                                             //new-user
                                             GlobalUtils.startActivityAsNewStack(Intent(this, MarkLocationActivity::class.java), this)
-                                            finish()
+//                                            finish()
                                             //new-user
                                         }
                                     }
@@ -290,7 +292,6 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                     }
                 } else {
                     loadingDialog.dismiss()
-
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         Toast.makeText(this, getString(R.string.error_wrong_otp), Toast.LENGTH_LONG).show()
                     } else {

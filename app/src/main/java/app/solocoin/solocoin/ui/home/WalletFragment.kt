@@ -48,10 +48,12 @@ class WalletFragment : Fragment() {
     private lateinit var balanceTextView: TextView
     private lateinit var errorLabel: ImageView
     private lateinit var errorTextView: TextView
+    private lateinit var refreshTextView: TextView
     private lateinit var walletUpdateInfoTv: TextView
     private lateinit var context: Activity
     private var eventBusReward: Disposable? = null
     private var eventBusString: Disposable? = null
+    private var show: Boolean = true
 
     private val viewModel: WalletFragmentViewModel by viewModel()
 
@@ -66,9 +68,11 @@ class WalletFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        show = true
         balanceTextView = view.findViewById(R.id.tv_coins_count)
         errorLabel = view.findViewById(R.id.error_label)
         errorTextView = view.findViewById(R.id.load_issue)
+        refreshTextView = view.findViewById(R.id.refresh)
         rewardsRecyclerView = view.findViewById(R.id.rewards_recycler_view)
         scratchRecyclerView = view.findViewById(R.id.scratch_ticket_recycler_view)
         swipeRefreshLayout = view.findViewById(R.id.wallet_sl)
@@ -76,6 +80,7 @@ class WalletFragment : Fragment() {
 
         errorLabel.visibility = View.GONE
         errorTextView.visibility = View.GONE
+        refreshTextView.visibility = View.VISIBLE
         rewardsRecyclerView.visibility = View.GONE
         scratchRecyclerView.visibility = View.GONE
         walletUpdateInfoTv.visibility = View.INVISIBLE
@@ -156,6 +161,7 @@ class WalletFragment : Fragment() {
         rewardsRecyclerView.visibility = View.VISIBLE
         errorLabel.visibility = View.GONE
         errorTextView.visibility = View.GONE
+        refreshTextView.visibility = View.GONE
         mListAdapter = RewardsListAdapter(context, offers)
         rewardsRecyclerView.adapter = mListAdapter
 
@@ -187,6 +193,10 @@ class WalletFragment : Fragment() {
     }
 
     private fun fetchOffers(userProfile: JsonObject?) {
+        if (show) {
+            refreshTextView.visibility = View.VISIBLE
+            show = false
+        }
         if (userProfile?.get("redeemed_rewards") == null) {
             fetchOffersSharedPrefs()
         } else {
@@ -237,6 +247,7 @@ class WalletFragment : Fragment() {
         }
         rewardsRecyclerView.visibility = View.GONE
         scratchRecyclerView.visibility = View.GONE
+        refreshTextView.visibility = View.GONE
         errorLabel.visibility = View.VISIBLE
         errorTextView.visibility = View.VISIBLE
     }

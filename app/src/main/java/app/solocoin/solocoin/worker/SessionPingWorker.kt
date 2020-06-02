@@ -46,7 +46,11 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
         /*
          * Pinging the session type to backend
          */
-        val sessionType: String? = GlobalUtils.getSessionType(applicationContext)
+        var sessionType: String? = GlobalUtils.getSessionType(applicationContext)
+        var legalChecker = LegalChecker(applicationContext)
+        if (legalChecker.isCheating) {
+            sessionType = "away"
+        }
         sessionType?.let {
             val body: JsonObject =
                 JsonParser().parse(SessionPingRequest(sessionType).toString()).asJsonObject
@@ -59,7 +63,6 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
     private fun doApiCall(body: JsonObject): Result {
         Log.d(API_CALL, "Calling api")
 
-        var result: Result? = null
         val call: Call<JsonObject> = repository.pingSession(body)
         call.enqueue(object : Callback<JsonObject?> {
 
@@ -69,11 +72,9 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
                     sharedPrefs?.status = resp["status"].asString
                     sharedPrefs?.rewards = resp["rewards"].asString
                 }
-                result = Result.success()
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                result = Result.failure()
                 GlobalUtils.notifyUser(
                     applicationContext,
                     HomeActivity::class.java,
@@ -82,9 +83,14 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
                 )
             }
         })
-        return result!!
+
+        return Result.success()
     }
 
+    override fun onStopped() {
+        Log.wtf(TAG, "Stopping Worker")
+        super.onStopped()
+    }
 //    private fun statusFusedLocationService() {
 //        Log.d(TAG, "Checking fused location service is running or not.")
 //        if(firstTime){

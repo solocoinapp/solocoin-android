@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.util
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.PendingIntent
 import android.content.Context
@@ -63,6 +64,7 @@ class GlobalUtils {
         fun startActivityAsNewStack(intent: Intent, context: Context) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             context.startActivity(intent)
+            (context as Activity).finish()
         }
 
         /**
@@ -155,10 +157,12 @@ class GlobalUtils {
                                     userLat.toDouble(),
                                     userLong.toDouble()
                                 )
-                                return if (dist <= THRESHOLD)
+                                Log.wtf("Global Utils", "$dist")
+                                return if (dist <= THRESHOLD) {
                                     STATUS_HOME
-                                else
+                                } else {
                                     STATUS_AWAY
+                                }
                             }
                         }
                     }
@@ -216,7 +220,7 @@ class GlobalUtils {
 
         @InternalCoroutinesApi
         @ExperimentalCoroutinesApi
-        fun isServiceRunning(context: Context, serviceClass: Class<FusedLocationService>): Boolean {
+        fun isServiceRunning(context: Context, serviceClass: Class<Any>): Boolean {
             val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
             for (service in manager!!.getRunningServices(Int.MAX_VALUE)) {
                 if (serviceClass.name == service.service.className) {

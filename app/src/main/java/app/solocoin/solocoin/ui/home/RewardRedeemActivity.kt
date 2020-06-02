@@ -16,6 +16,7 @@ import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.ui.adapter.RewardRedeemAdapter
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.EventBus
+import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -59,21 +60,13 @@ class RewardRedeemActivity : AppCompatActivity() {
         val claimOffer = findViewById<Button>(R.id.claim_offer)
         claimOffer.setOnClickListener {
             if (rewardArrayList[0].isClaimed) {
-                val infoDialog = AppDialog.instance(
-                    "",
-                    getString(R.string.already_claimed),
-                    object : AppDialog.AppDialogListener {
-                        override fun onClickConfirm() {
-
-                        }
-
-                        override fun onClickCancel() {}
-                    },
-                    getString(R.string.okay)
-                )
-                infoDialog.show(supportFragmentManager, infoDialog.tag)
+                showInfoDialog("Oops!", getString(R.string.already_claimed))
             } else {
-                redeemCoupon()
+                if (GlobalUtils.isNetworkAvailable(this)) {
+                    redeemCoupon()
+                } else {
+                    showInfoDialog("Error", getString(R.string.internet_issue))
+                }
             }
         }
 
