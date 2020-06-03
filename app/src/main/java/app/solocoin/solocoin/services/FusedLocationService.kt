@@ -5,7 +5,6 @@ import android.content.Intent
 import android.location.Location
 import android.os.IBinder
 import android.os.Looper
-import android.util.Log
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.ui.home.HomeActivity
 import app.solocoin.solocoin.util.GlobalUtils
@@ -27,6 +26,11 @@ class FusedLocationService : Service() {
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
+    }
+
+    override fun onDestroy() {
+        mFusedLocationClient.removeLocationUpdates(mLocationListener)
+        //Log.wtf(TAG, "Stopping Fused location service.")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -82,7 +86,7 @@ class FusedLocationService : Service() {
      * Required by work manager at regular interval.
      */
     private fun updateSharedPrefs(location: Location) {
-        Log.wtf(TAG, "Location : (" + location.longitude + location.latitude + ")")
+        //Log.wtf(TAG, "Location : (" + location.longitude + location.latitude + ")")
         sharedPrefs?.let {
             it.currentLat = location.latitude.toString()
             it.currentLong = location.longitude.toString()

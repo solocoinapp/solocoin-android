@@ -1,4 +1,4 @@
-package app.solocoin.solocoin.worker;
+package app.solocoin.solocoin.worker
 
 
 import android.content.Context
@@ -7,31 +7,31 @@ import android.provider.Settings
 import android.util.Log
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import com.scottyab.rootbeer.RootBeer
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-
 
 /*
  * Created by Vijay Daita on 5/20
  */
 
-public class LegalChecker(var context: Context){
+class LegalChecker(var context: Context) {
     @InternalCoroutinesApi
-    public fun isCheating() : Boolean{
-        var rootBeer = RootBeer(context)
-        var mock = false;
+    @ExperimentalCoroutinesApi
+    fun isCheating(): Boolean {
+        val rootBeer = RootBeer(context)
+        var mock = false
         sharedPrefs?.let {
             mock = it.mock
         }
-        return  rootBeer.isRooted() && mock
+        return rootBeer.isRooted && mock
     }
 
     fun isMockSettingsON(context: Context): Boolean {
         // returns true if mock location enabled, false if not enabled.
-        return if (Settings.Secure.getString(
-                context.contentResolver,
-                Settings.Secure.ALLOW_MOCK_LOCATION
-            ) == "0"
-        ) false else true
+        return Settings.Secure.getString(
+            context.contentResolver,
+            Settings.Secure.ALLOW_MOCK_LOCATION
+        ) != "0"
     }
 
     fun areThereMockPermissionApps(context: Context): Boolean {
@@ -62,6 +62,6 @@ public class LegalChecker(var context: Context){
                 Log.e("Got exception ", e.message)
             }
         }
-        return if (count > 0) true else false
+        return count > 0
     }
 }

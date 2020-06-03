@@ -3,6 +3,10 @@ package app.solocoin.solocoin.app
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import app.solocoin.solocoin.model.Milestones
+import app.solocoin.solocoin.model.Reward
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 /**
  * Created by Aditya Sonel on 22/04/20.
@@ -68,7 +72,7 @@ class SharedPrefs(context: Context) {
 
     private val wallet_balance = "wallet_balance"
     var walletBalance: String?
-        get() = instance.getString(wallet_balance, null)
+        get() = instance.getString(wallet_balance, "0.0")
         set(value) = instance.edit().putString(wallet_balance, value).apply()
 
     private val _rewards = "rewards"
@@ -76,20 +80,43 @@ class SharedPrefs(context: Context) {
         get() = instance.getString(_rewards, null)
         set(value) = instance.edit().putString(_rewards, value).apply()
 
+    private val _offers = "offers"
+    var offers: ArrayList<Reward>?
+        get() = Gson().fromJson<ArrayList<Reward>?>(
+            instance.getString(_offers, null),
+            object : TypeToken<ArrayList<Reward>>() {}.type
+        )
+        set(value) = instance.edit().putString(_offers, Gson().toJson(value)).apply()
+
+    private val _milestones = "milestones"
+    var milestones: Milestones?
+        get() = Gson().fromJson(instance.getString(_milestones, null), Milestones::class.java)
+        set(value) = instance.edit().putString(_milestones, Gson().toJson(value)).apply()
+
     private val _status = "status"
     var status: String?
         get() = instance.getString(_status, null)
         set(value) = instance.edit().putString(_status, value).apply()
+
+    private val daily_quiz_time = "daily_quiz_time"
+    var dailyQuizTime: Long
+        get() = instance.getLong(daily_quiz_time, 0)
+        set(value) = instance.edit().putLong(daily_quiz_time, value).apply()
+
+    private val count_answered_weekly_quiz = "count_answered_weekly_quiz"
+    var countAnsweredWeeklyQuiz: Int
+        get() = instance.getInt(count_answered_weekly_quiz, 0)
+        set(value) = instance.edit().putInt(count_answered_weekly_quiz, value).apply()
 
     private val _mock = "mock"
     var mock: Boolean
         get() = instance.getBoolean(_mock, false)
         set(value) = instance.edit().putBoolean(_mock, value).apply()
 
-    private val _loggedin = "loggedin"
-    var loggedIn: Boolean
-        get() = instance.getBoolean(_loggedin, false)
-        set(value) = instance.edit().putBoolean(_loggedin, value).apply()
+//    private val _loggedin = "loggedin"
+//    var loggedIn: Boolean
+//        get() = instance.getBoolean(_loggedin, false)
+//        set(value) = instance.edit().putBoolean(_loggedin, value).apply()
 
     fun clearSession() {
         instance.edit()

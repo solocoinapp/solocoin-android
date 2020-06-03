@@ -3,7 +3,6 @@ package app.solocoin.solocoin.di
 import app.solocoin.solocoin.ui.auth.CreateProfileViewModel
 import app.solocoin.solocoin.ui.auth.LoginSignupViewModel
 import app.solocoin.solocoin.ui.auth.MarkYourLocationViewModel
-import app.solocoin.solocoin.ui.home.HomeActivityViewModel
 import app.solocoin.solocoin.ui.home.HomeFragmentViewModel
 import app.solocoin.solocoin.ui.home.MilestonesFragmentViewModel
 import app.solocoin.solocoin.ui.home.WalletFragmentViewModel
@@ -28,12 +27,15 @@ val viewModelModule = module {
         HomeFragmentViewModel(repository = get())
     }
     viewModel {
-        HomeActivityViewModel(application = get())
-    }
-    viewModel {
         WalletFragmentViewModel(repository = get())
     }
     viewModel {
         MilestonesFragmentViewModel(repository = get())
+    }
+    viewModel {
+        QuizViewModel(repository = get())
+    }
+    viewModel {
+        RewardRedeemViewModel(repository = get())
     }
 }

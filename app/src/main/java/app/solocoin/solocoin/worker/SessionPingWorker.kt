@@ -1,7 +1,6 @@
 package app.solocoin.solocoin.worker
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
@@ -35,7 +34,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
      * in the SolocoinRespository class.
      */
     override fun doWork(): Result {
-        Log.d(TAG, "Initiating the work")
+        //Log.d(TAG, "Initiating the work")
 
 //        /*
 //         * Checking if fused location service is running.
@@ -47,28 +46,27 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
          * Pinging the session type to backend
          */
         var sessionType: String? = GlobalUtils.getSessionType(applicationContext)
-        var legalChecker = LegalChecker(applicationContext)
-        if(legalChecker.isCheating()){
+        val legalChecker = LegalChecker(applicationContext)
+        if (legalChecker.isCheating()) {
             sessionType = "away"
         }
-        sharedPrefs?.let{
-            if(!(it.loggedIn)){
-                return Result.success();
-            }
-        }
+//        sharedPrefs?.let{
+//            if(!(it.loggedIn)){
+//                return Result.success();
+//            }
+//        }
         sessionType?.let {
             val body: JsonObject =
                 JsonParser().parse(SessionPingRequest(sessionType).toString()).asJsonObject
-            Log.wtf(TAG, body.toString())
+//            //Log.wtf(TAG, body.toString())
             return doApiCall(body)
         }
         return Result.retry()
     }
 
     private fun doApiCall(body: JsonObject): Result {
-        Log.d(API_CALL, "Calling api")
+//        //Log.d(API_CALL, "Calling api")
 
-        var result: Result? = null
         val call: Call<JsonObject> = repository.pingSession(body)
         call.enqueue(object : Callback<JsonObject?> {
 
@@ -78,11 +76,9 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
                     sharedPrefs?.status = resp["status"].asString
                     sharedPrefs?.rewards = resp["rewards"].asString
                 }
-                result = Result.success()
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                result = Result.failure()
                 GlobalUtils.notifyUser(
                     applicationContext,
                     HomeActivity::class.java,
@@ -91,17 +87,22 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
                 )
             }
         })
-        return result!!
+
+        return Result.success()
     }
 
+    override fun onStopped() {
+//        //Log.wtf(TAG, "Stopping Worker")
+        super.onStopped()
+    }
 //    private fun statusFusedLocationService() {
-//        Log.d(TAG, "Checking fused location service is running or not.")
+//        //Log.d(TAG, "Checking fused location service is running or not.")
 //        if(firstTime){
-//            Log.d(TAG,"First time work manager started so skipping")
+//            //Log.d(TAG,"First time work manager started so skipping")
 //            return
 //        }
 //        if (GlobalUtils.isServiceRunning(applicationContext,FusedLocationService::class.java)) {
-//            Log.wtf(TAG, "Creating request to start fused location service")
+//            //Log.wtf(TAG, "Creating request to start fused location service")
 //            GlobalUtils.notifyUser(
 //                applicationContext,
 //                HomeActivity::class.java,
@@ -109,7 +110,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 //                "Please allow location updates to the application by starting the App and continue receiving rewards."
 //            )
 //        } else {
-//            Log.d(TAG, "Fused location service already running")
+//            //Log.d(TAG, "Fused location service already running")
 //        }
 //    }
 

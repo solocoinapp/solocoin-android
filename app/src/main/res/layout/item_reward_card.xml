@@ -25,7 +25,6 @@
             android:layout_centerHorizontal="true"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/reward_company_name"
-            android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -34,6 +33,7 @@
             android:id="@+id/company_logo"
             android:layout_width="72dp"
             android:layout_height="72dp"
+            android:adjustViewBounds="true"
             android:layout_below="@id/company_name"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/reward_company_logo"
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/amt"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/poppins"
+            android:fontFamily="@font/poppins_semibold"
             android:text="@string/reward_cost_coins"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />

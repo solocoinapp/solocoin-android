@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/reward_details_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,25 +13,14 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/reward_image_1"
+            android:id="@+id/reward_image"
+            android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="196dp"
-            android:contentDescription="@string/reward_image_1"
+            android:contentDescription="@string/reward_image"
             android:scaleType="centerCrop"
             android:src="@drawable/reward" />
 
-        <TextView
-            android:id="@+id/extra_tnc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/reward_image_1"
-            android:layout_margin="16dp"
-            android:background="@color/grey_black"
-            android:fontFamily="@font/poppins"
-            android:padding="2dp"
-            android:text="@string/extra_reward_detail"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -39,8 +29,9 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/reward_image_2"
+            android:id="@+id/company_logo"
             android:layout_width="84dp"
+            android:adjustViewBounds="true"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/reward_name"
             android:layout_alignBottom="@id/coins"
@@ -48,7 +39,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="@drawable/grey_border"
-            android:contentDescription="@string/reward_image_2"
+            android:contentDescription="@string/reward_company_logo"
             android:padding="1dp"
             android:scaleType="fitCenter"
             android:src="@drawable/app_icon" />
@@ -57,11 +48,12 @@
             android:id="@+id/reward_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_toEndOf="@id/reward_image_2"
+            android:layout_toEndOf="@id/company_logo"
             android:fontFamily="@font/poppins"
+            android:textStyle="bold"
             android:text="@string/reward_description"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="22sp" />
@@ -72,17 +64,18 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/reward_name"
             android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/reward_image_2"
+            android:layout_alignStart="@id/reward_name"
+            android:layout_alignEnd="@id/reward_name"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/coin_image"
                 android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_height="27dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/coins_image"
                 android:scaleType="centerCrop"
-                android:src="@drawable/coin" />
+                android:src="@drawable/ic_coin" />
 
             <TextView
                 android:id="@+id/coins_amt"
@@ -107,6 +100,57 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="12dp"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/redeem_code_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/primary_border"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/code"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/redeem_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="2dp"
+                android:layout_toStartOf="@+id/copy_button"
+                android:layout_toEndOf="@+id/code"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/coupon_code"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/copy_button"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="5dp"
+                android:backgroundTint="@color/colorAccent"
+                android:elevation="8dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/text_copy"
+                android:textColor="@color/white"
+                app:cornerRadius="18dp" />
+
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"

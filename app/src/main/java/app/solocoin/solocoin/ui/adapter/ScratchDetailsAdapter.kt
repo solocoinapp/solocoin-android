@@ -53,7 +53,7 @@ class ScratchDetailsAdapter(
             scratchTicket?.let {
                 scratchCost?.text = it.costRupees!!
                 scratchReward?.text = it.rewardRupees!!
-                // TODO: make network call when layout is clicked.
+//                 TODO: make network call when layout is clicked.
             }
         }
 

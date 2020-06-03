@@ -16,9 +16,8 @@
         android:theme="?attr/actionBarTheme"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!-- TODO Check with text view defined below -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/offer_recycler_view"
+        android:id="@+id/reward_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/profile_toolbar"
@@ -41,16 +40,5 @@
         android:text="@string/claim_offer"
         android:textColor="@color/white"
         app:cornerRadius="18dp" />
-
-    <!-- TODO : Check this text view -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_below="@id/claim_offer"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="6dp"
-        android:fontFamily="@font/poppins_semibold" />
 
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package app.solocoin.solocoin.repo
 
+import app.solocoin.solocoin.model.Milestones
+import app.solocoin.solocoin.model.Reward
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Response
@@ -28,7 +30,7 @@ interface ApiService {
 
     @Headers("Content-Type: application/json")
     @POST("notification_tokens")
-    fun registerNotificationToken(@Body body: JsonObject): Response<JsonObject>
+    suspend fun registerNotificationToken(@Body body: JsonObject): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @POST("sessions/ping")
@@ -39,13 +41,31 @@ interface ApiService {
 
     @Headers("Content-Type: application/json")
     @GET("user/profile")
-    fun getProfile(@Header("Authorization") authToken: String): Response<JsonObject>
+    suspend fun getProfile(@Header("Authorization") authToken: String): Response<JsonObject>
+
+    @GET("rewards_sponsors")
+    suspend fun getOffers(@Header("Authorization") authToken: String): Response<ArrayList<Reward>>
 
     @Headers("Content-Type: application/json")
-    @GET("rewards")
-    fun rewards(@Header("Authorization") authToken: String): Response<JsonObject>
+    @POST("user/redeem_rewards")
+    suspend fun redeemRewards(
+        @Header("Authorization") authToken: String,
+        @Body body: JsonObject
+    ): Response<JsonObject>
+
+    @GET("user/badges")
+    suspend fun getBadgesLevels(@Header("Authorization") authToken: String): Response<Milestones>
+
+    @GET("questions/daily")
+    suspend fun getDailyQuiz(@Header("Authorization") authToken: String): Response<JsonObject>
+
+    @GET("questions/weekly")
+    suspend fun getWeeklyQuiz(@Header("Authorization") authToken: String): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
-    @POST("redeem_rewards")
-    fun redeemRewards(@Header("Authorization") authToken: String, @Body body: JsonObject): Call<JsonObject>
+    @POST("user_questions_answers")
+    suspend fun submitQuizAnswer(
+        @Header("Authorization") authToken: String,
+        @Body body: JsonObject
+    ): Response<JsonObject>
 }

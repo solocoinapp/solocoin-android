@@ -36,19 +36,32 @@
                 android:layout_below="@id/tv_coins_count"
                 android:layout_centerHorizontal="true"
                 android:fontFamily="@font/poppins_semibold"
-                android:paddingBottom="28dp"
+                android:paddingBottom="4dp"
                 android:text="@string/coins_in_wallet"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/wallet_update_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_coins_in_wallet"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingBottom="22dp"
+                android:text="@string/wallet_update_info"
+                android:textColor="@color/colorAccent"
+                android:visibility="invisible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/scratch_ticket_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/tv_coins_in_wallet"
+                android:layout_below="@id/wallet_update_info"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
                 android:animateLayoutChanges="false"
                 android:fitsSystemWindows="true"
                 android:overScrollMode="never"
@@ -58,14 +71,49 @@
                 android:id="@+id/rewards_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/tv_coins_in_wallet"
+                android:layout_below="@id/wallet_update_info"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
                 android:animateLayoutChanges="false"
                 android:fitsSystemWindows="true"
                 android:overScrollMode="never"
                 android:scrollbars="vertical" />
+
+            <ImageView
+                android:id="@+id/error_label"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/load_issue"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_error"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/load_issue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/error_label"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/load_issue"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/error_label"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/refresh_reward"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
         </RelativeLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

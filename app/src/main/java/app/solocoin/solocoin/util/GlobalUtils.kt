@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.util
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.PendingIntent
 import android.content.Context
@@ -9,22 +10,27 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.work.WorkManager
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.services.FusedLocationService
 import app.solocoin.solocoin.ui.SplashActivity
 import app.solocoin.solocoin.worker.LegalChecker
 import com.google.firebase.auth.FirebaseAuth
+import com.instacart.library.truetime.TrueTime
+import com.squareup.picasso.Callback
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import java.lang.Math.toRadians
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import java.util.*
+import kotlin.math.*
 
 
 /**
@@ -57,6 +63,7 @@ class GlobalUtils {
         fun startActivityAsNewStack(intent: Intent, context: Context) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             context.startActivity(intent)
+            (context as Activity).finish()
         }
 
         /**
@@ -69,11 +76,25 @@ class GlobalUtils {
             imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
+        private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.v1"
         @InternalCoroutinesApi
         @ExperimentalCoroutinesApi
-        fun logout(context: Context) {
+        fun logout(
+            context: Context,
+            activity: FragmentActivity?
+        ) {
             sharedPrefs?.clearSession()
             FirebaseAuth.getInstance().signOut()
+            context.cacheDir.deleteRecursively()
+            activity?.let {
+                try {
+                    WorkManager.getInstance(activity.applicationContext)
+                        .cancelUniqueWork(SESSION_PING_REQUEST)
+                    activity.stopService(Intent(activity, FusedLocationService::class.java))
+                } catch (e: Exception) {
+                    //Log.wtf("Application Logout", "Unable to close services.")
+                }
+            }
             val intent = Intent(context, SplashActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             context.startActivity(intent)
@@ -117,7 +138,7 @@ class GlobalUtils {
         fun getSessionType(context: Context): String? {
             var sessionType: String? = null
             val checker = LegalChecker(context)
-            if (checker.isCheating) {
+            if (checker.isCheating()) {
                 return STATUS_AWAY
             }
             sharedPrefs?.let {
@@ -135,10 +156,12 @@ class GlobalUtils {
                                     userLat.toDouble(),
                                     userLong.toDouble()
                                 )
-                                return if (dist <= THRESHOLD)
+                                //Log.wtf("Global Utils", "$dist")
+                                return if (dist <= THRESHOLD) {
                                     STATUS_HOME
-                                else
+                                } else {
                                     STATUS_AWAY
+                                }
                             }
                         }
                     }
@@ -196,7 +219,7 @@ class GlobalUtils {
 
         @InternalCoroutinesApi
         @ExperimentalCoroutinesApi
-        fun isServiceRunning(context: Context, serviceClass: Class<FusedLocationService>): Boolean {
+        fun isServiceRunning(context: Context, serviceClass: Class<Any>): Boolean {
             val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
             for (service in manager!!.getRunningServices(Int.MAX_VALUE)) {
                 if (serviceClass.name == service.service.className) {
@@ -204,6 +227,72 @@ class GlobalUtils {
                 }
             }
             return false
+        }
+
+        fun verifyDeviceTimeConfig(): Boolean {
+            if (TrueTime.isInitialized()) {
+                val trueTime = TrueTime.now().time
+                val deviceTime = Calendar.getInstance().timeInMillis
+                if (abs(deviceTime - trueTime) / 10000 > 0L) {
+                    return false
+                }
+            }
+            return true
+        }
+
+        fun loadImageNetworkCacheVisibility(url: String?, view: ImageView) {
+            Picasso.get()
+                .load(url)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(view, object : Callback {
+                    override fun onSuccess() {
+                        view.visibility = View.VISIBLE
+                    }
+
+                    override fun onError(e: Exception?) {
+                        Picasso.get()
+                            .load(url)
+                            .into(view, object : Callback {
+                                override fun onSuccess() {
+                                    view.visibility = View.VISIBLE
+                                }
+
+                                override fun onError(e: Exception?) {
+                                    view.visibility = View.GONE
+                                }
+
+                            })
+                    }
+
+                })
+        }
+
+        fun loadImageNetworkCachePlaceholder(url: String?, view: ImageView) {
+            Picasso.get()
+                .load(url)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(view, object : Callback {
+                    override fun onSuccess() {
+                        view.alpha = 1f
+                    }
+
+                    override fun onError(e: Exception?) {
+                        Picasso.get()
+                            .load(url)
+                            .into(view, object : Callback {
+                                override fun onSuccess() {
+                                    view.alpha = 1f
+                                }
+
+                                override fun onError(e: Exception?) {
+                                    view.alpha = 0.5f
+                                    view.setImageResource(R.drawable.badge)
+                                }
+
+                            })
+                    }
+
+                })
         }
     }
 }

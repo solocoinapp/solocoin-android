@@ -1,17 +1,21 @@
 package app.solocoin.solocoin.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Badge
+import app.solocoin.solocoin.util.GlobalUtils
 import com.google.android.material.button.MaterialButton
-import com.squareup.picasso.Picasso
 
 class ShareBadgeActivity : AppCompatActivity() {
 
+    @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share_badge)
@@ -19,32 +23,37 @@ class ShareBadgeActivity : AppCompatActivity() {
         val badge: Badge = intent.extras?.getParcelable("EXTRA_INFO")!!
 
         findViewById<TextView>(R.id.badge_name).apply {
-            text = badge.name!!
+            text = badge.name.capitalize()
         }
         findViewById<TextView>(R.id.badge_level).apply {
-            text = badge.level!!
+            text = ("Level ${badge.level}")
+        }
+        findViewById<TextView>(R.id.one_liner).apply {
+            text = badge.oneLiner.capitalize()
         }
         findViewById<ImageView>(R.id.badge_iv).apply {
-            try {
-                Picasso.get().load(badge.imageUrl!!).into(this)
-            } catch (e: Exception) {
-                // TODO: if internet not available handle that case
+            if (badge.level == "1") {
+                visibility = View.GONE
+            } else {
+                visibility = View.VISIBLE
+                GlobalUtils.loadImageNetworkCachePlaceholder(
+                    getString(R.string.image_base_url) + badge.imageUrl,
+                    this
+                )
             }
         }
         findViewById<MaterialButton>(R.id.share).apply {
+            val message =
+                "I just earned ${(badge.name).capitalize()} on SoloCoin app which rewards you based on your location from home, mall, store and parks. Earn real world rewards with Solocoin. Challenge friends and achieve milestones and badges like me.\n\nDownload the app now: ${getString(
+                    R.string.app_link
+                )}"
+            val imageUri = Uri.parse(getString(R.string.image_base_url) + badge.imageUrl)
             setOnClickListener {
                 val shareIntent = Intent(Intent.ACTION_SEND)
-                shareIntent.type = "text/plain"
-                shareIntent.putExtra(
-                    Intent.EXTRA_SUBJECT,
-                    context.getString(R.string.badge_invite_subject)
-                )
-                shareIntent.putExtra(
-                    Intent.EXTRA_TEXT,
-                    context.getString(R.string.badge_invite_message_start) + badge.name!! + context.getString(
-                        R.string.badge_invite_message_end
-                    )
-                )
+                shareIntent.type = "image/jpeg"
+                shareIntent.putExtra(Intent.EXTRA_TEXT, message)
+                shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 context.startActivity(
                     Intent.createChooser(
                         shareIntent,

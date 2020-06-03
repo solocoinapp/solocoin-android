@@ -2,7 +2,6 @@ package app.solocoin.solocoin.ui.home
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.model.Badge
-import app.solocoin.solocoin.model.Level
 import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.ui.adapter.MilestonesAdapter
 import app.solocoin.solocoin.util.enums.Status
@@ -36,67 +34,100 @@ class MilestonesFragment : Fragment() {
 
     private val viewModel: MilestonesFragmentViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         context = requireActivity()
         return inflater.inflate(R.layout.fragment_milestones, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         recyclerView = view.findViewById(R.id.milestones_recycler_view)
         swipeRefreshLayout = view.findViewById(R.id.milestones_sl)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
         swipeRefreshLayout.setOnRefreshListener {
-            updateUI()
+            updateMilestones()
             swipeRefreshLayout.isRefreshing = false
         }
 
-        updateUI()
+        initializeMilestones()
     }
 
-    private fun updateUI() {
-        mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
-            add(Milestones)
+    // initialize basic milestone section to avoid waiting for response
+    private fun initializeMilestones() {
+        val milestones = Milestones("0", ArrayList<Badge>().apply {
+            add(
+                Badge(
+                    "error",
+                    "Infant",
+                    "1",
+                    "One who stays home is not common",
+                    "0"
+                )
+            )
+            add(
+                Badge(
+                    "error",
+                    "Alpha Warrior",
+                    "2",
+                    "Every Alpha Warrior was a trainee once",
+                    "1000"
+                )
+            )
+            add(
+                Badge(
+                    "error",
+                    "Beta Warrior",
+                    "3",
+                    "Soldier! Lead the Way!",
+                    "2500"
+                )
+            )
         })
+        mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(milestones) })
         recyclerView.adapter = mAdapter
-        updateWallet()
-        updateBadges()
+
+        // updating milestone through api or shared prefs
+        updateMilestones()
     }
 
-    private fun updateWallet() {
-        viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
-            Log.d(TAG, "$response")
+    private fun fetchMilestonesSharedPrefs() {
+        SolocoinApp.sharedPrefs?.milestones?.let {
+            if (it.badgeLevel.size > 3 && it.earnedPoints.toDouble() >= 0.0) {
+                mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(it) })
+                recyclerView.adapter = mAdapter
+            }
+        }
+    }
+
+    private fun updateMilestones() {
+        viewModel.getBadgesLevels().observe(viewLifecycleOwner, Observer { response ->
+            //Log.d(TAG, "$response")
             when (response.status) {
                 Status.SUCCESS -> {
-                    val balance = response.data?.get("wallet_balance")?.asString
-                    SolocoinApp.sharedPrefs?.walletBalance = balance
-                    Milestones.balance = balance
+                    val milestones = response.data
+                    if ((milestones?.badgeLevel != null) && (milestones.badgeLevel.size > 3 && milestones.earnedPoints.toDouble() >= 0.0)) {
+                        mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
+                            milestones.badgeLevel.sortBy { x -> x.level.toInt() }
+                            add(milestones)
+                        })
+                        recyclerView.adapter = mAdapter
+                        SolocoinApp.sharedPrefs?.milestones = milestones
+                    } else {
+                        fetchMilestonesSharedPrefs()
+                    }
                 }
                 Status.ERROR -> {
-                    Milestones.balance = SolocoinApp.sharedPrefs?.walletBalance
+                    fetchMilestonesSharedPrefs()
                 }
                 Status.LOADING -> {
                 }
             }
         })
-    }
-
-    private fun updateLevelInfo(): ArrayList<Level?>? {
-        return null
-        TODO("Not yet implemented")
-    }
-
-    private fun updateBadges() {
-        val badges = ArrayList<Badge?>().apply {
-            add(Badge(null, "Common man", "Level 1", true))
-            add(Badge(null, "Trainee", "Level 2", true))
-            add(Badge(null, "Soldier", "Level 3", true))
-            add(Badge(null, "Chief", "Level 4", true))
-            add(Badge(null, "Commander", "Level 5", true))
-        }
-        Milestones.badges = badges
     }
 
     companion object {

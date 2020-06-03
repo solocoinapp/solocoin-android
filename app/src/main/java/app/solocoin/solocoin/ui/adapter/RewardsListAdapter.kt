@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
@@ -11,15 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.ui.home.RewardRedeemActivity
-import com.squareup.picasso.Picasso
+import app.solocoin.solocoin.util.GlobalUtils
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import java.util.*
 
 /**
  * Created by Saurav Gupta on 14/5/2020
  */
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 class RewardsListAdapter(
     private val context: Activity,
-    private val rewardsArrayList: ArrayList<Reward?>
+    val rewardsArrayList: ArrayList<Reward>
 ) :
     RecyclerView.Adapter<RewardsListAdapter.ViewHolder>() {
 
@@ -39,11 +44,11 @@ class RewardsListAdapter(
         RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
 
-        var companyLogo: ImageView? = null
-        var costRupees: TextView? = null
-        var companyName: TextView? = null
-        var costCoins: TextView? = null
-        var mListener: RecyclerViewClickListener? = null
+        private var companyLogo: ImageView
+        private var costRupees: TextView
+        private var companyName: TextView
+        private var costCoins: TextView
+        private var mListener: RecyclerViewClickListener? = null
 
         init {
             companyLogo = itemView.findViewById(R.id.company_logo)
@@ -51,18 +56,21 @@ class RewardsListAdapter(
             companyName = itemView.findViewById(R.id.company_name)
             costCoins = itemView.findViewById(R.id.cost_coins)
             itemView.setOnClickListener(this)
+
+            companyLogo.visibility = View.GONE
         }
 
         override fun onClick(view: View) {
             mListener?.onClick(view, adapterPosition)
         }
 
-        fun bindRewards(context: Activity, reward: Reward?) {
+        @SuppressLint("DefaultLocale")
+        fun bindRewards(context: Activity, reward: Reward) {
             reward.let {
                 updateImage(it)
-                companyName?.text = it?.companyName!!
-                costCoins?.text = it.costCoins!!
-                costRupees?.text = it.costRupees!!
+                companyName.text = it.companyName.capitalize()
+                costCoins.text = ("${it.costCoins} coins")
+                costRupees.text = it.costRupees
                 mListener = object : RecyclerViewClickListener {
                     override fun onClick(view: View?, position: Int) {
                         val intent = Intent(
@@ -76,9 +84,8 @@ class RewardsListAdapter(
             }
         }
 
-        // TODO : add sanity check to ignore image not available case
-        private fun updateImage(reward: Reward?) {
-            Picasso.get().load(reward?.companyLogoUrl).into(companyLogo)
+        private fun updateImage(reward: Reward) {
+            GlobalUtils.loadImageNetworkCacheVisibility(reward.companyLogoUrl, companyLogo)
         }
     }
 

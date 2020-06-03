@@ -8,6 +8,11 @@
     <color name="blue">#00C2FF</color>
     <color name="gray">#707070</color>
     <color name="light">#B9B9B9</color>
+    <color name="grey_light">#efeef1</color>
+    <color name="pink_dark">#9d509d</color>
+
+    <color name="green_stroke_color">#39FF14</color>
+    <color name="orange_stroke_color">#FE7D29</color>
 
     <!--OnBoard-->
 
