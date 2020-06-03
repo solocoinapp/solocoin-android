@@ -13,8 +13,8 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/reward_image"
             android:adjustViewBounds="true"
+            android:id="@+id/reward_image"
             android:layout_width="match_parent"
             android:layout_height="196dp"
             android:contentDescription="@string/reward_image"
@@ -115,21 +115,21 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/poppins_semibold"
                 android:text="@string/code"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_semibold" />
 
             <TextView
                 android:id="@+id/redeem_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_margin="2dp"
-                android:layout_toStartOf="@+id/copy_button"
-                android:layout_toEndOf="@+id/code"
-                android:fontFamily="@font/poppins_semibold"
                 android:text="@string/coupon_code"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_toEndOf="@+id/code"
+                android:layout_toStartOf="@+id/copy_button"
+                android:layout_margin="2dp"
                 android:textAlignment="center"
                 android:textSize="18sp" />
 

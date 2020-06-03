@@ -96,37 +96,37 @@ class MilestonesFragment : Fragment() {
     }
 
     private fun fetchMilestonesSharedPrefs() {
-        SolocoinApp.sharedPrefs?.milestones?.let {
-            if (it.badgeLevel.size > 3 && it.earnedPoints.toDouble() >= 0.0) {
-                mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(it) })
-                recyclerView.adapter = mAdapter
+            SolocoinApp.sharedPrefs?.milestones?.let {
+                if (it.badgeLevel.size > 3 && it.earnedPoints.toDouble() >= 0.0) {
+                    mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(it) })
+                    recyclerView.adapter = mAdapter
+                }
             }
-        }
     }
 
     private fun updateMilestones() {
         viewModel.getBadgesLevels().observe(viewLifecycleOwner, Observer { response ->
             //Log.d(TAG, "$response")
-            when (response.status) {
-                Status.SUCCESS -> {
-                    val milestones = response.data
-                    if ((milestones?.badgeLevel != null) && (milestones.badgeLevel.size > 3 && milestones.earnedPoints.toDouble() >= 0.0)) {
-                        mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
-                            milestones.badgeLevel.sortBy { x -> x.level.toInt() }
-                            add(milestones)
-                        })
-                        recyclerView.adapter = mAdapter
-                        SolocoinApp.sharedPrefs?.milestones = milestones
-                    } else {
+                when (response.status) {
+                    Status.SUCCESS -> {
+                        val milestones = response.data
+                        if ((milestones?.badgeLevel != null) && (milestones.badgeLevel.size > 3 && milestones.earnedPoints.toDouble() >= 0.0)) {
+                            mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
+                                milestones.badgeLevel.sortBy { x -> x.level.toInt() }
+                                add(milestones)
+                            })
+                            recyclerView.adapter = mAdapter
+                            SolocoinApp.sharedPrefs?.milestones = milestones
+                        } else {
+                            fetchMilestonesSharedPrefs()
+                        }
+                    }
+                    Status.ERROR -> {
                         fetchMilestonesSharedPrefs()
                     }
+                    Status.LOADING -> {
+                    }
                 }
-                Status.ERROR -> {
-                    fetchMilestonesSharedPrefs()
-                }
-                Status.LOADING -> {
-                }
-            }
         })
     }
 
