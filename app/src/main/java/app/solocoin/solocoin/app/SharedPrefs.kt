@@ -113,6 +113,22 @@ class SharedPrefs(context: Context) {
         get() = instance.getBoolean(_mock, false)
         set(value) = instance.edit().putBoolean(_mock, value).apply()
 
+    private val _recent_notif_time = "recent_notif_time"
+    var recentNotifTime: Long
+        get() = instance.getLong(_recent_notif_time, 0)
+        set(value) = instance.edit().putLong(_recent_notif_time, value).apply()
+
+    private val _recent_check_time = "recent_check_time"
+    var recentCheckTime: Long
+        get() = instance.getLong(_recent_check_time, 0)
+        set(value) = instance.edit().putLong(_recent_check_time, value).apply()
+
+    private val _period_valid = "period_valid"
+    var periodValid: Boolean
+        get() = instance.getBoolean(_period_valid, false)
+        set(value) = instance.edit().putBoolean(_period_valid, value).apply()
+
+
 //    private val _loggedin = "loggedin"
 //    var loggedIn: Boolean
 //        get() = instance.getBoolean(_loggedin, false)
