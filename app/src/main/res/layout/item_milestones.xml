@@ -198,9 +198,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
+            android:textColor="@color/white"
             android:text="@string/coming_soon"
             android:layout_gravity="center"
-            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
             android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
 

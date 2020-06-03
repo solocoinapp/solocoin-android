@@ -38,20 +38,24 @@ class OnboardFragment : Fragment() {
         idx = requireArguments().getInt(FRAG_INDEX)
 
         val ivIntro = mView.findViewById<ImageView>(R.id.iv_intro)
-        val tvIntro = mView.findViewById<TextView>(R.id.tv_intro)
+        val tvIntroH1 = mView.findViewById<TextView>(R.id.tv_intro_h1)
+        val tvIntroH2 = mView.findViewById<TextView>(R.id.tv_intro_h2)
 
         when (idx) {
             0 -> {
                 ivIntro.setImageResource(R.mipmap.intro_one)
-                tvIntro.text = getString(R.string.intro_one)
+                tvIntroH1.text = getString(R.string.intro_one_h1)
+                tvIntroH2.text = getString(R.string.intro_one_h2)
             }
             1 -> {
                 ivIntro.setImageResource(R.mipmap.intro_two)
-                tvIntro.text = getString(R.string.intro_two)
+                tvIntroH1.text = getString(R.string.intro_two_h1)
+                tvIntroH2.text = getString(R.string.intro_two_h2)
             }
             2 -> {
                 ivIntro.setImageResource(R.mipmap.intro_three)
-                tvIntro.text = getString(R.string.intro_three)
+                tvIntroH1.text = getString(R.string.intro_three_h1)
+                tvIntroH2.text = getString(R.string.intro_three_h2)
             }
         }
 
