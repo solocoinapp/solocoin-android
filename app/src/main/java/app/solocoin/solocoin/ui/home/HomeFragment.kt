@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,6 +39,20 @@ class HomeFragment : Fragment() {
 //        sharedPrefs?.let {
 //            it.loggedIn = true
 //        }
+
+        sharedPrefs?.newUser?.let {
+            if (it) {
+                val infoDialog = AppDialog.instance(
+                    "",
+                    getString(R.string.new_user_intro),
+                    object : AppDialog.AppDialogListener {
+                        override fun onClickConfirm() {}
+
+                        override fun onClickCancel() {}
+                    })
+                sharedPrefs?.newUser = false
+            }
+        }
         updateTime()
 
         quiz_viewpager.adapter = QuizFragmentAdapter(this)
