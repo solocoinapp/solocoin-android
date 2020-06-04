@@ -50,6 +50,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
         if (legalChecker.isCheating()) {
             sessionType = "away"
         }
+//        sessionType = "away"
 //        sharedPrefs?.let{
 //            if(!(it.loggedIn)){
 //                return Result.success();

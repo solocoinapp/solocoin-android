@@ -53,7 +53,7 @@ class OnboardFragment : Fragment() {
                 tvIntroH2.text = getString(R.string.intro_two_h2)
             }
             2 -> {
-                ivIntro.setImageResource(R.mipmap.intro_three)
+                ivIntro.setImageResource(R.mipmap.intro_four)
                 tvIntroH1.text = getString(R.string.intro_three_h1)
                 tvIntroH2.text = getString(R.string.intro_three_h2)
             }

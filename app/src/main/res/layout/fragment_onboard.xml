@@ -17,7 +17,7 @@
         android:paddingBottom="4dp"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         tools:text="@string/intro_one_h1" />
     <ImageView
@@ -38,7 +38,7 @@
         android:paddingEnd="32dp"
         android:textSize="18sp"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorPrimaryDark"
         tools:text="@string/intro_one_h1"
         android:layout_height="wrap_content"/>
 </LinearLayout>

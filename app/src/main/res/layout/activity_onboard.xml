@@ -35,7 +35,7 @@
             android:id="@+id/tv_get_started"
             android:fontFamily="@font/poppins_semibold"
             android:background="@drawable/bg_button"
-            android:text="@string/get_started"
+            android:text="@string/next"
             android:gravity="center"
             android:textAllCaps="true"
             android:textColor="@android:color/white"

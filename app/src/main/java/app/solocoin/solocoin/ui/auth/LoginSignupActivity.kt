@@ -79,6 +79,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         //     detect the incoming verification SMS and perform verification without
         //     user action.
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+            loadingDialog.dismiss()
             signInWithPhoneAuthCredential(credential)
         }
 
@@ -197,7 +198,6 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        loadingDialog.dismiss()
         loadingDialog.show(supportFragmentManager, loadingDialog.tag)
 
         if (mFirebaseAuth.currentUser != null) {
@@ -223,8 +223,8 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                         val user = JsonObject()
                         user.addProperty("country_code", sharedPrefs?.countryCode)
                         user.addProperty("mobile", sharedPrefs?.mobileNumber)
-                        user.addProperty("id_token", sharedPrefs?.idToken)
                         user.addProperty("uid", uid)
+                        user.addProperty("id_token", sharedPrefs?.idToken)
                         body.add("user", user)
 
                         viewModel.mobileLogin(body).observe(this, Observer {
@@ -268,6 +268,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                             //get-user-data
 
                                             //existing-user
+
                                         } else if (resource.code == 401) {
                                             //new-user
                                             GlobalUtils.startActivityAsNewStack(Intent(this, MarkLocationActivity::class.java), this)

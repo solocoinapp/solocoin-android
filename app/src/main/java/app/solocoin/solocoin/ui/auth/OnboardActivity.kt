@@ -65,7 +65,9 @@ class OnboardActivity : AppCompatActivity(), ViewPager.OnPageChangeListener, Vie
                 when (VISIBLE_FRAG_INDEX) {
                     0 -> view_pager?.setCurrentItem(VISIBLE_FRAG_INDEX+1, true)
                     1 -> view_pager?.setCurrentItem(VISIBLE_FRAG_INDEX+1, true)
-                    2 -> startActivity(Intent(this, LoginSignupActivity::class.java))
+                    2 -> startActivity(Intent(this, LoginSignupActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    })
                 }
             }
 //            R.id.tv_skip -> startActivity(Intent(this, LoginSignupActivity::class.java))
