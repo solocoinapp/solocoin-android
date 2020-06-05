@@ -27,11 +27,9 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             if (FirebaseAuth.getInstance().currentUser?.uid != null) {
                 if (sharedPrefs?.userLat == null || sharedPrefs?.userLong == null) {
-                    sharedPrefs?.newUser = true
                     GlobalUtils.startActivityAsNewStack(Intent(this, MarkLocationActivity::class.java), this)
                     finish()
                 } else if (sharedPrefs?.name == null) {
-                    sharedPrefs?.newUser = true
                     GlobalUtils.startActivityAsNewStack(Intent(this, CreateProfileActivity::class.java), this)
                     finish()
                 } else {

@@ -1,6 +1,7 @@
 package app.solocoin.solocoin.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,7 @@ class HomeFragment : Fragment() {
 //            it.loggedIn = true
 //        }
 
-        sharedPrefs?.newUser?.let {
+        sharedPrefs?.isNewUser?.let {
             if (it) {
                 val infoDialog = AppDialog.instance(
                     "",
@@ -50,7 +51,8 @@ class HomeFragment : Fragment() {
 
                         override fun onClickCancel() {}
                     })
-                sharedPrefs?.newUser = false
+                sharedPrefs?.isNewUser = false
+                infoDialog.show(requireFragmentManager(), infoDialog.tag)
             }
         }
         updateTime()
@@ -64,7 +66,7 @@ class HomeFragment : Fragment() {
 
     private fun updateTime() {
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
-            //Log.d(TAG, "$response")
+            Log.d(TAG + "After Login/SignUp", "$response")
             when(response.status) {
                 Status.SUCCESS -> {
                     val duration = response.data?.get("home_duration_in_seconds")?.asLong

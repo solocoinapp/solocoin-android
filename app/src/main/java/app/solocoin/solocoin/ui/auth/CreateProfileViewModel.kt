@@ -30,4 +30,17 @@ class CreateProfileViewModel(private val repository: SolocoinRepository): ViewMo
         }
     }
 
+    fun userUpdate(body: JsonObject): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
+        if (body.size() != 0) {
+            emit(Resource.loading(data = null))
+            try {
+                repository.userUpdate(body).apply {
+                    emit(Resource.success(data = body(), code = code()))
+                }
+            } catch (exception: Exception) {
+                emit(Resource.error(data = null, exception = exception))
+            }
+        }
+    }
+
 }

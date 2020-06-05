@@ -1,6 +1,5 @@
 package app.solocoin.solocoin.util
 
-import android.app.Activity
 import android.app.ActivityManager
 import android.app.PendingIntent
 import android.content.Context
@@ -63,7 +62,6 @@ class GlobalUtils {
         fun startActivityAsNewStack(intent: Intent, context: Context) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             context.startActivity(intent)
-            (context as Activity).finish()
         }
 
         /**
@@ -192,20 +190,25 @@ class GlobalUtils {
          * For creating notification for user
          */
         fun <T> notifyUser(
+            id: Int,
             appContext: Context,
             activityClass: Class<in T>,
             title: String,
+            subject: String,
             content: String
         ) {
 
             // Create an explicit intent for an Activity in your app
-            val intent = Intent(appContext, activityClass)
+            val intent = Intent(appContext, activityClass).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
             val pendingIntent: PendingIntent = PendingIntent.getActivity(appContext, 0, intent, 0)
 
             val builder = NotificationCompat.Builder(appContext, "1")
                 .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle(title)
-                .setContentText(content)
+                .setContentText(subject)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(content))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
@@ -213,7 +216,7 @@ class GlobalUtils {
 
             with(NotificationManagerCompat.from(appContext)) {
                 // notificationId is a unique int for each notification that you must define
-                notify(1, builder.build())
+                notify(id, builder.build())
             }
         }
 

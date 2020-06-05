@@ -81,9 +81,11 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 GlobalUtils.notifyUser(
+                    2,
                     applicationContext,
                     HomeActivity::class.java,
                     "Important Update",
+                    "Internet Connectivity Issue",
                     "Your network request was unable to be processed. Please check Internet settings."
                 )
             }

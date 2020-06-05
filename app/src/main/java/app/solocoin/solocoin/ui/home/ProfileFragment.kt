@@ -71,7 +71,7 @@ class ProfileFragment : Fragment(), KoinComponent {
 
                         override fun onClickCancel() {}
                     },
-                    getString(R.string.logout),
+                    getString(R.string.okay),
                     getString(R.string.cancel)
                 )
                 logoutDialog.show(childFragmentManager, logoutDialog.tag)

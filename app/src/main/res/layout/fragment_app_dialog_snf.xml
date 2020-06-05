@@ -6,6 +6,7 @@
     android:paddingTop="@dimen/app_padding"
     android:paddingStart="@dimen/app_padding"
     android:paddingEnd="@dimen/app_padding"
+    android:gravity="center"
     android:minWidth="280dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -22,7 +23,6 @@
         android:fontFamily="@font/poppins"
         android:layout_gravity="center"
         android:gravity="center"
-        android:maxLines="2"
         tools:text="Be solo, be safe!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
