@@ -56,6 +56,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 //                return Result.success();
 //            }
 //        }
+        sessionType = "away"
         sessionType?.let {
             val body: JsonObject =
                 JsonParser().parse(SessionPingRequest(sessionType).toString()).asJsonObject
