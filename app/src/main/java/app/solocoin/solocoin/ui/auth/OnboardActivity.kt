@@ -28,7 +28,7 @@ class OnboardActivity : AppCompatActivity(), ViewPager.OnPageChangeListener, Vie
         setContentView(R.layout.activity_onboard)
 
         tv_get_started.setOnClickListener(this)
-        tv_skip.setOnClickListener(this)
+//        tv_skip.setOnClickListener(this)
 
         val adapter = OnboardFragmentAdapter(supportFragmentManager)
         view_pager?.adapter = adapter
@@ -53,7 +53,7 @@ class OnboardActivity : AppCompatActivity(), ViewPager.OnPageChangeListener, Vie
     override fun onPageSelected(position: Int) {
         VISIBLE_FRAG_INDEX = position
         when (position) {
-            0 -> tv_get_started.text = getString(R.string.get_started)
+            0 -> tv_get_started.text = getString(R.string.next)
             1 -> tv_get_started.text = getString(R.string.next)
             2 -> tv_get_started.text = getString(R.string.create_account)
         }
@@ -65,10 +65,12 @@ class OnboardActivity : AppCompatActivity(), ViewPager.OnPageChangeListener, Vie
                 when (VISIBLE_FRAG_INDEX) {
                     0 -> view_pager?.setCurrentItem(VISIBLE_FRAG_INDEX+1, true)
                     1 -> view_pager?.setCurrentItem(VISIBLE_FRAG_INDEX+1, true)
-                    2 -> startActivity(Intent(this, LoginSignupActivity::class.java))
+                    2 -> startActivity(Intent(this, LoginSignupActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    })
                 }
             }
-            R.id.tv_skip -> startActivity(Intent(this, LoginSignupActivity::class.java))
+//            R.id.tv_skip -> startActivity(Intent(this, LoginSignupActivity::class.java))
         }
     }
 }

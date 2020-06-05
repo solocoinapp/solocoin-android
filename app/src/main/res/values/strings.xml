@@ -9,10 +9,14 @@
         <item>Hindi</item>
     </string-array>
 
+    <string name="new_user_intro">Right now, this app currently rewards you to stay at home only. We will expand multiple locations in the future. Until then, try to Stay Home. Stay Safe.</string>
     <string name="intro_image">Application introduction image!</string>
-    <string name="intro_one">Practice social distancing</string>
-    <string name="intro_two">Earn real world rewards</string>
-    <string name="intro_three">Stay safe</string>
+    <string name="intro_one_h1">Location based Rewards</string>
+    <string name="intro_two_h1">Redeem for exciting coupons</string>
+    <string name="intro_three_h1">challenge your friends</string>
+    <string name="intro_one_h2">Get solocoins for grocery shopping, yoga at park, visiting a mall, staying at home</string>
+    <string name="intro_two_h2">Redeem solocoins for exciting discount coupons and deals from internet</string>
+    <string name="intro_three_h2">Invite and challenge your friends. Share milestones and badges</string>
 
     <string name="get_started">Get started</string>
     <string name="next">Next</string>

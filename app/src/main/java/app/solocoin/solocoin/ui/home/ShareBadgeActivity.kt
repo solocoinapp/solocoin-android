@@ -2,7 +2,6 @@ package app.solocoin.solocoin.ui.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -47,13 +46,14 @@ class ShareBadgeActivity : AppCompatActivity() {
                 "I just earned ${(badge.name).capitalize()} on SoloCoin app which rewards you based on your location from home, mall, store and parks. Earn real world rewards with Solocoin. Challenge friends and achieve milestones and badges like me.\n\nDownload the app now: ${getString(
                     R.string.app_link
                 )}"
-            val imageUri = Uri.parse(getString(R.string.image_base_url) + badge.imageUrl)
+//            val imageUri = Uri.parse(getString(R.string.image_base_url) + badge.imageUrl)
             setOnClickListener {
                 val shareIntent = Intent(Intent.ACTION_SEND)
-                shareIntent.type = "image/jpeg"
+//                shareIntent.type = "image/jpeg"
+                shareIntent.type = "text/plain"
                 shareIntent.putExtra(Intent.EXTRA_TEXT, message)
-                shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
-                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
+//                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 context.startActivity(
                     Intent.createChooser(
                         shareIntent,

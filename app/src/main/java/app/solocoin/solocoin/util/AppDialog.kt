@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.util.enums.DialogType
 
+
 /**
  * Created by Aditya Sonel on 27/04/20.
  */

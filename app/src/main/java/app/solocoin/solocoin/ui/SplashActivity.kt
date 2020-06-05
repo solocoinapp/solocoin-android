@@ -24,9 +24,6 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        /**
-         * todo: experimental handler added, to be remove in production
-         */
         Handler().postDelayed({
             if (FirebaseAuth.getInstance().currentUser?.uid != null) {
                 if (sharedPrefs?.userLat == null || sharedPrefs?.userLong == null) {
@@ -43,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
                 GlobalUtils.startActivityAsNewStack(Intent(this, OnboardActivity::class.java), this)
                 finish()
             }
-        }, 200)
+        }, 3000)
     }
 
 }

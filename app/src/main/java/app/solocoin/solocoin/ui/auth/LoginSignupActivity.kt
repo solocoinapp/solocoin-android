@@ -3,6 +3,7 @@ package app.solocoin.solocoin.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
@@ -79,6 +80,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         //     detect the incoming verification SMS and perform verification without
         //     user action.
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+            loadingDialog.dismiss()
             signInWithPhoneAuthCredential(credential)
         }
 
@@ -197,7 +199,6 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        loadingDialog.dismiss()
         loadingDialog.show(supportFragmentManager, loadingDialog.tag)
 
         if (mFirebaseAuth.currentUser != null) {
@@ -215,19 +216,20 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
 //                    Log.wtf(TAG, "user-id: $uid")
 
                     task.result?.user?.getIdToken(true)?.addOnCompleteListener { task1 ->
+                        Log.wtf(TAG + " Firebase Authentication", "$task1")
                         sharedPrefs?.idToken = task1.result?.token
                         sharedPrefs?.countryCode = countryCode
                         sharedPrefs?.mobileNumber = mobileNumber
-//                        Log.wtf(TAG, sharedPrefs?.idToken)
                         val body = JsonObject()
                         val user = JsonObject()
                         user.addProperty("country_code", sharedPrefs?.countryCode)
                         user.addProperty("mobile", sharedPrefs?.mobileNumber)
-                        user.addProperty("id_token", sharedPrefs?.idToken)
                         user.addProperty("uid", uid)
+                        user.addProperty("id_token", sharedPrefs?.idToken)
                         body.add("user", user)
 
                         viewModel.mobileLogin(body).observe(this, Observer {
+//                            Log.wtf(TAG + " Mobile Login", "$it")
                             it?.let { resource ->
                                 when (resource.status) {
                                     Status.SUCCESS -> {
@@ -235,11 +237,13 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
 //                                        Log.d(TAG, "mobilelogin-rc: ${resource.code}, ${resource}")
 
                                         if (resource.code == 200) {
+                                            Log.wtf(TAG, "Existing user fetching Info")
                                             //existing-user
 
                                             sharedPrefs?.authToken = resource.data!!.get("auth_token").asString
                                             //get-user-data
-                                            viewModel.userData().observe(this, Observer {res ->
+                                            viewModel.userData().observe(this, Observer { res ->
+//                                                Log.wtf(TAG + " User Info", "$res")
                                                 res?.let { resource ->
                                                     when (resource.status) {
                                                         Status.SUCCESS -> {
@@ -249,6 +253,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                                                 sharedPrefs?.name = resource.data?.get("name")?.asString
 //                                                                Log.d(TAG, "blah ok $resource")
                                                                 GlobalUtils.startActivityAsNewStack(Intent(this, SplashActivity::class.java), this)
+                                                                finish()
                                                             } else {
 //                                                                Log.d(TAG, "blah not ok $resource")
                                                                 Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
@@ -268,10 +273,12 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                             //get-user-data
 
                                             //existing-user
+
                                         } else if (resource.code == 401) {
+//                                            Log.wtf(TAG, "New User Going towards SignUp")
                                             //new-user
                                             GlobalUtils.startActivityAsNewStack(Intent(this, MarkLocationActivity::class.java), this)
-//                                            finish()
+                                            finish()
                                             //new-user
                                         }
                                     }

@@ -16,11 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
-import app.solocoin.solocoin.repo.NoConnectivityException
-import app.solocoin.solocoin.ui.home.HomeActivity
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
-import app.solocoin.solocoin.util.enums.Status
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -31,7 +28,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
-import com.google.gson.JsonObject
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.DexterBuilder
 import com.karumi.dexter.PermissionToken
@@ -221,26 +217,26 @@ class MarkLocationActivity : AppCompatActivity(), PermissionListener, View.OnCli
         }
     }
 
-    private fun doApiUserUpdate(body: JsonObject) {
-        viewModel.userUpdate(body).observe(this@MarkLocationActivity, androidx.lifecycle.Observer { res ->
-            res?.let { resource ->
-                when(resource.status) {
-                    Status.SUCCESS -> {
-                        GlobalUtils.startActivityAsNewStack(Intent(this@MarkLocationActivity, HomeActivity::class.java), this@MarkLocationActivity)
+//    private fun doApiUserUpdate(body: JsonObject) {
+//        viewModel.userUpdate(body).observe(this@MarkLocationActivity, androidx.lifecycle.Observer { res ->
+//            res?.let { resource ->
+//                when(resource.status) {
+//                    Status.SUCCESS -> {
+//                        GlobalUtils.startActivityAsNewStack(Intent(this@MarkLocationActivity, HomeActivity::class.java), this@MarkLocationActivity)
 //                        finish()
-                    }
-                    Status.ERROR -> {
-                        if (resource.exception is NoConnectivityException) {
-                            Toast.makeText(this@MarkLocationActivity, resource.exception.message, Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this@MarkLocationActivity, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    Status.LOADING -> {}
-                }
-            }
-        })
-    }
+//                    }
+//                    Status.ERROR -> {
+//                        if (resource.exception is NoConnectivityException) {
+//                            Toast.makeText(this@MarkLocationActivity, resource.exception.message, Toast.LENGTH_SHORT).show()
+//                        } else {
+//                            Toast.makeText(this@MarkLocationActivity, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+//                    Status.LOADING -> {}
+//                }
+//            }
+//        })
+//    }
 
     override fun onClick(p0: View?) {
         if (GlobalUtils.isLocationPermissionGranted(this)) {
@@ -250,17 +246,19 @@ class MarkLocationActivity : AppCompatActivity(), PermissionListener, View.OnCli
                         sharedPrefs?.userLat = mMarkerOption!!.position.latitude.toString()
                         sharedPrefs?.userLong = mMarkerOption!!.position.longitude.toString()
 
-                        if (sharedPrefs?.authToken == null) {
+//                        if (sharedPrefs?.authToken == null) {
+                        // For new users
                             GlobalUtils.startActivityAsNewStack(Intent(applicationContext, CreateProfileActivity::class.java), applicationContext)
                             finish()
-                        } else {
-                            val body = JsonObject()
-                            val user = JsonObject()
-                            user.addProperty("lat", sharedPrefs?.userLat)
-                            user.addProperty("lng", sharedPrefs?.userLong)
-                            body.add("user", user)
-                            doApiUserUpdate(body)
-                        }
+//                        } else {
+//                            // For users who's details not ye
+//                            val body = JsonObject()
+//                            val user = JsonObject()
+//                            user.addProperty("lat", sharedPrefs?.userLat)
+//                            user.addProperty("lng", sharedPrefs?.userLong)
+//                            body.add("user", user)
+//                            doApiUserUpdate(body)
+//                        }
                     }
                     override fun onClickCancel() {}
                 }, getString(R.string.okay), getString(R.string.cancel))
@@ -269,17 +267,17 @@ class MarkLocationActivity : AppCompatActivity(), PermissionListener, View.OnCli
                 sharedPrefs?.userLat = mLocation.latitude.toString()
                 sharedPrefs?.userLong = mLocation.longitude.toString()
 
-                if (sharedPrefs?.authToken == null) {
+//                if (sharedPrefs?.authToken == null) {
                     GlobalUtils.startActivityAsNewStack(Intent(applicationContext, CreateProfileActivity::class.java), applicationContext)
                     finish()
-                } else {
-                    val body = JsonObject()
-                    val user = JsonObject()
-                    user.addProperty("lat", sharedPrefs?.userLat)
-                    user.addProperty("lng", sharedPrefs?.userLong)
-                    body.add("user", user)
-                    doApiUserUpdate(body)
-                }
+//                } else {
+//                    val body = JsonObject()
+//                    val user = JsonObject()
+//                    user.addProperty("lat", sharedPrefs?.userLat)
+//                    user.addProperty("lng", sharedPrefs?.userLong)
+//                    body.add("user", user)
+//                    doApiUserUpdate(body)
+//                }
             }
         } else {
             dexterInstance.check()

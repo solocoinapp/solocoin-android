@@ -7,6 +7,19 @@
     android:layout_gravity="bottom"
     android:gravity="center"
     tools:ignore="UseCompoundDrawables">
+
+    <TextView
+        android:id="@+id/tv_intro_h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        tools:text="@string/intro_one_h1" />
     <ImageView
         android:id="@+id/iv_intro"
         tools:src="@mipmap/intro_one"
@@ -16,14 +29,16 @@
         android:layout_width="@dimen/intro_img_width_height"
         android:layout_height="@dimen/intro_img_width_height" />
     <TextView
-        android:id="@+id/tv_intro"
+        android:id="@+id/tv_intro_h2"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:fontFamily="@font/poppins_semibold"
-        tools:text="@string/intro_one"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/poppins"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
         android:textSize="18sp"
-        android:textAllCaps="true"
-        android:textColor="@android:color/black"
-        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        tools:text="@string/intro_one_h1"
         android:layout_height="wrap_content"/>
 </LinearLayout>

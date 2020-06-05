@@ -118,6 +118,11 @@ class SharedPrefs(context: Context) {
 //        get() = instance.getBoolean(_loggedin, false)
 //        set(value) = instance.edit().putBoolean(_loggedin, value).apply()
 
+    private val new_user = "new_user"
+    var isNewUser: Boolean
+        get() = instance.getBoolean(new_user, false)
+        set(value) = instance.edit().putBoolean(new_user, value).apply()
+
     fun clearSession() {
         instance.edit()
             .clear()

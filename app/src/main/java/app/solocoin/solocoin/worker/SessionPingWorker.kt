@@ -50,11 +50,13 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
         if (legalChecker.isCheating()) {
             sessionType = "away"
         }
+//        sessionType = "away"
 //        sharedPrefs?.let{
 //            if(!(it.loggedIn)){
 //                return Result.success();
 //            }
 //        }
+        sessionType = "away"
         sessionType?.let {
             val body: JsonObject =
                 JsonParser().parse(SessionPingRequest(sessionType).toString()).asJsonObject
@@ -80,9 +82,11 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 GlobalUtils.notifyUser(
+                    2,
                     applicationContext,
                     HomeActivity::class.java,
                     "Important Update",
+                    "Internet Connectivity Issue",
                     "Your network request was unable to be processed. Please check Internet settings."
                 )
             }

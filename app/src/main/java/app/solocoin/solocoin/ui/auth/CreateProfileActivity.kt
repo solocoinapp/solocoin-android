@@ -7,6 +7,7 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -73,20 +74,29 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun doMobileSignup(body: JsonObject) {
         viewModel.mobileSignup(body).observe(this, Observer {resource ->
+//            Log.wtf(TAG + " Mobile SignUp", "$resource")
             when(resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.dismiss()
 
-//                    Log.d(TAG, "code: ${resource.code}")
+                    Log.wtf(TAG, "code: ${resource.code}")
                     if (resource.code == 200) {
                         val authToken = resource.data?.get("auth_token")?.asString
                         val id = resource.data?.get("id")?.asString
                         if (authToken != null) {
                             sharedPrefs?.authToken = authToken
                             sharedPrefs?.id = id
+                            sharedPrefs?.isNewUser = true
+                            // Update user data at Api after successful SignUp
+                            val _body = JsonObject()
+                            val user = JsonObject()
+                            user.addProperty("name", sharedPrefs?.name)
+                            user.addProperty("mobile", sharedPrefs?.mobileNumber)
+                            user.addProperty("lat", sharedPrefs?.userLat)
+                            user.addProperty("lng", sharedPrefs?.userLong)
+                            _body.add("user", user)
+                            doApiUserUpdate(_body)
 
-                            GlobalUtils.startActivityAsNewStack(Intent(this@CreateProfileActivity, HomeActivity::class.java), this@CreateProfileActivity)
-//                            finish()
                         } else {
                             Toast.makeText(this@CreateProfileActivity, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
                         }
@@ -110,6 +120,42 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
+    private fun doApiUserUpdate(body: JsonObject) {
+        viewModel.userUpdate(body).observe(this@CreateProfileActivity, Observer { res ->
+//            Log.wtf(TAG + " User Update", "$res")
+            res?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        GlobalUtils.startActivityAsNewStack(
+                            Intent(
+                                this@CreateProfileActivity,
+                                HomeActivity::class.java
+                            ), this@CreateProfileActivity
+                        )
+                        finish()
+                    }
+                    Status.ERROR -> {
+                        if (resource.exception is NoConnectivityException) {
+                            Toast.makeText(
+                                this@CreateProfileActivity,
+                                resource.exception.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@CreateProfileActivity,
+                                getString(R.string.error_msg),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                    Status.LOADING -> {
+                    }
+                }
+            }
+        })
+    }
+
     override fun onClick(p0: View?) {
         val name = et_name.text.toString()
         if (name.isEmpty()) {
@@ -119,13 +165,24 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
 
             val body = JsonObject()
             val user = JsonObject()
-            user.addProperty("name", sharedPrefs?.name)
-            user.addProperty("country_code", sharedPrefs?.countryCode)
-            user.addProperty("mobile", sharedPrefs?.mobileNumber)
-            user.addProperty("uid", FirebaseAuth.getInstance().uid)
-            user.addProperty("id_token", sharedPrefs?.idToken)
-            body.add("user", user)
-            doMobileSignup(body)
+
+            if (sharedPrefs?.authToken != null) {
+                user.addProperty("name", sharedPrefs?.name)
+                user.addProperty("mobile", sharedPrefs?.mobileNumber)
+                user.addProperty("lat", sharedPrefs?.userLat)
+                user.addProperty("lng", sharedPrefs?.userLong)
+                body.add("user", user)
+                doApiUserUpdate(body)
+
+            } else {
+                user.addProperty("name", sharedPrefs?.name)
+                user.addProperty("country_code", sharedPrefs?.countryCode)
+                user.addProperty("mobile", sharedPrefs?.mobileNumber)
+                user.addProperty("uid", FirebaseAuth.getInstance().uid)
+                user.addProperty("id_token", sharedPrefs?.idToken)
+                body.add("user", user)
+                doMobileSignup(body)
+            }
         }
     }
 

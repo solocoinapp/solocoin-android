@@ -1,6 +1,7 @@
 package app.solocoin.solocoin.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,6 +40,21 @@ class HomeFragment : Fragment() {
 //        sharedPrefs?.let {
 //            it.loggedIn = true
 //        }
+
+        sharedPrefs?.isNewUser?.let {
+            if (it) {
+                val infoDialog = AppDialog.instance(
+                    "",
+                    getString(R.string.new_user_intro),
+                    object : AppDialog.AppDialogListener {
+                        override fun onClickConfirm() {}
+
+                        override fun onClickCancel() {}
+                    })
+                sharedPrefs?.isNewUser = false
+                infoDialog.show(requireFragmentManager(), infoDialog.tag)
+            }
+        }
         updateTime()
 
         quiz_viewpager.adapter = QuizFragmentAdapter(this)
@@ -49,7 +66,7 @@ class HomeFragment : Fragment() {
 
     private fun updateTime() {
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
-            //Log.d(TAG, "$response")
+            Log.d(TAG + "After Login/SignUp", "$response")
             when(response.status) {
                 Status.SUCCESS -> {
                     val duration = response.data?.get("home_duration_in_seconds")?.asLong

@@ -78,6 +78,7 @@ class RewardsListAdapter(
                             RewardRedeemActivity::class.java
                         )
                         intent.putExtra("EXTRA_INFO", it)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                         context.startActivity(intent)
                     }
                 }

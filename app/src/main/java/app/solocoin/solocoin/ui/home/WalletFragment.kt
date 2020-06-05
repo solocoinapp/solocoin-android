@@ -19,7 +19,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.model.Reward
-import app.solocoin.solocoin.model.ScratchTicket
 import app.solocoin.solocoin.ui.adapter.RewardsListAdapter
 import app.solocoin.solocoin.ui.adapter.ScratchDetailsAdapter
 import app.solocoin.solocoin.util.EventBus
@@ -251,22 +250,22 @@ class WalletFragment : Fragment() {
         errorTextView.visibility = View.VISIBLE
     }
 
-    private fun updateScratch() {
-        val dummy = ScratchTicket(
-            "50 rupees",
-            "100 rupees"
-        )
-        ArrayList<ScratchTicket?>().let {
-            it.add(dummy)
-            it.add(dummy)
-            it.add(dummy)
-            it.add(dummy)
-            it.add(dummy)
-            it.add(dummy)
-            mScratchTicketsAdapter = ScratchDetailsAdapter(context, it)
-        }
-        scratchRecyclerView.adapter = mScratchTicketsAdapter
-    }
+//    private fun updateScratch() {
+//        val dummy = ScratchTicket(
+//            "50 rupees",
+//            "100 rupees"
+//        )
+//        ArrayList<ScratchTicket?>().let {
+//            it.add(dummy)
+//            it.add(dummy)
+//            it.add(dummy)
+//            it.add(dummy)
+//            it.add(dummy)
+//            it.add(dummy)
+//            mScratchTicketsAdapter = ScratchDetailsAdapter(context, it)
+//        }
+//        scratchRecyclerView.adapter = mScratchTicketsAdapter
+//    }
 
     companion object {
         fun instance() = WalletFragment().apply {}

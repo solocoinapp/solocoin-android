@@ -52,11 +52,12 @@
                 android:id="@+id/challenges_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="16dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/challenges_text"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="25sp" />
+                android:textSize="22sp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/quiz_cardview"

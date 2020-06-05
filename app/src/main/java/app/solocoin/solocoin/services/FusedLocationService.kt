@@ -50,9 +50,11 @@ class FusedLocationService : Service() {
             }
         } catch (e: Exception) {
             GlobalUtils.notifyUser(
+                1,
                 applicationContext,
                 HomeActivity::class.java,
                 "Important Update",
+                "Location Request",
                 "Your location data was unable to be processed. Please check App Permissions in Settings to receive rewards."
             )
         }
