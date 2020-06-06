@@ -14,12 +14,15 @@ import androidx.fragment.app.Fragment
 import androidx.work.*
 import app.solocoin.solocoin.NotificationAlarmReceiver
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.services.FusedLocationService
 import app.solocoin.solocoin.util.GlobalUtils
+import app.solocoin.solocoin.worker.NotificationPingWorker
 import app.solocoin.solocoin.worker.SessionPingWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
+import java.util.*
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 
@@ -38,9 +41,20 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottom_nav_view.selectedItemId = R.id.nav_home
 
+        var fromNotif = intent.getBooleanExtra("from_checkin", false)
+        if(fromNotif){
+            sharedPrefs?.let{
+                it.periodValid = it.recentNotifTime + 30*60*1000 >= Calendar.getInstance().get(
+                    Calendar.MILLISECOND).toLong()
+                it.recentCheckTime = Calendar.getInstance().get(
+                    Calendar.MILLISECOND).toLong()
+            }
+        }
+
         // TODO : Setup permission request for Fused Location service properly
         checkPermissionForLocation()
         startSessionPingManager()
+        startNotificationPingManager()
         alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
 
@@ -52,8 +66,8 @@ class HomeActivity : AppCompatActivity() {
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("1", "Solocoin", importance).apply {
-                description = "Solocoin"
+            val channel = NotificationChannel("1", "Solocoin Push", importance).apply {
+                description = "Solocoin Push"
             }
             // Register the channel with the system
             val notificationManager: NotificationManager =
@@ -250,6 +264,51 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    // ctrl-c ctrl-v
+    private fun getStateOfNotificationWork(): WorkInfo.State {
+        return try {
+            if (WorkManager.getInstance(application)
+                    .getWorkInfosForUniqueWork(NOTIFICATION_PING_REQUEST)
+                    .get().size > 0
+            ) {
+                WorkManager.getInstance(application)
+                    .getWorkInfosForUniqueWork(NOTIFICATION_PING_REQUEST).get()[0].state
+            } else {
+                WorkInfo.State.CANCELLED
+            }
+        } catch (e: ExecutionException) {
+            e.printStackTrace()
+            WorkInfo.State.CANCELLED
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+            WorkInfo.State.CANCELLED
+        }
+    }
+
+    // this code is pretty much the exact same as the one for the session so I will not document it excessively
+    private fun createNotificationWorkRequest() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val periodicWorkRequest =
+            PeriodicWorkRequest.Builder(NotificationPingWorker::class.java, 1, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .build()
+        WorkManager.getInstance(application).enqueueUniquePeriodicWork(
+            NOTIFICATION_PING_REQUEST,
+            ExistingPeriodicWorkPolicy.KEEP,
+            periodicWorkRequest
+        )
+    }
+
+    // check if already running, if not, launch work request
+    private fun startNotificationPingManager(){
+        if(getStateOfNotificationWork() != WorkInfo.State.ENQUEUED && getStateOfNotificationWork() != WorkInfo.State.RUNNING){
+            applicationScope.launch {
+                createNotificationWorkRequest()
+            }
+        }
+    }
+
     override fun onBackPressed() {
         if (bottom_nav_view.selectedItemId != R.id.nav_home) {
             bottom_nav_view.selectedItemId = R.id.nav_home
@@ -263,6 +322,7 @@ class HomeActivity : AppCompatActivity() {
         private const val PERMISSION_REQUEST_CODE = 34
         private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.v1"
         private const val SESSION_PING_MANAGER: String = "SESSION_PING_MANAGER"
+        private const val NOTIFICATION_PING_REQUEST = "app.solocoin.solocoin.api.notification"
         private val applicationScope = CoroutineScope(Dispatchers.Default)
     }
 }
