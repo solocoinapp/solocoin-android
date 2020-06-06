@@ -125,7 +125,11 @@ class RewardRedeemActivity : AppCompatActivity() {
                                 mAdapter.notifyDataSetChanged()
                             }
                             loadingDialog.dismiss()
-                            showInfoDialog("Oops!", error?.error.toString())
+                            if (error?.error == null) {
+                                showInfoDialog("Error", getString(R.string.claim_error))
+                            } else {
+                                showInfoDialog("Oops!", error.error!!)
+                            }
                         }
                         else -> {
                             loadingDialog.dismiss()

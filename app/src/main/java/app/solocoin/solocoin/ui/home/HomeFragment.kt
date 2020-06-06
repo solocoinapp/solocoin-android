@@ -69,7 +69,8 @@ class HomeFragment : Fragment() {
             Log.d(TAG + "After Login/SignUp", "$response")
             when(response.status) {
                 Status.SUCCESS -> {
-                    val duration = response.data?.get("home_duration_in_seconds")?.asLong
+                    val duration =
+                        GlobalUtils.parseJsonNullFieldValue(response.data?.get("home_duration_in_seconds"))?.asLong
                     if (duration != 0L && duration != null) {
                         tvHomeDuration?.text = GlobalUtils.formattedHomeDuration(duration)
                         sharedPrefs?.homeDuration = duration

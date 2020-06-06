@@ -11,7 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.work.*
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import app.solocoin.solocoin.NotificationAlarmReceiver
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.services.FusedLocationService
@@ -196,11 +199,8 @@ class HomeActivity : AppCompatActivity() {
      * @see companion object of the class for constant identifiers.
      */
     private fun createWorkRequest() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED).build()
         val periodicWorkRequest =
             PeriodicWorkRequest.Builder(SessionPingWorker::class.java, 15, TimeUnit.MINUTES)
-                .setConstraints(constraints)
                 .build()
         WorkManager.getInstance(application).enqueueUniquePeriodicWork(
             SESSION_PING_REQUEST,

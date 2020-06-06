@@ -21,6 +21,7 @@ import app.solocoin.solocoin.services.FusedLocationService
 import app.solocoin.solocoin.ui.SplashActivity
 import app.solocoin.solocoin.worker.LegalChecker
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.JsonElement
 import com.instacart.library.truetime.TrueTime
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
@@ -296,6 +297,19 @@ class GlobalUtils {
                     }
 
                 })
+        }
+
+        fun parseJsonNullFieldValue(field: JsonElement?): JsonElement? {
+            field?.let {
+                if (it.isJsonNull)
+                    return null
+//                if(it.isJsonArray && it.asJsonArray.size()==0)
+//                    return null
+//                if(it.isJsonObject && it.asJsonObject.size()==0)
+//                    return null
+                return it
+            }
+            return null
         }
     }
 }
