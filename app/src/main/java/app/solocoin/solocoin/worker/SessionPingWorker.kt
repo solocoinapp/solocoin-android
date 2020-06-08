@@ -65,10 +65,15 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 //                return Result.success();
 //            }
 //        }
-        sessionType = "away"
+        sharedPrefs?.let{
+            if(!(it.periodValid)){
+                sessionType = "away"
+            }
+        }
+//        sessionType = "away"
         sessionType?.let {
             val body: JsonObject =
-                JsonParser().parse(SessionPingRequest(sessionType).toString()).asJsonObject
+                JsonParser().parse(SessionPingRequest(sessionType!!).toString()).asJsonObject
 //            //Log.wtf(TAG, body.toString())
             return doApiCall(body)
         }
