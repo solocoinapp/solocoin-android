@@ -14,10 +14,24 @@ import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.ui.home.HomeActivity
+
+import app.solocoin.solocoin.app.SolocoinApp
+import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.model.SessionPingRequest
+import app.solocoin.solocoin.repo.SolocoinRepository
+import app.solocoin.solocoin.ui.home.HomeActivity
+import app.solocoin.solocoin.util.GlobalUtils
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import kotlinx.android.synthetic.main.activity_login_signup.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.sql.Time
 import java.util.*
 
 // author: Vijay Daita
@@ -47,6 +61,7 @@ class NotificationPingWorker(appContext: Context, workerParams: WorkerParameters
         regIntent.putExtra("from_checkin", true)
         val pendingIntent =
             PendingIntent.getActivity(applicationContext, notificationID, regIntent, 0)
+
 
         builder.setContentIntent(pendingIntent)
 
