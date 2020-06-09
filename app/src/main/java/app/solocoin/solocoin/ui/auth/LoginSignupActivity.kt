@@ -229,7 +229,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                         body.add("user", user)
 
                         viewModel.mobileLogin(body).observe(this, Observer {
-//                            Log.wtf(TAG + " Mobile Login", "$it")
+                            Log.wtf(TAG + " Mobile Login", "$it")
                             it?.let { resource ->
                                 when (resource.status) {
                                     Status.SUCCESS -> {
@@ -240,17 +240,34 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                             Log.wtf(TAG, "Existing user fetching Info")
                                             //existing-user
 
-                                            sharedPrefs?.authToken = resource.data!!.get("auth_token").asString
+                                            sharedPrefs?.authToken =
+                                                GlobalUtils.parseJsonNullFieldValue(
+                                                    resource.data!!.get("auth_token")
+                                                )?.asString
+                                            Log.wtf(TAG, sharedPrefs?.authToken)
                                             //get-user-data
                                             viewModel.userData().observe(this, Observer { res ->
-//                                                Log.wtf(TAG + " User Info", "$res")
+                                                Log.wtf(TAG + " User Info", "$res")
                                                 res?.let { resource ->
                                                     when (resource.status) {
                                                         Status.SUCCESS -> {
                                                             if (resource.code == 200) {
-                                                                sharedPrefs?.userLat = resource.data?.get("lat")?.asString
-                                                                sharedPrefs?.userLong = resource.data?.get("lng")?.asString
-                                                                sharedPrefs?.name = resource.data?.get("name")?.asString
+                                                                sharedPrefs?.userLat =
+                                                                    GlobalUtils.parseJsonNullFieldValue(
+                                                                        resource.data?.get("lat")
+                                                                    )?.asString
+                                                                sharedPrefs?.userLong =
+                                                                    GlobalUtils.parseJsonNullFieldValue(
+                                                                        resource.data?.get("lng")
+                                                                    )?.asString
+                                                                sharedPrefs?.name =
+                                                                    GlobalUtils.parseJsonNullFieldValue(
+                                                                        resource.data?.get("name")
+                                                                    )?.asString
+                                                                Log.wtf(
+                                                                    TAG,
+                                                                    sharedPrefs?.userLong + " " + sharedPrefs?.userLat + " " + sharedPrefs?.name
+                                                                )
 //                                                                Log.d(TAG, "blah ok $resource")
                                                                 GlobalUtils.startActivityAsNewStack(Intent(this, SplashActivity::class.java), this)
                                                                 finish()

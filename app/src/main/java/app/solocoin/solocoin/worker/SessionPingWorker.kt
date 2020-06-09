@@ -1,7 +1,8 @@
 package app.solocoin.solocoin.worker
 
 import android.content.Context
-import androidx.work.Worker
+import android.util.Log
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.model.SessionPingRequest
@@ -26,7 +27,7 @@ import java.util.*
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
-    Worker(appContext, workerParams), KoinComponent {
+    CoroutineWorker(appContext, workerParams), KoinComponent {
 
     private val repository: SolocoinRepository by inject()
 
@@ -34,13 +35,15 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
      * Updates the 'status' and 'rewards' of the user through calls to api and shared prefs
      * in the SolocoinRespository class.
      */
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         //Log.d(TAG, "Initiating the work")
 
         // Checking if the period is valid
-        sharedPrefs?.let{
-            if((it.recentNotifTime + 30*60*1000 <= Calendar.getInstance().get(
-                    Calendar.MILLISECOND).toLong()) && it.recentCheckTime < it.recentNotifTime){
+        sharedPrefs?.let {
+            if ((it.recentNotifTime + 30 * 60 * 1000 <= Calendar.getInstance().get(
+                    Calendar.MILLISECOND
+                ).toLong()) && it.recentCheckTime < it.recentNotifTime
+            ) {
                 it.periodValid = false
             }
         }
@@ -65,6 +68,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 //                return Result.success();
 //            }
 //        }
+
         sharedPrefs?.let{
             if(!(it.periodValid)){
                 sessionType = "away"
@@ -80,21 +84,19 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
         return Result.retry()
     }
 
-    private fun doApiCall(body: JsonObject): Result {
+    private suspend fun doApiCall(body: JsonObject): Result {
 //        //Log.d(API_CALL, "Calling api")
 
-        val call: Call<JsonObject> = repository.pingSession(body)
-        call.enqueue(object : Callback<JsonObject?> {
-
-            override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
-                val resp = response.body()
-                resp?.let {
-                    sharedPrefs?.status = resp["status"].asString
-                    sharedPrefs?.rewards = resp["rewards"].asString
+        try {
+            val response = repository.pingSession(body)
+            Log.wtf(TAG, "sending request")
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    sharedPrefs?.status = it["status"]?.asString
+                    sharedPrefs?.rewards = it["rewards"]?.asString
                 }
-            }
-
-            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                return Result.success()
+            } else {
                 GlobalUtils.notifyUser(
                     2,
                     applicationContext,
@@ -103,16 +105,22 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
                     "Internet Connectivity Issue",
                     "Your network request was unable to be processed. Please check Internet settings."
                 )
+                return Result.retry()
             }
-        })
 
-        return Result.success()
+        } catch (e: Exception) {
+            GlobalUtils.notifyUser(
+                2,
+                applicationContext,
+                HomeActivity::class.java,
+                "Important Update",
+                "Internet Connectivity Issue",
+                "Your network request was unable to be processed. Please check Internet settings."
+            )
+            return Result.retry()
+        }
     }
 
-    override fun onStopped() {
-//        //Log.wtf(TAG, "Stopping Worker")
-        super.onStopped()
-    }
 //    private fun statusFusedLocationService() {
 //        //Log.d(TAG, "Checking fused location service is running or not.")
 //        if(firstTime){

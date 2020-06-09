@@ -42,13 +42,14 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.selectedItemId = R.id.nav_home
 
         var fromNotif = intent.getBooleanExtra("from_checkin", false)
-        if(fromNotif){
-            sharedPrefs?.let{
-                it.periodValid = it.recentNotifTime + 30*60*1000 >= Calendar.getInstance().get(
-                    Calendar.MILLISECOND).toLong()
+        if (fromNotif) {
+            sharedPrefs?.let {
+                it.periodValid = it.recentNotifTime + 30 * 60 * 1000 >= Calendar.getInstance().get(
+                    Calendar.MILLISECOND
+                ).toLong()
                 it.recentCheckTime = Calendar.getInstance().get(
-                    Calendar.MILLISECOND).toLong()
-            }
+                    Calendar.MILLISECOND
+                ).toLong()
         }
 
         // TODO : Setup permission request for Fused Location service properly
@@ -210,11 +211,8 @@ class HomeActivity : AppCompatActivity() {
      * @see companion object of the class for constant identifiers.
      */
     private fun createWorkRequest() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED).build()
         val periodicWorkRequest =
             PeriodicWorkRequest.Builder(SessionPingWorker::class.java, 15, TimeUnit.MINUTES)
-                .setConstraints(constraints)
                 .build()
         WorkManager.getInstance(application).enqueueUniquePeriodicWork(
             SESSION_PING_REQUEST,
@@ -301,8 +299,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // check if already running, if not, launch work request
-    private fun startNotificationPingManager(){
-        if(getStateOfNotificationWork() != WorkInfo.State.ENQUEUED && getStateOfNotificationWork() != WorkInfo.State.RUNNING){
+    private fun startNotificationPingManager() {
+        if (getStateOfNotificationWork() != WorkInfo.State.ENQUEUED && getStateOfNotificationWork() != WorkInfo.State.RUNNING) {
             applicationScope.launch {
                 createNotificationWorkRequest()
             }

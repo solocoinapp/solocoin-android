@@ -11,6 +11,10 @@ import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.repo.SolocoinRepository
+import app.solocoin.solocoin.ui.home.HomeActivity
+
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.model.SessionPingRequest
@@ -55,7 +59,9 @@ class NotificationPingWorker(appContext: Context, workerParams: WorkerParameters
 
         val regIntent = Intent(applicationContext, HomeActivity.javaClass)
         regIntent.putExtra("from_checkin", true)
-        val pendingIntent = PendingIntent.getActivity(applicationContext, notificationID, regIntent, 0)
+        val pendingIntent =
+            PendingIntent.getActivity(applicationContext, notificationID, regIntent, 0)
+
 
         builder.setContentIntent(pendingIntent)
 
@@ -73,7 +79,7 @@ class NotificationPingWorker(appContext: Context, workerParams: WorkerParameters
 
         notificationManager.notify(notificationID, builder.build())
 
-        sharedPrefs?.let{
+        sharedPrefs?.let {
             val time = Calendar.getInstance().get(Calendar.MILLISECOND)
             it.recentNotifTime = time.toLong()
         }

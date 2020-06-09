@@ -132,7 +132,8 @@ class WalletFragment : Fragment() {
             //Log.d(TAG, "$response")
             when (response.status) {
                 Status.SUCCESS -> {
-                    val balance = response.data?.get("wallet_balance")?.asString
+                    val balance =
+                        GlobalUtils.parseJsonNullFieldValue(response.data?.get("wallet_balance"))?.asString
                     if (balance != null) {
                         balanceTextView.text = balance
                         SolocoinApp.sharedPrefs?.walletBalance = balance
@@ -195,7 +196,7 @@ class WalletFragment : Fragment() {
             refreshTextView.visibility = View.VISIBLE
             show = false
         }
-        if (userProfile?.get("redeemed_rewards") == null) {
+        if (GlobalUtils.parseJsonNullFieldValue(userProfile?.get("redeemed_rewards")) == null) {
             fetchOffersSharedPrefs()
         } else {
             viewModel.getOffers().observe(viewLifecycleOwner, Observer { response ->
@@ -209,7 +210,7 @@ class WalletFragment : Fragment() {
                             } else {
                                 // Check which offers are claimed already n create adapter
                                 offers.sortBy { it.rewardId.toInt() }
-                                userProfile.getAsJsonArray("redeemed_rewards").forEach { itr ->
+                                userProfile?.getAsJsonArray("redeemed_rewards")?.forEach { itr ->
                                     val index =
                                         offers.binarySearchBy(itr.asJsonObject.get("rewards_sponsor_id").asInt) { it.rewardId.toInt() }
                                     offers[index].isClaimed = true

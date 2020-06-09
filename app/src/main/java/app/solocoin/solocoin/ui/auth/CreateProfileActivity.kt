@@ -81,8 +81,10 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
 
                     Log.wtf(TAG, "code: ${resource.code}")
                     if (resource.code == 200) {
-                        val authToken = resource.data?.get("auth_token")?.asString
-                        val id = resource.data?.get("id")?.asString
+                        val authToken =
+                            GlobalUtils.parseJsonNullFieldValue(resource.data?.get("auth_token"))?.asString
+                        val id =
+                            GlobalUtils.parseJsonNullFieldValue(resource.data?.get("id"))?.asString
                         if (authToken != null) {
                             sharedPrefs?.authToken = authToken
                             sharedPrefs?.id = id
