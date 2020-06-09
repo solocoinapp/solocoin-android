@@ -15,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.*
 
 /**
  * Created by Saurav Gupta on 07/05/20
@@ -33,6 +34,16 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
      */
     override suspend fun doWork(): Result {
         //Log.d(TAG, "Initiating the work")
+
+        // Checking if the period is valid
+        sharedPrefs?.let {
+            if ((it.recentNotifTime + 30 * 60 * 1000 <= Calendar.getInstance().get(
+                    Calendar.MILLISECOND
+                ).toLong()) && it.recentCheckTime < it.recentNotifTime
+            ) {
+                it.periodValid = false
+            }
+        }
 
 //        /*
 //         * Checking if fused location service is running.

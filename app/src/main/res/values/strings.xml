@@ -91,6 +91,9 @@
 
     <string name="start_time">0h 0m 0s</string>
 
+    <string name="notif_checkin">Solocoin Notification Check-in</string>
+    <string name="notif_checkin_desc">Please click on the notification for us to ensure you are still here.</string>
+
     //rewards + wallet section
     <string name="claim_offer">CLAIM OFFER</string>
     <string name="claim_error">Sorry, an error occurred. Please contact customer support.</string>

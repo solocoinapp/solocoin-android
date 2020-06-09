@@ -55,6 +55,11 @@
             tools:ignore="LockedOrientationActivity" />
 
         <service android:name=".services.FusedLocationService" />
+        <service android:name=".services.FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".ui.SplashActivity"

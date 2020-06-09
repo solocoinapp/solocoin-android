@@ -27,7 +27,7 @@
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="wrap_content"
-        android:layout_height="287dp"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@mipmap/logo"
@@ -39,8 +39,8 @@
 
     <ImageView
         android:id="@+id/splash_img"
-        android:layout_width="409dp"
-        android:layout_height="340dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@mipmap/splash_img"
