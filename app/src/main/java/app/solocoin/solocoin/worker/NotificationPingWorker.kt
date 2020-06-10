@@ -16,10 +16,7 @@ import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.ui.home.HomeActivity
 
 import app.solocoin.solocoin.app.SolocoinApp
-import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.model.SessionPingRequest
-import app.solocoin.solocoin.repo.SolocoinRepository
-import app.solocoin.solocoin.ui.home.HomeActivity
 import app.solocoin.solocoin.util.GlobalUtils
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
