@@ -90,8 +90,8 @@ class NotificationPingWorker(appContext: Context, workerParams: WorkerParameters
     }
 
     companion object {
-        private val TAG: String? = SessionPingWorker::class.java.simpleName
-        private val API_CALL: String = SessionPingWorker::class.java.simpleName + " API_CALL"
+        private val TAG: String? = NotificationPingWorker::class.java.simpleName
+        private val API_CALL: String = NotificationPingWorker::class.java.simpleName + " API_CALL"
 //        /*
 //         * Avoid notification for fused location service start on first time user open home activity
 //         */

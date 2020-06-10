@@ -44,7 +44,7 @@ class HomeActivity : AppCompatActivity() {
         var fromNotif = intent.getBooleanExtra("from_checkin", false)
         if (fromNotif) {
             sharedPrefs?.let {
-                it.periodValid = it.recentNotifTime + 30 * 60 * 1000 >= Calendar.getInstance().get(
+                it.periodValid = it.recentNotifTime + 5 * 60 * 1000 >= Calendar.getInstance().get( // TODO: Change 5 to 30
                     Calendar.MILLISECOND
                 ).toLong()
                 it.recentCheckTime = Calendar.getInstance().get(
@@ -288,7 +288,7 @@ class HomeActivity : AppCompatActivity() {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED).build()
             val periodicWorkRequest =
-                PeriodicWorkRequest.Builder(NotificationPingWorker::class.java, 1, TimeUnit.HOURS)
+                PeriodicWorkRequest.Builder(NotificationPingWorker::class.java, 15, TimeUnit.MINUTES) //TODO: Change to 1 hr before deployment
                     .setConstraints(constraints)
                     .build()
             WorkManager.getInstance(application).enqueueUniquePeriodicWork(
