@@ -1,10 +1,14 @@
 package app.solocoin.solocoin.services
 
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.location.Location
+import android.os.Build
 import android.os.IBinder
 import android.os.Looper
+import androidx.annotation.RequiresApi
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.ui.home.HomeActivity
 import app.solocoin.solocoin.util.GlobalUtils
@@ -18,6 +22,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
+@RequiresApi(Build.VERSION_CODES.N)
 class FusedLocationService : Service() {
 
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -49,12 +54,21 @@ class FusedLocationService : Service() {
                 priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             }
         } catch (e: Exception) {
-            GlobalUtils.notifyUser(
-                1,
+            val pendingIntent = PendingIntent.getActivity(
                 applicationContext,
-                HomeActivity::class.java,
-                "Important Update",
-                "Location Request",
+                0,
+                Intent(applicationContext, HomeActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                },
+                0
+            )
+            GlobalUtils.notifyUser(
+                notificationId,
+                channelId,
+                applicationContext,
+                pendingIntent,
+                NotificationManager.IMPORTANCE_HIGH,
+                "Location Permission Request",
                 "Your location data was unable to be processed. Please check App Permissions in Settings to receive rewards."
             )
         }
@@ -101,5 +115,7 @@ class FusedLocationService : Service() {
 
     companion object {
         private val TAG = FusedLocationService::class.simpleName
+        private const val notificationId = 321
+        private const val channelId = "1"
     }
 }

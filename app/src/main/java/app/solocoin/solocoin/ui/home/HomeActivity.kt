@@ -7,11 +7,15 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.work.*
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import app.solocoin.solocoin.NotificationAlarmReceiver
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
@@ -41,60 +45,90 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottom_nav_view.selectedItemId = R.id.nav_home
 
-        var fromNotif = intent.getBooleanExtra("from_checkin", false)
-        if (fromNotif) {
-            sharedPrefs?.let {
-                it.periodValid = it.recentNotifTime + 5 * 60 * 1000 >= Calendar.getInstance().get( // TODO: Change 5 to 30
-                    Calendar.MILLISECOND
-                ).toLong()
-                it.recentCheckTime = Calendar.getInstance().get(
-                    Calendar.MILLISECOND
-                ).toLong()
+        try {
+            val fromNotif = intent!!.getBooleanExtra("from_checkin", false)
+            if (fromNotif) {
+                sharedPrefs?.let {
+                    // TODO: Change 5 to 30
+                    it.periodValid =
+                        it.recentNotifTime + 5 * 60 * 1000 >= Calendar.getInstance().get(
+                            Calendar.MILLISECOND
+                        ).toLong()
+                    it.recentCheckTime = Calendar.getInstance().get(
+                        Calendar.MILLISECOND
+                    ).toLong()
+                }
             }
+        } catch (e: Exception) {
+            Log.wtf(TAG, "No intent available")
         }
+
+        // First adding notification channels to notification manager
+        createNotificationChannels()
+
+        // Starting fused location service
+
+//         var fromNotif = intent.getBooleanExtra("from_checkin", false)
+//         if (fromNotif) {
+//             sharedPrefs?.let {
+//                 it.periodValid = it.recentNotifTime + 5 * 60 * 1000 >= Calendar.getInstance().get( // TODO: Change 5 to 30
+//                     Calendar.MILLISECOND
+//                 ).toLong()
+//                 it.recentCheckTime = Calendar.getInstance().get(
+//                     Calendar.MILLISECOND
+//                 ).toLong()
+//             }
+//         }
+      
         // TODO : Setup permission request for Fused Location service properly
         checkPermissionForLocation()
+
+        // Starting Session Ping API worker
         startSessionPingManager()
+
+        // Starting Check-In Notification worker
         startNotificationPingManager()
+
         alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
-
-        createNotificationChannel()
     }
 
-        private fun createNotificationChannel() {
-            // Create the NotificationChannel, but only on API 26+ because
-            // the NotificationChannel class is new and not in the support library
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val importance = NotificationManager.IMPORTANCE_DEFAULT
-                val channel = NotificationChannel("1", "Solocoin Push", importance).apply {
-                    description = "Solocoin Push"
-                }
-                // Register the channel with the system
-                val notificationManager: NotificationManager =
-                    this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                notificationManager.createNotificationChannel(channel)
-            }
-        }
+    // https://gist.github.com/BrandonSmith/6679223
+    private fun scheduleNotification(delay: Int, info: String) {
+        val notification: Notification? = getNotification(info)
+        val notificationIntent = Intent(this, NotificationAlarmReceiver::class.java)
+        notificationIntent.putExtra("notification-id", 1)
+        notificationIntent.putExtra("notification", notification)
+        val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            notificationIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val futureInMillis: Long = SystemClock.elapsedRealtime() + delay
+        val alarmManager: AlarmManager =
+            ContextCompat.getSystemService(this, AlarmManager::class.java) as AlarmManager
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
+    }
 
         // https://gist.github.com/BrandonSmith/6679223
 
-        private fun scheduleNotification(delay: Int, info: String) {
-            val notification: Notification? = getNotification(info)
-            val notificationIntent = Intent(this, NotificationAlarmReceiver::class.java)
-            notificationIntent.putExtra("notification-id", 1)
-            notificationIntent.putExtra("notification", notification)
-            val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
-                this,
-                0,
-                notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            val futureInMillis: Long = SystemClock.elapsedRealtime() + delay
-            val alarmManager: AlarmManager =
-                ContextCompat.getSystemService(this, AlarmManager::class.java) as AlarmManager
-            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
-        }
+//         private fun scheduleNotification(delay: Int, info: String) {
+//             val notification: Notification? = getNotification(info)
+//             val notificationIntent = Intent(this, NotificationAlarmReceiver::class.java)
+//             notificationIntent.putExtra("notification-id", 1)
+//             notificationIntent.putExtra("notification", notification)
+//             val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
+//                 this,
+//                 0,
+//                 notificationIntent,
+//                 PendingIntent.FLAG_UPDATE_CURRENT
+//             )
+//             val futureInMillis: Long = SystemClock.elapsedRealtime() + delay
+//             val alarmManager: AlarmManager =
+//                 ContextCompat.getSystemService(this, AlarmManager::class.java) as AlarmManager
+//             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
+//         }
 
         private fun getNotification(content: String): Notification? {
             val builder: Notification.Builder = Notification.Builder(this)
@@ -130,6 +164,40 @@ class HomeActivity : AppCompatActivity() {
                 }
                 false
             }
+
+    // Creates notification channels for the app
+    private fun createNotificationChannels() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannels = mutableListOf<NotificationChannel>().apply {
+                var importance = NotificationManager.IMPORTANCE_HIGH
+                val channelPermission =
+                    NotificationChannel("1", "Solocoin Permissions", importance).apply {
+                        description = "Ask user for location related permissions."
+                    }
+                val channelCheckIn =
+                    NotificationChannel("2", "Solocoin Check-In", importance).apply {
+                        description = "To check user presence near phone"
+                    }
+                add(channelCheckIn)
+                add(channelPermission)
+
+                importance = NotificationManager.IMPORTANCE_DEFAULT
+                val channelRegUpdates =
+                    NotificationChannel("3", "Solocoin Regular Updates", importance).apply {
+                        description = "To give user updates through fcm etc."
+                    }
+                add(channelRegUpdates)
+            }
+
+            // Register the channels with the system
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).apply {
+                createNotificationChannels(notificationChannels)
+            }
+        }
+    }
 
         private fun openFragment(fragment: Fragment) {
             val transaction = supportFragmentManager.beginTransaction()
@@ -206,112 +274,129 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        /*
-     * Generates new periodic work request with unique work identifier = 'SESSION_PING_REQUEST'
-     * @see companion object of the class for constant identifiers.
-     */
-        private fun createWorkRequest() {
-            val periodicWorkRequest =
-                PeriodicWorkRequest.Builder(SessionPingWorker::class.java, 15, TimeUnit.MINUTES)
-                    .build()
-            WorkManager.getInstance(application).enqueueUniquePeriodicWork(
-                SESSION_PING_REQUEST,
-                ExistingPeriodicWorkPolicy.KEEP,
-                periodicWorkRequest
-            )
-        }
-
-        /*
+    /*
      * Returns the state of the work performed by work manager using unique work identifier .
      * States of Work Manager : STOPPED, RUNNING, ENQUEUED.
      */
-        private fun getStateOfWork(): WorkInfo.State {
-            return try {
-                if (WorkManager.getInstance(application)
-                        .getWorkInfosForUniqueWork(SESSION_PING_REQUEST)
-                        .get().size > 0
-                ) {
-                    WorkManager.getInstance(application)
-                        .getWorkInfosForUniqueWork(SESSION_PING_REQUEST).get()[0].state
-                } else {
-                    WorkInfo.State.CANCELLED
-                }
-            } catch (e: ExecutionException) {
-                e.printStackTrace()
-                WorkInfo.State.CANCELLED
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
+    private fun getStateOfWork(workUniqueName: String): WorkInfo.State {
+        return try {
+            if (WorkManager.getInstance(application)
+                    .getWorkInfosForUniqueWork(workUniqueName)
+                    .get().size > 0
+            ) {
+                WorkManager.getInstance(application)
+                    .getWorkInfosForUniqueWork(workUniqueName).get()[0].state
+            } else {
                 WorkInfo.State.CANCELLED
             }
         }
+    }
 
-        /*
+    /*
+     * Generates new periodic work request with unique work identifier = 'SESSION_PING_REQUEST'
+     * @see companion object of the class for constant identifiers.
+     */
+    private fun createSessionPingWorkRequest() {
+        val periodicWorkRequest =
+            PeriodicWorkRequest.Builder(SessionPingWorker::class.java, 15, TimeUnit.MINUTES)
+                .build()
+        WorkManager.getInstance(application).enqueueUniquePeriodicWork(
+            SESSION_PING_REQUEST,
+            ExistingPeriodicWorkPolicy.KEEP,
+            periodicWorkRequest
+        )
+    }
+
+    /*
      * Once user reaches 'HomeActivity' worker manager service is executed through this function
      * in current view model. The state of the work request is checked using its unique identifier
      * 'SESSION_PING_MANAGER'. In case, work request is already enqueued then new work request is
      * not generated else new work request is created.
      */
-        private fun startSessionPingManager() {
-            if (getStateOfWork() != WorkInfo.State.ENQUEUED && getStateOfWork() != WorkInfo.State.RUNNING) {
-                applicationScope.launch {
-                    createWorkRequest()
-                }
+    private fun startSessionPingManager() {
+        if (getStateOfWork(SESSION_PING_REQUEST) != WorkInfo.State.ENQUEUED && getStateOfWork(
+                SESSION_PING_REQUEST
+            ) != WorkInfo.State.RUNNING
+        ) {
+            applicationScope.launch {
+                createSessionPingWorkRequest()
+            }
 //            Log.wtf(SESSION_PING_MANAGER, ": Server Started !!")
             } else {
 //            Log.wtf(SESSION_PING_MANAGER, ": Server Already Working !!")
             }
         }
 
-        // ctrl-c ctrl-v
-        private fun getStateOfNotificationWork(): WorkInfo.State {
-            return try {
-                if (WorkManager.getInstance(application)
-                        .getWorkInfosForUniqueWork(NOTIFICATION_PING_REQUEST)
-                        .get().size > 0
-                ) {
-                    WorkManager.getInstance(application)
-                        .getWorkInfosForUniqueWork(NOTIFICATION_PING_REQUEST).get()[0].state
-                } else {
-                    WorkInfo.State.CANCELLED
-                }
-            } catch (e: ExecutionException) {
-                e.printStackTrace()
-                WorkInfo.State.CANCELLED
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-                WorkInfo.State.CANCELLED
-            }
-        }
+    // this code is pretty much the exact same as the one for the session
+    private fun createNotificationWorkRequest() {
+        val periodicWorkRequest =
+            PeriodicWorkRequest.Builder(NotificationPingWorker::class.java, 1, TimeUnit.HOURS)
+                .build()
+        WorkManager.getInstance(application).enqueueUniquePeriodicWork(
+            NOTIFICATION_PING_REQUEST,
+            ExistingPeriodicWorkPolicy.KEEP,
+            periodicWorkRequest
+        )
+    }
 
-        // this code is pretty much the exact same as the one for the session so I will not document it excessively
-        private fun createNotificationWorkRequest() {
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED).build()
-            val periodicWorkRequest =
-                PeriodicWorkRequest.Builder(NotificationPingWorker::class.java, 15, TimeUnit.MINUTES) //TODO: Change to 1 hr before deployment
-                    .setConstraints(constraints)
-                    .build()
-            WorkManager.getInstance(application).enqueueUniquePeriodicWork(
-                NOTIFICATION_PING_REQUEST,
-                ExistingPeriodicWorkPolicy.KEEP,
-                periodicWorkRequest
-            )
-        }
+    // check if already running, if not, launch work request
+    private fun startNotificationPingManager() {
+        if (getStateOfWork(NOTIFICATION_PING_REQUEST) != WorkInfo.State.ENQUEUED && getStateOfWork(
+                NOTIFICATION_PING_REQUEST
+            ) != WorkInfo.State.RUNNING
+        ) {
+            applicationScope.launch {
+                createNotificationWorkRequest()
+//         // ctrl-c ctrl-v
+//         private fun getStateOfNotificationWork(): WorkInfo.State {
+//             return try {
+//                 if (WorkManager.getInstance(application)
+//                         .getWorkInfosForUniqueWork(NOTIFICATION_PING_REQUEST)
+//                         .get().size > 0
+//                 ) {
+//                     WorkManager.getInstance(application)
+//                         .getWorkInfosForUniqueWork(NOTIFICATION_PING_REQUEST).get()[0].state
+//                 } else {
+//                     WorkInfo.State.CANCELLED
+//                 }
+//             } catch (e: ExecutionException) {
+//                 e.printStackTrace()
+//                 WorkInfo.State.CANCELLED
+//             } catch (e: InterruptedException) {
+//                 e.printStackTrace()
+//                 WorkInfo.State.CANCELLED
+//             }
+//         }
 
-        // check if already running, if not, launch work request
-        private fun startNotificationPingManager() {
-            if (getStateOfNotificationWork() != WorkInfo.State.ENQUEUED && getStateOfNotificationWork() != WorkInfo.State.RUNNING) {
-                applicationScope.launch {
-                    createNotificationWorkRequest()
-                }
-            }
-        }
+//         // this code is pretty much the exact same as the one for the session so I will not document it excessively
+//         private fun createNotificationWorkRequest() {
+//             val constraints = Constraints.Builder()
+//                 .setRequiredNetworkType(NetworkType.CONNECTED).build()
+//             val periodicWorkRequest =
+//                 PeriodicWorkRequest.Builder(NotificationPingWorker::class.java, 15, TimeUnit.MINUTES) //TODO: Change to 1 hr before deployment
+//                     .setConstraints(constraints)
+//                     .build()
+//             WorkManager.getInstance(application).enqueueUniquePeriodicWork(
+//                 NOTIFICATION_PING_REQUEST,
+//                 ExistingPeriodicWorkPolicy.KEEP,
+//                 periodicWorkRequest
+//             )
+//         }
 
-        override fun onBackPressed() {
-            if (bottom_nav_view.selectedItemId != R.id.nav_home) {
-                bottom_nav_view.selectedItemId = R.id.nav_home
-            } else {
-                super.onBackPressed()
+//         // check if already running, if not, launch work request
+//         private fun startNotificationPingManager() {
+//             if (getStateOfNotificationWork() != WorkInfo.State.ENQUEUED && getStateOfNotificationWork() != WorkInfo.State.RUNNING) {
+//                 applicationScope.launch {
+//                     createNotificationWorkRequest()
+//                 }
+//             }
+//         }
+
+//         override fun onBackPressed() {
+//             if (bottom_nav_view.selectedItemId != R.id.nav_home) {
+//                 bottom_nav_view.selectedItemId = R.id.nav_home
+//             } else {
+//                 super.onBackPressed()
             }
         }
 
@@ -324,4 +409,14 @@ class HomeActivity : AppCompatActivity() {
             private val applicationScope = CoroutineScope(Dispatchers.Default)
         }
     }
+
+    companion object {
+        private val TAG = HomeActivity::class.java.simpleName
+        private const val PERMISSION_REQUEST_CODE = 34
+        private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.session.ping"
+        private const val SESSION_PING_MANAGER: String = "SESSION_PING_MANAGER"
+        private const val NOTIFICATION_PING_REQUEST = "app.solocoin.solocoin.api.notification"
+        private val applicationScope = CoroutineScope(Dispatchers.Default)
+    }
+}
 

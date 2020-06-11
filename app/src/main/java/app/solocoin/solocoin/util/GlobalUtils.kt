@@ -75,7 +75,8 @@ class GlobalUtils {
             imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
-        private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.v1"
+        private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.session.ping"
+        private const val NOTIFICATION_PING_REQUEST = "app.solocoin.solocoin.api.notification"
         @InternalCoroutinesApi
         @ExperimentalCoroutinesApi
         fun logout(
@@ -87,9 +88,15 @@ class GlobalUtils {
             context.cacheDir.deleteRecursively()
             activity?.let {
                 try {
+                    // Stopping Session Ping Worker
                     WorkManager.getInstance(activity.applicationContext)
                         .cancelUniqueWork(SESSION_PING_REQUEST)
+                    // Stopping Check-In Notification Worker
+                    WorkManager.getInstance(activity.applicationContext)
+                        .cancelUniqueWork(NOTIFICATION_PING_REQUEST)
+                    // Stopping Fused Location Service
                     activity.stopService(Intent(activity, FusedLocationService::class.java))
+
                 } catch (e: Exception) {
                     //Log.wtf("Application Logout", "Unable to close services.")
                 }
@@ -190,34 +197,26 @@ class GlobalUtils {
         /**
          * For creating notification for user
          */
-        fun <T> notifyUser(
-            id: Int,
+        fun notifyUser(
+            notificationId: Int,
+            channelId: String,
             appContext: Context,
-            activityClass: Class<in T>,
+            pendingIntent: PendingIntent,
+            priority: Int,
             title: String,
-            subject: String,
             content: String
         ) {
-
-            // Create an explicit intent for an Activity in your app
-            val intent = Intent(appContext, activityClass).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-            val pendingIntent: PendingIntent = PendingIntent.getActivity(appContext, 0, intent, 0)
-
-            val builder = NotificationCompat.Builder(appContext, "1")
+            val builder = NotificationCompat.Builder(appContext, channelId)
                 .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle(title)
-                .setContentText(subject)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(content))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                // Set the intent that will fire when the user taps the notification
+                .setPriority(priority)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
 
             with(NotificationManagerCompat.from(appContext)) {
                 // notificationId is a unique int for each notification that you must define
-                notify(id, builder.build())
+                notify(notificationId, builder.build())
             }
         }
 
