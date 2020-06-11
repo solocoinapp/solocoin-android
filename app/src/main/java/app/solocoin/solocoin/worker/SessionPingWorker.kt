@@ -42,7 +42,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 
         // Checking if the period is valid
         sharedPrefs?.let {
-            if ((it.recentNotifTime + 5 * 60 * 1000 <= Calendar.getInstance().get(
+            if ((it.recentNotifTime + 30 * 60 * 1000 <= Calendar.getInstance().get(
                     Calendar.MILLISECOND
                 ).toLong()) && it.recentCheckTime < it.recentNotifTime
             ) {

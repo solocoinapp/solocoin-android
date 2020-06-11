@@ -51,7 +51,7 @@ class HomeActivity : AppCompatActivity() {
                 sharedPrefs?.let {
                     // TODO: Change 5 to 30
                     it.periodValid =
-                        it.recentNotifTime + 5 * 60 * 1000 >= Calendar.getInstance().get(
+                        it.recentNotifTime + 30 * 60 * 1000 >= Calendar.getInstance().get(
                             Calendar.MILLISECOND
                         ).toLong()
                     Log.v(TAG, "Period valid: " + it.periodValid);
@@ -337,7 +337,7 @@ class HomeActivity : AppCompatActivity() {
     // this code is pretty much the exact same as the one for the session
     private fun createNotificationWorkRequest() {
         val periodicWorkRequest =
-            PeriodicWorkRequest.Builder(NotificationPingWorker::class.java, 15, TimeUnit.MINUTES) // TODO: CHANGE TO 1 HR
+            PeriodicWorkRequest.Builder(NotificationPingWorker::class.java, 1, TimeUnit.HOURS) // TODO: CHANGE TO 1 HR
                 .build()
         WorkManager.getInstance(application).enqueueUniquePeriodicWork(
             NOTIFICATION_PING_REQUEST,
