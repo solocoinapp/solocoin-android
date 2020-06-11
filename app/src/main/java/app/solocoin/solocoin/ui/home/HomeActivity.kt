@@ -50,7 +50,6 @@ class HomeActivity : AppCompatActivity() {
                 it.recentCheckTime = Calendar.getInstance().get(
                     Calendar.MILLISECOND
                 ).toLong()
-            }
         }
 
         // TODO : Setup permission request for Fused Location service properly

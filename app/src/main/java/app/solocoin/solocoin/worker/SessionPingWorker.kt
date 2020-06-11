@@ -15,6 +15,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 /**
@@ -65,9 +68,16 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 //                return Result.success();
 //            }
 //        }
+
+        sharedPrefs?.let{
+            if(!(it.periodValid)){
+                sessionType = "away"
+            }
+        }
+//        sessionType = "away"
         sessionType?.let {
             val body: JsonObject =
-                JsonParser().parse(SessionPingRequest(sessionType).toString()).asJsonObject
+                JsonParser().parse(SessionPingRequest(sessionType!!).toString()).asJsonObject
 //            //Log.wtf(TAG, body.toString())
             return doApiCall(body)
         }
