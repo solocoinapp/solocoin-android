@@ -289,6 +289,12 @@ class HomeActivity : AppCompatActivity() {
             } else {
                 WorkInfo.State.CANCELLED
             }
+        } catch (e: ExecutionException) {
+            e.printStackTrace()
+            WorkInfo.State.CANCELLED
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+            WorkInfo.State.CANCELLED
         }
     }
 
@@ -398,15 +404,6 @@ class HomeActivity : AppCompatActivity() {
 //             } else {
 //                 super.onBackPressed()
             }
-        }
-
-        companion object {
-            private val TAG = HomeActivity::class.java.simpleName
-            private const val PERMISSION_REQUEST_CODE = 34
-            private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.v1"
-            private const val SESSION_PING_MANAGER: String = "SESSION_PING_MANAGER"
-            private const val NOTIFICATION_PING_REQUEST = "app.solocoin.solocoin.api.notification"
-            private val applicationScope = CoroutineScope(Dispatchers.Default)
         }
     }
 
