@@ -128,12 +128,6 @@ class SharedPrefs(context: Context) {
         get() = instance.getBoolean(_period_valid, false)
         set(value) = instance.edit().putBoolean(_period_valid, value).apply()
 
-
-//    private val _loggedin = "loggedin"
-//    var loggedIn: Boolean
-//        get() = instance.getBoolean(_loggedin, false)
-//        set(value) = instance.edit().putBoolean(_loggedin, value).apply()
-
     private val new_user = "new_user"
     var isNewUser: Boolean
         get() = instance.getBoolean(new_user, false)

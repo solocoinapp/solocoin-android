@@ -1,83 +1,55 @@
 package app.solocoin.solocoin.worker
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.work.Worker
+import androidx.annotation.RequiresApi
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
-import app.solocoin.solocoin.repo.SolocoinRepository
-import app.solocoin.solocoin.ui.home.HomeActivity
-
-import app.solocoin.solocoin.app.SolocoinApp
-import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
-import app.solocoin.solocoin.model.SessionPingRequest
-import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.ui.home.HomeActivity
 import app.solocoin.solocoin.util.GlobalUtils
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import kotlinx.android.synthetic.main.activity_login_signup.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.core.KoinComponent
-import org.koin.core.inject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.sql.Time
 import java.util.*
-
-// author: Vijay Daita
-
-// Gives notification ping
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
+@RequiresApi(Build.VERSION_CODES.N)
 class NotificationPingWorker(appContext: Context, workerParams: WorkerParameters) :
-    Worker(appContext, workerParams), KoinComponent {
+    CoroutineWorker(appContext, workerParams), KoinComponent {
 
-    private val repository: SolocoinRepository by inject()
-    private val notificationID = 402;
-
-    override fun doWork(): Result {
-        return doApiCall()
+    override suspend fun doWork(): Result {
+        return generateNotification()
     }
 
-    private fun doApiCall(): Result {
-        Log.d(API_CALL, "Creating Notification")
-        val builder = NotificationCompat.Builder(applicationContext)
-        builder.setSmallIcon(R.drawable.app_icon)
-        builder.setContentTitle(applicationContext.getString(R.string.notif_checkin))
-        builder.setContentText(applicationContext.getString(R.string.notif_checkin_desc))
+    private fun generateNotification(): Result {
+        Log.wtf(NOTIFY_CALL, "Creating Notification")
 
-        val regIntent = Intent(applicationContext, HomeActivity.javaClass)
-        regIntent.putExtra("from_checkin", true)
-        val pendingIntent =
-            PendingIntent.getActivity(applicationContext, notificationID, regIntent, 0)
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            notificationID,
+            Intent(applicationContext, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                putExtra("from_checkin", true)
+            },
+            0
+        )
 
-
-        builder.setContentIntent(pendingIntent)
-
-        val notificationManager: NotificationManager =
-            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("2", "Solocoin Check-in", importance).apply {
-                description = "Solocoin Check-in"
-            }
-            // Register the channel with the system
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        notificationManager.notify(notificationID, builder.build())
+        GlobalUtils.notifyUser(
+            notificationID,
+            channelId,
+            applicationContext,
+            pendingIntent,
+            NotificationManager.IMPORTANCE_HIGH,
+            applicationContext.getString(R.string.notif_checkin),
+            applicationContext.getString(R.string.notif_checkin_desc)
+        )
 
         sharedPrefs?.let {
             val time = Calendar.getInstance().get(Calendar.MILLISECOND)
@@ -87,17 +59,11 @@ class NotificationPingWorker(appContext: Context, workerParams: WorkerParameters
         return Result.success()
     }
 
-    override fun onStopped() {
-        Log.wtf(TAG, "Stopping Notification Worker")
-        super.onStopped()
-    }
-
     companion object {
-        private val TAG: String? = SessionPingWorker::class.java.simpleName
-        private val API_CALL: String = SessionPingWorker::class.java.simpleName + " API_CALL"
-//        /*
-//         * Avoid notification for fused location service start on first time user open home activity
-//         */
-//        @JvmStatic private var firstTime: Boolean = true
+        private val TAG: String? = NotificationPingWorker::class.java.simpleName
+        private val NOTIFY_CALL: String =
+            NotificationPingWorker::class.java.simpleName + " NOTIFY_CALL"
+        private const val notificationID = 402;
+        private const val channelId = "2"
     }
 }
