@@ -67,6 +67,19 @@ class HomeActivity : AppCompatActivity() {
         createNotificationChannels()
 
         // Starting fused location service
+
+//         var fromNotif = intent.getBooleanExtra("from_checkin", false)
+//         if (fromNotif) {
+//             sharedPrefs?.let {
+//                 it.periodValid = it.recentNotifTime + 5 * 60 * 1000 >= Calendar.getInstance().get( // TODO: Change 5 to 30
+//                     Calendar.MILLISECOND
+//                 ).toLong()
+//                 it.recentCheckTime = Calendar.getInstance().get(
+//                     Calendar.MILLISECOND
+//                 ).toLong()
+//             }
+//         }
+      
         // TODO : Setup permission request for Fused Location service properly
         checkPermissionForLocation()
 
@@ -78,7 +91,6 @@ class HomeActivity : AppCompatActivity() {
 
         alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
-
     }
 
     // https://gist.github.com/BrandonSmith/6679223
@@ -99,46 +111,59 @@ class HomeActivity : AppCompatActivity() {
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }
 
-    private fun getNotification(content: String): Notification? {
-        val builder: Notification.Builder = Notification.Builder(this)
-        builder.setContentTitle("Solocoin Says...")
-        builder.setContentText(content)
-        builder.setSmallIcon(R.drawable.app_icon)
-        return builder.build()
-    }
+        // https://gist.github.com/BrandonSmith/6679223
 
-    private val mOnNavigationItemSelectedListener =
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> {
-                    toolbar.title = getString(R.string.home)
-                    openFragment(HomeFragment.instance())
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.nav_wallet -> {
-                    toolbar.title = getString(R.string.wallet)
-                    openFragment(WalletFragment.instance())
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.nav_milestones -> {
-                    toolbar.title = getString(R.string.milestones)
-                    openFragment(MilestonesFragment.instance())
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.nav_profile -> {
-                    toolbar.title = getString(R.string.profile)
-                    openFragment(ProfileFragment.instance())
-                    return@OnNavigationItemSelectedListener true
-                }
-            }
-            false
+//         private fun scheduleNotification(delay: Int, info: String) {
+//             val notification: Notification? = getNotification(info)
+//             val notificationIntent = Intent(this, NotificationAlarmReceiver::class.java)
+//             notificationIntent.putExtra("notification-id", 1)
+//             notificationIntent.putExtra("notification", notification)
+//             val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
+//                 this,
+//                 0,
+//                 notificationIntent,
+//                 PendingIntent.FLAG_UPDATE_CURRENT
+//             )
+//             val futureInMillis: Long = SystemClock.elapsedRealtime() + delay
+//             val alarmManager: AlarmManager =
+//                 ContextCompat.getSystemService(this, AlarmManager::class.java) as AlarmManager
+//             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
+//         }
+
+        private fun getNotification(content: String): Notification? {
+            val builder: Notification.Builder = Notification.Builder(this)
+            builder.setContentTitle("Solocoin Says...")
+            builder.setContentText(content)
+            builder.setSmallIcon(R.drawable.app_icon)
+            return builder.build()
         }
 
-    private fun openFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment, fragment.tag)
-        transaction.commit()
-    }
+        private val mOnNavigationItemSelectedListener =
+            BottomNavigationView.OnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.nav_home -> {
+                        toolbar.title = getString(R.string.home)
+                        openFragment(HomeFragment.instance())
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.nav_wallet -> {
+                        toolbar.title = getString(R.string.wallet)
+                        openFragment(WalletFragment.instance())
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.nav_milestones -> {
+                        toolbar.title = getString(R.string.milestones)
+                        openFragment(MilestonesFragment.instance())
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.nav_profile -> {
+                        toolbar.title = getString(R.string.profile)
+                        openFragment(ProfileFragment.instance())
+                        return@OnNavigationItemSelectedListener true
+                    }
+                }
+                false
+            }
 
     // Creates notification channels for the app
     private fun createNotificationChannels() {
@@ -174,74 +199,80 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermissionForLocation() {
+        private fun openFragment(fragment: Fragment) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, fragment, fragment.tag)
+            transaction.commit()
+        }
 
-        var permissionsArray = arrayOf<String>()
+        private fun checkPermissionForLocation() {
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        )
-            permissionsArray =
-                permissionsArray.plus(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            var permissionsArray = arrayOf<String>()
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        )
-            permissionsArray =
-                permissionsArray.plus(android.Manifest.permission.ACCESS_COARSE_LOCATION)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ActivityCompat.checkSelfPermission(
                     this,
-                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             )
                 permissionsArray =
-                    permissionsArray.plus(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-        }
+                    permissionsArray.plus(android.Manifest.permission.ACCESS_FINE_LOCATION)
 
-        when (permissionsArray.count()) {
-            0 -> startFusedLocationService()
-            else -> ActivityCompat.requestPermissions(
-                this,
-                permissionsArray,
-                PERMISSION_REQUEST_CODE
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
             )
-        }
-    }
+                permissionsArray =
+                    permissionsArray.plus(android.Manifest.permission.ACCESS_COARSE_LOCATION)
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            when {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                )
+                    permissionsArray =
+                        permissionsArray.plus(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            }
+
+            when (permissionsArray.count()) {
+                0 -> startFusedLocationService()
+                else -> ActivityCompat.requestPermissions(
+                    this,
+                    permissionsArray,
+                    PERMISSION_REQUEST_CODE
+                )
+            }
+        }
+
+        override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+        ) {
+            if (requestCode == PERMISSION_REQUEST_CODE) {
+                when {
 //                grantResults.isEmpty() -> Log.d(TAG, "User Interaction Cancelled")
-                grantResults[0] == PackageManager.PERMISSION_GRANTED -> startFusedLocationService()
-                else -> {
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED -> startFusedLocationService()
+                    else -> {
 //                    Log.d(TAG, "Permissions Denied by User")
-                    TODO("Show message when user denies location permissions or user interaction is cancelled")
+                        TODO("Show message when user denies location permissions or user interaction is cancelled")
+                    }
                 }
             }
         }
-    }
 
-    private fun startFusedLocationService() {
-        if (!GlobalUtils.isServiceRunning(applicationContext, FusedLocationService.javaClass)) {
+        private fun startFusedLocationService() {
+            if (!GlobalUtils.isServiceRunning(applicationContext, FusedLocationService.javaClass)) {
 //            Log.wtf(TAG, "Starting the fused location service.")
-            val intent = Intent(applicationContext, FusedLocationService::class.java)
-            applicationScope.launch {
-                startService(intent)
-            }
-        } else {
+                val intent = Intent(applicationContext, FusedLocationService::class.java)
+                applicationScope.launch {
+                    startService(intent)
+                }
+            } else {
 //            Log.wtf(TAG, "Fused location service already running")
+            }
         }
-    }
 
     /*
      * Returns the state of the work performed by work manager using unique work identifier .
@@ -258,12 +289,6 @@ class HomeActivity : AppCompatActivity() {
             } else {
                 WorkInfo.State.CANCELLED
             }
-        } catch (e: ExecutionException) {
-            e.printStackTrace()
-            WorkInfo.State.CANCELLED
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-            WorkInfo.State.CANCELLED
         }
     }
 
@@ -297,10 +322,10 @@ class HomeActivity : AppCompatActivity() {
                 createSessionPingWorkRequest()
             }
 //            Log.wtf(SESSION_PING_MANAGER, ": Server Started !!")
-        } else {
+            } else {
 //            Log.wtf(SESSION_PING_MANAGER, ": Server Already Working !!")
+            }
         }
-    }
 
     // this code is pretty much the exact same as the one for the session
     private fun createNotificationWorkRequest() {
@@ -322,15 +347,66 @@ class HomeActivity : AppCompatActivity() {
         ) {
             applicationScope.launch {
                 createNotificationWorkRequest()
+//         // ctrl-c ctrl-v
+//         private fun getStateOfNotificationWork(): WorkInfo.State {
+//             return try {
+//                 if (WorkManager.getInstance(application)
+//                         .getWorkInfosForUniqueWork(NOTIFICATION_PING_REQUEST)
+//                         .get().size > 0
+//                 ) {
+//                     WorkManager.getInstance(application)
+//                         .getWorkInfosForUniqueWork(NOTIFICATION_PING_REQUEST).get()[0].state
+//                 } else {
+//                     WorkInfo.State.CANCELLED
+//                 }
+//             } catch (e: ExecutionException) {
+//                 e.printStackTrace()
+//                 WorkInfo.State.CANCELLED
+//             } catch (e: InterruptedException) {
+//                 e.printStackTrace()
+//                 WorkInfo.State.CANCELLED
+//             }
+//         }
+
+//         // this code is pretty much the exact same as the one for the session so I will not document it excessively
+//         private fun createNotificationWorkRequest() {
+//             val constraints = Constraints.Builder()
+//                 .setRequiredNetworkType(NetworkType.CONNECTED).build()
+//             val periodicWorkRequest =
+//                 PeriodicWorkRequest.Builder(NotificationPingWorker::class.java, 15, TimeUnit.MINUTES) //TODO: Change to 1 hr before deployment
+//                     .setConstraints(constraints)
+//                     .build()
+//             WorkManager.getInstance(application).enqueueUniquePeriodicWork(
+//                 NOTIFICATION_PING_REQUEST,
+//                 ExistingPeriodicWorkPolicy.KEEP,
+//                 periodicWorkRequest
+//             )
+//         }
+
+//         // check if already running, if not, launch work request
+//         private fun startNotificationPingManager() {
+//             if (getStateOfNotificationWork() != WorkInfo.State.ENQUEUED && getStateOfNotificationWork() != WorkInfo.State.RUNNING) {
+//                 applicationScope.launch {
+//                     createNotificationWorkRequest()
+//                 }
+//             }
+//         }
+
+//         override fun onBackPressed() {
+//             if (bottom_nav_view.selectedItemId != R.id.nav_home) {
+//                 bottom_nav_view.selectedItemId = R.id.nav_home
+//             } else {
+//                 super.onBackPressed()
             }
         }
-    }
 
-    override fun onBackPressed() {
-        if (bottom_nav_view.selectedItemId != R.id.nav_home) {
-            bottom_nav_view.selectedItemId = R.id.nav_home
-        } else {
-            super.onBackPressed()
+        companion object {
+            private val TAG = HomeActivity::class.java.simpleName
+            private const val PERMISSION_REQUEST_CODE = 34
+            private const val SESSION_PING_REQUEST = "app.solocoin.solocoin.api.v1"
+            private const val SESSION_PING_MANAGER: String = "SESSION_PING_MANAGER"
+            private const val NOTIFICATION_PING_REQUEST = "app.solocoin.solocoin.api.notification"
+            private val applicationScope = CoroutineScope(Dispatchers.Default)
         }
     }
 
@@ -343,3 +419,4 @@ class HomeActivity : AppCompatActivity() {
         private val applicationScope = CoroutineScope(Dispatchers.Default)
     }
 }
+
