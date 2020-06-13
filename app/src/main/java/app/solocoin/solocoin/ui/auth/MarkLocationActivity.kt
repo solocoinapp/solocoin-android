@@ -41,6 +41,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * on-continue click, check for username
@@ -141,15 +142,16 @@ class MarkLocationActivity : AppCompatActivity(), PermissionListener, View.OnCli
 
         try {
             addresses = gc.getFromLocation(mLocation.latitude, mLocation.longitude, 1)
-            val city: String = if (addresses[0].locality == null) "" else addresses[0].locality
-            val state: String = if (addresses[0].adminArea == null) "" else addresses[0].adminArea
-            val country: String =
-                if (addresses[0].countryName == null) "" else addresses[0].countryName
-            if (city == "" && state == "" && country == "") {
-                et_location.setText("Unable to fetch location.")
-            } else {
-                et_location.setText(getString(R.string.current_address, city, state, country))
+            val city: String? = addresses[0].locality
+            val state: String? = addresses[0].adminArea
+            val country: String? = addresses[0].countryName
+            val address = ArrayList<String?>().apply {
+                add(city)
+                add(state)
+                add(country)
             }
+            et_location.setText(address.filterNotNull().joinToString(separator = ","))
+
         } catch (e: IOException) {}
     }
 

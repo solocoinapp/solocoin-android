@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -29,14 +28,14 @@ class NotificationPingWorker(appContext: Context, workerParams: WorkerParameters
     }
 
     private fun generateNotification(): Result {
-        Log.wtf(NOTIFY_CALL, "Creating Notification")
+//        Log.wtf(NOTIFY_CALL, "Creating Notification")
 
         val pendingIntent = PendingIntent.getActivity(
             applicationContext,
             notificationID,
             Intent(applicationContext, HomeActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                putExtra("from_checkin", true)
+//                putExtra("from_checkin", true)
             },
             0
         )
@@ -52,8 +51,7 @@ class NotificationPingWorker(appContext: Context, workerParams: WorkerParameters
         )
 
         sharedPrefs?.let {
-            val time = Calendar.getInstance().get(Calendar.MILLISECOND)
-            it.recentNotifTime = time.toLong()
+            it.recentNotifTime = Calendar.getInstance().timeInMillis
         }
 
         return Result.success()

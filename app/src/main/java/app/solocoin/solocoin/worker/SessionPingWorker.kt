@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -38,13 +37,11 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
      * in the SolocoinRespository class.
      */
     override suspend fun doWork(): Result {
-        Log.wtf(TAG, "Initiating the work")
+//        Log.wtf(TAG, "Initiating the work")
 
         // Checking if the period is valid
         sharedPrefs?.let {
-            if ((it.recentNotifTime + 5 * 60 * 1000 <= Calendar.getInstance().get(
-                    Calendar.MILLISECOND
-                ).toLong()) && it.recentCheckTime < it.recentNotifTime
+            if ((it.recentNotifTime + 30 * 60 * 1000 < Calendar.getInstance().timeInMillis) && (it.recentCheckTime < it.recentNotifTime)
             ) {
                 it.periodValid = false
             }
@@ -73,7 +70,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
             }
         }
 
-        Log.wtf(TAG, "Your session type is : $sessionType")
+//        Log.wtf(TAG, "Your session type is : $sessionType")
 
         sessionType?.let {
             val body: JsonObject =
@@ -85,11 +82,11 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
 
     @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun doApiCall(body: JsonObject): Result {
-        Log.wtf(API_CALL, "Calling api")
+//        Log.wtf(API_CALL, "Calling api")
 
         try {
             val response = repository.pingSession(body)
-            Log.wtf(TAG, "sending request")
+//            Log.wtf(TAG, "sending request")
             if (response.isSuccessful) {
                 response.body()?.let {
                     sharedPrefs?.status = it["status"]?.asString
@@ -112,7 +109,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
                     pendingIntent,
                     NotificationManager.IMPORTANCE_HIGH,
                     "Internet Connectivity Issue",
-                    "Your network request was unable to be processed. Please check Internet settings."
+                    "Your network request was unable to be processed. Please check Internet settings or Login again."
                 )
                 return Result.retry()
             }
@@ -133,7 +130,7 @@ class SessionPingWorker(appContext: Context, workerParams: WorkerParameters) :
                 pendingIntent,
                 NotificationManager.IMPORTANCE_HIGH,
                 "Internet Connectivity Issue",
-                "Your network request was unable to be processed. Please check Internet settings."
+                "Your network request was unable to be processed. Please check Internet settings or Login again."
             )
             return Result.retry()
         }

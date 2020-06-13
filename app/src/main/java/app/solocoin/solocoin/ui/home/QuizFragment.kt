@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.repo.NoConnectivityException
+import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.google.android.material.card.MaterialCardView
@@ -236,20 +237,34 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
         quiz_container.visibility = View.GONE
         quiz_message.visibility = View.GONE
         quiz_placeholder.visibility = View.VISIBLE
+        val isCorrect = answers[optionId].asJsonObject.get("correct").asBoolean
 
         viewModel.submitQuizAnswer(body).observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-//                        Log.d("Question submit SUCESS", question_id.toString())
-                        if (CURRENT_QUIZ == DAILY_QUIZ) {
-                            sharedPrefs?.dailyQuizTime = Calendar.getInstance().timeInMillis
-                            showFallbackText(AFTER_TWO_HOURS)
-                        } else if (CURRENT_QUIZ == WEEKLY_QUIZ) {
-                            var countAnswered = sharedPrefs!!.countAnsweredWeeklyQuiz
-                            countAnswered += 1
-                            sharedPrefs!!.countAnsweredWeeklyQuiz = countAnswered
-                            getWeeklyQuiz()
+                        if (resource.code == 201) {
+                            if (isCorrect) {
+                                showInfoDialog(
+                                    "Correct Answer",
+                                    "You get 50 coins.\n\nPlease wait 2-3 minutes for wallet to update."
+                                )
+                            }
+//                          Log.d("Question submit SUCESS", question_id.toString())
+                            if (CURRENT_QUIZ == DAILY_QUIZ) {
+                                sharedPrefs?.dailyQuizTime = Calendar.getInstance().timeInMillis
+                                showFallbackText(AFTER_TWO_HOURS)
+                            } else if (CURRENT_QUIZ == WEEKLY_QUIZ) {
+                                var countAnswered = sharedPrefs!!.countAnsweredWeeklyQuiz
+                                countAnswered += 1
+                                sharedPrefs!!.countAnsweredWeeklyQuiz = countAnswered
+                                getWeeklyQuiz()
+                            }
+                        } else {
+                            quiz_placeholder.visibility = View.GONE
+                            quiz_container.visibility = View.GONE
+                            quiz_message.visibility = View.VISIBLE
+                            quiz_message_text.text = getString(R.string.error_msg)
                         }
                     }
 
@@ -270,6 +285,22 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
                 }
             }
         })
+    }
+
+    val showInfoDialog: (String, String) -> Unit = { title: String, message: String ->
+        val infoDialog = AppDialog.instance(
+            title,
+            message,
+            object : AppDialog.AppDialogListener {
+                override fun onClickConfirm() {
+                    onClickCancel()
+                }
+
+                override fun onClickCancel() {}
+            },
+            getString(R.string.okay)
+        )
+        infoDialog.show(requireFragmentManager(), infoDialog.tag)
     }
 
     private fun showFallbackText(category: Int) {

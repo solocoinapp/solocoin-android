@@ -1,7 +1,6 @@
 package app.solocoin.solocoin.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,31 +29,37 @@ class HomeFragment : Fragment() {
 
     private var tvHomeDuration: TextView? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tvHomeDuration = view.findViewById(R.id.time)
-//        sharedPrefs?.let {
-//            it.loggedIn = true
-//        }
 
-        sharedPrefs?.isNewUser?.let {
-            if (it) {
-                val infoDialog = AppDialog.instance(
-                    "",
-                    getString(R.string.new_user_intro),
-                    object : AppDialog.AppDialogListener {
-                        override fun onClickConfirm() {}
+        val isNewUser = requireActivity().intent.getBooleanExtra("New User", false)
+        requireActivity().intent.removeExtra("New User")
+        if (isNewUser) {
+            home_sv.foreground = resources.getDrawable(R.drawable.splash_background_black)
+            val infoDialog = AppDialog.instance(
+                "",
+                getString(R.string.new_user_intro),
+                object : AppDialog.AppDialogListener {
+                    override fun onClickConfirm() {
+                        home_sv.foreground = null
+                    }
 
-                        override fun onClickCancel() {}
-                    })
-                sharedPrefs?.isNewUser = false
-                infoDialog.show(requireFragmentManager(), infoDialog.tag)
-            }
+                    override fun onClickCancel() {
+                        home_sv.foreground = null
+                    }
+                })
+            infoDialog.show(requireFragmentManager(), infoDialog.tag)
         }
+
         updateTime()
 
         quiz_viewpager.adapter = QuizFragmentAdapter(this)
@@ -66,8 +71,8 @@ class HomeFragment : Fragment() {
 
     private fun updateTime() {
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
-            Log.d(TAG + "After Login/SignUp", "$response")
-            when(response.status) {
+//            Log.d(TAG + "After Login/SignUp", "$response")
+            when (response.status) {
                 Status.SUCCESS -> {
                     val duration =
                         GlobalUtils.parseJsonNullFieldValue(response.data?.get("home_duration_in_seconds"))?.asLong
@@ -78,10 +83,12 @@ class HomeFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     if (sharedPrefs?.homeDuration != 0L) {
-                        tvHomeDuration?.text = GlobalUtils.formattedHomeDuration(sharedPrefs?.homeDuration)
+                        tvHomeDuration?.text =
+                            GlobalUtils.formattedHomeDuration(sharedPrefs?.homeDuration)
                     }
                 }
-                Status.LOADING -> {}
+                Status.LOADING -> {
+                }
             }
         })
     }

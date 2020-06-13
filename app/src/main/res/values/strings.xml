@@ -65,8 +65,9 @@
     <string name="url_tnc">https://www.solocoin.app/terms-and-conditions/</string>
 
     <string name="invite_subject">My application name</string>
-    <string name="invite_message">\nLet me recommend you this application\n\nhttps://play.google.com/store/apps/details?id=%s</string>
+    <string name="invite_message">\nLet me recommend you this application\n\n</string>
     <string name="invite_title">Select an option</string>
+    <string name="app_link">https://play.google.com/store/apps/details?id=app.solocoin.solocoin</string>
 
     <string name="badge_invite_subject">Look at my new achievement!</string>
     <string name="badge_invite_message_start">I just got </string>
@@ -92,7 +93,7 @@
     <string name="start_time">0h 0m 0s</string>
 
     <string name="notif_checkin">Solocoin Notification Check-in</string>
-    <string name="notif_checkin_desc">Please click on the notification for us to ensure you are still here.</string>
+    <string name="notif_checkin_desc">Please click on the notification or open application for us to ensure you are still here.</string>
 
     //rewards + wallet section
     <string name="claim_offer">CLAIM OFFER</string>
@@ -160,7 +161,7 @@
     <string name="milestones_info">Compete globally with players, achieve milestones, collect badges and brag about it on social media.</string>
     <string name="one_liner">Every Alpha Warrior was a trainee once</string>
     <string name="image_error">Unable to load your badge.</string>
-    <string name="wallet_update_info">Wallet will take 3–4 minutes to update</string>
+    <string name="wallet_update_info">Wallet will take 2–3 minutes to update.</string>
     <string name="refresh_reward">Loading your offers...</string>
     <string name="logout_issue">Please connect to internet to logout.</string>
 

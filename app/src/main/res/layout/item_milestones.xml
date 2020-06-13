@@ -109,6 +109,7 @@
         <ProgressBar
             android:id="@+id/level_pb"
             style="@style/ProgressBarTheme"
+            android:indeterminate="false"
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:layout_gravity="center"
@@ -217,9 +218,10 @@
 
     <GridLayout
         android:id="@+id/badges_gl"
-        android:layout_width="@dimen/mobile_match_parent"
+        android:layout_width="@dimen/wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
         android:useDefaultMargins="true"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"

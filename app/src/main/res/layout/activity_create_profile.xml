@@ -40,7 +40,7 @@
         android:layout_marginStart="@dimen/app_padding"
         android:layout_marginEnd="@dimen/app_padding"
         app:layout_constraintTop_toBottomOf="@id/iv_solocoin"
-        app:startIconDrawable="@drawable/ic_profile"
+        app:startIconDrawable="@drawable/ic_profile_photo"
         app:startIconTint="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

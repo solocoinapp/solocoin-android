@@ -3,7 +3,6 @@ package app.solocoin.solocoin.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
@@ -140,6 +139,8 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
         countryCode = countryCodePicker.selectedCountryCodeWithPlus
         mobileNumber = etMobileNumber.text.toString()
 
+        // TODO: Make it universal using library or regular expressions
+        // Currently valid for Indian crowds
         if (mobileNumber.length < 10) {
             etMobileNumber.error = getString(R.string.error_mobile_no)
             return
@@ -216,7 +217,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
 //                    Log.wtf(TAG, "user-id: $uid")
 
                     task.result?.user?.getIdToken(true)?.addOnCompleteListener { task1 ->
-                        Log.wtf(TAG + " Firebase Authentication", "$task1")
+//                        Log.wtf(TAG + " Firebase Authentication", "$task1")
                         sharedPrefs?.idToken = task1.result?.token
                         sharedPrefs?.countryCode = countryCode
                         sharedPrefs?.mobileNumber = mobileNumber
@@ -229,7 +230,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                         body.add("user", user)
 
                         viewModel.mobileLogin(body).observe(this, Observer {
-                            Log.wtf(TAG + " Mobile Login", "$it")
+//                            Log.wtf(TAG + " Mobile Login", "$it")
                             it?.let { resource ->
                                 when (resource.status) {
                                     Status.SUCCESS -> {
@@ -237,17 +238,17 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
 //                                        Log.d(TAG, "mobilelogin-rc: ${resource.code}, ${resource}")
 
                                         if (resource.code == 200) {
-                                            Log.wtf(TAG, "Existing user fetching Info")
+//                                            Log.wtf(TAG, "Existing user fetching Info")
                                             //existing-user
 
                                             sharedPrefs?.authToken =
                                                 GlobalUtils.parseJsonNullFieldValue(
                                                     resource.data!!.get("auth_token")
                                                 )?.asString
-                                            Log.wtf(TAG, sharedPrefs?.authToken)
+//                                            Log.wtf(TAG, sharedPrefs?.authToken)
                                             //get-user-data
                                             viewModel.userData().observe(this, Observer { res ->
-                                                Log.wtf(TAG + " User Info", "$res")
+//                                                Log.wtf(TAG + " User Info", "$res")
                                                 res?.let { resource ->
                                                     when (resource.status) {
                                                         Status.SUCCESS -> {
@@ -264,19 +265,42 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                                                     GlobalUtils.parseJsonNullFieldValue(
                                                                         resource.data?.get("name")
                                                                     )?.asString
-                                                                Log.wtf(
-                                                                    TAG,
-                                                                    sharedPrefs?.userLong + " " + sharedPrefs?.userLat + " " + sharedPrefs?.name
-                                                                )
+//                                                                Log.wtf(
+//                                                                    TAG,
+//                                                                    sharedPrefs?.userLong + " " + sharedPrefs?.userLat + " " + sharedPrefs?.name
+//                                                                )
 //                                                                Log.d(TAG, "blah ok $resource")
-                                                                GlobalUtils.startActivityAsNewStack(Intent(this, SplashActivity::class.java), this)
+                                                                GlobalUtils.startActivityAsNewStack(
+                                                                    Intent(
+                                                                        this,
+                                                                        SplashActivity::class.java
+                                                                    ).apply {
+                                                                        putExtra(
+                                                                            "from_checkin",
+                                                                            true
+                                                                        )
+                                                                    },
+                                                                    this
+                                                                )
                                                                 finish()
                                                             } else {
+
+                                                                if (mFirebaseAuth.currentUser != null) {
+                                                                    sharedPrefs?.clearSession()
+                                                                    mFirebaseAuth.signOut()
+                                                                }
+
 //                                                                Log.d(TAG, "blah not ok $resource")
                                                                 Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
                                                             }
                                                         }
                                                         Status.ERROR -> {
+
+                                                            if (mFirebaseAuth.currentUser != null) {
+                                                                sharedPrefs?.clearSession()
+                                                                mFirebaseAuth.signOut()
+                                                            }
+
                                                             if (resource.exception is NoConnectivityException) {
                                                                 Toast.makeText(this, resource.exception.message, Toast.LENGTH_SHORT).show()
                                                             } else {
@@ -301,6 +325,11 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                     }
                                     Status.ERROR -> {
                                         loadingDialog.dismiss()
+
+                                        if (mFirebaseAuth.currentUser != null) {
+                                            sharedPrefs?.clearSession()
+                                            mFirebaseAuth.signOut()
+                                        }
 
                                         if (resource.exception is NoConnectivityException) {
                                             Toast.makeText(this, resource.exception.message, Toast.LENGTH_SHORT).show()

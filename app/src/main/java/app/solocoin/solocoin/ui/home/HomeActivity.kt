@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -45,22 +44,13 @@ class HomeActivity : AppCompatActivity() {
         bottom_nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottom_nav_view.selectedItemId = R.id.nav_home
 
-        try {
-            val fromNotif = intent!!.getBooleanExtra("from_checkin", false)
-            if (fromNotif) {
-                sharedPrefs?.let {
-                    // TODO: Change 5 to 30
-                    it.periodValid =
-                        it.recentNotifTime + 5 * 60 * 1000 >= Calendar.getInstance().get(
-                            Calendar.MILLISECOND
-                        ).toLong()
-                    it.recentCheckTime = Calendar.getInstance().get(
-                        Calendar.MILLISECOND
-                    ).toLong()
-                }
+        sharedPrefs?.let {
+            if (it.recentCheckTime < it.recentNotifTime) {
+                it.periodValid =
+                    it.recentNotifTime + 30 * 60 * 1000 >= Calendar.getInstance().timeInMillis
+//            Log.v(TAG, "Period valid: " + it.periodValid);
+                it.recentCheckTime = Calendar.getInstance().timeInMillis
             }
-        } catch (e: Exception) {
-            Log.wtf(TAG, "No intent available")
         }
 
         // First adding notification channels to notification manager

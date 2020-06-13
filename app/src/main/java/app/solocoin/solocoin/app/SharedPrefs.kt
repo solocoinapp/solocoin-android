@@ -7,6 +7,7 @@ import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.model.Reward
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.*
 
 /**
  * Created by Aditya Sonel on 22/04/20.
@@ -115,7 +116,7 @@ class SharedPrefs(context: Context) {
 
     private val _recent_notif_time = "recent_notif_time"
     var recentNotifTime: Long
-        get() = instance.getLong(_recent_notif_time, 0)
+        get() = instance.getLong(_recent_notif_time, Calendar.getInstance().timeInMillis)
         set(value) = instance.edit().putLong(_recent_notif_time, value).apply()
 
     private val _recent_check_time = "recent_check_time"
@@ -127,11 +128,6 @@ class SharedPrefs(context: Context) {
     var periodValid: Boolean
         get() = instance.getBoolean(_period_valid, false)
         set(value) = instance.edit().putBoolean(_period_valid, value).apply()
-
-    private val new_user = "new_user"
-    var isNewUser: Boolean
-        get() = instance.getBoolean(new_user, false)
-        set(value) = instance.edit().putBoolean(new_user, value).apply()
 
     fun clearSession() {
         instance.edit()

@@ -8,78 +8,85 @@
 
     <TextView
         android:id="@+id/tv_invite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_item_height"
         android:drawableStart="@drawable/ic_invite"
         android:drawablePadding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/profile_item_height"
-        android:text="@string/invite"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:gravity="center_vertical"
         android:fontFamily="@font/poppins"
         android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/invite"
         android:textColor="@android:color/black" />
+
     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginStart="@dimen/app_padding"
         android:layout_marginEnd="@dimen/app_padding"
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:background="@color/colorAccent" />
+
     <TextView
         android:id="@+id/tv_pp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_item_height"
         android:drawableStart="@drawable/ic_privacy_policy"
         android:drawablePadding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/profile_item_height"
-        android:text="@string/pp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:gravity="center_vertical"
         android:fontFamily="@font/poppins"
         android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/pp"
         android:textColor="@android:color/black" />
+
     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginStart="@dimen/app_padding"
         android:layout_marginEnd="@dimen/app_padding"
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:background="@color/colorAccent" />
+
     <TextView
         android:id="@+id/tv_tnc"
-        android:drawableStart="@drawable/ic_tnc"
-        android:drawablePadding="16dp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/profile_item_height"
-        android:text="@string/tnc"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:gravity="center_vertical"
+        android:drawableStart="@drawable/ic_tnc"
+        android:drawablePadding="16dp"
         android:fontFamily="@font/poppins"
         android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/tnc"
         android:textColor="@android:color/black" />
+
     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginStart="@dimen/app_padding"
         android:layout_marginEnd="@dimen/app_padding"
-        android:background="@color/colorAccent"
+        android:background="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/tv_logout"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-    <!--    <TextView-->
-    <!--        android:id="@+id/tv_logout"-->
-    <!--        android:drawableStart="@drawable/ic_logout"-->
-    <!--        android:drawablePadding="16dp"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/profile_item_height"-->
-    <!--        android:text="@string/logout"-->
-    <!--        android:paddingStart="16dp"-->
-    <!--        android:paddingEnd="16dp"-->
-    <!--        android:gravity="center_vertical"-->
-    <!--        android:fontFamily="@font/poppins"-->
-    <!--        android:foreground="?attr/selectableItemBackground"-->
-    <!--        android:textColor="@android:color/black" />-->
-    <!--    <View-->
-    <!--        android:layout_marginStart="@dimen/app_padding"-->
-    <!--        android:layout_marginEnd="@dimen/app_padding"-->
-    <!--        android:background="@color/colorAccent"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="1dp"/>-->
+        android:layout_height="@dimen/profile_item_height"
+        android:drawableStart="@drawable/ic_logout"
+        android:drawablePadding="16dp"
+        android:fontFamily="@font/poppins"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/logout"
+        android:textColor="@android:color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:background="@color/colorAccent" />
 </LinearLayout>

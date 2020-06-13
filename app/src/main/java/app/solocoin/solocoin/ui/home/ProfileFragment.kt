@@ -10,9 +10,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.repo.SolocoinRepository
+import app.solocoin.solocoin.util.AppDialog
+import app.solocoin.solocoin.util.GlobalUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import org.koin.android.BuildConfig
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -22,7 +23,11 @@ class ProfileFragment : Fragment(), KoinComponent {
 
     private val repository: SolocoinRepository by inject()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -34,7 +39,10 @@ class ProfileFragment : Fragment(), KoinComponent {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject))
-            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_message, BuildConfig.APPLICATION_ID))
+            shareIntent.putExtra(
+                Intent.EXTRA_TEXT,
+                getString(R.string.invite_message + R.string.app_link)
+            )
             startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_title)))
         }
         //invite-btn
@@ -52,58 +60,23 @@ class ProfileFragment : Fragment(), KoinComponent {
         //terms-condition-btn
 
         //logout-btn
-//        view.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
-//                val logoutDialog = AppDialog.instance(
-//                    getString(R.string.confirm),
-//                    getString(R.string.tag_logout),
-//                    object : AppDialog.AppDialogListener {
-//                        override fun onClickConfirm() {
-//                            if (GlobalUtils.isNetworkAvailable(requireActivity())) {
-//                                // updating backend for user logout
-//                                val body: JsonObject =
-//                                    JsonParser().parse(SessionPingRequest("away").toString()).asJsonObject
-//                                val call: Call<JsonObject> = repository.pingSession(body)
-//                                call.enqueue(object : Callback<JsonObject?> {
-//                                    override fun onResponse(
-//                                        call: Call<JsonObject?>,
-//                                        response: Response<JsonObject?>
-//                                    ) {
-//                                        Log.d("Logout", "Successful")
-//                                    }
-//
-//                                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-//                                        Log.d("Logout", "Failure updating backend")
-//                                    }
-//
-//                                })
-//                                GlobalUtils.logout(context!!, activity!!)
-////                            SolocoinApp.sharedPrefs?.let{
-////                                it.loggedIn = false
-////                            }
-//                                activity?.finish()
-//                            } else {
-//                                val infoDialog = AppDialog.instance(
-//                                "Sorry",
-//                                getString(R.string.logout_issue), object: AppDialog.AppDialogListener{
-//                                        override fun onClickConfirm() {
-//                                        }
-//
-//                                        override fun onClickCancel() {
-//                                        }
-//
-//                                    },getString(R.string.okay), getString(R.string.cancel))
-//                                onClickCancel()
-//                                infoDialog.show(requireFragmentManager(), infoDialog.tag)
-//                            }
-//                        }
-//
-//                        override fun onClickCancel() {}
-//                    },
-//                    getString(R.string.logout),
-//                    getString(R.string.cancel)
-//                )
-//                logoutDialog.show(childFragmentManager, logoutDialog.tag)
-//        }
+        view.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
+            val logoutDialog = AppDialog.instance(
+                getString(R.string.confirm),
+                getString(R.string.tag_logout),
+                object : AppDialog.AppDialogListener {
+                    override fun onClickConfirm() {
+                        GlobalUtils.logout(context!!, activity!!)
+                        activity?.finish()
+                    }
+
+                    override fun onClickCancel() {}
+                },
+                getString(R.string.logout),
+                getString(R.string.cancel)
+            )
+            logoutDialog.show(childFragmentManager, logoutDialog.tag)
+        }
         //logout-btn
     }
 

@@ -20,5 +20,6 @@
     <color name="idle_dot">#662D9CDB</color>
 
     <color name="grey_black">#CC252525</color>
+    <color name="hideout">#90000000</color>
 
 </resources>

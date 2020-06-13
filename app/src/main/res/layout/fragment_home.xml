@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbars="none"
+    android:id="@+id/home_sv"
     tools:context=".ui.home.HomeFragment">
 
     <FrameLayout

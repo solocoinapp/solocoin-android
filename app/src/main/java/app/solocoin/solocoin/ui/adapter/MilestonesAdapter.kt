@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.adapter
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -8,6 +9,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
@@ -17,6 +19,7 @@ import app.solocoin.solocoin.util.GlobalUtils
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
 import kotlin.math.ceil
+
 
 /**
  * Created by Saurav Gupta on 22/05/2020
@@ -177,17 +180,17 @@ class MilestonesAdapter(
                     0 -> {
                         extraProgress *= (27.0 / (nextLevelPoints - currentLevelPoints))
                         extraProgress = ceil(extraProgress)
-                        progressBar.progress = 26 + extraProgress.toInt()
+                        startAnimation(26 + extraProgress.toInt())
                     }
                     1 -> {
                         extraProgress *= (27.0 / (nextLevelPoints - currentLevelPoints))
                         extraProgress = ceil(extraProgress)
-                        progressBar.progress = 53 + extraProgress.toInt()
+                        startAnimation(53 + extraProgress.toInt())
                     }
                     2 -> {
                         extraProgress *= (19.0 / (nextLevelPoints - currentLevelPoints))
                         extraProgress = ceil(extraProgress)
-                        progressBar.progress = 80 + extraProgress.toInt()
+                        startAnimation(80 + extraProgress.toInt())
                     }
                 }
 
@@ -198,8 +201,15 @@ class MilestonesAdapter(
                 levelFront.text = ("Level ${(userLevel - 3)}")
                 levelMid.text = ("Level ${(userLevel - 2)}")
                 levelRear.text = ("Level ${(userLevel - 1)}")
-                progressBar.progress = 99
+                startAnimation(99)
             }
+        }
+
+        private fun startAnimation(progress: Int) {
+            val progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", 0, progress)
+            progressAnimator.duration = 5000
+            progressAnimator.interpolator = DecelerateInterpolator()
+            progressAnimator.start()
         }
     }
 }

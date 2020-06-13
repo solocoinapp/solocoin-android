@@ -88,7 +88,7 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
                         if (authToken != null) {
                             sharedPrefs?.authToken = authToken
                             sharedPrefs?.id = id
-                            sharedPrefs?.isNewUser = true
+
                             // Update user data at Api after successful SignUp
                             val _body = JsonObject()
                             val user = JsonObject()
@@ -132,7 +132,10 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
                             Intent(
                                 this@CreateProfileActivity,
                                 HomeActivity::class.java
-                            ), this@CreateProfileActivity
+                            ).apply {
+                                putExtra("New User", true)
+                            },
+                            this@CreateProfileActivity
                         )
                         finish()
                     }
