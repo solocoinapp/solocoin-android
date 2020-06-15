@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,6 +25,7 @@ import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.worker.NotificationPingWorker
 import app.solocoin.solocoin.worker.SessionPingWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.karumi.dexter.Dexter
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -82,6 +84,7 @@ class HomeActivity : AppCompatActivity() {
 //         }
       
         // TODO : Setup permission request for Fused Location service properly
+
         checkPermissionForLocation()
 
         // Starting Session Ping API worker
@@ -257,6 +260,7 @@ class HomeActivity : AppCompatActivity() {
                     grantResults[0] == PackageManager.PERMISSION_GRANTED -> startFusedLocationService()
                     else -> {
 //                    Log.d(TAG, "Permissions Denied by User")
+                        Toast.makeText(this, "Please provide location permission.", Toast.LENGTH_SHORT);
                         TODO("Show message when user denies location permissions or user interaction is cancelled")
                     }
                 }
