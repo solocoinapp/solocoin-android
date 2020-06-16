@@ -247,6 +247,7 @@ class GlobalUtils {
             Picasso.get()
                 .load(url)
                 .networkPolicy(NetworkPolicy.OFFLINE)
+                .fit()
                 .into(view, object : Callback {
                     override fun onSuccess() {
                         view.visibility = View.VISIBLE
@@ -255,6 +256,7 @@ class GlobalUtils {
                     override fun onError(e: Exception?) {
                         Picasso.get()
                             .load(url)
+                            .fit()
                             .into(view, object : Callback {
                                 override fun onSuccess() {
                                     view.visibility = View.VISIBLE
@@ -274,6 +276,7 @@ class GlobalUtils {
             Picasso.get()
                 .load(url)
                 .networkPolicy(NetworkPolicy.OFFLINE)
+                .fit()
                 .into(view, object : Callback {
                     override fun onSuccess() {
                         view.alpha = 1f
@@ -282,6 +285,7 @@ class GlobalUtils {
                     override fun onError(e: Exception?) {
                         Picasso.get()
                             .load(url)
+                            .fit()
                             .into(view, object : Callback {
                                 override fun onSuccess() {
                                     view.alpha = 1f

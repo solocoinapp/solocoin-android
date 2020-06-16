@@ -129,6 +129,14 @@ class SharedPrefs(context: Context) {
         get() = instance.getBoolean(_period_valid, false)
         set(value) = instance.edit().putBoolean(_period_valid, value).apply()
 
+    private val _visited = "visited"
+    var visited: ArrayList<Boolean>?
+        get() = Gson().fromJson<ArrayList<Boolean>?>(
+            instance.getString(_visited, null),
+            object : TypeToken<ArrayList<Boolean>>() {}.type
+        )
+        set(value) = instance.edit().putString(_visited, Gson().toJson(value)).apply()
+
     fun clearSession() {
         instance.edit()
             .clear()

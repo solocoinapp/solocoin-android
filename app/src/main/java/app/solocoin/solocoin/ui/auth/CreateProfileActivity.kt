@@ -128,13 +128,12 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
             res?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
+                        sharedPrefs?.visited = arrayListOf(true, true, true)
                         GlobalUtils.startActivityAsNewStack(
                             Intent(
                                 this@CreateProfileActivity,
                                 HomeActivity::class.java
-                            ).apply {
-                                putExtra("New User", true)
-                            },
+                            ),
                             this@CreateProfileActivity
                         )
                         finish()

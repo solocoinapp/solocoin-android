@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
+@RequiresApi(Build.VERSION_CODES.M)
 class HomeActivity : AppCompatActivity() {
 
     private var alarmManager: AlarmManager? = null
@@ -225,9 +227,9 @@ class HomeActivity : AppCompatActivity() {
         if (!GlobalUtils.isServiceRunning(applicationContext, FusedLocationService.javaClass)) {
 //            Log.wtf(TAG, "Starting the fused location service.")
             val intent = Intent(applicationContext, FusedLocationService::class.java)
-            applicationScope.launch {
+//            applicationScope.launch {
                 startService(intent)
-            }
+//            }
         } else {
 //            Log.wtf(TAG, "Fused location service already running")
         }

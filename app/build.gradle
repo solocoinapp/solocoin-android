@@ -105,7 +105,7 @@ dependencies {
     implementation 'com.github.adityasonel:InkPageIndicator:1.0'
     implementation 'com.bigbangbutton:editcodeview:1.0.6'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.github.joielechong:countrycodepicker:2.4.1'
+    implementation 'com.github.joielechong:countrycodepicker:2.4.2'
     implementation 'com.karumi:dexter:6.1.2'
     implementation 'com.github.instacart.truetime-android:library:3.4'
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -113,6 +113,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation 'com.eightbitlab:blurview:1.6.3'
+    implementation 'com.github.mreram:showcaseview:1.1'
 
     //Work Manager
     implementation "android.arch.work:work-runtime-ktx:$work_version"

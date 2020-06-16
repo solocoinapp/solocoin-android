@@ -18,12 +18,16 @@ import app.solocoin.solocoin.ui.home.ShareBadgeActivity
 import app.solocoin.solocoin.util.GlobalUtils
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlin.math.ceil
 
 
 /**
  * Created by Saurav Gupta on 22/05/2020
  */
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 class MilestonesAdapter(
     private val context: Context,
     private val milestonesArrayList: ArrayList<Milestones>
@@ -44,6 +48,7 @@ class MilestonesAdapter(
     class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
+        private lateinit var context: Context
         private var levelFront: TextView
         private var levelMid: TextView
         private var levelRear: TextView
@@ -70,6 +75,7 @@ class MilestonesAdapter(
 
         @SuppressLint("DefaultLocale")
         fun bindBadges(context: Context, milestones: Milestones) {
+            this.context = context
             var userBadgesCnt = 0
             var userLevel = 0
             val total = milestones.badgeLevel.size
@@ -133,7 +139,7 @@ class MilestonesAdapter(
                     userBadgesCnt++
                 } else {
                     it.has = false
-                    addBlurView(context, badgeCv)
+                    addBlurView(badgeCv)
                 }
                 badgesGridL.addView(badgeCv)
                 col++
@@ -144,7 +150,7 @@ class MilestonesAdapter(
             bindLevel(userLevel, milestones)
         }
 
-        private fun addBlurView(context: Context, badgeCv: View) {
+        private fun addBlurView(badgeCv: View) {
             val radius = 4f
             val blurView = badgeCv.findViewById<BlurView>(R.id.blurView)
             val decorView = (context as Activity).window.decorView

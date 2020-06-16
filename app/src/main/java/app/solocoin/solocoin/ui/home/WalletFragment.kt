@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -93,6 +94,13 @@ class WalletFragment : Fragment() {
 
         updateWallet()
 //        updateScratch()
+
+        SolocoinApp.sharedPrefs?.visited?.let {
+            if (it[1]) {
+                SolocoinApp.sharedPrefs?.visited = arrayListOf(it[0], false, it[2])
+                showIntro()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -267,6 +275,22 @@ class WalletFragment : Fragment() {
 //        }
 //        scratchRecyclerView.adapter = mScratchTicketsAdapter
 //    }
+
+    private fun showIntro() {
+        with(requireActivity()) {
+            val intro = findViewById<ImageView>(R.id.intro).apply {
+                setImageResource(R.drawable.intro_wallet)
+                visibility = View.VISIBLE
+            }
+            findViewById<ImageButton>(R.id.close_bt).apply {
+                visibility = View.VISIBLE
+                setOnClickListener {
+                    intro.visibility = View.GONE
+                    it.visibility = View.GONE
+                }
+            }
+        }
+    }
 
     companion object {
         fun instance() = WalletFragment().apply {}

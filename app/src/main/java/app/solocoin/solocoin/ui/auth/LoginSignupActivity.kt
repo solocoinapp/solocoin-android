@@ -274,12 +274,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                                                     Intent(
                                                                         this,
                                                                         SplashActivity::class.java
-                                                                    ).apply {
-                                                                        putExtra(
-                                                                            "from_checkin",
-                                                                            true
-                                                                        )
-                                                                    },
+                                                                    ),
                                                                     this
                                                                 )
                                                                 finish()

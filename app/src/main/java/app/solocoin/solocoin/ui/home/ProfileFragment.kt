@@ -41,7 +41,7 @@ class ProfileFragment : Fragment(), KoinComponent {
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject))
             shareIntent.putExtra(
                 Intent.EXTRA_TEXT,
-                getString(R.string.invite_message + R.string.app_link)
+                getString(R.string.invite_message) + getString(R.string.app_link)
             )
             startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_title)))
         }

@@ -249,6 +249,11 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
                                     "Correct Answer",
                                     "You get 50 coins.\n\nPlease wait 2-3 minutes for wallet to update."
                                 )
+                            } else {
+                                showInfoDialog(
+                                    "Wrong Answer",
+                                    "Better luck next time."
+                                )
                             }
 //                          Log.d("Question submit SUCESS", question_id.toString())
                             if (CURRENT_QUIZ == DAILY_QUIZ) {
