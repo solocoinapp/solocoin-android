@@ -163,5 +163,7 @@
     <string name="wallet_update_info">Wallet will take 3–4 minutes to update</string>
     <string name="refresh_reward">Loading your offers...</string>
     <string name="logout_issue">Please connect to internet to logout.</string>
+    <string name="app_guide">App Guide</string>
+    <string name="url_guide">https://www.solocoin.app/app-guide/</string>
 
 </resources>
