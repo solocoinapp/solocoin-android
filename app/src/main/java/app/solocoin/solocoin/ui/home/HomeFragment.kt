@@ -89,12 +89,10 @@ class HomeFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     if (sharedPrefs?.homeDuration != 0L) {
-                        tvHomeDuration?.text =
-                            GlobalUtils.formattedHomeDuration(sharedPrefs?.homeDuration)
+                        tvHomeDuration?.text = GlobalUtils.formattedHomeDuration(sharedPrefs?.homeDuration)
                     }
                 }
-                Status.LOADING -> {
-                }
+                Status.LOADING -> {}
             }
         })
     }

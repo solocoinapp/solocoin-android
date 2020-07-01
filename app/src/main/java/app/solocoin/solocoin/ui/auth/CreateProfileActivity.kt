@@ -133,8 +133,7 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
                             Intent(
                                 this@CreateProfileActivity,
                                 HomeActivity::class.java
-                            ),
-                            this@CreateProfileActivity
+                            ), this@CreateProfileActivity
                         )
                         finish()
                     }
