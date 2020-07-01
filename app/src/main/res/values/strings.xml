@@ -165,4 +165,7 @@
     <string name="refresh_reward">Loading your offers...</string>
     <string name="logout_issue">Please connect to internet to logout.</string>
     <string name="google_maps_key">AIzaSyCY7UrjUAiGZE4TqXiZbw2ecztM9gN8fuE</string>
+    <string name="app_guide">App Guide</string>
+    <string name="url_guide">https://www.solocoin.app/app-guide/</string>
+
 </resources>

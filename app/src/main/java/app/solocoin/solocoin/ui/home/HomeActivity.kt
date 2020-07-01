@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -217,11 +218,12 @@ class HomeActivity : AppCompatActivity() {
                 grantResults[0] == PackageManager.PERMISSION_GRANTED -> startFusedLocationService()
                 else -> {
 //                    Log.d(TAG, "Permissions Denied by User")
-                    TODO("Show message when user denies location permissions or user interaction is cancelled")
+                        Toast.makeText(this, "Please provide location permission.", Toast.LENGTH_SHORT);
+//                        TODO("Show message when user denies location permissions or user interaction is cancelled")
+                    }
                 }
             }
         }
-    }
 
     private fun startFusedLocationService() {
         if (!GlobalUtils.isServiceRunning(applicationContext, FusedLocationService.javaClass)) {

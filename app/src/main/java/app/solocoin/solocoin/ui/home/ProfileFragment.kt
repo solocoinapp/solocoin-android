@@ -57,6 +57,10 @@ class ProfileFragment : Fragment(), KoinComponent {
         view.findViewById<TextView>(R.id.tv_tnc).setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_tnc))))
         }
+
+        view.findViewById<TextView>(R.id.tv_guide).setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_guide))))
+        }
         //terms-condition-btn
 
         //logout-btn
