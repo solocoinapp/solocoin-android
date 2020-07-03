@@ -45,7 +45,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tvHomeDuration = view.findViewById(R.id.time)
-
         sharedPrefs?.visited?.let {
             if (it[0]) {
                 sharedPrefs?.visited = arrayListOf(false, it[1], it[2])
@@ -56,7 +55,6 @@ class HomeFragment : Fragment() {
                         override fun onClickConfirm() {
                             showIntro()
                         }
-
                         override fun onClickCancel() {
                             showIntro()
                         }

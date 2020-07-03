@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.model.Reward
+import app.solocoin.solocoin.model.ScratchTicket
 import app.solocoin.solocoin.ui.adapter.RewardsListAdapter
 import app.solocoin.solocoin.ui.adapter.ScratchDetailsAdapter
 import app.solocoin.solocoin.util.EventBus
@@ -34,6 +35,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 /**
  * Created by Saurav Gupta on 14/5/2020
  */
+
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @RequiresApi(Build.VERSION_CODES.N)
@@ -83,7 +85,8 @@ class WalletFragment : Fragment() {
         rewardsRecyclerView.visibility = View.GONE
         scratchRecyclerView.visibility = View.GONE
         walletUpdateInfoTv.visibility = View.INVISIBLE
-        rewardsRecyclerView.layoutManager = LinearLayoutManager(context)
+//        rewardsRecyclerView.layoutManager = LinearLayoutManager(context)
+        rewardsRecyclerView.layoutManager = GridLayoutManager(context, 2)
         scratchRecyclerView.layoutManager = GridLayoutManager(context, 2)
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
         swipeRefreshLayout.setOnRefreshListener {
@@ -94,6 +97,7 @@ class WalletFragment : Fragment() {
 
         updateWallet()
 //        updateScratch()
+
 
         SolocoinApp.sharedPrefs?.visited?.let {
             if (it[1]) {

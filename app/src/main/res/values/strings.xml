@@ -119,7 +119,7 @@
 
     //Quiz
     <string name="share_n_earn"><![CDATA[Share & Earn]]></string>
-    <string name="of_social_distancing">of Social Distancing</string>
+    <string name="of_social_distancing">on Rewards Hotspot</string>
     <string name="option_a">A. Option 1</string>
     <string name="option_b">B. Option 2</string>
     <string name="option_c">C. Option 3</string>
@@ -164,7 +164,6 @@
     <string name="wallet_update_info">Wallet will take 2–3 minutes to update.</string>
     <string name="refresh_reward">Loading your offers...</string>
     <string name="logout_issue">Please connect to internet to logout.</string>
-    <string name="google_maps_key">AIzaSyCY7UrjUAiGZE4TqXiZbw2ecztM9gN8fuE</string>
     <string name="app_guide">App Guide</string>
     <string name="url_guide">https://www.solocoin.app/app-guide/</string>
 

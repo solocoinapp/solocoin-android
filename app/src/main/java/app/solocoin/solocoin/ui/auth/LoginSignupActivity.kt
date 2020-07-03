@@ -3,6 +3,7 @@ package app.solocoin.solocoin.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
@@ -245,7 +246,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                                 GlobalUtils.parseJsonNullFieldValue(
                                                     resource.data!!.get("auth_token")
                                                 )?.asString
-//                                            Log.wtf(TAG, sharedPrefs?.authToken)
+                                            Log.wtf(TAG, "karandeepsingh"+sharedPrefs?.authToken)
                                             //get-user-data
                                             viewModel.userData().observe(this, Observer { res ->
 //                                                Log.wtf(TAG + " User Info", "$res")

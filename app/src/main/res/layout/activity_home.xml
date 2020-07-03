@@ -47,6 +47,7 @@
         android:clickable="true"
         android:elevation="8dp"
         android:focusable="true"
+       android:paddingTop="70dp"
         android:scaleType="centerCrop"
         android:src="@drawable/intro_home"
         android:visibility="gone" />
@@ -55,14 +56,14 @@
         android:id="@+id/close_bt"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
         android:background="#00000000"
         android:elevation="8dp"
         android:padding="8dp"
         android:scaleType="centerCrop"
         android:src="@drawable/close_button"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_nav_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_container" />
 </androidx.constraintlayout.widget.ConstraintLayout>
