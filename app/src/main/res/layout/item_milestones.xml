@@ -84,7 +84,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="@dimen/mobile_match_parent"
+        android:layout_width="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -171,7 +171,7 @@
         android:textSize="22sp" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/mobile_match_parent"
+        android:layout_width="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:backgroundTint="#2E3E77"
@@ -183,7 +183,8 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="10dp"
         app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/rank_card"
@@ -204,7 +205,13 @@
             android:textStyle="bold"
             android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/leaderboardrview"
+        android:scrollbars="vertical"
+        android:layout_weight="1"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

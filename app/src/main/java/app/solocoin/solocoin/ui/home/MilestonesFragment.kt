@@ -2,11 +2,13 @@ package app.solocoin.solocoin.ui.home
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +17,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.model.Badge
+import app.solocoin.solocoin.model.LeaderBoard
 import app.solocoin.solocoin.model.Milestones
+import app.solocoin.solocoin.model.User
+import app.solocoin.solocoin.ui.adapter.LeaderBoardAdapter
 import app.solocoin.solocoin.ui.adapter.MilestonesAdapter
 import app.solocoin.solocoin.util.enums.Status
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,6 +38,7 @@ class MilestonesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var context: Activity
+    private var topuserlist:ArrayList<User> = ArrayList() //arraylist for gettiing top users on leaderboard
 
     private val viewModel: MilestonesFragmentViewModel by viewModel()
 
@@ -48,14 +54,13 @@ class MilestonesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.milestones_recycler_view)
         swipeRefreshLayout = view.findViewById(R.id.milestones_sl)
-
         recyclerView.layoutManager = LinearLayoutManager(context)
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
         swipeRefreshLayout.setOnRefreshListener {
             updateMilestones()
             swipeRefreshLayout.isRefreshing = false
         }
-
+        updateLeaderBoard()
         initializeMilestones()
 
         SolocoinApp.sharedPrefs?.visited?.let {
@@ -97,7 +102,7 @@ class MilestonesFragment : Fragment() {
                 )
             )
         })
-        mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(milestones) })
+        mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(milestones) },topuserlist)
         recyclerView.adapter = mAdapter
 
         updateMilestones()
@@ -110,7 +115,7 @@ class MilestonesFragment : Fragment() {
     private fun fetchMilestonesSharedPrefs() {
             SolocoinApp.sharedPrefs?.milestones?.let {
                 if (it.badgeLevel.size > 3 && it.earnedPoints.toDouble() >= 0.0) {
-                    mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(it) })
+                    mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply { add(it) },topuserlist)
                     recyclerView.adapter = mAdapter
                 }
             }
@@ -126,7 +131,7 @@ class MilestonesFragment : Fragment() {
                         mAdapter = MilestonesAdapter(context, ArrayList<Milestones>().apply {
                             milestones.badgeLevel.sortBy { x -> x.level.toInt() }
                             add(milestones)
-                        })
+                        },topuserlist)
                         recyclerView.adapter = mAdapter
                         SolocoinApp.sharedPrefs?.milestones = milestones
                     } else {
@@ -141,7 +146,27 @@ class MilestonesFragment : Fragment() {
             }
         })
     }
-
+private fun updateLeaderBoard(){
+    viewModel.getleaderboard().observe(viewLifecycleOwner, Observer { response->
+        when(response.status){
+            Status.SUCCESS->{
+                val leaderboard =response.data
+                Log.i(TAG,"receivedapidata"+leaderboard)
+                topuserlist.add(leaderboard?.topUsers!!.get(0))
+                topuserlist.add(leaderboard.topUsers.get(1))
+                topuserlist.add(leaderboard.topUsers.get(2))
+//                lAdapter = LeaderBoardAdapter(context, topuserlist)
+//                recyclerViewleader.adapter = lAdapter
+            }
+            Status.ERROR -> {
+                Toast.makeText(getContext(),"An Error Occured!",Toast.LENGTH_LONG).show()
+            }
+            Status.LOADING -> {
+            }
+        }
+    }
+    )
+}
     private fun showIntro() {
         with(requireActivity()) {
             val intro = findViewById<ImageView>(R.id.intro).apply {

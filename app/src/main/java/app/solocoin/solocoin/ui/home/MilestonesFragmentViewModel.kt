@@ -3,6 +3,7 @@ package app.solocoin.solocoin.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import app.solocoin.solocoin.model.LeaderBoard
 import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.util.Resource
@@ -23,6 +24,16 @@ class MilestonesFragmentViewModel(private val repository: SolocoinRepository) : 
                 emit(Resource.success(data = body(), code = code()))
             }
         } catch (exception: Exception) {
+            emit(Resource.error(data = null, exception = exception))
+        }
+    }
+    fun getleaderboard(): LiveData<Resource<LeaderBoard?>> = liveData(Dispatchers.IO){
+        emit(Resource.loading(data = null))
+        try{
+            repository.getleaderboard().apply {
+                emit(Resource.success(data = body(), code = code()))
+            }
+        }catch (exception: Exception) {
             emit(Resource.error(data = null, exception = exception))
         }
     }

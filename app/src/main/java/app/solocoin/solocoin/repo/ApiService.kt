@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.repo
 
+import app.solocoin.solocoin.model.LeaderBoard
 import app.solocoin.solocoin.model.Milestones
 import app.solocoin.solocoin.model.Reward
 import com.google.gson.JsonObject
@@ -55,6 +56,8 @@ interface ApiService {
     @GET("user/badges")
     suspend fun getBadgesLevels(@Header("Authorization") authToken: String): Response<Milestones>
 
+    @GET("leaderboard")
+    suspend fun getleaderboard(@Header("Authorization")authToken: String): Response<LeaderBoard>
     @GET("questions/daily")
     suspend fun getDailyQuiz(@Header("Authorization") authToken: String): Response<JsonObject>
 

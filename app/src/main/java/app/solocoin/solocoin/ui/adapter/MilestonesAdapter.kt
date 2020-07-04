@@ -11,9 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.model.Milestones
+import app.solocoin.solocoin.model.User
 import app.solocoin.solocoin.ui.home.ShareBadgeActivity
 import app.solocoin.solocoin.util.GlobalUtils
 import eightbitlab.com.blurview.BlurView
@@ -22,15 +24,17 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlin.math.ceil
 
-
 /**
  * Created by Saurav Gupta on 22/05/2020
+  Updated by Karandeep Singh on 04/07/2020
  */
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 class MilestonesAdapter(
     private val context: Context,
-    private val milestonesArrayList: ArrayList<Milestones>
+    private val milestonesArrayList: ArrayList<Milestones>,
+    private var topuserlist:ArrayList<User>
+
 ) : RecyclerView.Adapter<MilestonesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -43,6 +47,8 @@ class MilestonesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindBadges(context, milestonesArrayList[position])
+        holder.intializeLeaderBoard(context,topuserlist)
+
     }
 
     class ViewHolder(itemView: View) :
@@ -58,6 +64,10 @@ class MilestonesAdapter(
         private var levelInfoTv2: TextView
         private var progressBar: ProgressBar
         private var badgesGridL: GridLayout
+        private lateinit var lAdapter: LeaderBoardAdapter
+        private var recyclerViewleader: RecyclerView
+
+
 
         init {
             with(itemView) {
@@ -70,6 +80,9 @@ class MilestonesAdapter(
                 levelInfoTv2 = findViewById(R.id.level_info_tv_2)
                 progressBar = findViewById(R.id.level_pb)
                 badgesGridL = findViewById(R.id.badges_gl)
+                recyclerViewleader=findViewById(R.id.leaderboardrview)
+                recyclerViewleader.layoutManager= LinearLayoutManager(context)
+
             }
         }
 
@@ -149,6 +162,13 @@ class MilestonesAdapter(
 
             bindLevel(userLevel, milestones)
         }
+         fun intializeLeaderBoard(context: Context,topuserlist:ArrayList<User>){
+
+             lAdapter = LeaderBoardAdapter(context, topuserlist)
+             recyclerViewleader.adapter = lAdapter
+
+        }
+
 
         private fun addBlurView(badgeCv: View) {
             val radius = 4f

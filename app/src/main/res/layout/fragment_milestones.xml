@@ -13,12 +13,14 @@
         android:overScrollMode="never">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/milestones_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="false"
-            android:overScrollMode="never"
-            android:scrollbars="vertical" />
+        android:id="@+id/milestones_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="false"
+        android:overScrollMode="never"
+        android:scrollbars="vertical"
+
+        />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
