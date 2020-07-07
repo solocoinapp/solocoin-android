@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    >
+<androidx.cardview.widget.CardView
     android:id="@+id/rank_cv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,7 +16,7 @@
     android:dividerHeight="0.0px"
     app:cardBackgroundColor="@color/colorPrimaryDark"
     app:cardCornerRadius="6dp"
-    app:cardElevation="8dp"
+    app:cardElevation="4dp"
     app:cardPreventCornerOverlap="false"
     app:cardUseCompatPadding="true">
 
@@ -70,13 +76,13 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="18dp"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_india_flag" />
+<!--            <ImageView-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="18dp"-->
+<!--                android:paddingStart="2dp"-->
+<!--                android:paddingEnd="2dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/ic_india_flag" />-->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -103,3 +109,37 @@
             android:textSize="14sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/dots"-->
+<!--        android:visibility="visible"-->
+<!--        >-->
+<!--<ImageView-->
+<!--    android:layout_width="25dp"-->
+<!--    android:layout_height="25dp"-->
+<!--    android:layout_margin="5dp"-->
+<!--    android:background="@color/white"-->
+<!--    android:src="@drawable/ic_menu"-->
+<!--    />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--           android:gravity="right"-->
+<!--            android:layout_margin="5dp"-->
+<!--            >-->
+<!--    <ImageView-->
+<!--        android:layout_width="25dp"-->
+<!--        android:layout_height="25dp"-->
+<!--        android:background="@color/white"-->
+<!--        android:src="@drawable/ic_menu"-->
+<!--        />-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dots"
+        android:visibility="gone"
+        />
+    </LinearLayout>

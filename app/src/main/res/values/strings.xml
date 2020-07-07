@@ -135,14 +135,14 @@
     <string name="quiz_unavailable_msg">The quiz is currently unavailable, please try again after sometime</string>
     <string name="share_earn_text1">Invite your friends and Earn SoloCoins</string>
     <string name="share_earn_text2">Each Invite will earn you 50 coins</string>
-
+    <string name="General">General</string>
     //Milestones
     <string name="level_tv">Level 2</string>
     <string name="level_info_tv_2">coins to move to next level!</string>
     <string name="award_cnt">2</string>
     <string name="awards_unlocked">Awards Unlocked</string>
     <string name="coming_soon">Coming Soon..</string>
-    <string name="awards_achieved">Awards Achieved</string>
+    <string name="awards_achieved">Badges Earned</string>
     <string name="level_info_tv_1">coins away.</string>
     <string name="trophy_icon">trophy_icon</string>
     <string name="badge_icon">Badge Icon</string>

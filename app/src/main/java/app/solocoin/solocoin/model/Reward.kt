@@ -25,7 +25,10 @@ data class Reward(
     var couponCode: String,
     var companyLogoUrl: String? = null,
     var rewardImageUrl: String? = null,
-    var isClaimed: Boolean = false
+    var isClaimed: Boolean = false,
+    @SerializedName("category")
+    var category:Category
+
 ) : Parcelable
 
 //"id": 2,

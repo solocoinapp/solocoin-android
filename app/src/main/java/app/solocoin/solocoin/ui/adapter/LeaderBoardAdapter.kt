@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,7 @@ class LeaderBoardAdapter(
         private var country: TextView? = null
         private var coincount: TextView? = null
         private var rank: TextView? = null
+        private var dots:TextView?=null
 
         init {
             with(itemView) {
@@ -44,21 +46,28 @@ class LeaderBoardAdapter(
                 country = findViewById(R.id.country)
                 coincount = findViewById(R.id.coincount)
                 rank=findViewById(R.id.rank)
+                dots=findViewById(R.id.dots)
             }
         }
         private lateinit var context: Context
-        fun setUpView(user: User?) {
+        fun setUpView(user: User?,position: Int) {
             user?.let {
+                if(it.wallet_balance!=null){
+                    coincount?.text=it.wallet_balance?.substring(0,it.wallet_balance!!.length-2)+" coins"
+                }
+                else{
+                    coincount?.text=it.wallet_balance+" coins"
+                }
                 name?.text = it.name?.capitalize()!!
                 rank?.text = "#"+it.rank!!
                 country?.text=it.countryCode?.toUpperCase()
-                coincount?.text=it.wallet_balance+" coins"
+                if(position==2) dots?.visibility=View.VISIBLE
             }
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setUpView( leaderboardArrayList[position])
+        holder.setUpView( leaderboardArrayList[position],position)
     }
 
 }

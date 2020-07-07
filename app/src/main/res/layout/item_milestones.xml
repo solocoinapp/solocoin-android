@@ -219,6 +219,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/awards_achieved"
         android:textAlignment="center"
+        android:layout_marginTop="10dp"
         android:textColor="@color/colorPrimary"
         android:textSize="22sp" />
 

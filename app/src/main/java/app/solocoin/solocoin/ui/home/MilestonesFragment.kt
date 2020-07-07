@@ -30,6 +30,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 /**
  * Created by Saurav Gupta on 22/05/2020
  */
+
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 class MilestonesFragment : Fragment() {
@@ -38,7 +39,7 @@ class MilestonesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var context: Activity
-    private var topuserlist:ArrayList<User> = ArrayList() //arraylist for gettiing top users on leaderboard
+    private var topuserlist:ArrayList<User> = ArrayList() //arraylist for getting top users on leaderboard
 
     private val viewModel: MilestonesFragmentViewModel by viewModel()
 
@@ -61,7 +62,7 @@ class MilestonesFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
         }
         updateLeaderBoard()
-        initializeMilestones()
+
 
         SolocoinApp.sharedPrefs?.visited?.let {
             if (it[2]) {
@@ -155,6 +156,8 @@ private fun updateLeaderBoard(){
                 topuserlist.add(leaderboard?.topUsers!!.get(0))
                 topuserlist.add(leaderboard.topUsers.get(1))
                 topuserlist.add(leaderboard.topUsers.get(2))
+                topuserlist.add(leaderboard.user)
+                initializeMilestones()
 //                lAdapter = LeaderBoardAdapter(context, topuserlist)
 //                recyclerViewleader.adapter = lAdapter
             }

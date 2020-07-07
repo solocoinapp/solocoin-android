@@ -2,25 +2,20 @@ package app.solocoin.solocoin.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.model.Reward
-import app.solocoin.solocoin.model.ScratchTicket
 import app.solocoin.solocoin.ui.adapter.RewardsListAdapter
 import app.solocoin.solocoin.ui.adapter.ScratchDetailsAdapter
 import app.solocoin.solocoin.util.EventBus
@@ -28,12 +23,15 @@ import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.google.gson.JsonObject
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.dialog_menu.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
 
+
 /**
  * Created by Saurav Gupta on 14/5/2020
+ * Updated by Karandeep Singh on 07/07/2020
  */
 
 @InternalCoroutinesApi
@@ -55,15 +53,19 @@ class WalletFragment : Fragment() {
     private var eventBusReward: Disposable? = null
     private var eventBusString: Disposable? = null
     private var show: Boolean = true
-
+    private lateinit var  offers: ArrayList<Reward>
+    private val categorylistarray=arrayOf("Entertainment","Health","Gaming","Education",
+            "Lifestyle","Shopping","Food","Travel","Grocery")
+    private  var categorylist:ArrayList<String> = ArrayList()
     private val viewModel: WalletFragmentViewModel by viewModel()
-
+        private lateinit var menubutton:TextView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         context = requireActivity()
+
         return inflater.inflate(R.layout.fragment_wallet, container, false)
     }
 
@@ -78,14 +80,12 @@ class WalletFragment : Fragment() {
         scratchRecyclerView = view.findViewById(R.id.scratch_ticket_recycler_view)
         swipeRefreshLayout = view.findViewById(R.id.wallet_sl)
         walletUpdateInfoTv = view.findViewById(R.id.wallet_update_info)
-
+        menubutton =view.findViewById(R.id.menubutton)
         errorLabel.visibility = View.GONE
         errorTextView.visibility = View.GONE
         refreshTextView.visibility = View.VISIBLE
         rewardsRecyclerView.visibility = View.GONE
         scratchRecyclerView.visibility = View.GONE
-        walletUpdateInfoTv.visibility = View.INVISIBLE
-//        rewardsRecyclerView.layoutManager = LinearLayoutManager(context)
         rewardsRecyclerView.layoutManager = GridLayoutManager(context, 2)
         scratchRecyclerView.layoutManager = GridLayoutManager(context, 2)
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
@@ -95,9 +95,35 @@ class WalletFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
         }
 
+        menubutton.setOnClickListener {
+            showDialog()
+        }
+//        spinner.setSelection(0,false)
+//        spinner.setOnTouchListener(fun(v: View, event: MotionEvent): Boolean {
+////            println("Real touch felt.")
+////            touch = true
+////            return false
+////        })
+
+//        spinner.onItemSelectedListener = object :AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//                println("error")
+//            }
+//
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                if (touch) {
+//                    val item: String = parent?.getItemAtPosition(position).toString()
+//
+////                if(item!="Select Category") {
+//                    setOffersAdapter(offers, item)
+//                    Toast.makeText(parent?.context, item + " selected!!", Toast.LENGTH_LONG).show()
+////                }
+//                }
+//                touch=false
+//            }
+//        }
         updateWallet()
 //        updateScratch()
-
 
         SolocoinApp.sharedPrefs?.visited?.let {
             if (it[1]) {
@@ -105,8 +131,96 @@ class WalletFragment : Fragment() {
                 showIntro()
             }
         }
-    }
 
+    }
+    fun showDialog(){
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_menu)
+
+        val all: TextView = dialog.findViewById(R.id.all)
+        val entertainment:TextView = dialog.findViewById(R.id.entertainment)
+        val health:TextView = dialog.findViewById(R.id.health)
+        val gaming: TextView = dialog.findViewById(R.id.gaming)
+        val education: TextView = dialog.findViewById(R.id.education)
+        val shopping:TextView = dialog.findViewById(R.id.shopping)
+        val lifestyle:TextView = dialog.findViewById(R.id.lifestyle)
+        val food: TextView = dialog.findViewById(R.id.food)
+        val travel:TextView = dialog.findViewById(R.id.travel)
+        val grocery:TextView = dialog.findViewById(R.id.grocery)
+        var i=0
+        while(i<offers.size){
+            //condition to prevent null values
+            if(offers.get(i).category!=null ) {
+                //condition to display only those categories which are present in backend api
+                when (offers.get(i).category.name) {
+                    categorylistarray[0] -> entertainment.visibility=View.VISIBLE
+                    categorylistarray[1] -> health.visibility=View.VISIBLE
+                    categorylistarray[2] -> gaming.visibility=View.VISIBLE
+                    categorylistarray[3] -> education.visibility=View.VISIBLE
+                    categorylistarray[4] -> lifestyle.visibility=View.VISIBLE
+                    categorylistarray[5] -> shopping.visibility=View.VISIBLE
+                    categorylistarray[6] -> food.visibility=View.VISIBLE
+                    categorylistarray[7] -> travel.visibility=View.VISIBLE
+                    categorylistarray[8] -> grocery.visibility=View.VISIBLE
+                }
+            }
+            i++
+        }
+        entertainment.setOnClickListener {
+            setOffersAdapter(offers,"Entertainment")
+            menubutton.text="Entertainment"
+            dialog.dismiss()
+        }
+        health.setOnClickListener {
+            setOffersAdapter(offers,"Health")
+            menubutton.text="Health"
+            dialog.dismiss()
+        }
+        gaming.setOnClickListener {
+            setOffersAdapter(offers,"Gaming")
+            menubutton.text="Gaming"
+            dialog.dismiss()
+        }
+        education.setOnClickListener {
+            setOffersAdapter(offers,"Education")
+            menubutton.text="Education"
+            dialog.dismiss()
+        }
+        lifestyle.setOnClickListener {
+            setOffersAdapter(offers,"Lifestyle")
+            menubutton.text="Lifestyle"
+            dialog.dismiss()
+        }
+        shopping.setOnClickListener {
+            setOffersAdapter(offers,"Shopping")
+            menubutton.text="Shopping"
+            dialog.dismiss()
+        }
+        food.setOnClickListener {
+            setOffersAdapter(offers,"Food")
+            menubutton.text="Food"
+            dialog.dismiss()
+        }
+        travel.setOnClickListener {
+            setOffersAdapter(offers,"Travel")
+            menubutton.text="Travel"
+            dialog.dismiss()
+        }
+        grocery.setOnClickListener {
+            setOffersAdapter(offers,"Grocery")
+            menubutton.text="Grocery"
+            dialog.dismiss()
+        }
+        all.setOnClickListener {
+            setOffersAdapter(offers,"All")
+            menubutton.text="All"
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
     override fun onDestroyView() {
         removeEventBus()
         super.onDestroyView()
@@ -138,7 +252,7 @@ class WalletFragment : Fragment() {
     }
 
     private fun updateWallet() {
-        walletUpdateInfoTv.visibility = View.INVISIBLE
+        walletUpdateInfoTv.visibility = View.GONE
         // Fetch wallet amount and offers already redeemed from user
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
             //Log.d(TAG, "$response")
@@ -166,16 +280,42 @@ class WalletFragment : Fragment() {
         })
     }
 
-    private fun setOffersAdapter(offers: ArrayList<Reward>) {
+    private fun setOffersAdapter(offers: ArrayList<Reward>,category: String) {
         // Remove event bus if already present on this fragment
         removeEventBus()
         rewardsRecyclerView.visibility = View.VISIBLE
         errorLabel.visibility = View.GONE
         errorTextView.visibility = View.GONE
         refreshTextView.visibility = View.GONE
-        mListAdapter = RewardsListAdapter(context, offers)
-        rewardsRecyclerView.adapter = mListAdapter
+//        var i=0
+//        while(i<offers.size){
+//            //condition to prevent null values
+//            if(offers.get(i).category!=null ) {
+//                //condition to prevent duplicate values
+//                if(!categorylist.contains(offers.get(i).category.name))
+//                categorylist.add(offers.get(i).category.name)
+//            }
+//            i++
+//        }
+        //fetching offers lying under the particular category
+        var specificOffers:ArrayList<Reward> = ArrayList()
+        var j=0
+        while(j<offers.size){
+            if(offers.get(j).category!=null && offers.get(j).category.name == category)
+                specificOffers.add(offers.get(j))
+            j++
+        }
 
+        if(specificOffers.size==0) {
+            mListAdapter = RewardsListAdapter(context, offers)
+            rewardsRecyclerView.adapter = mListAdapter
+        }
+        else{
+            mListAdapter = RewardsListAdapter(context, specificOffers)
+            rewardsRecyclerView.adapter = mListAdapter
+        }
+//         val categoryadapter: ArrayAdapter<String> = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, categorylist)
+//        spinner.adapter=categoryadapter
         // Add event bus to listen to changes in RewardRedeemActivity for isClaimed variable
         addEventBus()
     }
@@ -183,7 +323,7 @@ class WalletFragment : Fragment() {
     private fun fetchOffersSharedPrefs() {
         val offers = SolocoinApp.sharedPrefs?.offers
         if (offers != null) {
-            setOffersAdapter(offers)
+            setOffersAdapter(offers,getString(R.string.General))
         } else {
             fetchIssue(1)
         }
@@ -195,7 +335,7 @@ class WalletFragment : Fragment() {
             removeIf { !it.isClaimed }
         }
         if (offers != null) {
-            setOffersAdapter(offers)
+            setOffersAdapter(offers,getString(R.string.General))
             // Update shared prefs
             SolocoinApp.sharedPrefs?.offers = offers
         } else {
@@ -216,7 +356,8 @@ class WalletFragment : Fragment() {
                 when (response.status) {
                     Status.SUCCESS -> {
                         if (response.data != null) {
-                            val offers: ArrayList<Reward> = response.data
+//                            val offers: ArrayList<Reward> = response.data
+                            offers=response.data
                             if (offers.size == 0) {
                                 updateNFetchOffersSharedPrefs()
                             } else {
@@ -227,7 +368,7 @@ class WalletFragment : Fragment() {
                                         offers.binarySearchBy(itr.asJsonObject.get("rewards_sponsor_id").asInt) { it.rewardId.toInt() }
                                     offers[index].isClaimed = true
                                 }
-                                setOffersAdapter(offers)
+                                setOffersAdapter(offers,getString(R.string.General))
 
                                 // Update shared prefs
                                 SolocoinApp.sharedPrefs?.offers = offers

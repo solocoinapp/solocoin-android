@@ -69,13 +69,68 @@
                 android:paddingBottom="22dp"
                 android:text="@string/wallet_update_info"
                 android:textColor="@color/colorAccent"
-                android:visibility="invisible" />
+                android:visibility="gone" />
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Custom"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:gravity="center"-->
+<!--                android:background="@color/colorAccent"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:fontFamily="@font/poppins_semibold"-->
+<!--                android:id="@+id/categorytv"-->
+<!--                android:textSize="16sp"-->
+<!--                android:layout_below="@id/wallet_update_info"-->
+<!--                />-->
+<!--            <androidx.appcompat.widget.AppCompatSpinner-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:id="@+id/spinner"-->
+<!--                android:background="@color/colorAccent"-->
+<!--                android:layout_below="@id/wallet_update_info"-->
+<!--                />-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/menubutton"
+                android:textSize="18sp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_below="@id/wallet_update_info"
+                android:text="Select Category"
+                />
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="-100dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/ic_down_arrow"
+                android:layout_below="@+id/wallet_update_info"
+                android:layout_toRightOf="@id/menubutton"
+                />
+<!--<TextView-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="General"-->
+<!--    android:textColor="@color/white"-->
+<!--    android:gravity="center"-->
+<!--    android:background="@color/colorAccent"-->
+<!--    android:layout_centerHorizontal="true"-->
+<!--    android:fontFamily="@font/poppins_semibold"-->
+<!--    android:id="@+id/category_menu"-->
+<!--    android:textSize="16sp"-->
+<!--    android:layout_below="@id/spinner"-->
+<!--    />-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/scratch_ticket_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/wallet_update_info"
+                android:layout_below="@id/menubutton"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="2dp"
@@ -89,7 +144,7 @@
                 android:id="@+id/rewards_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/wallet_update_info"
+                android:layout_below="@id/menubutton"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="2dp"

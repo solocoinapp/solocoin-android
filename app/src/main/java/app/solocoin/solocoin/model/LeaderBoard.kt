@@ -7,5 +7,6 @@ import com.google.gson.annotations.SerializedName
 
 data class LeaderBoard (
         @SerializedName("top_users")
-        var topUsers: ArrayList<User>
+        var topUsers: ArrayList<User>,
+        val user: User
 )
