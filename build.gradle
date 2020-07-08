@@ -23,6 +23,7 @@ buildscript {
         classpath "com.google.gms:google-services:$google_services_version"
 //        classpath "io.fabric.tools:gradle:$fabric_version"
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.1.1'
+        classpath 'com.google.gms:google-services:4.3.3'
 
     }
 }

@@ -1,13 +1,17 @@
 package app.solocoin.solocoin.ui.home
 
+import android.app.Activity
+import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,11 +21,14 @@ import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
+import com.anupkumarpanwar.scratchview.ScratchView
+import com.anupkumarpanwar.scratchview.ScratchView.IRevealListener
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -33,12 +40,13 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeFragmentViewModel by viewModel()
 
     private var tvHomeDuration: TextView? = null
-
+    private lateinit var context: Activity
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        context = requireActivity()
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -62,7 +70,9 @@ class HomeFragment : Fragment() {
                 infoDialog.show(requireFragmentManager(), infoDialog.tag)
             }
         }
-
+        scratch_card_image.setOnClickListener {
+            showDialog()
+        }
         updateTime()
 
         quiz_viewpager.adapter = QuizFragmentAdapter(this)
@@ -72,7 +82,30 @@ class HomeFragment : Fragment() {
         }.attach()
 
     }
+    fun showDialog(){
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.scratch_card)
+        val scratchView: ScratchView = dialog.findViewById(R.id.scratch_view)
 
+        scratchView.setRevealListener(object :IRevealListener{
+            override fun onRevealed(scratchView: ScratchView?) {
+                Toast.makeText(context,"Congratulations!!",Toast.LENGTH_LONG).show()
+                scratchView?.visibility=View.GONE
+                scratch_card_image.visibility=View.GONE
+            }
+
+            override fun onRevealPercentChangedListener(scratchView: ScratchView?, percent: Float) {
+                if(percent>0.5){
+//                    Toast.makeText(context, "Revealed!$percent",Toast.LENGTH_LONG).show()
+                }
+            }
+
+        })
+        dialog.show()
+
+    }
     private fun updateTime() {
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
 //            Log.d(TAG + "After Login/SignUp", "$response")

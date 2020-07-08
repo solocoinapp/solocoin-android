@@ -20,11 +20,13 @@ import androidx.work.WorkManager
 import app.solocoin.solocoin.NotificationAlarmReceiver
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.model.Badge
 import app.solocoin.solocoin.services.FusedLocationService
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.worker.NotificationPingWorker
 import app.solocoin.solocoin.worker.SessionPingWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -36,13 +38,11 @@ import java.util.concurrent.TimeUnit
 @InternalCoroutinesApi
 @RequiresApi(Build.VERSION_CODES.M)
 class HomeActivity : AppCompatActivity() {
-
     private var alarmManager: AlarmManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
         setSupportActionBar(toolbar)
         bottom_nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottom_nav_view.selectedItemId = R.id.nav_home
@@ -71,6 +71,22 @@ class HomeActivity : AppCompatActivity() {
 
         alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         // Manage notification checking
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            nm.createNotificationChannel(
+                    NotificationChannel(
+                            "first", "default",
+                            NotificationManager.IMPORTANCE_DEFAULT
+                    )
+            )
+        FirebaseMessaging.getInstance().subscribeToTopic("general")
+                .addOnCompleteListener { task ->
+                    var msg = "Successful!"
+                    if (!task.isSuccessful) {
+                        msg = "Failed!"
+                    }
+//                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                }
 
     }
 

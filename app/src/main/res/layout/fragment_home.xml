@@ -11,7 +11,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <!--        <ImageView-->
         <!--            android:id="@+id/map_icon"-->
         <!--            android:layout_width="50dp"-->
@@ -104,7 +103,7 @@
                 android:layout_marginEnd="8dp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                app:cardElevation="12dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -118,6 +117,33 @@
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:cardCornerRadius="8dp"
+                android:id="@+id/scratch_card_image"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                >
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_trophy_pink"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="35dp"
+                    android:text="Scratch to unlock"/>
             </androidx.cardview.widget.CardView>
 
 <!--            <TextView-->

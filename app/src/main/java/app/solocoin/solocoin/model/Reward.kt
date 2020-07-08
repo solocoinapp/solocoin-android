@@ -9,6 +9,8 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class Reward(
+    @SerializedName("category")
+    var category:Category,
     @SerializedName("id")
     var rewardId: String,
     @SerializedName("offer_name")
@@ -25,9 +27,8 @@ data class Reward(
     var couponCode: String,
     var companyLogoUrl: String? = null,
     var rewardImageUrl: String? = null,
-    var isClaimed: Boolean = false,
-    @SerializedName("category")
-    var category:Category
+    var isClaimed: Boolean = false
+
 
 ) : Parcelable
 
