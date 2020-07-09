@@ -49,17 +49,27 @@ class ProfileFragment : Fragment(), KoinComponent {
 
         //privacy-policy-btn
         view.findViewById<TextView>(R.id.tv_pp).setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_pp))))
+            val intent = Intent(context,AppGuideActivity::class.java)
+            intent.putExtra("link",getString(R.string.url_pp))
+            startActivity(intent)
+//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_pp))))
         }
         //privacy-policy-btn
 
         //terms-condition-btn
         view.findViewById<TextView>(R.id.tv_tnc).setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_tnc))))
+            val intent = Intent(context,AppGuideActivity::class.java)
+            intent.putExtra("link",getString(R.string.url_tnc))
+            startActivity(intent)
+//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_tnc))))
         }
 
         view.findViewById<TextView>(R.id.tv_guide).setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_guide))))
+
+            val intent = Intent(context,AppGuideActivity::class.java)
+            intent.putExtra("link",getString(R.string.url_guide))
+            startActivity(intent)
+//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_guide))))
         }
         //terms-condition-btn
 

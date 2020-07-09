@@ -9,6 +9,11 @@ import app.solocoin.solocoin.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.InternalCoroutinesApi
+
+/**
+ * Created by Karandeep Singh on 08/07/2020
+ */
+
 class MyMessagingService : FirebaseMessagingService() {
 //    val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -19,6 +24,7 @@ class MyMessagingService : FirebaseMessagingService() {
             remotemessage?.notification?.body.toString()
         )
     }
+
     @InternalCoroutinesApi
     fun shownotification(title:String, message:String) {
       
