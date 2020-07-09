@@ -80,8 +80,8 @@ class HomeFragment : Fragment() {
         TabLayoutMediator(quiz_tablayout, quiz_viewpager) { tab, position ->
             tab.text = tabHeading[position]
         }.attach()
-
     }
+
     fun showDialog(){
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -101,7 +101,6 @@ class HomeFragment : Fragment() {
 //                    Toast.makeText(context, "Revealed!$percent",Toast.LENGTH_LONG).show()
                 }
             }
-
         })
         dialog.show()
 

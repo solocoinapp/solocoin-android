@@ -1,7 +1,6 @@
 package app.solocoin.solocoin.ui.home
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,7 +48,7 @@ class ProfileFragment : Fragment(), KoinComponent {
 
         //privacy-policy-btn
         view.findViewById<TextView>(R.id.tv_pp).setOnClickListener {
-            val intent = Intent(context,AppGuideActivity::class.java)
+            val intent = Intent(context, AppGuideActivity::class.java)
             intent.putExtra("link",getString(R.string.url_pp))
             startActivity(intent)
 //            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_pp))))
@@ -58,7 +57,7 @@ class ProfileFragment : Fragment(), KoinComponent {
 
         //terms-condition-btn
         view.findViewById<TextView>(R.id.tv_tnc).setOnClickListener {
-            val intent = Intent(context,AppGuideActivity::class.java)
+            val intent = Intent(context, AppGuideActivity::class.java)
             intent.putExtra("link",getString(R.string.url_tnc))
             startActivity(intent)
 //            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_tnc))))
@@ -66,7 +65,7 @@ class ProfileFragment : Fragment(), KoinComponent {
 
         view.findViewById<TextView>(R.id.tv_guide).setOnClickListener {
 
-            val intent = Intent(context,AppGuideActivity::class.java)
+            val intent = Intent(context, AppGuideActivity::class.java)
             intent.putExtra("link",getString(R.string.url_guide))
             startActivity(intent)
 //            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_guide))))
