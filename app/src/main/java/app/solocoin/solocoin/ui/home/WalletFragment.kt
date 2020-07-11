@@ -252,7 +252,7 @@ class WalletFragment : Fragment() {
     }
 
     private fun updateWallet() {
-        walletUpdateInfoTv.visibility = View.GONE
+//        walletUpdateInfoTv.visibility = View.GONE
         // Fetch wallet amount and offers already redeemed from user
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
             //Log.d(TAG, "$response")
@@ -263,9 +263,11 @@ class WalletFragment : Fragment() {
                     if (balance != null) {
                         balanceTextView.text = balance
                         SolocoinApp.sharedPrefs?.walletBalance = balance
+                        walletUpdateInfoTv.visibility = View.GONE
                     } else {
                         SolocoinApp.sharedPrefs?.walletBalance?.let {
                             balanceTextView.text = it
+                            walletUpdateInfoTv.visibility = View.GONE
                         }
                     }
                     fetchOffers(response.data)
@@ -298,6 +300,7 @@ class WalletFragment : Fragment() {
 //            i++
 //        }
         //fetching offers lying under the particular category
+
         var specificOffers:ArrayList<Reward> = ArrayList()
         var j=0
         while(j<offers.size){
@@ -310,6 +313,7 @@ class WalletFragment : Fragment() {
             mListAdapter = RewardsListAdapter(context, offers)
             rewardsRecyclerView.adapter = mListAdapter
         }
+
         else{
             mListAdapter = RewardsListAdapter(context, specificOffers)
             rewardsRecyclerView.adapter = mListAdapter

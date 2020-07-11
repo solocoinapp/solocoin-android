@@ -6,6 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/cardviewborder"
+        android:background="@drawable/dialog_bg"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+       >
+
 <androidx.cardview.widget.CardView
     android:id="@+id/rank_cv"
     android:layout_width="match_parent"
@@ -14,6 +23,8 @@
     android:clipToPadding="false"
     android:divider="@android:color/transparent"
     android:dividerHeight="0.0px"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
     app:cardBackgroundColor="@color/colorPrimaryDark"
     app:cardCornerRadius="6dp"
     app:cardElevation="4dp"
@@ -25,9 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="2dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -109,6 +118,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+    </LinearLayout>
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->

@@ -233,9 +233,10 @@ class MilestonesAdapter(
 
         private fun startAnimation(progress: Int) {
             val progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", 0, progress)
-            progressAnimator.duration = 5000
+            progressAnimator.duration = 3000
             progressAnimator.interpolator = DecelerateInterpolator()
             progressAnimator.start()
         }
+
     }
 }
