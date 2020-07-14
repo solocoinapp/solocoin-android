@@ -17,13 +17,12 @@ import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.model.Reward
 import app.solocoin.solocoin.ui.adapter.RewardsListAdapter
-import app.solocoin.solocoin.ui.adapter.ScratchDetailsAdapter
+import app.solocoin.solocoin.ui.adapter.ScratchCardAdapter
 import app.solocoin.solocoin.util.EventBus
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.google.gson.JsonObject
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.dialog_menu.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -40,7 +39,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class WalletFragment : Fragment() {
 
     private lateinit var mListAdapter: RewardsListAdapter
-    private lateinit var mScratchTicketsAdapter: ScratchDetailsAdapter
+    private lateinit var mScratchCardAdapter: ScratchCardAdapter
     private lateinit var rewardsRecyclerView: RecyclerView
     private lateinit var scratchRecyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout

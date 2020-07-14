@@ -13,8 +13,8 @@
             android:layout_height="250dp"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:src="@drawable/trophy"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"/>
@@ -23,9 +23,27 @@
                 android:layout_height="wrap_content"
                 android:text="You Won Rs 100!!"
                 android:gravity="center"
+                android:id="@+id/offername"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:id="@+id/moredetails"
+                android:gravity="center"
+                android:background="@drawable/dialog_bg"
+                android:layout_marginRight="45dp"
+                android:text="More Details.."
+                android:foreground="?selectableItemBackground"
+                />
         </LinearLayout>
         <com.anupkumarpanwar.scratchview.ScratchView
             android:layout_width="250dp"
@@ -35,7 +53,6 @@
             app:overlay_image="@drawable/scratch_image"
             app:overlay_width="250dp"
             app:overlay_height="250dp"
-
             />
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

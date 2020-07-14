@@ -119,33 +119,50 @@
 
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
                 app:cardCornerRadius="8dp"
-                android:id="@+id/scratch_card_image"
                 android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_margin="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardBackgroundColor="@color/colorAccent"
                 >
-            <ImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_trophy_pink"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="35dp"
-                    android:text="Scratch to unlock"/>
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:text="Scratch Cards"/>
             </androidx.cardview.widget.CardView>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/scratch_rewards_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="220dp"
+                android:layout_height="30dp"
+                app:cardCornerRadius="8dp"
+                android:layout_gravity="center"
+                android:layout_margin="12dp"
+                android:id="@+id/allscratchcards"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorAccent"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:text="See All Scratch Cards"/>
+            </androidx.cardview.widget.CardView>
 <!--            <TextView-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="wrap_content"-->

@@ -46,6 +46,9 @@ interface ApiService {
     @GET("rewards_sponsors")
     suspend fun getOffers(@Header("Authorization") authToken: String): Response<ArrayList<Reward>>
 
+    @GET("rewards_sponsors/scratch_cards")
+    suspend fun getScratchCardOffers(@Header("Authorization") authToken: String):Response<ArrayList<Reward>>
+
     @Headers("Content-Type: application/json")
     @POST("user/redeem_rewards")
     suspend fun redeemRewards(

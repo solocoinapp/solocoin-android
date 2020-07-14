@@ -37,7 +37,7 @@ class RewardRedeemActivity : AppCompatActivity() {
     private lateinit var mAdapter: RewardRedeemAdapter
     private lateinit var rewardArrayList: ArrayList<Reward>
     private val loadingDialog = AppDialog.instance()
-
+    private var rewardIsScratchCard:Boolean=false
     private val viewModel: RewardRedeemViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +49,7 @@ class RewardRedeemActivity : AppCompatActivity() {
         rewardArrayList.add(
             intent.extras?.getParcelable("EXTRA_INFO")!!
         )
-
+        rewardIsScratchCard=intent.getBooleanExtra("scratchcard",false)
         recyclerView = findViewById(R.id.reward_recycler_view)
         mAdapter = RewardRedeemAdapter(context, rewardArrayList)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -101,15 +101,16 @@ class RewardRedeemActivity : AppCompatActivity() {
                             } catch (e: Exception) {
                                 EventBus.publish("null")
                             }
-
-                            // update shared prefs offers list
-                            val offers = SolocoinApp.sharedPrefs?.offers
-                            offers?.let { x ->
-                                val index =
-                                    x.binarySearchBy(rewardArrayList[0].rewardId.toInt()) { it.rewardId.toInt() }
-                                x[index].isClaimed = true
+                            if (!rewardIsScratchCard) {
+                                // update shared prefs offers list
+                                val offers = SolocoinApp.sharedPrefs?.offers
+                                offers?.let { x ->
+                                    val index =
+                                            x.binarySearchBy(rewardArrayList[0].rewardId.toInt()) { it.rewardId.toInt() }
+                                    x[index].isClaimed = true
+                                }
+                                SolocoinApp.sharedPrefs?.offers = offers
                             }
-                            SolocoinApp.sharedPrefs?.offers = offers
                             loadingDialog.dismiss()
                             showInfoDialog("Offer Claimed", getString(R.string.claim_success))
 

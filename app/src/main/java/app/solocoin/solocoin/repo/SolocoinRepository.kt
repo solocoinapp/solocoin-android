@@ -19,6 +19,7 @@ class SolocoinRepository(private val apiService: ApiService) {
     suspend fun pingSession(body: JsonObject) =
         apiService.pingSession(sharedPrefs?.authToken!!, body)
     suspend fun getOffers() = apiService.getOffers(sharedPrefs?.authToken!!)
+    suspend fun getScratchCardOffers() = apiService.getScratchCardOffers(sharedPrefs?.authToken!!)
     suspend fun redeemRewards(body: JsonObject) =
         apiService.redeemRewards(sharedPrefs?.authToken!!, body)
     suspend fun getDailyQuiz() = apiService.getDailyQuiz(sharedPrefs?.authToken!!)

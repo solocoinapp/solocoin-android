@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +16,21 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.model.Reward
+import app.solocoin.solocoin.ui.adapter.ScratchCardAdapter
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.anupkumarpanwar.scratchview.ScratchView
 import com.anupkumarpanwar.scratchview.ScratchView.IRevealListener
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -38,9 +45,11 @@ class HomeFragment : Fragment() {
     private val TAG = HomeFragment::class.simpleName
 
     private val viewModel: HomeFragmentViewModel by viewModel()
-
+    private lateinit var rewardsRecyclerView: RecyclerView
     private var tvHomeDuration: TextView? = null
+    private lateinit var mScratchCardAdapter: ScratchCardAdapter
     private lateinit var context: Activity
+    private lateinit var  offers: ArrayList<Reward>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,6 +62,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tvHomeDuration = view.findViewById(R.id.time)
+        rewardsRecyclerView = view.findViewById(R.id.scratch_rewards_recycler_view)
+        rewardsRecyclerView.layoutManager = GridLayoutManager(context, 2)
         sharedPrefs?.visited?.let {
             if (it[0]) {
                 sharedPrefs?.visited = arrayListOf(false, it[1], it[2])
@@ -70,8 +81,8 @@ class HomeFragment : Fragment() {
                 infoDialog.show(requireFragmentManager(), infoDialog.tag)
             }
         }
-        scratch_card_image.setOnClickListener {
-            showDialog()
+        allscratchcards.setOnClickListener {
+//            showDialog()
         }
         updateTime()
 
@@ -93,7 +104,7 @@ class HomeFragment : Fragment() {
             override fun onRevealed(scratchView: ScratchView?) {
                 Toast.makeText(context,"Congratulations!!",Toast.LENGTH_LONG).show()
                 scratchView?.visibility=View.GONE
-                scratch_card_image.visibility=View.GONE
+//                scratch_card_image.visibility=View.GONE
             }
 
             override fun onRevealPercentChangedListener(scratchView: ScratchView?, percent: Float) {
@@ -116,6 +127,7 @@ class HomeFragment : Fragment() {
                         tvHomeDuration?.text = GlobalUtils.formattedHomeDuration(duration)
                         sharedPrefs?.homeDuration = duration
                     }
+                    fetchScratchcardOffers(response.data)
                 }
                 Status.ERROR -> {
                     if (sharedPrefs?.homeDuration != 0L) {
@@ -126,6 +138,51 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
+    private fun fetchScratchcardOffers(userProfile: JsonObject?) {
+        viewModel.getScratchCardOffers().observe(viewLifecycleOwner, Observer { response ->
+            //Log.d(TAG, "$response")
+            when (response.status) {
+                Status.SUCCESS -> {
+                    if (response.data != null) {
+//                            val offers: ArrayList<Reward> = response.data
+                        offers=response.data
+                        Log.d(TAG,"receivedscratchcardoffers: "+offers)
+                        if (offers.size == 0) {
+//                            updateNFetchOffersSharedPrefs()
+                            Log.d(TAG,"inifffff")
+                        } else {
+                            Log.d(TAG,"inelssssseee")
+                            // Check which offers are claimed already n create adapter
+//                            offers.sortBy { it.rewardId.toInt() }
+//                            userProfile?.getAsJsonArray("redeemed_rewards")?.forEach { itr ->
+//                                val index =
+//                                        offers.binarySearchBy(itr.asJsonObject.get("rewards_sponsor_id").asInt) { it.rewardId.toInt() }
+//                                offers[index].isClaimed = true
+//                            }
+                            Log.d(TAG,"calling setadapter")
+                            setOffersAdapter(offers)
+
+                            // Update shared prefs
+                            SolocoinApp.sharedPrefs?.offers = offers
+                        }
+                    } else {
+//                        fetchOffersSharedPrefs()
+                    }
+                }
+//                Status.ERROR -> fetchOffersSharedPrefs()
+                Status.LOADING -> {
+                }
+            }
+        })
+
+    }
+
+    private fun setOffersAdapter(offers: ArrayList<Reward>) {
+        Log.d(TAG,"inside setadapter"+offers)
+                mScratchCardAdapter = ScratchCardAdapter(context, offers)
+                rewardsRecyclerView.adapter = mScratchCardAdapter
+        }
 
     private fun showIntro() {
         with(requireActivity()) {
