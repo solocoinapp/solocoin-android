@@ -160,8 +160,9 @@
                     android:textStyle="bold"
                     android:gravity="center"
                     android:textSize="16sp"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:layout_gravity="center"
-                    android:text="See All Scratch Cards"/>
+                    android:text="See All Cards"/>
             </androidx.cardview.widget.CardView>
 <!--            <TextView-->
 <!--                android:layout_width="match_parent"-->

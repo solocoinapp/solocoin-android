@@ -9,7 +9,9 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import app.solocoin.solocoin.R
 import kotlinx.android.synthetic.main.activity_app_guide.*
-
+/**
+ * Created by Karandeep Singh on 10/07/2020
+ */
 class AppGuideActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

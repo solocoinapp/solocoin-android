@@ -101,16 +101,16 @@ class RewardRedeemActivity : AppCompatActivity() {
                             } catch (e: Exception) {
                                 EventBus.publish("null")
                             }
-                            if (!rewardIsScratchCard) {
-                                // update shared prefs offers list
-                                val offers = SolocoinApp.sharedPrefs?.offers
-                                offers?.let { x ->
-                                    val index =
-                                            x.binarySearchBy(rewardArrayList[0].rewardId.toInt()) { it.rewardId.toInt() }
-                                    x[index].isClaimed = true
-                                }
-                                SolocoinApp.sharedPrefs?.offers = offers
-                            }
+//                            if (!rewardIsScratchCard) {
+//                                // update shared prefs offers list
+//                                val offers = SolocoinApp.sharedPrefs?.offers
+//                                offers?.let { x ->
+//                                    val index =
+//                                            x.binarySearchBy(rewardArrayList[0].rewardId.toInt()) { it.rewardId.toInt() }
+//                                    x[index].isClaimed = true
+//                                }
+//                                SolocoinApp.sharedPrefs?.offers = offers
+//                            }
                             loadingDialog.dismiss()
                             showInfoDialog("Offer Claimed", getString(R.string.claim_success))
 

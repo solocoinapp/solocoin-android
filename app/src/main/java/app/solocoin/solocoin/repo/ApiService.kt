@@ -2,6 +2,7 @@ package app.solocoin.solocoin.repo
 
 import app.solocoin.solocoin.model.LeaderBoard
 import app.solocoin.solocoin.model.Milestones
+import app.solocoin.solocoin.model.Profile
 import app.solocoin.solocoin.model.Reward
 import com.google.gson.JsonObject
 import retrofit2.Response
@@ -41,7 +42,7 @@ interface ApiService {
 
     @Headers("Content-Type: application/json")
     @GET("user/profile")
-    suspend fun getProfile(@Header("Authorization") authToken: String): Response<JsonObject>
+    suspend fun getProfile(@Header("Authorization") authToken: String): Response<Profile>
 
     @GET("rewards_sponsors")
     suspend fun getOffers(@Header("Authorization") authToken: String): Response<ArrayList<Reward>>

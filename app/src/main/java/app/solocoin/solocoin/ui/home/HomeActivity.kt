@@ -46,7 +46,7 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         bottom_nav_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottom_nav_view.selectedItemId = R.id.nav_home
-
+        overridePendingTransition(R.anim.fade_in,R.anim.slide_in_top);
         sharedPrefs?.let {
             if (it.recentCheckTime < it.recentNotifTime) {
                 it.periodValid =

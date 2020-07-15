@@ -36,4 +36,7 @@ val viewModelModule = module {
     viewModel {
         RewardRedeemViewModel(repository = get())
     }
+    viewModel {
+        AllScratchCardsViewModel(repository = get())
+    }
 }

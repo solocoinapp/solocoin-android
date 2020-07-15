@@ -2,6 +2,7 @@ package app.solocoin.solocoin.ui.home
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -82,7 +83,8 @@ class HomeFragment : Fragment() {
             }
         }
         allscratchcards.setOnClickListener {
-//            showDialog()
+        val intent =Intent(context,AllScratchCardsActivity::class.java)
+            startActivity(intent)
         }
         updateTime()
 

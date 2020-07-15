@@ -40,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
                 GlobalUtils.startActivityAsNewStack(Intent(this, OnboardActivity::class.java), this)
                 finish()
             }
-        }, 3000)
+        }, 500)
     }
 
 }

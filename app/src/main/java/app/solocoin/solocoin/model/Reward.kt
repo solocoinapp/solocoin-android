@@ -12,7 +12,7 @@ data class Reward(
     @SerializedName("category")
     var category:Category,
     @SerializedName("id")
-    var rewardId: String,
+    var rewardId: Int,
     @SerializedName("offer_name")
     var rewardName: String,
     @SerializedName("company_name")

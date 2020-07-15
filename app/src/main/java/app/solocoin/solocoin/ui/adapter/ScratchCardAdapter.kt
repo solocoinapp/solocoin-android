@@ -78,6 +78,7 @@ class ScratchCardAdapter(
                     intent.putExtra("scratchcard",true)
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     context.startActivity(intent)
+                    dialog.dismiss()
             }
             offername.setText(offernametxt)
             scratchView.setRevealListener(object : ScratchView.IRevealListener {
