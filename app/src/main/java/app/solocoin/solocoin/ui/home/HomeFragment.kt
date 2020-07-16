@@ -23,7 +23,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import app.solocoin.solocoin.R
 import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.model.Profile
 import app.solocoin.solocoin.model.Reward
+import app.solocoin.solocoin.ui.adapter.AllRewardsAdapter
 import app.solocoin.solocoin.ui.adapter.ScratchCardAdapter
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
@@ -32,6 +34,7 @@ import com.anupkumarpanwar.scratchview.ScratchView
 import com.anupkumarpanwar.scratchview.ScratchView.IRevealListener
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.JsonObject
+import kotlinx.android.synthetic.main.activity_all_scratch_cards.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -50,7 +53,11 @@ class HomeFragment : Fragment() {
     private var tvHomeDuration: TextView? = null
     private lateinit var mScratchCardAdapter: ScratchCardAdapter
     private lateinit var context: Activity
+    private lateinit var profile : Profile
+    private  lateinit var redeemed_offers_id: ArrayList<Int>
+    private lateinit var offersfiltered:ArrayList<Reward>
     private lateinit var  offers: ArrayList<Reward>
+    private lateinit var noscratchcards:TextView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,6 +72,11 @@ class HomeFragment : Fragment() {
         tvHomeDuration = view.findViewById(R.id.time)
         rewardsRecyclerView = view.findViewById(R.id.scratch_rewards_recycler_view)
         rewardsRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        noscratchcards = view.findViewById(R.id.noscratchcardshome)
+        redeemed_offers_id= ArrayList()
+        redeemed_offers_id.clear()
+        offersfiltered= ArrayList()
+        offersfiltered.clear()
         sharedPrefs?.visited?.let {
             if (it[0]) {
                 sharedPrefs?.visited = arrayListOf(false, it[1], it[2])
@@ -87,6 +99,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         updateTime()
+        fetchredeemrewards()
 
         quiz_viewpager.adapter = QuizFragmentAdapter(this)
 
@@ -118,6 +131,32 @@ class HomeFragment : Fragment() {
         dialog.show()
 
     }
+    private fun fetchredeemrewards() {
+        viewModel.getProfile().observe(viewLifecycleOwner, Observer { response ->
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    profile=response.data!!
+                    Log.d(TAG,"receivedresponsenow"+response.data)
+                    if(profile.redeemed_rewards.isEmpty()){
+                        fetchScratchcardOffers()
+                    }
+                    else {
+                        var i=profile.redeemed_rewards.size-1
+                        while(i >=0){
+                            redeemed_offers_id.add(profile.redeemed_rewards[i].rewards_sponsor_id)
+                            i--
+                        }
+                        fetchScratchcardOffers()
+                    }
+                }
+                Status.ERROR -> {
+
+                }
+                Status.LOADING -> {}
+            }
+        })
+    }
     private fun updateTime() {
         viewModel.userData().observe(viewLifecycleOwner, Observer { response ->
 //            Log.d(TAG + "After Login/SignUp", "$response")
@@ -129,7 +168,7 @@ class HomeFragment : Fragment() {
                         tvHomeDuration?.text = GlobalUtils.formattedHomeDuration(duration)
                         sharedPrefs?.homeDuration = duration
                     }
-                    fetchScratchcardOffers(response.data)
+//                    fetchScratchcardOffers()
                 }
                 Status.ERROR -> {
                     if (sharedPrefs?.homeDuration != 0L) {
@@ -141,7 +180,7 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun fetchScratchcardOffers(userProfile: JsonObject?) {
+    private fun fetchScratchcardOffers() {
         viewModel.getScratchCardOffers().observe(viewLifecycleOwner, Observer { response ->
             //Log.d(TAG, "$response")
             when (response.status) {
@@ -162,17 +201,30 @@ class HomeFragment : Fragment() {
 //                                        offers.binarySearchBy(itr.asJsonObject.get("rewards_sponsor_id").asInt) { it.rewardId.toInt() }
 //                                offers[index].isClaimed = true
 //                            }
+                            var j = offers.size - 1
+                            while (j >= 0) {
+                                if(offers[j].rewardId !in redeemed_offers_id){
+
+                                    offersfiltered.add(offers[j])
+                                    if(offersfiltered.size==4) break
+                                    Log.i(TAG,"offersfiltered:"+j)
+                                }
+                                j--
+                            }
                             Log.d(TAG,"calling setadapter")
-                            setOffersAdapter(offers)
+                            if(offersfiltered.size>0)
+                            setOffersAdapter(offersfiltered)
+                            else noscratchcards.visibility=View.VISIBLE
 
                             // Update shared prefs
                             SolocoinApp.sharedPrefs?.offers = offers
                         }
-                    } else {
-//                        fetchOffersSharedPrefs()
                     }
+//                    else {
+//                        fetchOffersSharedPrefs()
+//                    }
                 }
-//                Status.ERROR -> fetchOffersSharedPrefs()
+                Status.ERROR -> {}
                 Status.LOADING -> {
                 }
             }

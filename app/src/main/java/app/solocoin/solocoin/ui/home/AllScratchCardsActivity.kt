@@ -126,7 +126,7 @@ class AllScratchCardsActivity : AppCompatActivity() {
                         }
                         else {
                             var j = offers.size - 1
-                            var found: Boolean
+//                            var found: Boolean
                             while (j >= 0) {
 //                                found = false
 //                                var size = redeemed_offers_id.size - 1

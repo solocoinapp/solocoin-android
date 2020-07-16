@@ -11,7 +11,9 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-
+/**
+ * Created by Karandeep Singh on 15/07/2020
+ */
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 class AllScratchCardsViewModel(val repository: SolocoinRepository) : ViewModel() {
