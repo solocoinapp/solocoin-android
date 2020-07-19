@@ -174,10 +174,11 @@
 <!--                android:layout_height="wrap_content"-->
 <!--                android:layout_marginStart="8dp"-->
 <!--                android:layout_marginTop="8dp"-->
+<!--                android:textAlignment="center"-->
 <!--                android:fontFamily="@font/poppins_semibold"-->
 <!--                android:text="@string/share_n_earn"-->
-<!--                android:textColor="@color/colorAccent"-->
-<!--                android:textSize="15sp" />-->
+<!--                android:textColor="@color/colorPrimary"-->
+<!--                android:textSize="22sp" />-->
 
 <!--            <com.google.android.material.card.MaterialCardView-->
 <!--                android:id="@+id/share_earn_cv"-->

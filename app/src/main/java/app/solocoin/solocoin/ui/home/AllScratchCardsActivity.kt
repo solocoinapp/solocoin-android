@@ -47,6 +47,7 @@ class AllScratchCardsActivity : AppCompatActivity() {
     private var redeemedRewards:ArrayList<RedeemedRewards> = ArrayList()
     private  lateinit var redeemed_offers_id: ArrayList<Int>
     private val viewModel: AllScratchCardsViewModel by viewModel()
+    private var onlyredeemedrewards:Boolean=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_scratch_cards)
@@ -60,10 +61,20 @@ class AllScratchCardsActivity : AppCompatActivity() {
         swipe_to_refresh.setColorSchemeResources(R.color.colorAccent)
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.allrewards_toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = "Redeemed Rewards"
 //        fetchScratchcardOffers()
+        onlyredeemedrewards=intent.getBooleanExtra("onlyredeemedrewards",false)
+        if(onlyredeemedrewards){
+            unscratched_recyclerView.visibility=View.GONE
+            scratchcardtitle.visibility=View.GONE
+            redeemed_rewards_title.visibility=View.GONE
+            parentActivityIntent
+        }
+        back_arrow.setOnClickListener {
+            finish()
+        }
         redeemed_offers_id= ArrayList()
         redeemed_offers_id.clear()
         offersfiltered= ArrayList()
@@ -88,7 +99,7 @@ class AllScratchCardsActivity : AppCompatActivity() {
                     if(profile.redeemed_rewards.isEmpty()){
                         norewards.visibility= View.VISIBLE
                         swipe_to_refresh.isRefreshing=false
-                        fetchScratchcardOffers()
+                        if(!onlyredeemedrewards) fetchScratchcardOffers()
                     }
                     else {
                         norewards.visibility= View.GONE
@@ -99,7 +110,7 @@ class AllScratchCardsActivity : AppCompatActivity() {
                         }
                         redeemedRewards=profile.redeemed_rewards
                         redeemedRewards.reverse()
-                        fetchScratchcardOffers()
+                        if(!onlyredeemedrewards) fetchScratchcardOffers()
                         mAdapter = AllRewardsAdapter(context, redeemedRewards)
                         recyclerView.adapter = mAdapter
                         swipe_to_refresh.isRefreshing=false
@@ -123,6 +134,7 @@ class AllScratchCardsActivity : AppCompatActivity() {
                         offers=response.data
                         if (offers.size == 0) {
                             Log.i(TAG,"offerssizeiszero")
+                            noscratchcards.visibility=View.VISIBLE
                         }
                         else {
                             var j = offers.size - 1

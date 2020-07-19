@@ -26,7 +26,26 @@
         android:layout_marginStart="@dimen/app_padding"
         android:layout_marginEnd="@dimen/app_padding"
         android:background="@color/colorAccent" />
+    <TextView
+        android:id="@+id/redeemed_rewards"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_item_height"
+        android:drawableStart="@drawable/ic_trophy_small"
+        android:drawablePadding="16dp"
+        android:fontFamily="@font/poppins"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="Redeemed Rewards"
+        android:textColor="@android:color/black" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:background="@color/colorAccent" />
     <TextView
         android:id="@+id/tv_pp"
         android:layout_width="match_parent"

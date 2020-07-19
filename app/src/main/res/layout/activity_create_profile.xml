@@ -34,41 +34,60 @@
         android:layout_width="120dp"
         android:layout_height="120dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tip_name"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginEnd="@dimen/app_padding"
-        app:layout_constraintTop_toBottomOf="@id/iv_solocoin"
-        app:startIconDrawable="@drawable/ic_profile_photo"
-        app:startIconTint="@color/colorAccent"
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/tip_name"-->
+<!--        android:layout_marginTop="?attr/actionBarSize"-->
+<!--        android:layout_marginStart="@dimen/app_padding"-->
+<!--        android:layout_marginEnd="@dimen/app_padding"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/iv_solocoin"-->
+<!--        app:startIconDrawable="@drawable/ic_profile_photo"-->
+<!--        app:startIconTint="@color/colorAccent"-->
+<!--        app:boxBackgroundMode="filled"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/et_name"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:drawablePadding="16dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:focusable="true"-->
+<!--            android:fontFamily="@font/poppins"-->
+<!--            android:hint="@string/name"-->
+<!--            android:inputType="textPersonName"-->
+<!--            android:singleLine="true" />-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+    <EditText
+        android:id="@+id/et_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_name"
-            android:drawablePadding="16dp"
-            android:fontFamily="@font/poppins"
-            android:focusable="true"
-            android:inputType="textPersonName"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:hint="@string/name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="70dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/edit_text_border"
+        android:drawableStart="@drawable/ic_profile_photo"
+        android:drawablePadding="15dp"
+        android:drawableTint="@color/colorAccent"
+        android:hint="Enter your Name"
+        android:paddingLeft="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_tnc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_solocoin"
+        app:layout_constraintVertical_bias="0.141" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_confirm"
-        android:layout_marginTop="@dimen/app_padding"
-        android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginEnd="@dimen/app_padding"
-        android:fontFamily="@font/poppins_semibold"
-        android:textColor="@android:color/white"
-        android:text="@string/confirm_loc"
-        app:backgroundTint="@color/colorAccent"
-        app:layout_constraintTop_toBottomOf="@id/tip_name"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/confirm_loc"
+        android:textColor="@android:color/white"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@id/et_name"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/tv_tnc"

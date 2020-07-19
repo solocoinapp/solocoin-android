@@ -58,7 +58,7 @@
     <string name="url_tnc">https://www.solocoin.app/terms-and-conditions/</string>
     <string name="invite_subject">My application name</string>
 
-    <string name="invite_message">\nLet me recommend you this application\n\n</string>
+    <string name="invite_message">\nI have started social-distancing with SoloCoin. I\'m changing the world. You can join me as well. Use this link and change the world.\n </string>
     <string name="invite_title">Select an option</string>
     <string name="app_link">https://play.google.com/store/apps/details?id=app.solocoin.solocoin</string>
     <string name="badge_invite_subject">Look at my new achievement!</string>
@@ -145,7 +145,7 @@
     <string name="share">Share</string>
     <string name="country">IND</string>
     <string name="username">You</string>
-    <string name="user_rank">#12345</string>
+    <string name="user_rank">#12</string>
     <string name="your_code">Your Code</string>
     <string name="text_copy">Copy</string>
     <string name="coupon_code">QAZWSXEDC</string>

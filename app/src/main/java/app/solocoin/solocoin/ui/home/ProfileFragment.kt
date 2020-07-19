@@ -45,6 +45,13 @@ class ProfileFragment : Fragment(), KoinComponent {
             startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_title)))
         }
         //invite-btn
+        //Redeemed Rewards btn
+        view.findViewById<TextView>(R.id.redeemed_rewards).setOnClickListener {
+            val intent=Intent(context,AllScratchCardsActivity::class.java)
+            intent.putExtra("onlyredeemedrewards",true)
+            startActivity(intent)
+        }
+
 
         //privacy-policy-btn
         view.findViewById<TextView>(R.id.tv_pp).setOnClickListener {

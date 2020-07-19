@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -32,6 +33,7 @@ import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.util.enums.Status
 import com.anupkumarpanwar.scratchview.ScratchView
 import com.anupkumarpanwar.scratchview.ScratchView.IRevealListener
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_all_scratch_cards.*
@@ -58,6 +60,7 @@ class HomeFragment : Fragment() {
     private lateinit var offersfiltered:ArrayList<Reward>
     private lateinit var  offers: ArrayList<Reward>
     private lateinit var noscratchcards:TextView
+//    private lateinit var share_earn_cv:MaterialCardView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -98,6 +101,16 @@ class HomeFragment : Fragment() {
         val intent =Intent(context,AllScratchCardsActivity::class.java)
             startActivity(intent)
         }
+//        share_earn_cv.setOnClickListener {
+//            val shareIntent = Intent(Intent.ACTION_SEND)
+//            shareIntent.type = "text/plain"
+//            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject))
+//            shareIntent.putExtra(
+//                    Intent.EXTRA_TEXT,
+//                    getString(R.string.invite_message) + getString(R.string.app_link)
+//            )
+//            startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_title)))
+//        }
         updateTime()
         fetchredeemrewards()
 
@@ -190,6 +203,7 @@ class HomeFragment : Fragment() {
                         offers=response.data
                         Log.d(TAG,"receivedscratchcardoffers: "+offers)
                         if (offers.size == 0) {
+                            noscratchcards.visibility=View.VISIBLE
 //                            updateNFetchOffersSharedPrefs()
                             Log.d(TAG,"inifffff")
                         } else {

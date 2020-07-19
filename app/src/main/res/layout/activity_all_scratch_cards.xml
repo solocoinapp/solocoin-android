@@ -20,21 +20,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="?actionBarSize"
+               android:paddingLeft="5dp"
+                android:id="@+id/back_arrow"
+                android:src="@drawable/ic_arrow_back_white"
+                android:background="@color/colorAccent"
+                />
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/allrewards_toolbar"
         android:layout_width="match_parent"
+        android:layout_marginLeft="34dp"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
+            </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
+                    android:id="@+id/scratchcardtitle"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:textSize="22sp"
@@ -66,6 +80,7 @@
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
                     android:textSize="22sp"
+                    android:id="@+id/redeemed_rewards_title"
                     android:layout_marginLeft="20dp"
                     android:text="Redeemed Cards"/>
             <TextView
