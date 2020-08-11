@@ -1,6 +1,7 @@
 package app.solocoin.solocoin.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -238,7 +239,7 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
         quiz_message.visibility = View.GONE
         quiz_placeholder.visibility = View.VISIBLE
         val isCorrect = answers[optionId].asJsonObject.get("correct").asBoolean
-
+        Log.i("karan","jsonlookslikethis"+body);
         viewModel.submitQuizAnswer(body).observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {

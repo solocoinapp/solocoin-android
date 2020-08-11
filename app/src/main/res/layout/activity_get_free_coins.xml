@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.GetFreeCoinsActivity"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="?actionBarSize"
+            android:paddingLeft="5dp"
+            android:id="@+id/back_arrow"
+            android:src="@drawable/ic_arrow_back_white"
+            android:background="@color/colorAccent"
+            />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/allrewards_toolbar"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="34dp"
+            app:title="Get Free Coins"
+            app:titleTextColor="@color/white"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    </RelativeLayout>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Get Free Coins"
+    android:textAllCaps="true"
+    android:padding="10dp"
+    android:textAlignment="center"
+    android:textSize="22sp"
+    android:textColor="@color/colorAccent"
+    android:textStyle="bold"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="70dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:text="Enter Coupon Code"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:id="@+id/coupon"
+        android:singleLine="true"
+        android:hint="Enter Coupon Code"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/edit_text_border"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:text="APPLY"
+        android:id="@+id/apply"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:background="@drawable/dialog_bg"/>
+</LinearLayout>

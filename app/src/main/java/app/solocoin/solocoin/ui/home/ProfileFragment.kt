@@ -1,16 +1,21 @@
 package app.solocoin.solocoin.ui.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
 import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.core.KoinComponent
@@ -35,6 +40,8 @@ class ProfileFragment : Fragment(), KoinComponent {
 
         //invite-btn
         view.findViewById<TextView>(R.id.tv_invite).setOnClickListener {
+            //the below method will be used for invite & earn functionality
+//            createlink()
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject))
@@ -51,7 +58,15 @@ class ProfileFragment : Fragment(), KoinComponent {
             intent.putExtra("onlyredeemedrewards",true)
             startActivity(intent)
         }
+        //end Redeemed Rewards btn
+        // get free coins
+//        view.findViewById<TextView>(R.id.get_free_coins).setOnClickListener {
+//            val intent =Intent(context,GetFreeCoinsActivity::class.java)
+//            startActivity(intent)
+//        }
 
+
+        // end get free coins
 
         //privacy-policy-btn
         view.findViewById<TextView>(R.id.tv_pp).setOnClickListener {
@@ -98,6 +113,55 @@ class ProfileFragment : Fragment(), KoinComponent {
             logoutDialog.show(childFragmentManager, logoutDialog.tag)
         }
         //logout-btn
+    }
+
+    private fun createlink() {
+
+            val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    .setLink(Uri.parse(getString(R.string.app_link)+sharedPrefs?.mobileNumber))
+                    .setDomainUriPrefix("https://solocoin.page.link") // Open links with this app on Android
+                    .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build()) // Open links with com.example.ios on iOS
+//                    .setIosParameters(IosParameters.Builder("com.example.ios").build())
+                    .buildDynamicLink()
+            val dynamicLinkUri = dynamicLink.uri
+            Log.i("Tagkarandeep", "link:$dynamicLinkUri")
+                val intent = Intent()
+                intent.action = Intent.ACTION_SEND
+                intent.putExtra(Intent.EXTRA_TEXT, dynamicLinkUri.toString())
+                intent.type = "text/plain"
+                startActivity(intent)
+            //manual
+//            val sharelinktext = "https://karandeep.page.link/?" +
+//                    "link=" + "https://www.solocoin.app/karadeepid=27" +
+//                    "&apn=" + getPackageName() +
+//                    "&st=" + "My refer link" +
+//                    "&sd=" + "Reward Coins 20" +
+//                    "&si=" + "https://www.solocoin.app/wp-content/uploads/2020/04/horizontal-logo1.png"
+
+
+//        https://karandeep.page.link?apn=com.karandeep.referandearn&ibi=com.example.ios&link=https%3A%2F%2Fwww.solocoin.app%2F
+            //shorten the link
+
+//            val shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink() //                .setLongLink(dynamicLinkUri)
+//                    .setLongLink(Uri.parse(sharelinktext)) //manual
+//                    .buildShortDynamicLink()
+//                    .addOnCompleteListener(this, OnCompleteListener<ShortDynamicLink> { task ->
+//                        if (task.isSuccessful) {
+//                            // Short link created
+//                            val shortLink = task.result!!.shortLink
+//                            val flowchartLink = task.result!!.previewLink
+//                            Log.i("Tagkarandeep2", "link: $shortLink")
+//                            val intent = Intent()
+//                            intent.action = Intent.ACTION_SEND
+//                            intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString())
+//                            intent.type = "text/plain"
+//                            startActivity(intent)
+//                        } else {
+//                            // Error
+//                            // ...
+//                            Log.i("error", "error")
+//                        }
+//                    })
     }
 
     companion object {

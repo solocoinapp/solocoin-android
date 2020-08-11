@@ -90,6 +90,7 @@ class RewardRedeemActivity : AppCompatActivity() {
             when (response.status) {
                 Status.SUCCESS -> {
                     when (response.code) {
+
                         200 -> {
                             // update this activity adapter to show coupon code
                             rewardArrayList[0].isClaimed = true
