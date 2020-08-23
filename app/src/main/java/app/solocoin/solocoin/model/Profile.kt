@@ -13,5 +13,7 @@ data class Profile(
     @SerializedName("name")
     var name:String,
     @SerializedName("redeemed_rewards")
-    var redeemed_rewards: ArrayList<RedeemedRewards>
+    var redeemed_rewards: ArrayList<RedeemedRewards>,
+    @SerializedName("referral")
+    var referral: Referral
 ):Parcelable

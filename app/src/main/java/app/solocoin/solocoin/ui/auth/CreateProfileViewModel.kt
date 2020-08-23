@@ -42,5 +42,14 @@ class CreateProfileViewModel(private val repository: SolocoinRepository): ViewMo
             }
         }
     }
-
+    fun refer_and_earn(newusertoken:String,refercode:String): LiveData<Resource<JsonObject?>> = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            repository.refer_and_earn(newusertoken,refercode).apply {
+                emit(Resource.success(data = body(), code = code()))
+            }
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, exception = exception))
+        }
+    }
 }

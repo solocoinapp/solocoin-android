@@ -48,6 +48,7 @@ class RewardsListAdapter(
         private var costRupees: TextView
         private var companyName: TextView
         private var costCoins: TextView
+        private var currency:TextView
         private var mListener: RecyclerViewClickListener? = null
 
         init {
@@ -55,6 +56,7 @@ class RewardsListAdapter(
             costRupees = itemView.findViewById(R.id.cost_rupees)
             companyName = itemView.findViewById(R.id.company_name)
             costCoins = itemView.findViewById(R.id.cost_coins)
+            currency = itemView.findViewById(R.id.currency)
             itemView.setOnClickListener(this)
 
             companyLogo.visibility = View.GONE
@@ -71,6 +73,7 @@ class RewardsListAdapter(
                 companyName.text = it.companyName.capitalize()
                 costCoins.text = ("${it.costCoins} coins")
                 costRupees.text = it.costRupees
+                currency.text=it.currency
                 mListener = object : RecyclerViewClickListener {
                     override fun onClick(view: View?, position: Int) {
                         val intent = Intent(

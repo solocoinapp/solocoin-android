@@ -39,4 +39,7 @@ val viewModelModule = module {
     viewModel {
         AllScratchCardsViewModel(repository = get())
     }
+    viewModel {
+        ProfileViewModel(repository = get())
+    }
 }

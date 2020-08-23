@@ -121,6 +121,36 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:textSize="18sp"
+        android:background="@drawable/ripple_effect"
+        android:id="@+id/software"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="Software"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="18sp"
+        android:background="@drawable/ripple_effect"
+        android:id="@+id/it_services"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="IT Services"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="18sp"
+        android:background="@drawable/ripple_effect"
+        android:id="@+id/legal"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="Legal &amp; CA"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="18sp"
         android:visibility="gone"
         android:background="@drawable/ripple_effect"
         android:id="@+id/everythingelse"

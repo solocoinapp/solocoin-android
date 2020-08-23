@@ -24,6 +24,7 @@ import app.solocoin.solocoin.util.enums.Status
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_create_profile.*
+import kotlinx.android.synthetic.main.activity_get_free_coins.*
 import kotlinx.android.synthetic.main.activity_mark_location.btn_confirm
 import kotlinx.android.synthetic.main.activity_mark_location.toolbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -129,13 +130,14 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
                 when (resource.status) {
                     Status.SUCCESS -> {
                         sharedPrefs?.visited = arrayListOf(true, true, true)
-                        GlobalUtils.startActivityAsNewStack(
+                        credit_refer_bonus(refer_code.text.toString())
+                        /*GlobalUtils.startActivityAsNewStack(
                             Intent(
                                 this@CreateProfileActivity,
                                 HomeActivity::class.java
                             ), this@CreateProfileActivity
                         )
-                        finish()
+                        finish()*/
                     }
                     Status.ERROR -> {
                         if (resource.exception is NoConnectivityException) {
@@ -158,7 +160,37 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
     }
+    private fun credit_refer_bonus(refercode:String){
+        val newusertoken= sharedPrefs?.authToken!!.substring(7)
+        viewModel.refer_and_earn(newusertoken,refercode).observe(this, Observer { response ->
+            Log.d(TAG,"refercodetest:"+response)
+            Log.d(TAG,"refercodetest:"+response.status)
 
+            Log.d(TAG, "refercodetest:"+sharedPrefs?.authToken)
+            Log.d(TAG, "refercodetestx:"+newusertoken)
+            Log.d(TAG, "refercodetest:"+refercode)
+            when (response.status) {
+                Status.SUCCESS -> {
+                    when(response.code){
+                        200->{
+                        Toast.makeText(applicationContext,"Refer Code Redeemed successfully!",Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    GlobalUtils.startActivityAsNewStack(
+                            Intent(
+                                    this@CreateProfileActivity,
+                                    HomeActivity::class.java
+                            ), this@CreateProfileActivity
+                    )
+                }
+                Status.ERROR -> {
+
+                }
+                Status.LOADING -> {
+                }
+        }
+        })
+    }
     override fun onClick(p0: View?) {
         val name = et_name.text.toString()
         if (name.isEmpty()) {
@@ -175,7 +207,9 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
                 user.addProperty("lat", sharedPrefs?.userLat)
                 user.addProperty("lng", sharedPrefs?.userLong)
                 body.add("user", user)
+
                 doApiUserUpdate(body)
+
 
             } else {
                 user.addProperty("name", sharedPrefs?.name)

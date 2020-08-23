@@ -53,8 +53,9 @@ class WalletFragment : Fragment() {
     private var eventBusString: Disposable? = null
     private var show: Boolean = true
     private lateinit var  offers: ArrayList<Reward>
-    private val categorylistarray=arrayOf("Entertainment","Health","Gaming","Education",
-            "Lifestyle","Shopping","Food","Travel","Grocery")
+    private val categorylistarray=arrayOf("Entertainment","Health & Fitness","Gaming","Education",
+            "Lifestyle","Shopping","Food","Travel","Grocery","Software","IT Services","Legal & CA")
+
     private  var categorylist:ArrayList<String> = ArrayList()
     private val viewModel: WalletFragmentViewModel by viewModel()
         private lateinit var menubutton:TextView
@@ -148,6 +149,9 @@ class WalletFragment : Fragment() {
         val food: TextView = dialog.findViewById(R.id.food)
         val travel:TextView = dialog.findViewById(R.id.travel)
         val grocery:TextView = dialog.findViewById(R.id.grocery)
+        val software:TextView = dialog.findViewById(R.id.software)
+        val it_services:TextView = dialog.findViewById(R.id.it_services)
+        val legal_and_CA:TextView = dialog.findViewById(R.id.legal)
         var i=0
         while(i<offers.size){
             //condition to prevent null values
@@ -163,6 +167,9 @@ class WalletFragment : Fragment() {
                     categorylistarray[6] -> food.visibility=View.VISIBLE
                     categorylistarray[7] -> travel.visibility=View.VISIBLE
                     categorylistarray[8] -> grocery.visibility=View.VISIBLE
+                    categorylistarray[9] -> software.visibility=View.VISIBLE
+                    categorylistarray[10] -> it_services.visibility=View.VISIBLE
+                    categorylistarray[11] -> legal_and_CA.visibility=View.VISIBLE
                 }
             }
             i++
@@ -210,6 +217,21 @@ class WalletFragment : Fragment() {
         grocery.setOnClickListener {
             setOffersAdapter(offers,"Grocery")
             menubutton.text="Grocery"
+            dialog.dismiss()
+        }
+        software.setOnClickListener {
+            setOffersAdapter(offers,"Software")
+            menubutton.text="Software"
+            dialog.dismiss()
+        }
+        it_services.setOnClickListener {
+            setOffersAdapter(offers,"IT Services")
+            menubutton.text="IT Services"
+            dialog.dismiss()
+        }
+        legal_and_CA.setOnClickListener {
+            setOffersAdapter(offers,"Legal & CA")
+            menubutton.text="Legal & CA"
             dialog.dismiss()
         }
         all.setOnClickListener {

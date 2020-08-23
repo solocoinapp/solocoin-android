@@ -1,5 +1,6 @@
 package app.solocoin.solocoin.ui.home
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,15 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import app.solocoin.solocoin.R
+import app.solocoin.solocoin.app.SolocoinApp
 import app.solocoin.solocoin.app.SolocoinApp.Companion.sharedPrefs
+import app.solocoin.solocoin.model.Profile
 import app.solocoin.solocoin.repo.SolocoinRepository
 import app.solocoin.solocoin.util.AppDialog
 import app.solocoin.solocoin.util.GlobalUtils
+import app.solocoin.solocoin.util.enums.Status
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -26,7 +32,9 @@ import org.koin.core.inject
 class ProfileFragment : Fragment(), KoinComponent {
 
     private val repository: SolocoinRepository by inject()
-
+    private val viewModel: AllScratchCardsViewModel by viewModel()
+    private val TAG="ProfileFragment"
+    private lateinit var profile : Profile
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,14 +50,32 @@ class ProfileFragment : Fragment(), KoinComponent {
         view.findViewById<TextView>(R.id.tv_invite).setOnClickListener {
             //the below method will be used for invite & earn functionality
 //            createlink()
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject))
-            shareIntent.putExtra(
-                Intent.EXTRA_TEXT,
-                getString(R.string.invite_message) + getString(R.string.app_link)
-            )
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_title)))
+            var rewardline="fh"
+            viewModel.getProfile().observe(viewLifecycleOwner, Observer { response ->
+                //Log.d(TAG, "$response")
+                Log.d(TAG,"userprofile:"+response.data)
+                when (response.status) {
+                    Status.SUCCESS -> {
+
+                        profile=response.data!!
+                        rewardline="\nEnter Promocode "+profile.referral.refercode+" to earn "+
+                                profile.referral.amount +" Solocoins as Referral bonus!!"
+                        val shareIntent = Intent(Intent.ACTION_SEND)
+                        shareIntent.type = "text/plain"
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_subject))
+                        shareIntent.putExtra(
+                                Intent.EXTRA_TEXT,
+                                getString(R.string.invite_message) + getString(R.string.app_link)+rewardline
+                        )
+                        startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_title)))
+                    }
+                    Status.ERROR -> {
+                    }
+                    Status.LOADING -> {
+                    }
+                }
+            })
+
         }
         //invite-btn
         //Redeemed Rewards btn
@@ -60,10 +86,10 @@ class ProfileFragment : Fragment(), KoinComponent {
         }
         //end Redeemed Rewards btn
         // get free coins
-//        view.findViewById<TextView>(R.id.get_free_coins).setOnClickListener {
-//            val intent =Intent(context,GetFreeCoinsActivity::class.java)
-//            startActivity(intent)
-//        }
+        view.findViewById<TextView>(R.id.free_coins).setOnClickListener {
+            val intent =Intent(context,GetFreeCoinsActivity::class.java)
+            startActivity(intent)
+        }
 
 
         // end get free coins

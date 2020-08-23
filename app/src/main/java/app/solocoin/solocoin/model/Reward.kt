@@ -25,6 +25,8 @@ data class Reward(
     var costRupees: String,
     @SerializedName("coupon_code")
     var couponCode: String,
+    @SerializedName("currency_type")
+    var currency:String,
     var companyLogoUrl: String? = null,
     var rewardImageUrl: String? = null,
     var isClaimed: Boolean = false

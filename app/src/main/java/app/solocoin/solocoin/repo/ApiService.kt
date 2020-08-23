@@ -74,4 +74,19 @@ interface ApiService {
         @Header("Authorization") authToken: String,
         @Body body: JsonObject
     ): Response<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @POST("coin_codes/redeem_coupon?coupon=")
+    suspend fun redeemCoupon(
+            @Query("coupon") promocode: String,
+            @Header("Authorization") authToken: String
+    ): Response<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @POST("coin_codes/referral?referred_user_code=something&referral_coupon=")
+    suspend fun refer_and_earn(
+            @Query("referred_user_code") newusertoken: String,
+            @Query("referral_coupon") refercode:String,
+            @Header("Authorization") authToken: String
+    ): Response<JsonObject>
 }
