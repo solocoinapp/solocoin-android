@@ -166,12 +166,17 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
 
                             answers = resource.data!!.getAsJsonArray("answers")
                             question_id = resource.data.get("id").asInt
-                            question_textview.text = resource.data.get("name").toString()
+                            val question=resource.data.get("name").toString().substring(1)
+                            question_textview.text = question.substring(0,question.length-1)
+                            val option1 ="A) "+answers[0].asJsonObject.get("name").toString().substring(1)
+                            val option2 ="B) "+answers[1].asJsonObject.get("name").toString().substring(1)
+                            val option3 ="C) "+answers[2].asJsonObject.get("name").toString().substring(1)
+                            val option4 ="D) "+answers[3].asJsonObject.get("name").toString().substring(1)
 
-                            option1_textview.text = answers[0].asJsonObject.get("name").toString()
-                            option2_textview.text = answers[1].asJsonObject.get("name").toString()
-                            option3_textview.text = answers[2].asJsonObject.get("name").toString()
-                            option4_textview.text = answers[3].asJsonObject.get("name").toString()
+                            option1_textview.text = option1.substring(0,option1.length-1)
+                            option2_textview.text = option2.substring(0,option2.length-1)
+                            option3_textview.text = option3.substring(0,option3.length-1)
+                            option4_textview.text = option4.substring(0,option4.length-1)
                         }
                     }
 
@@ -207,11 +212,15 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
                             answers = resource.data!!.getAsJsonArray("answers")
                             question_id = resource.data.get("id").asInt
                             question_textview.text = resource.data.get("name").toString()
+                            val option1 ="A) "+answers[0].asJsonObject.get("name").toString().substring(1)
+                            val option2 ="B) "+answers[1].asJsonObject.get("name").toString().substring(1)
+                            val option3 ="C) "+answers[2].asJsonObject.get("name").toString().substring(1)
+                            val option4 ="d) "+answers[3].asJsonObject.get("name").toString().substring(1)
 
-                            option1_textview.text = answers[0].asJsonObject.get("name").toString()
-                            option2_textview.text = answers[1].asJsonObject.get("name").toString()
-                            option3_textview.text = answers[2].asJsonObject.get("name").toString()
-                            option4_textview.text = answers[3].asJsonObject.get("name").toString()
+                            option1_textview.text = option1.substring(0,option1.length-1)
+                            option2_textview.text = option2.substring(0,option2.length-1)
+                            option3_textview.text = option3.substring(0,option3.length-1)
+                            option4_textview.text = option4.substring(0,option4.length-1)
                         }
                     }
 

@@ -137,6 +137,7 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
                                 HomeActivity::class.java
                             ), this@CreateProfileActivity
                         )
+                        
                         finish()*/
                     }
                     Status.ERROR -> {

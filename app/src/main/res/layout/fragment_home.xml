@@ -65,30 +65,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                app:cardBackgroundColor="@color/grey_light"
+                app:cardBackgroundColor="@color/colorPrimary"
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/quiz_tablayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/grey_light"
-                        app:tabIndicatorColor="@color/white"
+                        app:tabIndicatorColor="@color/colorPrimary"
                         app:tabIndicatorHeight="50dp"
+                        app:tabTextColor="@color/colorPrimary"
+                        app:tabSelectedTextColor="@color/white"
                         app:tabGravity="fill"
+
                         app:tabMode="fixed" />
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/quiz_viewpager"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
-                        android:background="@color/white" />
+                        android:background="@color/colorPrimary" />
 
                 </LinearLayout>
 
