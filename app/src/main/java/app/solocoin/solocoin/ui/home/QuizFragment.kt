@@ -88,6 +88,8 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
     }
 
     private fun verifyAnswer(optionCard: MaterialCardView, optionNumber: Int) {
+//        optionCard.setBackgroundColor(resources.getColor(R.color.green_stroke_color));
+
         optionCard.strokeColor =
             ResourcesCompat.getColor(resources, R.color.green_stroke_color, null)
 
@@ -244,9 +246,9 @@ class QuizFragment(position: Int) : Fragment(), View.OnClickListener {
         val body = JsonObject()
         body.addProperty("question_id", question_id)
         body.addProperty("answer_id", answers[optionId].asJsonObject.get("id").asInt)
-        quiz_container.visibility = View.GONE
-        quiz_message.visibility = View.GONE
-        quiz_placeholder.visibility = View.VISIBLE
+//        quiz_container.visibility = View.GONE
+//        quiz_message.visibility = View.GONE
+//        quiz_placeholder.visibility = View.VISIBLE
         val isCorrect = answers[optionId].asJsonObject.get("correct").asBoolean
         Log.i("karan","jsonlookslikethis"+body);
         viewModel.submitQuizAnswer(body).observe(this, Observer {
