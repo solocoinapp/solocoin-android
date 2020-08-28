@@ -54,7 +54,7 @@ class WalletFragment : Fragment() {
     private var show: Boolean = true
     private lateinit var  offers: ArrayList<Reward>
     private val categorylistarray=arrayOf("Entertainment","Health & Fitness","Gaming","Education",
-            "Lifestyle","Shopping","Food","Travel","Grocery","Software","IT Services","Legal & CA")
+            "Lifestyle","Shopping","Food","Travel","Grocery","Software","IT Services","Legal & CA","Everything Else")
 
     private  var categorylist:ArrayList<String> = ArrayList()
     private val viewModel: WalletFragmentViewModel by viewModel()
@@ -86,7 +86,7 @@ class WalletFragment : Fragment() {
         refreshTextView.visibility = View.VISIBLE
         rewardsRecyclerView.visibility = View.GONE
         scratchRecyclerView.visibility = View.GONE
-        rewardsRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        rewardsRecyclerView.layoutManager = GridLayoutManager(context,1)
         scratchRecyclerView.layoutManager = GridLayoutManager(context, 2)
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
         swipeRefreshLayout.setOnRefreshListener {
@@ -152,6 +152,7 @@ class WalletFragment : Fragment() {
         val software:TextView = dialog.findViewById(R.id.software)
         val it_services:TextView = dialog.findViewById(R.id.it_services)
         val legal_and_CA:TextView = dialog.findViewById(R.id.legal)
+        val everythingelse:TextView =dialog.findViewById(R.id.everythingelse)
         var i=0
         while(i<offers.size){
             //condition to prevent null values
@@ -170,6 +171,7 @@ class WalletFragment : Fragment() {
                     categorylistarray[9] -> software.visibility=View.VISIBLE
                     categorylistarray[10] -> it_services.visibility=View.VISIBLE
                     categorylistarray[11] -> legal_and_CA.visibility=View.VISIBLE
+                    categorylistarray[12] -> everythingelse.visibility=View.VISIBLE
                 }
             }
             i++
@@ -232,6 +234,11 @@ class WalletFragment : Fragment() {
         legal_and_CA.setOnClickListener {
             setOffersAdapter(offers,"Legal & CA")
             menubutton.text="Legal & CA"
+            dialog.dismiss()
+        }
+        everythingelse.setOnClickListener {
+            setOffersAdapter(offers,"Everything Else")
+            menubutton.text="Everything Else"
             dialog.dismiss()
         }
         all.setOnClickListener {

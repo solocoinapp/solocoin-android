@@ -71,7 +71,7 @@ class RewardRedeemAdapter(
         @SuppressLint("DefaultLocale")
         fun setUpView(context: Activity, reward: Reward) {
             reward.let {
-                updateImage(it)
+                //updateImage(it)
                 coinsAmt.text = ("${it.costCoins} coins")
                 rewardName.text = it.rewardName.capitalize()
                 updateRewardTnc(it)
@@ -93,10 +93,10 @@ class RewardRedeemAdapter(
             }
         }
 
-        private fun updateImage(reward: Reward) {
-            GlobalUtils.loadImageNetworkCacheVisibility(reward.rewardImageUrl, rewardImage)
-            GlobalUtils.loadImageNetworkCacheVisibility(reward.companyLogoUrl, companyLogo)
-        }
+//        private fun updateImage(reward: Reward) {
+//            GlobalUtils.loadImageNetworkCacheVisibility(reward.rewardImageUrl, rewardImage)
+//            GlobalUtils.loadImageNetworkCacheVisibility(reward.companyLogoUrl, companyLogo)
+//        }
 
         private fun updateRewardTnc(reward: Reward) {
             reward.rewardTermsAndConditions?.let {

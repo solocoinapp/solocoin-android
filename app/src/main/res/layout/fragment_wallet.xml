@@ -28,11 +28,11 @@
 
                 <ImageView
                     android:id="@+id/iv_coins"
-                    android:layout_width="32dp"
-                    android:layout_height="36dp"
+                    android:layout_width="42dp"
+                    android:layout_height="56dp"
                     android:layout_marginEnd="12dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_coin" />
+                    android:src="@drawable/ic_coin_new" />
 
                 <TextView
                     android:id="@+id/tv_coins_count"

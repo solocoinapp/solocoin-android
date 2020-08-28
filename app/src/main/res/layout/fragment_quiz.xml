@@ -65,9 +65,9 @@
                     android:text="50"/>
             <ImageView
                 android:layout_width="20dp"
-                android:layout_height="25dp"
+                android:layout_height="30dp"
 
-                android:src="@drawable/ic_coin"/>
+                android:src="@drawable/ic_coin_new"/>
                 </LinearLayout>
                 <TextView
                     android:id="@+id/question_textview"

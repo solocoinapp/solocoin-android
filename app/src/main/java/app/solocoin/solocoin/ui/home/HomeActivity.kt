@@ -3,10 +3,12 @@ package app.solocoin.solocoin.ui.home
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -25,8 +27,19 @@ import app.solocoin.solocoin.services.FusedLocationService
 import app.solocoin.solocoin.util.GlobalUtils
 import app.solocoin.solocoin.worker.NotificationPingWorker
 import app.solocoin.solocoin.worker.SessionPingWorker
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.DexterBuilder
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -37,9 +50,9 @@ import java.util.concurrent.TimeUnit
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 @RequiresApi(Build.VERSION_CODES.M)
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), PermissionListener {
     private var alarmManager: AlarmManager? = null
-
+    private lateinit var  dexterInstance: DexterBuilder
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -62,6 +75,8 @@ class HomeActivity : AppCompatActivity() {
         // Starting fused location service
         // TODO : Setup permission request for Fused Location service properly
         checkPermissionForLocation()
+        //setupPermissionEngine()
+        showLocationPrompt()
 
         // Starting Session Ping API worker
         startSessionPingManager()
@@ -343,6 +358,12 @@ class HomeActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+    private fun setupPermissionEngine() {
+        dexterInstance = Dexter.withContext(this)
+                .withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(this)
+                .onSameThread()
+    }
 
     companion object {
         private val TAG = HomeActivity::class.java.simpleName
@@ -351,5 +372,70 @@ class HomeActivity : AppCompatActivity() {
         private const val SESSION_PING_MANAGER: String = "SESSION_PING_MANAGER"
         private const val NOTIFICATION_PING_REQUEST = "app.solocoin.solocoin.api.notification"
         private val applicationScope = CoroutineScope(Dispatchers.Default)
+    }
+
+    override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPermissionRationaleShouldBeShown(p0: PermissionRequest?, p1: PermissionToken?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+        TODO("Not yet implemented")
+    }
+    private fun showLocationPrompt() {
+        val locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+
+        val result: Task<LocationSettingsResponse> = LocationServices.getSettingsClient(this).checkLocationSettings(builder.build())
+
+        result.addOnCompleteListener { task ->
+            try {
+                val response = task.getResult(ApiException::class.java)
+                // All location settings are satisfied. The client can initialize location
+                // requests here.
+            } catch (exception: ApiException) {
+                when (exception.statusCode) {
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                        try {
+                            // Cast to a resolvable exception.
+                            val resolvable: ResolvableApiException = exception as ResolvableApiException
+                            // Show the dialog by calling startResolutionForResult(),
+                            // and check the result in onActivityResult().
+                            resolvable.startResolutionForResult(
+                                    this, LocationRequest.PRIORITY_HIGH_ACCURACY
+                            )
+                        } catch (e: IntentSender.SendIntentException) {
+                            // Ignore the error.
+                        } catch (e: ClassCastException) {
+                            // Ignore, should be an impossible error.
+                        }
+                    }
+                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                        // Location settings are not satisfied. But could be fixed by showing the
+                        // user a dialog.
+
+                        // Location settings are not satisfied. However, we have no way to fix the
+                        // settings so we won't show the dialog.
+                    }
+                }
+            }
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            LocationRequest.PRIORITY_HIGH_ACCURACY -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.e("Status: ","On")
+                } else {
+                    showLocationPrompt()
+                    Log.e("Status: ","Off")
+                }
+            }
+        }
     }
 }
