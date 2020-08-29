@@ -36,6 +36,11 @@ class SharedPrefs(context: Context) {
         get() = instance.getString(mobile_number, null)
         set(value) = instance.edit().putString(mobile_number, value).apply()
 
+    private val my_avatar = "bluedude"
+    var avatar:String?
+    get() =instance.getString(my_avatar,"bluedude")
+    set(value) = instance.edit().putString(my_avatar,value).apply()
+
     private val _name = "name"
     var name: String?
         get() = instance.getString(_name, null)

@@ -45,7 +45,10 @@ class ProfileFragment : Fragment(), KoinComponent {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        view.findViewById<TextView>(R.id.my_profile).setOnClickListener {
+            val intent=Intent(context,MyProfileActivity::class.java)
+            startActivity(intent)
+        }
         //invite-btn
         view.findViewById<TextView>(R.id.tv_invite).setOnClickListener {
             //the below method will be used for invite & earn functionality
@@ -78,6 +81,7 @@ class ProfileFragment : Fragment(), KoinComponent {
 
         }
         //invite-btn
+
         //Redeemed Rewards btn
         view.findViewById<TextView>(R.id.redeemed_rewards).setOnClickListener {
             val intent=Intent(context,AllScratchCardsActivity::class.java)

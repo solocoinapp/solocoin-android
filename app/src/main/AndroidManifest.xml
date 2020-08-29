@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.GetFreeCoinsActivity"></activity>
+        <activity android:name=".ui.home.MyProfileActivity"></activity>
+        <activity android:name=".ui.home.GetFreeCoinsActivity" />
         <activity
             android:name=".ui.home.AllScratchCardsActivity"
             android:parentActivityName=".ui.home.HomeActivity"
@@ -60,16 +61,16 @@
             android:name=".ui.home.HomeActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-            <data
-                android:host="karandeep.page.link"
-                android:scheme="https" />
-        </intent-filter>
+                <data
+                    android:host="karandeep.page.link"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
 
         <meta-data
@@ -89,11 +90,11 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

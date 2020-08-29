@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.MyProfileActivity"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="?actionBarSize"
+            android:paddingLeft="5dp"
+            android:id="@+id/back_arrow"
+            android:src="@drawable/ic_arrow_back_white"
+            android:background="@color/colorAccent"
+            />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/myprofile_toolbar"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="34dp"
+            app:title="My Profile"
+            app:titleTextColor="@color/white"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:id="@+id/avatar"
+        android:src="@drawable/bluedude"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Firstname Lastname"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="30dp"
+            android:text="500 coins"
+            android:id="@+id/coins"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="30dp"
+            android:text="QWERTY"
+            android:id="@+id/refercode"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="30dp"
+            android:text="4"
+            android:id="@+id/offers_redeemed"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="30dp"
+            android:text="Coins in Wallet"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="30dp"
+            android:text="Refer Code"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="30dp"
+            android:text="Offers Redeemed"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/home_time"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:drawableStart="@drawable/ic_home"
+        android:drawableTint="@color/colorAccent"
+        android:drawablePadding="16dp"
+        android:fontFamily="@font/poppins"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingEnd="16dp"
+        android:text="test"
+        android:textColor="@android:color/black" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:background="@color/colorAccent" />
+    <TextView
+        android:id="@+id/mobile"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawableStart="@drawable/ic_phone"
+        android:drawableTint="@color/colorAccent"
+        android:drawablePadding="16dp"
+        android:fontFamily="@font/poppins"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingEnd="16dp"
+        android:text="+91 9876543210"
+        android:textColor="@android:color/black" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/app_padding"
+        android:layout_marginEnd="@dimen/app_padding"
+        android:background="@color/colorAccent" />
+<!--    <TextView-->
+<!--        android:id="@+id/coins"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:drawableStart="@drawable/ic_wallet_small"-->
+<!--        android:drawableTint="@color/colorAccent"-->
+<!--        android:drawablePadding="16dp"-->
+<!--        android:fontFamily="@font/poppins"-->
+<!--        android:foreground="?attr/selectableItemBackground"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:paddingEnd="16dp"-->
+<!--        android:text="500 coins"-->
+<!--        android:textColor="@android:color/black" />-->
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_marginStart="@dimen/app_padding"-->
+<!--        android:layout_marginEnd="@dimen/app_padding"-->
+<!--        android:background="@color/colorAccent" />-->
+</LinearLayout>

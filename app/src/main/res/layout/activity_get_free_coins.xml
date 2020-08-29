@@ -40,13 +40,17 @@
     android:textSize="22sp"
     android:textColor="@color/colorAccent"
     android:textStyle="bold"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_coin_new"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:layout_marginBottom="50dp"
-        android:layout_marginTop="70dp"
         android:textAlignment="center"
         android:textSize="20sp"
         android:text="Enter Coupon Code"/>
