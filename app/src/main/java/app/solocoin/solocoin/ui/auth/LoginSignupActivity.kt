@@ -142,10 +142,10 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
 
         // TODO: Make it universal using library or regular expressions
         // Currently valid for Indian crowds
-        if (mobileNumber.length < 10) {
-            etMobileNumber.error = getString(R.string.error_mobile_no)
-            return
-        }
+//        if (mobileNumber.length < 10) {
+//            etMobileNumber.error = getString(R.string.error_mobile_no)
+//            return
+//        }
 
         val confirmDialog = AppDialog.instance("Send OTP",
             "Verify the mobile number ${countryCode+mobileNumber} and confirm",

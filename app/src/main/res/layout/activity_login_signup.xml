@@ -89,8 +89,6 @@
             android:hint="@string/hint_number"
             android:inputType="phone"
             android:textSize="20sp"
-            android:maxLength="10"
-            android:maxLines="1"
             android:digits="0123456789"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
