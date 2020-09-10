@@ -237,7 +237,7 @@ class LoginSignupActivity : AppCompatActivity(), View.OnClickListener, EditCodeL
                                     Status.SUCCESS -> {
                                         loadingDialog.dismiss()
 //                                        Log.d(TAG, "mobilelogin-rc: ${resource.code}, ${resource}")
-
+                            Log.d("resourcecode",""+resource.code)
                                         if (resource.code == 200) {
 //                                            Log.wtf(TAG, "Existing user fetching Info")
                                             //existing-user

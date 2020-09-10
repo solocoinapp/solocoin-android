@@ -92,12 +92,12 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
 
                             // Update user data at Api after successful SignUp
                             val _body = JsonObject()
-                            val user = JsonObject()
-                            user.addProperty("name", sharedPrefs?.name)
-                            user.addProperty("mobile", sharedPrefs?.mobileNumber)
-                            user.addProperty("lat", sharedPrefs?.userLat)
-                            user.addProperty("lng", sharedPrefs?.userLong)
-                            _body.add("user", user)
+                            //val user = JsonObject()
+                            _body.addProperty("name", sharedPrefs?.name)
+                            _body.addProperty("mobile", sharedPrefs?.mobileNumber)
+                            _body.addProperty("lat", sharedPrefs?.userLat)
+                            _body.addProperty("lng", sharedPrefs?.userLong)
+                            //_body.add("user", user)
                             doApiUserUpdate(_body)
 
                         } else {
@@ -124,6 +124,8 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun doApiUserUpdate(body: JsonObject) {
+        Log.i("userupdate","body:"+body)
+        Log.i("userupdate","auth:"+ sharedPrefs?.authToken)
         viewModel.userUpdate(body).observe(this@CreateProfileActivity, Observer { res ->
 //            Log.wtf(TAG + " User Update", "$res")
             res?.let { resource ->
@@ -203,11 +205,11 @@ class CreateProfileActivity : AppCompatActivity(), View.OnClickListener {
             val user = JsonObject()
 
             if (sharedPrefs?.authToken != null) {
-                user.addProperty("name", sharedPrefs?.name)
-                user.addProperty("mobile", sharedPrefs?.mobileNumber)
-                user.addProperty("lat", sharedPrefs?.userLat)
-                user.addProperty("lng", sharedPrefs?.userLong)
-                body.add("user", user)
+                body.addProperty("name", sharedPrefs?.name)
+                body.addProperty("mobile", sharedPrefs?.mobileNumber)
+                body.addProperty("lat", sharedPrefs?.userLat)
+                body.addProperty("lng", sharedPrefs?.userLong)
+               // body.add("user", user)
 
                 doApiUserUpdate(body)
 

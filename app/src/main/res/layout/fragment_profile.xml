@@ -160,12 +160,13 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/logout"
+        android:visibility="gone"
         android:textColor="@android:color/black" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/app_padding"
-        android:layout_marginEnd="@dimen/app_padding"
-        android:background="@color/colorAccent" />
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_marginStart="@dimen/app_padding"-->
+<!--        android:layout_marginEnd="@dimen/app_padding"-->
+<!--        android:background="@color/colorAccent" />-->
 </LinearLayout>
