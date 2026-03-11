@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1D3271</color>
+    <color name="colorPrimaryDark">#10205A</color>
+    <color name="colorAccent">#F7395A</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="blue">#00C2FF</color>
+    <color name="gray">#707070</color>
+    <color name="light">#B9B9B9</color>
+
+    <!--OnBoard-->
+
+    <color name="selected_dot">#2D9CDB</color>
+    <color name="idle_dot">#662D9CDB</color>
+</resources>

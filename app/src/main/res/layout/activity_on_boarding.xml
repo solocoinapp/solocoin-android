@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="109dp"
+        android:layout_height="74dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        app:srcCompat="@drawable/logo_pink_blue" />
+
+    <RelativeLayout
+        android:layout_above="@+id/button0"
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager_introduction"
+            android:layout_above="@id/viewPagerCountDots"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:id="@+id/viewPagerCountDots"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pager_height"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button0"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="290dp"
+        android:layout_height="63dp"
+        android:background="@drawable/start_button"
+        android:text="GET STARTED"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"/>
+</RelativeLayout>
+

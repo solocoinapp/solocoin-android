@@ -1,12 +1,10 @@
-(Primary work is being done on `dev` branch, now deprecated. Further work will continue on `dev-v2` branch)
-
-# SoloCoin
-Welcome to The SoloCoin, it's great to have you here! We thank you in advance for your contributions.
-SoloCoin gamifies the act of social-distancing by rewarding users in points and badges for staying at home and away from people.
+# CoronaGo
+Welcome to The CoronaGo, it's great to have you here! We thank you in advance for your contributions.
+CoronaGo gamifies the act of social-distancing by rewarding users in points and badges for staying at home and away from people.
 
 # Contributing (Remember Read this 1st before you ask anything)
 
-Discord link : https://www.guilded.gg/i/wEwlNMd2
+Discord link : https://discord.gg/9Cegpv
 Participate : Ask @arbob to add you in as a collaborators
 
 FAQ: HOW DO I START??

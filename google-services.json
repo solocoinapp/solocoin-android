@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_number": "1033706353554",
+    "firebase_url": "https://coronago-app.firebaseio.com",
+    "project_id": "coronago-app",
+    "storage_bucket": "coronago-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033706353554:android:af5946ef0b768c1d26074b",
+        "android_client_info": {
+          "package_name": "app.solocoin.solocoin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1033706353554-su6no259j7e095lnptmg13gbtubvlboa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.solocoin.solocoin",
+            "certificate_hash": "617dc58c658c96ff38e22b870df556eaeed7efbe"
+          }
+        },
+        {
+          "client_id": "1033706353554-0tsefr2598qbq41i4jsh75ta553mtnua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.solocoin.solocoin",
+            "certificate_hash": "bdc471f43c0c0b15fe2ae8484fa4491e19adf2d6"
+          }
+        },
+        {
+          "client_id": "1033706353554-t02394s1i1ih1aj1dn80hcqm6e8gsc2e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.solocoin.solocoin",
+            "certificate_hash": "1ddd883181abf3d4a5a299d356de1775bf7fa450"
+          }
+        },
+        {
+          "client_id": "1033706353554-0pl6m0tjn9bf7c5ai4gk46blu3od8ig5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe6bsxqPyYRq7dx81L77sYvXzmRVqc_7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1033706353554-0pl6m0tjn9bf7c5ai4gk46blu3od8ig5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Phone1Verification">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="SIGNUP"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_marginTop="48dp"
+            android:layout_below="@id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_mobile_number"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:id="@+id/linearlayout"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_below="@id/textView3"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+                android:id="@+id/ccp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:ccp_hideNameCode="true"
+                app:ccp_textColor="@color/colorPrimaryDark"
+                app:ccp_textFont="Poppins-SemiBold.ttf"
+                app:ccp_textSize="20sp" />
+
+            <EditText
+                android:id="@+id/phno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorAccent"
+                android:drawableStart="@drawable/ic_phone_icon"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/colorAccent"
+                android:ems="5"
+                android:fontFamily="@font/poppins_semibold"
+                android:hint="9855461111"
+                android:inputType="phone"
+                android:textAlignment="textStart"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_marginTop="48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/linearlayout"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="336dp"
+            android:layout_height="52dp"
+            android:background="@drawable/pink_button_border_radius"
+            android:text="GET OTP"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+</layout>

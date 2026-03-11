@@ -1,0 +1,99 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+android {
+    signingConfigs {
+        config {
+//            storeFile file('C:\\Users\\lenovo\\Desktop\\keystore.jks')
+            storePassword 'Solocoin'
+            keyAlias = 'solocoin'
+            keyPassword 'solocoin'
+//            storeFile file('C:\\Users\\lenovo\\Desktop\\keystore.jks')
+        }
+    }
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "app.solocoin.solocoin"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        dataBinding {
+            enabled = true
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+            debuggable = false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main {
+            java {
+                srcDirs 'src/main/java', 'src/main/java/app.solocoin.solocoin', 'src/main/java/app.solocoin.solocoin/jobscheduler'
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    def lifecycle_version = "2.2.0"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation "androidx.work:work-runtime-ktx:2.3.4"
+
+    implementation 'com.github.dhaval2404:imagepicker:1.7.1'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.bigbangbutton:editcodeview:1.0.6'
+    implementation 'com.github.joielechong:countrycodepicker:2.4.1'
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-firestore:21.4.2'
+    implementation "com.google.android.gms:play-services-location:17.0.0"
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta03'
+    implementation 'com.google.firebase:firebase-perf:19.0.5'
+
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // implementation 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'androidx.work:work-runtime:2.3.4'
+    implementation 'com.google.guava:guava:27.0.1-android'
+
+}
+
+repositories {
+    mavenCentral()
+}

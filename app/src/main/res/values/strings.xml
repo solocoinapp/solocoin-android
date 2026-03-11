@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">SoloCoin</string>
+    <string name="BASE_URL">https://qa01.solocoin.app/api/v1/</string>
+    <string name="get_reward_to_stay_away_from_people">Get rewards to stay away from people</string>
+    <string name="get_reward_to_stay">Get rewards to stay</string>
+    <string name="away_from_people">away from people</string>
+    <string name="help_defeat_coronavirus">Help defeat Coronavirus</string>
+    <string name="corona_go">CORONA GO</string>
+    <string name="start">Start</string>
+    <string name="enter_mobile_number">Enter Mobile Number</string>
+    <string name="covid_19_fa">We can decrease the growth of Coronavirus by 90% if we just stayed at home.</string>
+    <string name="namaste_is_scientifically">Namaste is scientifically</string>
+    <string name="proven_the_best_way_to_greet">proven the best way to greet</string>
+    <string name="someone">someone.</string>
+    <string name="token">Token</string>
+    <string name="_2348034638680">+2348034638680</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAe6bsxqPyYRq7dx81L77sYvXzmRVqc_7Y</string>
+
+    <!-- Login page string -->
+    <string name="login_hint">Email (Optional)</string>
+    <string name="password_hint">Password</string>
+    <string name="content_description_end_icon">icon</string>
+    <string name="continue_button">Continue</string>
+    <string name="date_of_birth_hint">DD/MM/YYYY (Optional)</string>
+    <string name="username_hint">Full Name</string>
+    <string name="logo_description">SoloCoin Logo</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="skip_for_now">Skip for now</string>
+
+
+    <string name="title_location">Location</string>
+    <string name="confirm_loc">Confirm location</string>
+    <string name="hint_fetching_loc">Fetching location</string>
+    <string name="hint_current_loc">Current location</string>
+    <string name="current_address">%s, %s, %s</string>
+    <string name="error_occurred">Something went wrong, please try again!</string>
+
+    <string name="create_account">CREATE ACCOUNT</string>
+
+
+    <string name="permission">Permissions</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="term_condition">Terms &amp; Conditions </string>
+    <string name="profile">Profile</string>
+    <string name="invite">Invite</string>
+    <string name="logout">Logout</string>
+
+    <string name="leaderboard">Leaderboard</string>
+    <string name="wallet">Wallet</string>
+    <string name="home">Home</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="coming_soon">COMING SOON</string>
+    <string name="rewards">Rewards</string>
+    <string name="wallet_description">Engage in social distancing and get SoloCoins which you can redeem for exciting coupons from Flipkart, Netflix etc.</string>
+    <string name="coins_in_wallet">Coins in Wallet</string>
+    <!--daily chalkenges-->
+    <string name="challenges">Daily Challenges</string>
+    <string name="challenge_description">Engage in social distancing, give correct answers and get exciting rewards everyday</string>
+
+
+    <string name="data_encrypted">Your data is encrypted and secure and is not shared with anyone.</string>
+
+    //onboarding
+    <string name="ob_header1">PRACTICE SOCIAL DISTANCING</string>
+    <string name="ob_header2">EARN REAL WORLD REWARDS</string>
+    <string name="ob_header3">STAY SAFE</string>
+    <string name="set_permissions"> SET PERMISSIONS </string>
+
+
+</resources>

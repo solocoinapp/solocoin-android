@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "1033706353554",
+    "firebase_url": "https://coronago-app.firebaseio.com",
+    "project_id": "coronago-app",
+    "storage_bucket": "coronago-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033706353554:android:af5946ef0b768c1d26074b",
+        "android_client_info": {
+          "package_name": "app.solocoin.solocoin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1033706353554-t02394s1i1ih1aj1dn80hcqm6e8gsc2e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.solocoin.solocoin",
+            "certificate_hash": "1ddd883181abf3d4a5a299d356de1775bf7fa450"
+          }
+        },
+        {
+          "client_id": "1033706353554-0pl6m0tjn9bf7c5ai4gk46blu3od8ig5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe6bsxqPyYRq7dx81L77sYvXzmRVqc_7Y"
+        },
+        {
+          "current_key": "AIzaSyBUuW7MdoFCHab7hvHyzQV3Jk58OzhyVb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1033706353554-0pl6m0tjn9bf7c5ai4gk46blu3od8ig5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033706353554:android:bdcd402a63d5a2b226074b",
+        "android_client_info": {
+          "package_name": "com.shimadove.coronago"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1033706353554-genhkmci9o75dj3of18u9uao5d3phf75.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shimadove.coronago",
+            "certificate_hash": "bdc471f43c0c0b15fe2ae8484fa4491e19adf2d6"
+          }
+        },
+        {
+          "client_id": "1033706353554-lle6rm25qorslm2skh0ufujj9mur0auu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shimadove.coronago",
+            "certificate_hash": "6705e5ba2b493b3bb0f6c5437b7c0e86d9d5fe35"
+          }
+        },
+        {
+          "client_id": "1033706353554-0pl6m0tjn9bf7c5ai4gk46blu3od8ig5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe6bsxqPyYRq7dx81L77sYvXzmRVqc_7Y"
+        },
+        {
+          "current_key": "AIzaSyBUuW7MdoFCHab7hvHyzQV3Jk58OzhyVb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1033706353554-0pl6m0tjn9bf7c5ai4gk46blu3od8ig5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

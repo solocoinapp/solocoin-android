@@ -1,0 +1,57 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 28
+        versionCode 6
+        versionName "1.0.6"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    testImplementation 'junit:junit:4.12'
+}
+
+ext {
+
+    bintrayRepo = 'maven'
+    bintrayName = 'editcodeview'
+    publishedGroupId = 'com.bigbangbutton'
+    libraryName = 'editcodeview'
+    artifact = 'editcodeview'
+
+    libraryDescription = 'Custom view implementation that allows you to control the input of a numeric code'
+
+    siteUrl = 'https://github.com/Onum/EditCodeView'
+    gitUrl = 'https://github.com/Onum/EditCodeView.git'
+
+    libraryVersion = "1.0.6"
+    organization = ""
+    developerId = 'onum'
+    developerName = 'Aleksandr Grizhinku'
+    developerEmail = 'alexg.mobiledev@gmail.com'
+    licenseName = 'MIT License'
+    licenseUrl = 'http://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+
+}
+
+apply from: 'https://raw.githubusercontent.com/quangctkm9207/template-files/master/android/gradle/install.gradle'
+apply from: 'https://raw.githubusercontent.com/quangctkm9207/template-files/master/android/gradle/bintray.gradle'
